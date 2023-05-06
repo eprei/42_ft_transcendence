@@ -12,6 +12,6 @@ module.exports = {
     rules: {
         'react-refresh/only-export-components': 'warn',
         'no-undef': 'off',
-        'object-curly-spacing': 'always',
+        'object-curly-spacing': 0,
     },
 }

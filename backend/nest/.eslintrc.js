@@ -23,6 +23,6 @@ module.exports = {
         '@typescript-eslint/explicit-module-boundary-types': 'off',
         '@typescript-eslint/no-explicit-any': 'off',
         'no-undef': 'off',
-        'object-curly-spacing': 'always',
+        'object-curly-spacing': 0,
     },
 }
