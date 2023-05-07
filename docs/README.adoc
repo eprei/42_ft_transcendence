@@ -7,11 +7,19 @@
 ....
 rectangle localhost {
 	rectangle app-net {
-		rectangle NestJS
-		rectangle PostgreSQL
+		rectangle NestJS {
+			interface "port 3000" as portin_nest
+		}
+		rectangle PostgreSQL {
+			interface "port 5432" as portin_postgre
+		}
+		interface "port 8080" as portout_nest
+		interface "port 6060" as portout_postgre
 	}
 	rectangle React
 }
 
-NestJS <-> PostgreSQL
+portin_nest -up-> portout_nest
+portin_postgre -up-> portout_postgre
+NestJS <-le-> PostgreSQL
 ....
