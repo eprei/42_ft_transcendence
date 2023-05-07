@@ -1,1 +1,17 @@
 = Transcendence
+:nofooter:
+
+== Docker environment for development
+
+[plantuml, target=assets/docker, format=svg, width=100%]
+....
+rectangle localhost {
+	rectangle app-net {
+		rectangle NestJS
+		rectangle PostgreSQL
+	}
+	rectangle React
+}
+
+NestJS <-> PostgreSQL
+....
