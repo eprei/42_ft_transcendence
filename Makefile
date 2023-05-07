@@ -2,8 +2,11 @@ ADOC	=	asciidoctor --require=asciidoctor-diagram
 DOCU	=	docs/README.adoc
 INDEX	=	docs/index.html
 
-transcendence-dev:
+transcendence-dev-start:
 	docker compose up
+
+transcendence-dev-stop:
+	docker compose down
 
 doc:
 	@printf "$(YELLOW)Generating documentations..$(DEFAULT)\n"
