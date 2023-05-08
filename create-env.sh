@@ -25,7 +25,7 @@ eof
 
 create_env_nest () {
 	cat > env/nest.env << eof
-DATABASE_URL=postgres://${POSTGRES_USER}::${POSTGRES_PASSWORD}@postgres:5432/db
+DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/db
 PORT=3000
 eof
 }
