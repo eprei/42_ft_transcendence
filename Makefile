@@ -2,10 +2,10 @@ ADOC	=	asciidoctor --require=asciidoctor-diagram
 DOCU	=	docs/README.adoc
 INDEX	=	docs/index.html
 
-transcendence-dev-start:
+start:
 	docker compose up
 
-transcendence-dev-stop:
+stop:
 	docker compose down
 
 doc:
