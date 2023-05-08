@@ -3,7 +3,6 @@
 alias pwgen="docker run \
     --rm \
     --interactive \
-    --tty \
     backplane/pwgen \
 	--ambiguous \
 	--capitalize \
