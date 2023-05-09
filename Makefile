@@ -2,11 +2,17 @@ ADOC	=	asciidoctor --require=asciidoctor-diagram
 DOCU	=	docs/README.adoc
 INDEX	=	docs/index.html
 
-start:
+start: env
 	docker compose up
 
 stop:
 	docker compose down
+
+env:
+	@if [ ! -d env ]; then \
+		printf "$(GREEN)Generate environment variables\n$(DEFAULT)"; \
+		sh create-env.sh; \
+	fi
 
 doc:
 	@printf "$(YELLOW)Generating documentations..$(DEFAULT)\n"
@@ -21,6 +27,7 @@ cleandocker:
 	docker image prune -a -f
 	docker volume prune -f
 
+.PHONY: env
 
 # Colors
 RED     = \033[1;31m
