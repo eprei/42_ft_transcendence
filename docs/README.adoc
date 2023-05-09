@@ -8,19 +8,24 @@ image::assets/docker_env_dev.png[]
 [plantuml, target=assets/docker, format=svg, width=100%]
 ....
 rectangle localhost {
+	circle "port 8080" as portout_nest
+	circle "port 6060" as portout_postgre
 	rectangle app-net {
 		rectangle NestJS {
-			interface "port 3000" as portin_nest
+			circle "port 3000" as portin_nest
 		}
 		rectangle PostgreSQL {
-			interface "port 5432" as portin_postgre
+			circle "port 5432" as portin_postgre
 		}
-		interface "port 8080" as portout_nest
-		interface "port 6060" as portout_postgre
 	}
-	rectangle React
+
+	circle "port 4040" as portout_react
+	rectangle React {
+		circle "port 5173" as portin_react
+	}
 }
 
+portin_react -up-> portout_react
 portin_nest -up-> portout_nest
 portin_postgre -up-> portout_postgre
 NestJS <-le-> PostgreSQL
