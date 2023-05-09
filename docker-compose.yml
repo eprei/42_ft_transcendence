@@ -2,11 +2,11 @@ version: '3.8'
 services:
     backend:
         build:
-            context: ./backend/nest/
+            context: ./backend/
         ports:
             - '8080:3000'
         volumes:
-            - ./backend/nest:/app/src:delegated
+            - ./backend/:/app/src:delegated
             - /app/node_modules
         depends_on:
             - postgres
@@ -17,11 +17,11 @@ services:
 
     frontend:
         build:
-            context: ./frontend/react/
+            context: ./frontend/
         ports:
             - '4040:5173'
         volumes:
-            - ./frontend/react:/app
+            - ./frontend/:/app
             - /app/node_modules
         stdin_open: true
         tty: true
