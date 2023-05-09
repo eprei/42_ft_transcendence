@@ -3,6 +3,8 @@
 
 == Docker environment for development
 
+image::assets/docker_env_dev.png[]
+
 [plantuml, target=assets/docker, format=svg, width=100%]
 ....
 rectangle localhost {
