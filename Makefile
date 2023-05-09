@@ -16,6 +16,12 @@ docdocker:
 	@printf "$(YELLOW)launch the asciidoctor/docker-asciidoctor docker image..$(DEFAULT)\n"
 	@docker run --rm -v $(shell pwd):/documents/ asciidoctor/docker-asciidoctor make doc
 
+cleandocker:
+	docker container prune -f
+	docker image prune -a -f
+	docker volume prune -f
+
+
 # Colors
 RED     = \033[1;31m
 GREEN   = \033[1;32m
