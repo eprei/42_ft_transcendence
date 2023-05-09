@@ -23,7 +23,7 @@ create_env_postgres () {
 
 create_env_nest () {
 	cat > env/nest.env <<- eof
-	DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/db
+	DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/bigdata-transcendence
 	PORT=3000
 	eof
 }
