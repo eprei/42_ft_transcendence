@@ -1,6 +1,8 @@
 version: '3.8'
 services:
     backend:
+        container_name: our-backend
+        image: our-backend-image
         build:
             context: ./backend/
         ports:
@@ -16,6 +18,8 @@ services:
             - appnet
 
     frontend:
+        container_name: our-frontend
+        image: our-frontend-image
         build:
             context: ./frontend/
         ports:
@@ -27,6 +31,7 @@ services:
         tty: true
 
     postgres:
+        container_name: our-postgresql
         image: postgres:latest
         ports:
             - '6060:5432'
