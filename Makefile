@@ -4,8 +4,8 @@ INDEX	=	docs/index.html
 
 CONTAINER_POST	=	our-postgresql
 CONTAINER_BACK	=	our-backend
-CONTAINER_FRONT	=	our-frontend
-VOLUME_DATA	=	ft_transcendence_data
+CONTAINER_FRONT	=	out-frontend
+VOLUME_DATA		=	our-data
 
 start: env
 	docker compose up

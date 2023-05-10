@@ -44,5 +44,7 @@ services:
 
 volumes:
     data:
+      name: our-data
+
 networks:
     appnet:
