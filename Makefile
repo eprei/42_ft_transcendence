@@ -2,6 +2,11 @@ ADOC	=	asciidoctor --require=asciidoctor-diagram
 DOCU	=	docs/README.adoc
 INDEX	=	docs/index.html
 
+CONTAINER_POST	=	our-postgresql
+CONTAINER_BACK	=	our-backend
+CONTAINER_FRONT	=	out-frontend
+VOLUME_DATA	=	ft_transcendence_data
+
 start: env
 	docker compose up
 
@@ -22,10 +27,19 @@ docdocker:
 	@printf "$(YELLOW)launch the asciidoctor/docker-asciidoctor docker image..$(DEFAULT)\n"
 	@docker run --rm -v $(shell pwd):/documents/ asciidoctor/docker-asciidoctor make doc
 
-cleandocker:
-	docker container prune -f
-	docker image prune -a -f
-	docker volume prune -f
+clean-container: clean-postgresql clean-front clean-back
+
+clean-database:
+	if docker volume inspect $(VOLUME_DATA) 1>/dev/null 2>/dev/null ; then docker volume rm $(VOLUME_DATA); fi
+
+clean-postgresql:
+	if docker container inspect $(CONTAINER_POST) 1>/dev/null 2>/dev/null ; then docker container rm $(CONTAINER_POST); fi
+
+clean-front:
+	if docker container inspect $(CONTAINER_FRONT) 1>/dev/null 2>/dev/null ; then docker container rm $(CONTAINER_FRONT); fi
+
+clean-back:
+	if docker container inspect $(CONTAINER_BACK) 1>/dev/null 2>/dev/null ; then docker container rm $(CONTAINER_BACK); fi
 
 .PHONY: env
 
