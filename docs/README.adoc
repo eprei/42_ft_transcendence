@@ -8,15 +8,18 @@ image::assets/docker_env_dev.png[]
 [plantuml, target=assets/docker, format=svg, width=100%]
 ....
 rectangle localhost {
+	database "our-data" as our_data
 	circle "port 8080" as portout_nest
 	circle "port 6060" as portout_postgre
 	circle "port 4040" as portout_react
 
 	rectangle docker {
 		rectangle app-net {
-			rectangle NestJS {
-				circle "port 3000" as portin_nest
-			}
+			rectangle NestJS [
+				container name: <b>our-backend
+				port: <b>3000
+				framework: <b>NestJS
+			]
 			rectangle PostgreSQL {
 				circle "port 5432" as portin_postgre
 			}
@@ -27,8 +30,8 @@ rectangle localhost {
 	}
 }
 
+NestJS -up-> portout_nest
 portin_react -up-> portout_react
-portin_nest -up-> portout_nest
 portin_postgre -up-> portout_postgre
 NestJS <-le-> PostgreSQL
 ....
