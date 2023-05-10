@@ -30,16 +30,16 @@ docdocker:
 clean-container: clean-postgresql clean-front clean-back
 
 clean-database:
-	if docker volume inspect $(VOLUME_DATA) 1>/dev/null 2>/dev/null ; then docker volume rm $(VOLUME_DATA); fi
+	@if docker volume inspect $(VOLUME_DATA) 1>/dev/null 2>/dev/null ; then docker volume rm $(VOLUME_DATA); fi
 
 clean-postgresql:
-	if docker container inspect $(CONTAINER_POST) 1>/dev/null 2>/dev/null ; then docker container rm $(CONTAINER_POST); fi
+	@if docker container inspect $(CONTAINER_POST) 1>/dev/null 2>/dev/null ; then docker container rm $(CONTAINER_POST); fi
 
 clean-front:
-	if docker container inspect $(CONTAINER_FRONT) 1>/dev/null 2>/dev/null ; then docker container rm $(CONTAINER_FRONT); fi
+	@if docker container inspect $(CONTAINER_FRONT) 1>/dev/null 2>/dev/null ; then docker container rm $(CONTAINER_FRONT); fi
 
 clean-back:
-	if docker container inspect $(CONTAINER_BACK) 1>/dev/null 2>/dev/null ; then docker container rm $(CONTAINER_BACK); fi
+	@if docker container inspect $(CONTAINER_BACK) 1>/dev/null 2>/dev/null ; then docker container rm $(CONTAINER_BACK); fi
 
 .PHONY: env
 
