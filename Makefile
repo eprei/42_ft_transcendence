@@ -41,6 +41,14 @@ clean-front:
 clean-back:
 	@if docker container inspect $(CONTAINER_BACK) 1>/dev/null 2>/dev/null ; then docker container rm $(CONTAINER_BACK); fi
 
+kill-your-work:
+	docker container prune -f
+	docker image prune -a -f
+	docker volume prune -f
+	rm -rf ./frontend/node_modules
+	rm -rf ./backend/node_modules
+	rm -rf ./backend/dist
+
 .PHONY: env
 
 # Colors
