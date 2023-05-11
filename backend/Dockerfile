@@ -2,10 +2,8 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-COPY . .
+RUN mkdir /script
 
-RUN npm install
+COPY entrypoint.sh /script
 
-RUN npm run build
-
-CMD ["npm", "run", "start:dev"]
+CMD ["sh", "/script/entrypoint.sh"]
