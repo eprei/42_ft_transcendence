@@ -43,15 +43,15 @@ NestJS <-le-> PostgreSQL
 
 ==== Functionalities:
 
-- Login with the intranet OAuth system 42
+* Login with the intranet OAuth system 42
 
 ==== Technical requirements:
 
-- Communication with OAuth 42
+* Communication with OAuth 42
 
 ==== Graphical requirements:
 
-- Background, login button 
+* Background, login button 
 
 === Page 2: Compte utilisateur
 
@@ -59,50 +59,60 @@ NestJS <-le-> PostgreSQL
 
 ==== Functionalities:
 
-- You can choose a (unique) username to be displayed on the site. We start with the default name taken from OAuth 42 (?)
-- You can upload an avatar. If you don't, it defaults to your 42 profile picture (?)
-- You can enable two-factor authentication, 2FA (Google Authenticator or send sms to mobile phone)
-- Add other users as friends and view real time status (online, offline, playing, etc.)
+* You can choose a (unique) username to be displayed on the site. We start with the default name taken from OAuth 42 (?)
+* You can upload an avatar. If you don't, it defaults to your 42 profile picture (?)
+* You can enable two-factor authentication, 2FA (Google Authenticator or send sms to mobile phone)
+* Add other users as friends and view real time status (online, offline, playing, etc.)
 
 ==== Technical needs:
 
-- Get via OAuth 42 the photo and name and assign them as default values to AVATAR and USERNAME
-- Username, verify that it does not exist as it has to be unique
-- Be able to upload a photo as avatar
-- Integration of 2FA
-- Get user statistics
+* Get via OAuth 42 the photo and name and assign them as default values to AVATAR and USERNAME
+* Username, verify that it does not exist as it has to be unique
+* Be able to upload a photo as avatar
+* Integration of 2FA
+* Get user statistics
 
 ==== Graphical requirements:
 
-	- Profile window with data: USERNAME (editable), AVATAR (editable), 2FA (on / off)
-	- Statistics such as victories and defeats, rank and levels, achievements, etc
-	- Button to add friends and see their status
+* Profile window with data:
+** Username (editable)
+** Avatar (editable)
+** 2FA (on / off)
+* Statistics
+** Victories and defeats
+** Rank
+** Level
+** Achievements
+** Etc.
+* Button to add friends and see their status
 
 
 ==== 2.2 Match History
 
 ==== Functionalities:
 	
-- Display of history including 1 vs 1, levels and so on. Anyone who is logged in should be able to consult it
+* Display of history including 1 vs 1, levels and so on. Anyone who is logged in should be able to consult it
 
 ==== Technical requirements:	
 	
-- Get history
+* Get history
 
 ==== Graphical requirements:
 
-- Table with history
-
+* Table with history
 
 === Page 3: Chat
 
 ==== Functionalities :
 
-- Create channels (public, private or password protected)
-- Send direct messages to other users
-- Block other users
-- Invite other users to play pong
-- Access to other players' profiles
+* Create channels
+** public
+** private
+** password protected
+* Send direct messages to other users
+* Block other users
+* Invite other users to play pong
+* Access to other players' profiles
 
 ==== Technical requirements:
 
@@ -110,17 +120,17 @@ _To be completed..._
 	
 ==== Graphic requirements:
 	
-_Design made directly from the description of the subject to optimise time_.
+_Design made directly from the description of the subject to optimise time_
 
 === Page 4 - The game
 
 ==== Functionalities:
 
-- Launch the game of pong against another player
-- Matching system (waiting list)
-- Canvas with the game
-- Customisation options (we have to define which ones)
-- The game must be responsive
+* Launch the game of pong against another player
+* Matching system (waiting list)
+* Canvas with the game
+* Customisation options (we have to define which ones)
+* The game must be responsive
 
 ==== Technical needs:
 
@@ -128,10 +138,11 @@ _To be completed..._
 
 ==== Graphic needs:
 
-_Design made directly from the description of the subject to optimize time_.
+_Design made directly from the description of the subject to optimize time_
 
 === Floating element: menu bar
 
+. Logo (Just the 'PONG' word)
 . Profil 
 . Chat
 . The game
