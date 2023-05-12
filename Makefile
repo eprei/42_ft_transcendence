@@ -4,7 +4,7 @@ INDEX	=	docs/index.html
 
 CONTAINER_POST	=	our-postgresql
 CONTAINER_BACK	=	our-backend
-CONTAINER_FRONT	=	out-frontend
+CONTAINER_FRONT	=	our-frontend
 VOLUME_DATA		=	our-data
 
 start: env
