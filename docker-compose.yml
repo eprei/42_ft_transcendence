@@ -1,0 +1,48 @@
+version: '3.8'
+services:
+    backend:
+        container_name: our-backend
+        image: our-backend-image
+        build:
+            context: ./backend/
+        ports:
+            - '8080:3000'
+        volumes:
+            - ./backend/:/app
+        depends_on:
+            - postgres
+        env_file:
+            - ./env/nest.env
+        networks:
+            - appnet
+
+    frontend:
+        container_name: our-frontend
+        image: our-frontend-image
+        build:
+            context: ./frontend/
+        ports:
+            - '4040:5173'
+        volumes:
+            - ./frontend/:/app
+        stdin_open: true
+        tty: true
+
+    postgres:
+        container_name: our-postgresql
+        image: postgres:latest
+        ports:
+            - '6060:5432'
+        volumes:
+            - data:/var/lib/postgresql/data
+        env_file:
+            - './env/postgres.env'
+        networks:
+            - appnet
+
+volumes:
+    data:
+      name: our-data
+
+networks:
+    appnet:
