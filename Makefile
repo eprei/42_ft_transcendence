@@ -5,7 +5,7 @@ INDEX	=	docs/index.html
 CONTAINER_POST	=	our-postgresql
 CONTAINER_BACK	=	our-backend
 CONTAINER_FRONT	=	our-frontend
-VOLUME_DATA		=	our-data
+VOLUME_DATA		=	our-volume
 
 start: env
 	docker compose up
