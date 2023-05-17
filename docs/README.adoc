@@ -51,7 +51,9 @@ NestJS <-le-> PostgreSQL
 
 ==== Graphical requirements:
 
-* Background, login button 
+* Background, login button
+
+image::assets/Page1.1_Welcome.png[welcome preview]
 
 === Page 2: Compte utilisateur
 
@@ -86,20 +88,23 @@ NestJS <-le-> PostgreSQL
 ** Etc.
 * Button to add friends and see their status
 
+image::assets/Page2.1_Profile.png[profil preview]
 
 ==== 2.2 Match History
 
 ==== Functionalities:
-	
+
 * Display of history including 1 vs 1, levels and so on. Anyone who is logged in should be able to consult it
 
-==== Technical requirements:	
-	
+==== Technical requirements:
+
 * Get history
 
 ==== Graphical requirements:
 
 * Table with history
+
+image::assets/Page2.2_MatchHistory.png[match history preview]
 
 === Page 3: Chat
 
@@ -118,10 +123,12 @@ NestJS <-le-> PostgreSQL
 ==== Technical requirements:
 
 _To be completed..._
-	
+
 ==== Graphic requirements:
-	
+
 _Design made directly from the description of the subject to optimise time_
+
+image::assets/Page3_Chat.png[chat preview]
 
 === Page 4 - The game
 
@@ -141,43 +148,48 @@ _To be completed..._
 
 _Design made directly from the description of the subject to optimize time_
 
-=== Floating element: menu bar
+image::assets/Page4.1_GameLauncher.png[game preview]
+image::assets/Page4.2_TheGame.png[game preview]
+
+=== Navbar
 
 . Logo (Just the 'CosmicPong' word)
-. Profil 
+. Profil
 . Match History
 . Chat
 . The game
 . LogOut (?)
 . Logo 42Lausanne
 
+image::assets/Navbar.png[Navbar preview]
+
+=== Window scheme
 
 [plantuml, target=assets/design, format=svg, width=100%]
 ....
-rectangle sections/windows {
+rectangle {
 
 	object Page01
 	object Page02
 	object Page03
 	object Page04
-	object FloatingElement
 
 	object Welcome {
 		Login with the intranet OAuth system 42
 		Communication with OAuth 42
 	}
-	
+
 	object Profile {
 		Choose username
 		Choose/upload an avatar
 		Enable 2FA
 		Add users ass friends and view real time status
 	}
-	
+
 	object MatchHistory{
 		Display of history including 1 vs 1
 	}
-	
+
 	object Chat{
 		Create channels
 		Join channels
@@ -186,8 +198,8 @@ rectangle sections/windows {
 		Invite other users to play pong
 		Access to other players' profiles
 	}
-	
-	object MenuBar{
+
+	object Navbar{
 		CosmicPong (logo)
 		Profil
 		Match History
@@ -199,17 +211,23 @@ rectangle sections/windows {
 
 	object TheGame{
 		Launch the game of pong against another player
+		Customisation options (power-ups and maps)
 		Matching system (waiting list)
-		Canvas with the game
-		Customisation options (we have to define which ones)
+	}
+
+	object CanvasWithTheGame{
 		The game must be responsive
 	}
 
 	Page01 --> Welcome
 	Page02 --> Profile
+	Page02 --> Navbar
 	Profile --> MatchHistory
+	MatchHistory --> Profile
 	Page03 --> Chat
+	Page03 --> Navbar
 	Page04 --> TheGame
-	FloatingElement --> MenuBar
+	TheGame --> CanvasWithTheGame
+	Page04 --> Navbar
 }
 ....
