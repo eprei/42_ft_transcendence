@@ -19,6 +19,12 @@ env:
 		sh create-env.sh; \
 	fi
 
+cmd-back:
+	docker exec -it our-backend sh
+
+cmd-front:
+	docker exec -it our-frontend sh
+	
 doc:
 	@printf "$(YELLOW)Generating documentations..$(DEFAULT)\n"
 	@$(ADOC) $(DOCU) -o $(INDEX)
