@@ -24,7 +24,7 @@ cmd-back:
 
 cmd-front:
 	docker exec -it our-frontend sh
-	
+
 doc:
 	@printf "$(YELLOW)Generating documentations..$(DEFAULT)\n"
 	@$(ADOC) $(DOCU) -o $(INDEX)
