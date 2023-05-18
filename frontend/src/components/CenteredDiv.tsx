@@ -24,7 +24,6 @@ const CenteredDiv: React.FC = () => {
     return (
         <div className={styles.centeredDiv}>
             <UserForm></UserForm>
-            <UserList></UserList>
             <UserListDisplay users={userList}></UserListDisplay>
         </div>
     )

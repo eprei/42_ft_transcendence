@@ -2,6 +2,7 @@ import React from 'react'
 import styles from './UserListDisplay.module.css'
 import UserListItem from './UserListItem'
 import { Users } from '../types/users'
+import UserList from './UserList'
 
 interface UserListDisplayProps {
     users: Users
@@ -17,7 +18,12 @@ const UserListDisplay: React.FC<UserListDisplayProps> = ({ users }) => {
                 ))}
             </ul>
         )
-    return <div className={styles.container}>{listContent}</div>
+    return (
+        <div className={styles.container}>
+            <UserList></UserList>
+            <div>{listContent}</div>
+        </div>
+    )
 }
 
 export default UserListDisplay
