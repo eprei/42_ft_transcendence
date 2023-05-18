@@ -29,7 +29,6 @@ export class UsersService {
     }
 
     removeUser(id: string) {
-        console.log(id)
         this.users = this.users.filter((user) => user.id !== +id)
         return id
     }

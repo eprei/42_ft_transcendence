@@ -20,12 +20,9 @@ const UserListItem: React.FC<UserListItemProps> = ({ user }) => {
                     body: JSON.stringify(user),
                 }
             )
-
             if (!response.ok) {
                 throw new Error('Failed to delete user')
             }
-
-            console.log('User deleted successfully')
         } catch (error) {
             console.error(error)
         }
