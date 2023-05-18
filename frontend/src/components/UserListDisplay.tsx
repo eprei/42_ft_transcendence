@@ -2,25 +2,23 @@ import React from 'react'
 import styles from './UserListDisplay.module.css'
 import UserListItem from './UserListItem'
 import { Users } from '../types/users'
-import UserList from './UserList'
 
 interface UserListDisplayProps {
-    users: Users
+    userList: Users
 }
 
-const UserListDisplay: React.FC<UserListDisplayProps> = ({ users }) => {
+const UserListDisplay: React.FC<UserListDisplayProps> = ({ userList }) => {
     let listContent = <p className={styles.message}>No user found.</p>
-    if (users.length > 0)
+    if (userList.length > 0)
         listContent = (
             <ul className={styles.userList}>
-                {users.map((user) => (
+                {userList.map((user) => (
                     <UserListItem key={user.id} user={user} />
                 ))}
             </ul>
         )
     return (
         <div className={styles.container}>
-            <UserList></UserList>
             <div>{listContent}</div>
         </div>
     )

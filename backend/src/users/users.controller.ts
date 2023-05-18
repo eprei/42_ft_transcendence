@@ -24,4 +24,9 @@ export class UsersController {
     findAll() {
         return this.usersService.findAll()
     }
+
+    @Delete()
+    removeUser(@Body() createUserDto: CreateUserDto) {
+        return
+    }
 }

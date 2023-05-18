@@ -44,6 +44,10 @@ const UserForm: React.FC = () => {
         } catch (error) {
             console.error(error)
         }
+
+        setFirstName('')
+        setLastName('')
+        setAge('')
     }
 
     return (

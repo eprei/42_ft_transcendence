@@ -27,4 +27,12 @@ export class UsersService {
     findAll() {
         return this.users
     }
+
+    removeUser(createUserDto: CreateUserDto) {
+        console.log(createUserDto)
+        this.users.map((user) => {
+            return user.id != createUserDto.id
+        })
+        return createUserDto
+    }
 }

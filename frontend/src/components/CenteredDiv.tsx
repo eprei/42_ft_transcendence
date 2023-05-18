@@ -1,30 +1,33 @@
-import React from 'react'
+import * as React from 'react'
+import { useState } from 'react'
 import styles from './CenteredDiv.module.css'
 import UserForm from './UserForm'
-import UserList from './UserList'
 import UserListDisplay from './UserListDisplay'
 import { Users } from '../types/users'
+import GetUserBtn from './GetUserBtn'
 
-const userList: Users = [
-    {
-        id: 1,
-        firstName: 'John',
-        lastName: 'Doe',
-        age: 30,
-    },
-    {
-        id: 2,
-        firstName: 'Jane',
-        lastName: 'Smith',
-        age: 25,
-    },
-]
+let userList: Users = []
 
 const CenteredDiv: React.FC = () => {
+    const [users, setUsers] = useState(userList)
+
+    const handleGetUsers = async () => {
+        try {
+            const response = await fetch('http://localhost:8080/users')
+            if (!response.ok) {
+                throw new Error('Failed to fetch users')
+            }
+            const data = await response.json()
+            setUsers(data)
+        } catch (error) {
+            console.error(error)
+        }
+    }
     return (
         <div className={styles.centeredDiv}>
             <UserForm></UserForm>
-            <UserListDisplay users={userList}></UserListDisplay>
+            <GetUserBtn getUserHandler={handleGetUsers}></GetUserBtn>
+            <UserListDisplay userList={users}></UserListDisplay>
         </div>
     )
 }
