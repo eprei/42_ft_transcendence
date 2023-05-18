@@ -25,8 +25,9 @@ export class UsersController {
         return this.usersService.findAll()
     }
 
-    @Delete()
-    removeUser(@Body() createUserDto: CreateUserDto) {
-        return
+    @Delete(':id')
+    removeUser(@Param('id') id: string) {
+        console.log(id)
+        return this.usersService.removeUser(id)
     }
 }

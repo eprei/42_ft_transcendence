@@ -8,6 +8,7 @@ interface UserListItemProps {
 
 const UserListItem: React.FC<UserListItemProps> = ({ user }) => {
     const deleteUser = async () => {
+        console.log(user.id)
         try {
             const response = await fetch(
                 `http://localhost:8080/users/${user.id}`,
