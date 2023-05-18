@@ -62,7 +62,7 @@ image::assets/Page1.1_Welcome.png[welcome preview]
 ==== Functionalities:
 
 * You can choose a (unique) username to be displayed on the site. We start with the default name taken from OAuth 42 (?)
-* You can upload an avatar. If you don't, it defaults to your 42 profile picture (?)
+* You can upload an avatar. If you don't, it is by default to your 42 profile picture (?)
 * You can enable two-factor authentication, 2FA (Google Authenticator or send sms to mobile phone)
 * Add other users as friends and view real time status (online, offline, playing, etc.)
 
@@ -128,7 +128,7 @@ _To be completed..._
 
 _Design made directly from the description of the subject to optimise time_
 
-image::assets/Page3_Chat.png[chat preview]
+image::assets/Page3.1_Chat.png[chat preview]
 
 === Page 4 - The game
 
@@ -151,7 +151,7 @@ _Design made directly from the description of the subject to optimize time_
 image::assets/Page4.1_GameLauncher.png[game preview]
 image::assets/Page4.2_TheGame.png[game preview]
 
-=== Navbar
+=== Navigation bar
 
 . Logo (Just the 'CosmicPong' word)
 . Profil
@@ -169,10 +169,10 @@ image::assets/Navbar.png[Navbar preview]
 ....
 rectangle {
 
-	object Page01
-	object Page02
-	object Page03
-	object Page04
+	object "Page 1" as Page1
+	object "Page 2" as Page2
+	object "Page 3" as Page3
+	object "Page 4" as Page4
 
 	object Welcome {
 		Login with the intranet OAuth system 42
@@ -183,7 +183,8 @@ rectangle {
 		Choose username
 		Choose/upload an avatar
 		Enable 2FA
-		Add users ass friends and view real time status
+		Add users as friends
+		See the status of friends in real time
 	}
 
 	object MatchHistory{
@@ -219,15 +220,15 @@ rectangle {
 		The game must be responsive
 	}
 
-	Page01 --> Welcome
-	Page02 --> Profile
-	Page02 --> Navbar
+	Page1 --> Welcome
+	Page2 --> Profile
+	Page2 --> Navbar
 	Profile --> MatchHistory
 	MatchHistory --> Profile
-	Page03 --> Chat
-	Page03 --> Navbar
-	Page04 --> TheGame
+	Page3 --> Chat
+	Page3 --> Navbar
+	Page4 --> TheGame
 	TheGame --> CanvasWithTheGame
-	Page04 --> Navbar
+	Page4 --> Navbar
 }
 ....
