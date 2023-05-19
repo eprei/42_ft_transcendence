@@ -43,6 +43,10 @@ docdocker:
 
 clean-container: clean-postgresql clean-front clean-back
 
+clean-image:
+	docker image rm our-frontend-image
+	docker image rm our-backend-image
+
 clean-database:
 	@if docker volume inspect $(VOLUME_DATA) 1>/dev/null 2>/dev/null ; then docker volume rm $(VOLUME_DATA); fi
 
