@@ -1,6 +1,6 @@
 = Transcendence
 :nofooter:
-
+:toc: left
 
 == Docker environment for development
 
@@ -130,7 +130,7 @@ _Design made directly from the description of the subject to optimise time_
 
 image::assets/Page3.1_Chat.png[chat preview]
 
-=== Page 4 - The game
+=== Page 4: The game
 
 ==== Functionalities:
 
@@ -187,7 +187,7 @@ rectangle {
 		See the status of friends in real time
 	}
 
-	object MatchHistory{
+	object "Match history" as MatchHistory{
 		Display of history including 1 vs 1
 	}
 
@@ -200,7 +200,7 @@ rectangle {
 		Access to other players' profiles
 	}
 
-	object Navbar{
+	object "Navigation bar" as Navbar{
 		CosmicPong (logo)
 		Profil
 		Match History
@@ -210,13 +210,13 @@ rectangle {
 		42Lausanne (logo)
 	}
 
-	object TheGame{
+	object "The game" as TheGame {
 		Launch the game of pong against another player
 		Customisation options (power-ups and maps)
 		Matching system (waiting list)
 	}
 
-	object CanvasWithTheGame{
+	object "Canvas with the game" as CanvasWithTheGame{
 		The game must be responsive
 	}
 
