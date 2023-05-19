@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.18">
+<meta name="generator" content="Asciidoctor 2.0.20">
 <title>Transcendence</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -208,13 +208,10 @@ table.tableblock.fit-content>caption.title{white-space:nowrap;width:0}
 .admonitionblock>table td.content{padding-left:1.125em;padding-right:1.25em;border-left:1px solid #dddddf;color:rgba(0,0,0,.6);word-wrap:anywhere}
 .admonitionblock>table td.content>:last-child>:last-child{margin-bottom:0}
 .exampleblock>.content{border:1px solid #e6e6e6;margin-bottom:1.25em;padding:1.25em;background:#fff;border-radius:4px}
-.exampleblock>.content>:first-child{margin-top:0}
-.exampleblock>.content>:last-child{margin-bottom:0}
 .sidebarblock{border:1px solid #dbdbd6;margin-bottom:1.25em;padding:1.25em;background:#f3f3f2;border-radius:4px}
-.sidebarblock>:first-child{margin-top:0}
-.sidebarblock>:last-child{margin-bottom:0}
 .sidebarblock>.content>.title{color:#7a2518;margin-top:0;text-align:center}
-.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
+.exampleblock>.content>:first-child,.sidebarblock>.content>:first-child{margin-top:0}
+.exampleblock>.content>:last-child,.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
 .literalblock pre,.listingblock>.content>pre{border-radius:4px;overflow-x:auto;padding:1em;font-size:.8125em}
 @media screen and (min-width:768px){.literalblock pre,.listingblock>.content>pre{font-size:.90625em}}
 @media screen and (min-width:1280px){.literalblock pre,.listingblock>.content>pre{font-size:1em}}
@@ -393,7 +390,7 @@ b.conum *{color:inherit!important}
 dt,th.tableblock,td.content,div.footnote{text-rendering:optimizeLegibility}
 h1,h2,p,td.content,span.alt,summary{letter-spacing:-.01em}
 p strong,td.content strong,div.footnote strong{letter-spacing:-.005em}
-p,blockquote,dt,td.content,span.alt,summary{font-size:1.0625rem}
+p,blockquote,dt,td.content,td.hdlist1,span.alt,summary{font-size:1.0625rem}
 p{margin-bottom:1.25rem}
 .sidebarblock p,.sidebarblock dt,.sidebarblock td.content,p.tableblock{font-size:1em}
 .exampleblock>.content{background:#fffef7;border-color:#e0e0dc;box-shadow:0 1px 4px #e0e0dc}
@@ -436,9 +433,25 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
 </head>
-<body class="article">
+<body class="article toc2 toc-left">
 <div id="header">
 <h1>Transcendence</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_docker_environment_for_development">Docker environment for development</a></li>
+<li><a href="#_project_overview">Project overview</a>
+<ul class="sectlevel2">
+<li><a href="#_page_1_welcome">Page 1: Welcome</a></li>
+<li><a href="#_page_2_compte_utilisateur">Page 2: Compte utilisateur</a></li>
+<li><a href="#_page_3_chat">Page 3: Chat</a></li>
+<li><a href="#_page_4_the_game">Page 4: The game</a></li>
+<li><a href="#_navigation_bar">Navigation bar</a></li>
+<li><a href="#_window_scheme">Window scheme</a></li>
+</ul>
+</li>
+</ul>
+</div>
 </div>
 <div id="content">
 <div class="sect1">
@@ -452,6 +465,335 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="imageblock">
 <div class="content">
 <img src="assets/docker.svg" alt="docker" width="100%" height="421">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_project_overview">Project overview</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_page_1_welcome">Page 1: Welcome</h3>
+<div class="sect3">
+<h4 id="_functionalities">Functionalities:</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Login with the intranet OAuth system 42</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_technical_requirements">Technical requirements:</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Communication with OAuth 42</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_graphical_requirements">Graphical requirements:</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Background, login button</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="assets/Page1.1_Welcome.png" alt="welcome preview">
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_page_2_compte_utilisateur">Page 2: Compte utilisateur</h3>
+<div class="sect3">
+<h4 id="_2_1_profile">2.1 Profile</h4>
+
+</div>
+<div class="sect3">
+<h4 id="_functionalities_2">Functionalities:</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>You can choose a (unique) username to be displayed on the site. We start with the default name taken from OAuth 42 (?)</p>
+</li>
+<li>
+<p>You can upload an avatar. If you don&#8217;t, it is by default to your 42 profile picture (?)</p>
+</li>
+<li>
+<p>You can enable two-factor authentication, 2FA (Google Authenticator or send sms to mobile phone)</p>
+</li>
+<li>
+<p>Add other users as friends and view real time status (online, offline, playing, etc.)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_technical_needs">Technical needs:</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Get via OAuth 42 the photo and name and assign them as default values to AVATAR and USERNAME</p>
+</li>
+<li>
+<p>Username, verify that it does not exist as it has to be unique</p>
+</li>
+<li>
+<p>Be able to upload a photo as avatar</p>
+</li>
+<li>
+<p>Integration of 2FA</p>
+</li>
+<li>
+<p>Get user statistics</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_graphical_requirements_2">Graphical requirements:</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Profile window with data:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Username (editable)</p>
+</li>
+<li>
+<p>Avatar (editable)</p>
+</li>
+<li>
+<p>2FA (on / off)</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Statistics</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Victories and defeats</p>
+</li>
+<li>
+<p>Rank</p>
+</li>
+<li>
+<p>Level</p>
+</li>
+<li>
+<p>Achievements</p>
+</li>
+<li>
+<p>Etc.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Button to add friends and see their status</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="assets/Page2.1_Profile.png" alt="profil preview">
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_2_2_match_history">2.2 Match History</h4>
+
+</div>
+<div class="sect3">
+<h4 id="_functionalities_3">Functionalities:</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Display of history including 1 vs 1, levels and so on. Anyone who is logged in should be able to consult it</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_technical_requirements_2">Technical requirements:</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Get history</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_graphical_requirements_3">Graphical requirements:</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Table with history</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="assets/Page2.2_MatchHistory.png" alt="match history preview">
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_page_3_chat">Page 3: Chat</h3>
+<div class="sect3">
+<h4 id="_functionalities_4">Functionalities :</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Create channels</p>
+<div class="ulist">
+<ul>
+<li>
+<p>public</p>
+</li>
+<li>
+<p>private</p>
+</li>
+<li>
+<p>password protected</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Join a channel (not requested by the subject but it is logical to add it)</p>
+</li>
+<li>
+<p>Send direct messages to other users</p>
+</li>
+<li>
+<p>Block other users</p>
+</li>
+<li>
+<p>Invite other users to play pong</p>
+</li>
+<li>
+<p>Access to other players' profiles</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_technical_requirements_3">Technical requirements:</h4>
+<div class="paragraph">
+<p><em>To be completed&#8230;&#8203;</em></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_graphic_requirements">Graphic requirements:</h4>
+<div class="paragraph">
+<p><em>Design made directly from the description of the subject to optimise time</em></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="assets/Page3.1_Chat.png" alt="chat preview">
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_page_4_the_game">Page 4: The game</h3>
+<div class="sect3">
+<h4 id="_functionalities_5">Functionalities:</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Launch the game of pong against another player</p>
+</li>
+<li>
+<p>Matching system (waiting list)</p>
+</li>
+<li>
+<p>Canvas with the game</p>
+</li>
+<li>
+<p>Customisation options (we have to define which ones)</p>
+</li>
+<li>
+<p>The game must be responsive</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_technical_needs_2">Technical needs:</h4>
+<div class="paragraph">
+<p><em>To be completed&#8230;&#8203;</em></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_graphic_needs">Graphic needs:</h4>
+<div class="paragraph">
+<p><em>Design made directly from the description of the subject to optimize time</em></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="assets/Page4.1_GameLauncher.png" alt="game preview">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="assets/Page4.2_TheGame.png" alt="game preview">
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_navigation_bar">Navigation bar</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Logo (Just the 'CosmicPong' word)</p>
+</li>
+<li>
+<p>Profil</p>
+</li>
+<li>
+<p>Match History</p>
+</li>
+<li>
+<p>Chat</p>
+</li>
+<li>
+<p>The game</p>
+</li>
+<li>
+<p>LogOut (?)</p>
+</li>
+<li>
+<p>Logo 42Lausanne</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="assets/Navbar.png" alt="Navbar preview">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_window_scheme">Window scheme</h3>
+<div class="imageblock">
+<div class="content">
+<img src="assets/design.svg" alt="design" width="100%" height="388">
+</div>
 </div>
 </div>
 </div>
