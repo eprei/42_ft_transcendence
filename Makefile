@@ -22,7 +22,7 @@ env:
 format:
 	docker run \
 	--rm \
-	--volume $(shell pwd):/app tgrivel/prettier prettier \
+	--volume $(shell pwd):/app tgrivel/prettier \
 	--write {backend,frontend} \
 	--config .prettierrc \
 	--ignore-path .prettierignore
