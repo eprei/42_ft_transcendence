@@ -19,6 +19,14 @@ env:
 		sh create-env.sh; \
 	fi
 
+format:
+	docker run \
+	--rm \
+	--volume $(shell pwd):/work \
+	tmknom/prettier prettier \
+	--write {backend/,frontend/} \
+	--config .prettierrc
+
 cmd-back:
 	docker exec -it our-backend sh
 
