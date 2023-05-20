@@ -22,10 +22,10 @@ env:
 format:
 	docker run \
 	--rm \
-	--volume $(shell pwd):/work \
-	tmknom/prettier prettier \
-	--write {backend/,frontend/} \
-	--config .prettierrc
+	--volume $(shell pwd):/app tgrivel/prettier prettier \
+	--write {backend,frontend} \
+	--config .prettierrc \
+	--ignore-path .prettierignore
 
 cmd-back:
 	docker exec -it our-backend sh
