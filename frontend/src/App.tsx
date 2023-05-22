@@ -1,14 +1,27 @@
-import './App.css'
-import { createBrowerRouter } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import Welcome from './pages/Wecome'
+import SignIn from './pages/SignIn'
+import Profile from './pages/Profile'
+import MatchHistory from './pages/MatchHistory'
+import GameLauncher from './pages/GameLauncher'
+import Game from './pages/Game'
+import Chat from './pages/Chat'
 
-createBrowerRouter([
-	{path: ''},
-	{}
+const router = createBrowserRouter([
+    { path: '/', element: <Welcome /> },
+    { path: '/signin', element: <SignIn /> },
+    { path: '/profile', element: <Profile /> },
+    { path: '/history', element: <MatchHistory /> },
+    { path: '/launcher', element: <GameLauncher /> },
+    { path: '/game', element: <Game /> },
+    { path: '/chat', element: <Chat /> },
 ])
 
 function App() {
     return (
-        <div></div>
+        <div>
+            <RouterProvider router={router} />
+        </div>
     )
 }
 
