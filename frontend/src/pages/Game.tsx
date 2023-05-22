@@ -1,5 +1,12 @@
+import Navbar from '../components/Navbar'
+
 const Game = () => {
-	return ( <h1>The Game</h1> );
+    return (
+        <>
+            <Navbar></Navbar>
+            <h1>The Game</h1>{' '}
+        </>
+    )
 }
- 
-export default Game;
+
+export default Game

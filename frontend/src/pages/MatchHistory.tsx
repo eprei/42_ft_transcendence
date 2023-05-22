@@ -1,5 +1,12 @@
+import Navbar from '../components/Navbar'
+
 const MatchHistory = () => {
-	return ( <h1>Match History</h1> );
+    return (
+        <>
+            <Navbar></Navbar>
+            <h1>Match History</h1>{' '}
+        </>
+    )
 }
- 
-export default MatchHistory;
+
+export default MatchHistory
