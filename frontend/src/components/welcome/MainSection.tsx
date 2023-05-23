@@ -1,16 +1,17 @@
-import styles from "./MainSection.module.css"
+import styles from './MainSection.module.css'
+import WelcomeBtn from './WelcomeBtn'
 
 const MainSection = () => {
-	return (
+    return (
         <div className={styles.container}>
-            <h1>Cosmic Pong</h1>
+            <h1 className={styles.title}>Cosmic Pong</h1>
             <p className={styles.p}>
                 The coolest way to play pong and test our skills as developers
                 at the same time
             </p>
-            <button>Sign in</button>
+            <WelcomeBtn></WelcomeBtn>
         </div>
     )
 }
- 
-export default MainSection;
+
+export default MainSection

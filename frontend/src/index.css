@@ -1,6 +1,22 @@
 :root {
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     line-height: 20px;
+    color-scheme: light dark;
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #242424;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+
+	--color-black : #1B2223;
+	--color-dark-green : #027368;
+	--color-mid-green : #04BFAD;
+	--color-light-green : #73D9CF;
+	--color-white : #F4FEFD;
+	--color-purple : #AA6EC9;
 }
 
 html {
@@ -22,11 +38,9 @@ ul {
     padding: 0;
 }
 
-
 body {
     display: flex;
     flex-direction: column;
-    text-align: center;
     min-width: 320px;
     min-height: 100vh;
     background-image: url('../public/space.webp');

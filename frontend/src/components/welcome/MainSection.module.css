@@ -1,9 +1,19 @@
 .container {
-	min-height: 15rem;
-	min-width: 15rem;
-	background-color: #fff;
+    margin-top: 20rem;
+    margin-left: 10%;
+    min-height: 15rem;
+    max-width: 25rem;
+    padding: 2rem;
+    border-radius: 20px;
+}
+
+.title {
+    margin-bottom: 2rem;
+    text-align: left;
 }
 
 .p {
-	color: #fff;
+    color: var(--color-white);
+    text-align: left;
+	margin-bottom: 3rem;
 }

@@ -21,6 +21,7 @@ ul {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
+	list-style: none;
 }
 
 img {
@@ -31,11 +32,11 @@ img {
 }
 
 a.current {
-    color: #027368;
+    color: var(--color-dark-green);
 }
 
 a {
-    color: #fff;
+    color: var(--color-white);
     font-family: Inter;
     font-size: 20px;
     font-weight: 600;
