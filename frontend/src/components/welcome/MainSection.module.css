@@ -1,0 +1,9 @@
+.container {
+	min-height: 15rem;
+	min-width: 15rem;
+	background-color: #fff;
+}
+
+.p {
+	color: #fff;
+}

@@ -1,5 +1,7 @@
+import MainSection from "../components/welcome/MainSection"
+
 const Welcome = () => {
-    return <h1>CosmicPong</h1>
+    return <MainSection></MainSection>
 }
 
 export default Welcome
