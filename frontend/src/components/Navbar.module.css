@@ -23,11 +23,11 @@ ul {
     justify-content: space-evenly;
 }
 
-.logo {
-    color: #fff;
-    font-size: 45px;
-    position: absolute;
-    right: 5rem;
+img {
+	max-width: 55px;
+	position: absolute;
+	right: 3rem;
+	top : 22px;
 }
 
 a.current {

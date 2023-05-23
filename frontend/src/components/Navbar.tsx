@@ -71,7 +71,7 @@ const Navbar = () => {
                     </ul>
                 </div>
                 <div className={styles.containers}>
-                    <h1 className={styles.logo}>42</h1>
+                    <img src="../../public/42.svg" alt="42 logo" />
                 </div>
             </nav>
         </header>
