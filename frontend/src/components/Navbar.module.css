@@ -23,16 +23,18 @@ ul {
     justify-content: space-evenly;
 }
 
-li {
-    list-style: none;
-    color: #ffff;
+.logo {
+    color: #fff;
+    font-size: 45px;
+    position: absolute;
+    right: 5rem;
+}
+
+a.current {
+    color: #027368;
 }
 
 a {
-    text-decoration: none;
-}
-
-.links {
     color: #fff;
     font-family: Inter;
     font-size: 20px;
@@ -40,11 +42,6 @@ a {
     line-height: 20px;
     letter-spacing: 0px;
     text-align: left;
-}
-
-.logo {
-    color: #fff;
-    font-size: 45px;
-    position: absolute;
-    right: 5rem;
+    padding-bottom: 5px;
+    text-decoration: none;
 }
