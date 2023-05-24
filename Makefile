@@ -19,6 +19,14 @@ env:
 		sh create-env.sh; \
 	fi
 
+format:
+	docker run \
+	--rm \
+	--volume $(shell pwd):/app tgrivel/prettier \
+	--write {backend,frontend} \
+	--config .prettierrc \
+	--ignore-path .prettierignore
+
 cmd-back:
 	docker exec -it our-backend sh
 
