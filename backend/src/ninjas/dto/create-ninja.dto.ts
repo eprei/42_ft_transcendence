@@ -1,3 +1,3 @@
 export class CreateNinjaDto {
-	name: string;
+    name: string
 }

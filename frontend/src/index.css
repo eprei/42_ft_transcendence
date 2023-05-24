@@ -11,12 +11,12 @@
     -moz-osx-font-smoothing: grayscale;
     -webkit-text-size-adjust: 100%;
 
-	--color-black : #1B2223;
-	--color-dark-green : #027368;
-	--color-mid-green : #04BFAD;
-	--color-light-green : #73D9CF;
-	--color-white : #F4FEFD;
-	--color-purple : #AA6EC9;
+    --color-black: #1b2223;
+    --color-dark-green: #027368;
+    --color-mid-green: #04bfad;
+    --color-light-green: #73d9cf;
+    --color-white: #f4fefd;
+    --color-purple: #aa6ec9;
 }
 
 html {

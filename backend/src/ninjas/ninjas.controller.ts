@@ -6,7 +6,7 @@ import {
     Delete,
     Param,
     Query,
-	Body
+    Body,
 } from '@nestjs/common'
 import { CreateNinjaDto } from './dto/create-ninja.dto'
 import { UpdateNinjaDto } from './dto/update-ninja.dto'
@@ -18,7 +18,7 @@ export class NinjasController {
 
     @Get()
     getNinjas(@Query('weapon') weapon: 'stars' | 'nunchucks') {
-        return this.ninjasService.getNinjas(weapon);
+        return this.ninjasService.getNinjas(weapon)
     }
 
     @Get(':id')

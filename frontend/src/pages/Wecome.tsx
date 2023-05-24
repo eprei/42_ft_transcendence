@@ -1,4 +1,4 @@
-import MainSection from "../components/welcome/MainSection"
+import MainSection from '../components/welcome/MainSection'
 
 const Welcome = () => {
     return <MainSection></MainSection>

@@ -21,14 +21,14 @@ ul {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
-	list-style: none;
+    list-style: none;
 }
 
 img {
-	max-width: 55px;
-	position: absolute;
-	right: 3rem;
-	top : 22px;
+    max-width: 55px;
+    position: absolute;
+    right: 3rem;
+    top: 22px;
 }
 
 a.current {
