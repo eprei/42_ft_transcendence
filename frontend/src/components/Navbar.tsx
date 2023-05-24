@@ -1,6 +1,30 @@
 import { Link, useLocation } from 'react-router-dom'
 import styles from './Navbar.module.css'
 
+interface LinkProps {
+    location_path: string
+    linkName: string
+}
+
+function OurLinkButton(props: LinkProps) {
+    const location = useLocation()
+
+    return (
+        <>
+            <Link
+                to={props.location_path}
+                className={
+                    location.pathname === props.location_path
+                        ? styles.current
+                        : ''
+                }
+            >
+                {props.linkName}
+            </Link>
+        </>
+    )
+}
+
 const Navbar = () => {
     const location = useLocation()
     return (
@@ -9,64 +33,34 @@ const Navbar = () => {
                 <div className={styles.containers}>
                     <ul className={styles.ul}>
                         <li className={styles.li}>
-                            <Link
-                                to="/"
-                                className={
-                                    location.pathname === '/'
-                                        ? styles.current
-                                        : ''
-                                }
-                            >
-                                CosmicPong
-                            </Link>
+                            <OurLinkButton
+                                location_path="/"
+                                linkName="CosmicPong"
+                            />
                         </li>
                         <li className={styles.li}>
-                            <Link
-                                to="/profile"
-                                className={
-                                    location.pathname === '/profile'
-                                        ? styles.current
-                                        : ''
-                                }
-                            >
-                                Profile
-                            </Link>
+                            <OurLinkButton
+                                location_path="/profile"
+                                linkName="Profile"
+                            />
                         </li>
                         <li className={styles.li}>
-                            <Link
-                                to="/history"
-                                className={
-                                    location.pathname === '/history'
-                                        ? styles.current
-                                        : ''
-                                }
-                            >
-                                History
-                            </Link>
+                            <OurLinkButton
+                                location_path="/history"
+                                linkName="Match history"
+                            />
                         </li>
                         <li className={styles.li}>
-                            <Link
-                                to="/chat"
-                                className={
-                                    location.pathname === '/chat'
-                                        ? styles.current
-                                        : ''
-                                }
-                            >
-                                Chat
-                            </Link>
+                            <OurLinkButton
+                                location_path="/chat"
+                                linkName="Chat"
+                            />
                         </li>
                         <li className={styles.li}>
-                            <Link
-                                to="/game"
-                                className={
-                                    location.pathname === '/game'
-                                        ? styles.current
-                                        : ''
-                                }
-                            >
-                                Game
-                            </Link>
+                            <OurLinkButton
+                                location_path="/game"
+                                linkName="Game"
+                            />
                         </li>
                     </ul>
                 </div>
