@@ -3,8 +3,7 @@ import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { ConfigModule } from '@nestjs/config'
-import { UsersModule } from './users/users.module'
-import { NinjasModule } from './ninjas/ninjas.module'
+
 
 @Module({
     imports: [
@@ -15,8 +14,6 @@ import { NinjasModule } from './ninjas/ninjas.module'
             autoLoadEntities: true,
             synchronize: true,
         }),
-        UsersModule,
-        NinjasModule,
     ],
     controllers: [AppController],
     providers: [AppService],
