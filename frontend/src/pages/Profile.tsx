@@ -1,6 +1,6 @@
 import Navbar from '../components/navigation/Navbar'
 
-const Profile = () => {
+const Profile: React.FC = () => {
     return (
         <>
             <Navbar></Navbar>

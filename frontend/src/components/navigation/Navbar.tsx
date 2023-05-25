@@ -1,7 +1,7 @@
 import styles from './Navbar.module.css'
 import NavLink from './NavLink'
 
-const Navbar = () => {
+const Navbar: React.FC = () => {
     return (
         <header>
             <nav className={styles.nav}>

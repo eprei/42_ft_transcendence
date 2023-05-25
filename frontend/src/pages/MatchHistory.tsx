@@ -1,6 +1,6 @@
 import Navbar from '../components/navigation/Navbar'
 
-const MatchHistory = () => {
+const MatchHistory: React.FC = () => {
     return (
         <>
             <Navbar></Navbar>

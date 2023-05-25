@@ -1,6 +1,6 @@
 import MainSection from '../components/welcome/MainSection'
 
-const Welcome = () => {
+const Welcome: React.FC = () => {
     return <MainSection></MainSection>
 }
 

@@ -1,6 +1,6 @@
 import Navbar from '../components/navigation/Navbar'
 
-const Chat = () => {
+const Chat: React.FC = () => {
     return (
         <>
             <Navbar></Navbar>

@@ -1,6 +1,6 @@
 import Navbar from '../components/navigation/Navbar'
 
-const Game = () => {
+const Game: React.FC = () => {
     return (
         <>
             <Navbar></Navbar>
