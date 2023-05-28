@@ -1,4 +1,4 @@
-const GameLauncher: React.FC = () => {
+const GameLauncher = () => {
     return <h1>Game Launcher</h1>
 }
 

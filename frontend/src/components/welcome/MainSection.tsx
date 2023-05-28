@@ -1,7 +1,7 @@
 import styles from './MainSection.module.css'
 import WelcomeBtn from './WelcomeBtn'
 
-const MainSection: React.FC = () => {
+const MainSection = () => {
     return (
         <div className={styles.container}>
             <h1 className={styles.title}>Cosmic Pong</h1>
