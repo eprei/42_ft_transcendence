@@ -6,20 +6,20 @@ interface LinkProps {
     linkName: string
 }
 
-function NavLink(props: LinkProps) {
+function NavLink({location_path, linkName}: LinkProps) {
     const location = useLocation()
 
     return (
         <>
             <Link
-                to={props.location_path}
+                to={location_path}
                 className={
-                    location.pathname === props.location_path
+                    location.pathname === location_path
                         ? styles.current
                         : ''
                 }
             >
-                {props.linkName}
+                {linkName}
             </Link>
         </>
     )
