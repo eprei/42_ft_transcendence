@@ -43,7 +43,7 @@ body {
     flex-direction: column;
     min-width: 320px;
     min-height: 100vh;
-    background-image: url('../public/space.background.webp');
+    background-image: url('/space.background.webp');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;

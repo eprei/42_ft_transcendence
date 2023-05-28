@@ -17,14 +17,14 @@
     align-items: center;
 }
 
-ul {
+.nav ul {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
     list-style: none;
 }
 
-img {
+.nav img {
     max-width: 55px;
     position: absolute;
     right: 3rem;
