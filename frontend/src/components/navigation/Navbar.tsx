@@ -1,5 +1,6 @@
 import styles from './Navbar.module.css'
 import NavLink from './NavLink'
+import Logo from '../../assets/42.svg'
 
 const Navbar = () => {
     return (
@@ -31,7 +32,7 @@ const Navbar = () => {
                     </ul>
                 </div>
                 <div className={styles.containers}>
-                    <img src="/42.svg" alt="42 logo" />
+                    <img src={Logo} alt="42 logo" />
                 </div>
             </nav>
         </header>
