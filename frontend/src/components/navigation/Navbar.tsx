@@ -8,25 +8,25 @@ const Navbar = () => {
                 <div className={styles.containers}>
                     <ul>
                         <li>
-                            <NavLink location_path="/" linkName="CosmicPong" />
+                            <NavLink locationPath="/" linkName="CosmicPong" />
                         </li>
                         <li>
                             <NavLink
-                                location_path="/profile"
+                                locationPath="/profile"
                                 linkName="Profile"
                             />
                         </li>
                         <li>
                             <NavLink
-                                location_path="/history"
+                                locationPath="/history"
                                 linkName="Match history"
                             />
                         </li>
                         <li>
-                            <NavLink location_path="/chat" linkName="Chat" />
+                            <NavLink locationPath="/chat" linkName="Chat" />
                         </li>
                         <li>
-                            <NavLink location_path="/game" linkName="Game" />
+                            <NavLink locationPath="/game" linkName="Game" />
                         </li>
                     </ul>
                 </div>
