@@ -4,7 +4,7 @@ const Game = () => {
     return (
         <>
             <Navbar></Navbar>
-            <h1>The Game</h1>{' '}
+            <h1>The Game</h1>
         </>
     )
 }
