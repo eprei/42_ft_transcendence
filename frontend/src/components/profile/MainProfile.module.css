@@ -1,0 +1,73 @@
+.title {
+  position: absolute;
+  width: 104px;
+  height: 32px;
+  left: calc(50% - 104px/2 + 10px);
+  top: 47px;
+  
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-size: 32px;
+  line-height: 32px;
+  
+  /* identical to box height, or 100% */
+  text-align: center;
+  
+  /* #fff */
+  color:var(--color-white);
+}
+
+.p {
+    color: var(--color-white);
+    text-align: left;
+    margin-bottom: 3rem;
+}
+
+.boxBackground {
+  box-sizing: border-box;
+
+  position: absolute;
+  width: 706px;
+  height: 703px;
+  left: calc(50% - 706px/2 + 11px);
+  top: calc(50% - 703px/2);
+  
+  /* dark/BG */
+  background: #091522;
+  opacity: 0.7;
+  box-shadow: 0px -4px 16px #000000;
+  border-radius: 28px;
+}
+
+.leftSide {
+  position: absolute;
+  width: 335px;
+  height: 430px;
+  left: 385px;
+  top: 376px;
+}
+
+.friendList{
+  position: absolute;
+  width: 144px;
+  height: 377.35px;
+  left: 823px;
+  top: 375.52px;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Dos columnas de igual tamaño */
+  /* Puedes ajustar el tamaño de las columnas según tus necesidades */
+  position: absolute;
+  width: 784px;
+  height: 703px;
+  left: calc(50% - 784px/2 - 11px);
+  top: calc(50% - 703px/2 + 49.5px);
+}
+
+.column{
+  float: left;
+  width: 50%; /* Ancho del 50% para cada columna */
+}

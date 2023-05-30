@@ -1,10 +1,11 @@
 import Navbar from '../components/navigation/Navbar'
+import MainProfile from '../components/profile/MainProfile'
 
 const Profile = () => {
     return (
         <>
             <Navbar></Navbar>
-            <h1>Profile</h1>
+            <MainProfile></MainProfile>
         </>
     )
 }
