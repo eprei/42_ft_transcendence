@@ -1,0 +1,16 @@
+.btn {
+    margin-top: 0rem;
+    padding: 3px 3px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: var(--color-mid-green);
+}
+
+.btn:active {
+    background-color: var(--color-purple);
+}
