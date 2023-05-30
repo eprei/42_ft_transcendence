@@ -4,7 +4,7 @@ const MatchHistory = () => {
     return (
         <>
             <Navbar></Navbar>
-            <h1>Match History</h1>{' '}
+            <h1>Match History</h1>
         </>
     )
 }
