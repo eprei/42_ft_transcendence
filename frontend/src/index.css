@@ -17,6 +17,8 @@
     --color-light-green: #73d9cf;
     --color-white: #f4fefd;
     --color-purple: #aa6ec9;
+    --color-black-transparent: #091522a4;
+
 }
 
 html {
@@ -43,7 +45,7 @@ body {
     flex-direction: column;
     min-width: 320px;
     min-height: 100vh;
-    background-image: url('assets/space-background.webp');
+    background-image: url('assets/bg-nebula.png');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;

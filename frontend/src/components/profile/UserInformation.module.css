@@ -1,0 +1,19 @@
+.subtitle {
+    margin-top: 1rem;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 800;
+    font-size: 16px;
+    line-height: 18px;
+}
+
+.verticalList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .verticalList li {
+    margin-right: 10px;
+  }

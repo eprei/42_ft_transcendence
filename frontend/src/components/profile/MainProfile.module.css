@@ -1,73 +1,124 @@
-.title {
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+
   position: absolute;
-  width: 104px;
-  height: 32px;
-  left: calc(50% - 104px/2 + 10px);
-  top: 47px;
-  
+  width: 784px;
+  height: 703px;
+  left: calc(50% - 784px/2 - 11px);
+  top: 150px;
+
+  background: var(--color-black-transparent);
+  box-shadow: 0px -4px 16px #000000;
+  border-radius: 28px;
+}
+
+.title{
+  margin: 1rem;
+  padding: 1rem;
+
   font-family: 'Inter';
   font-style: normal;
   font-weight: 800;
   font-size: 32px;
   line-height: 32px;
-  
-  /* identical to box height, or 100% */
   text-align: center;
-  
-  /* #fff */
   color:var(--color-white);
-}
-
-.p {
-    color: var(--color-white);
-    text-align: left;
-    margin-bottom: 3rem;
-}
-
-.boxBackground {
-  box-sizing: border-box;
-
-  position: absolute;
-  width: 706px;
-  height: 703px;
-  left: calc(50% - 706px/2 + 11px);
-  top: calc(50% - 703px/2);
   
-  /* dark/BG */
-  background: #091522;
-  opacity: 0.7;
-  box-shadow: 0px -4px 16px #000000;
-  border-radius: 28px;
+  background: #3b10e6bd /* TO DELETE*/
 }
 
-.leftSide {
-  position: absolute;
-  width: 335px;
-  height: 430px;
-  left: 385px;
-  top: 376px;
-}
+.body{
+  flex-grow: 1;
 
-.friendList{
-  position: absolute;
-  width: 144px;
-  height: 377.35px;
-  left: 823px;
-  top: 375.52px;
-}
-
-.container {
-  display: grid;
-  grid-template-columns: 1fr 1fr; /* Dos columnas de igual tamaño */
-  /* Puedes ajustar el tamaño de las columnas según tus necesidades */
-  position: absolute;
+  margin: 1rem;
   width: 784px;
-  height: 703px;
-  left: calc(50% - 784px/2 - 11px);
-  top: calc(50% - 703px/2 + 49.5px);
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  background: #90163fbd /*TO DELETE*/
 }
 
-.column{
-  float: left;
-  width: 50%; /* Ancho del 50% para cada columna */
+.bodyLeftSide{
+  flex-grow: 1;
+
+  margin: 1em;
+  padding: 1rem;
+
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  align-content: space-around;
+  gap: 10em;
+  
+  background: #0e7437bd /*TO DELETE*/
+}
+
+.bodyRightSide{
+  margin: 1em;
+  padding: 1rem;
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  align-content: space-around;
+  gap: 10em;
+
+  background: #835211bd /*TO DELETE*/
+
+}
+
+.nameAndLevel{
+  /* margin: 3em; */
+  /* padding: 1rem; */
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  
+  background: #884511bd /*TO DELETE*/
+
+}
+
+.statistics{
+  /* margin: 3em; */
+  /* padding: 1rem; */
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  
+  background: #94180fbd /*TO DELETE*/
+
+}
+
+.matchHistory{
+  /* margin: 2em; */
+  /* padding: 1rem; */
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.friendsList{
+  /* margin: 2em; */
+  /* padding: 1rem; */
+
+  justify-content: flex-start;
+
+  background: #568811bd /* TO DELETE */
 }
