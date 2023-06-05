@@ -32,7 +32,9 @@ const Navbar = () => {
                     </ul>
                 </div>
                 <div className={styles.containers}>
-                    <img src={Logo} alt="42 logo" />
+                    <a href="https://42lausanne.ch/" target="_blank">
+                        <img src={Logo} alt="42 logo" />
+                    </a>
                 </div>
             </nav>
         </header>
