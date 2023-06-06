@@ -1,6 +1,6 @@
 import styles from './Navbar.module.css'
 import NavLink from './NavLink'
-import Logo from '../../assets/icon/icon-42.svg'
+import Logo from '../../assets/icon/42.svg'
 
 const Navbar = () => {
     return (

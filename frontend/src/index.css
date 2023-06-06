@@ -43,7 +43,7 @@ body {
     flex-direction: column;
     min-width: 320px;
     min-height: 100vh;
-    background-image: url('assets/bg/bg-nebula.png');
+    background-image: url('assets/bg/nebula.png');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
