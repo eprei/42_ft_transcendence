@@ -1,17 +1,18 @@
+.supracontainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .container {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
+    padding: 1rem;
 
-    position: absolute;
-    left: calc(50% - var(--box-width) / 2);
-    --box-width: 90%;
-    --box-height: 80%;
-    width: var(--box-width);
-    height: var(--box-height);
-    min-height: 408px;
-    min-width: 500px;
+    width: 90vw;
+    height: 80vh;
 
     background: var(--color-black-transparent);
     box-shadow: 0px -4px 16px var(--color-black);
@@ -68,14 +69,10 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-start;
 
     width: 40%;
     height: 100%;
 
     background: #835211bd TO DELETE;
-}
-
-.friendsList {
-    width: 100%;
 }

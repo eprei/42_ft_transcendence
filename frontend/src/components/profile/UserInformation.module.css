@@ -10,9 +10,6 @@
     width: var(--size-picture-profile);
     height: var(--size-picture-profile);
 
-    background: url(../../assets/img/profil-picture-placeholder.png);
-    background-size: cover;
-
     border: 1.5px solid var(--color-white);
     filter: drop-shadow(0px -4px 16px var(--color-black));
     border-radius: 50%;

@@ -8,27 +8,27 @@ import PicturePlaceHolder from '../../assets/img/profil-picture-placeholder.png'
 const MainProfile = () => {
     return (
         <div>
-            <div className={styles.container}>
-                <div className={styles.title}>Profile</div>
-                <div className={styles.body}>
-                    <div className={styles.bodyLeftSide}>
-                        <div>
-                            <UserInformation
-                                picture={PicturePlaceHolder}
-                                name="Name placeholder"
-                                level={42}
-                                TFA={true}
-                            />
+            <div className={styles.supracontainer}>
+                <div className={styles.container}>
+                    <div className={styles.title}>Profile</div>
+                    <div className={styles.body}>
+                        <div className={styles.bodyLeftSide}>
+                            <div>
+                                <UserInformation
+                                    picture={PicturePlaceHolder}
+                                    name="Name placeholder"
+                                    level={42}
+                                    TFA={true}
+                                />
+                            </div>
+                            <div>
+                                <Statistics />
+                            </div>
+                            <div>
+                                <SeeMatchHistoryBtn />
+                            </div>
                         </div>
-                        <div>
-                            <Statistics />
-                        </div>
-                        <div>
-                            <SeeMatchHistoryBtn />
-                        </div>
-                    </div>
-                    <div className={styles.bodyRightSide}>
-                        <div className={styles.friendsList}>
+                        <div className={styles.bodyRightSide}>
                             <FriendList />
                         </div>
                     </div>
