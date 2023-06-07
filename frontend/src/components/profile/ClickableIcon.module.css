@@ -5,12 +5,13 @@
     border: none;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    transition: transform 0.2s ease;
 }
 
 .btn:hover {
-    background-color: var(--color-mid-green);
+	transform: scale(1.5);
 }
 
 .btn:active {
-    background-color: var(--color-purple);
+    background-color: var(--color-mid-green);
 }
