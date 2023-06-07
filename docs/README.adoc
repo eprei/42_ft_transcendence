@@ -21,19 +21,23 @@ rectangle localhost {
 				port: <b>3000
 				framework: <b>NestJS
 			]
-			rectangle PostgreSQL {
-				circle "port 5432" as portin_postgre
-			}
+			rectangle PostgreSQL [
+				container name: <b>our-postgresql
+				port: <b>5432
+				framework: <b>PostgreSQL
+			]
 		}
-		rectangle React {
-			circle "port 5173" as portin_react
-		}
+		rectangle React [
+			container name: <b>our-frontend
+			port: <b>5173
+			framework: <b>React
+		]
 	}
 }
 
 NestJS -up-> portout_nest
-portin_react -up-> portout_react
-portin_postgre -up-> portout_postgre
+React -up-> portout_react
+PostgreSQL -up-> portout_postgre
 NestJS <-le-> PostgreSQL
 ....
 
