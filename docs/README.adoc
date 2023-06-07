@@ -15,7 +15,7 @@ rectangle localhost {
 	circle "port 4040" as portout_react
 
 	rectangle docker {
-		rectangle app-net {
+		cloud app-net {
 			rectangle NestJS [
 				container name: <b>our-backend
 				port: <b>3000
