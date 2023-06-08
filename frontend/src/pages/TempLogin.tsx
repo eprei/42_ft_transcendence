@@ -1,14 +1,31 @@
+import { useState } from 'react'
+
 import TempForm from '../components/tempLogin/TempForm'
 import TempPlayerList from '../components/tempLogin/TempPlayerList'
 import styles from './TempLogin.module.css'
 
-interface User {
+interface Player {
     login: string
     email: string
     avatarUrl: string
 }
 
-async function postData(data: User) {
+async function getUsers() {
+    try {
+        const response = await fetch('http://localhost:8080/api/player')
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch users')
+        }
+
+        const users = await response.json()
+        return users
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+async function postData(data: Player) {
     try {
         const response = await fetch('http://localhost:8080/api/player', {
             method: 'POST',
@@ -29,18 +46,27 @@ async function postData(data: User) {
     }
 }
 
-
 const TempLogin = () => {
-    const submitFormHandler = (params) => {
-        
+
+    const [players, setPlayers] = useState<Player[]>([])
+
+    const submitFormHandler = (user: Player) => {
         postData(user).then((responseData) => {
             console.log(responseData)
         })
     }
+
+    const getUsersHandler = () => {
+        getUsers().then((users) => {
+            setPlayers(users)
+            console.log(users)
+        })
+    }
+
     return (
         <div className={styles.container}>
-            <TempForm submitNewPlayer={submitFormHandler}></TempForm>
-            <TempPlayerList></TempPlayerList>
+            <TempForm submitNewPlayer={submitFormHandler} getPlayers={getUsersHandler}></TempForm>
+            <TempPlayerList getPlayers={getUsersHandler} players={players}></TempPlayerList>
         </div>
     )
 }

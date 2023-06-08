@@ -3,14 +3,16 @@ import { useState } from 'react'
 
 import styles from './TempForm.module.css'
 
-interface User {
+interface Player {
     login: string
     email: string
     avatarUrl: string
 }
 
 interface TempFormProps {
-    submitNewPlayer: (user: User) => void;
+    submitNewPlayer: (user: Player) => void;
+    getPlayers: () => void;
+
 }
 
 const TempForm = (props: TempFormProps) => {
@@ -92,7 +94,7 @@ const TempForm = (props: TempFormProps) => {
                 <button type="submit" className={styles.btn}>
                     Add User
                 </button>
-                <button type="submit" className={styles.btn}>
+                <button className={styles.btn} onClick={props.getPlayers}>
                     Get User
                 </button>
             </form>
