@@ -2,10 +2,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    min-width: 45rem;
 }
 
 .form {
-    min-width: 50%;
+    width:45vw;
     margin: 5rem;
     padding: 2rem;
     background-color: var(--color-dark-green);

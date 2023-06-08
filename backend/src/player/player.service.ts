@@ -16,7 +16,7 @@ export class PlayerService {
     }
 
     findAll() {
-        return `This action returns all player`
+        return this.playerRepository.find()
     }
 
     findOne(id: number) {

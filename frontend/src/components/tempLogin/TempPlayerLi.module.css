@@ -1,0 +1,8 @@
+.li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 2rem 4rem;
+    background-color: var(--color-dark-green);
+}
