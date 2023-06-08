@@ -2,14 +2,14 @@ import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Player } from 'src/typeorm/Player'
 import { CreatePlayerDto } from './dto/create-player.dto'
-// import { Repository } from '@nestjs/typeorm'
+import { Repository } from 'typeorm'
 
 @Injectable()
 export class PlayerService {
-    // constructor(
-    //   @InjectRepository(Player)
-    //   private readonly playerRepository: Repository<Player>,
-    // ) {}
+    constructor(
+        @InjectRepository(Player)
+        private readonly playerRepository: Repository<Player>
+    ) {}
     create(createPlayerDto: CreatePlayerDto) {
         return 'This action adds a new player'
     }
