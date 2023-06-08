@@ -4,6 +4,7 @@ import { AppService } from './app.service'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { ConfigModule } from '@nestjs/config'
 import { PlayerModule } from './player/player.module';
+import { Player } from './typeorm/Player'
 
 @Module({
     imports: [
@@ -13,6 +14,7 @@ import { PlayerModule } from './player/player.module';
             url: process.env.DATABASE_URL,
             autoLoadEntities: true,
             synchronize: true,
+            entities:[Player]
         }),
         PlayerModule,
     ],
