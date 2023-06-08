@@ -1,18 +1,11 @@
 import * as React from 'react'
 import { useState } from 'react'
-
+import { Player } from '../../types/Player'
 import styles from './TempForm.module.css'
 
-interface Player {
-    login: string
-    email: string
-    avatarUrl: string
-}
-
 interface TempFormProps {
-    submitNewPlayer: (user: Player) => void;
-    getPlayers: () => void;
-
+    submitNewPlayer: (user: Player) => void
+    getPlayers: () => void
 }
 
 const TempForm = (props: TempFormProps) => {
@@ -46,7 +39,7 @@ const TempForm = (props: TempFormProps) => {
                 email: enteredEmail,
                 avatarUrl: enteredPicUrl,
             }
-            props.submitNewPlayer(user);   
+            props.submitNewPlayer(user)
         }
         setEnteredName('')
         setEnteredEmail('')

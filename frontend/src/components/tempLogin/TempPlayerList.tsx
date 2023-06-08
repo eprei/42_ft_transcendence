@@ -1,12 +1,7 @@
 import { useEffect } from 'react'
 import TempPlayerLi from './TempPlayerLi'
 import styles from './TempPlayerList.module.css'
-
-interface Player {
-    login: string
-    email: string
-    avatarUrl: string
-}
+import { Player } from '../../types/Player'
 
 interface TempPlayerListProps {
     getPlayers: () => void

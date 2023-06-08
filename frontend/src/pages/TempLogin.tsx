@@ -1,14 +1,8 @@
 import { useState } from 'react'
-
+import { Player } from '../types/Player'
 import TempForm from '../components/tempLogin/TempForm'
 import TempPlayerList from '../components/tempLogin/TempPlayerList'
 import styles from './TempLogin.module.css'
-
-interface Player {
-    login: string
-    email: string
-    avatarUrl: string
-}
 
 async function getUsers() {
     try {
@@ -47,7 +41,6 @@ async function postData(data: Player) {
 }
 
 const TempLogin = () => {
-
     const [players, setPlayers] = useState<Player[]>([])
 
     const submitFormHandler = (user: Player) => {
@@ -65,8 +58,14 @@ const TempLogin = () => {
 
     return (
         <div className={styles.container}>
-            <TempForm submitNewPlayer={submitFormHandler} getPlayers={getUsersHandler}></TempForm>
-            <TempPlayerList getPlayers={getUsersHandler} players={players}></TempPlayerList>
+            <TempForm
+                submitNewPlayer={submitFormHandler}
+                getPlayers={getUsersHandler}
+            ></TempForm>
+            <TempPlayerList
+                getPlayers={getUsersHandler}
+                players={players}
+            ></TempPlayerList>
         </div>
     )
 }
