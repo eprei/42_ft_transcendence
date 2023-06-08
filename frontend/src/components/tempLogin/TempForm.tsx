@@ -9,28 +9,11 @@ interface User {
     avatarUrl: string
 }
 
-async function postData(data: User) {
-    try {
-        const response = await fetch('http://localhost:8080/api/player', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        })
-
-        if (!response.ok) {
-            throw new Error('Failed to make POST request')
-        }
-
-        const responseData = await response.json()
-        return responseData
-    } catch (error) {
-        console.error(error)
-    }
+interface TempFormProps {
+    submitNewPlayer: (user: User) => void;
 }
 
-const TempForm = () => {
+const TempForm = (props: TempFormProps) => {
     const [enteredName, setEnteredName] = useState('')
     const [enteredEmail, setEnteredEmail] = useState('')
     const [enteredPicUrl, setEnteredPicUrl] = useState('')
@@ -56,14 +39,12 @@ const TempForm = () => {
             enteredName.trim().length > 0 &&
             enteredPicUrl.trim().length > 0
         ) {
-            const user: User = {
+            const user = {
                 login: enteredName,
                 email: enteredEmail,
                 avatarUrl: enteredPicUrl,
             }
-            postData(user).then((responseData) => {
-                console.log(responseData)
-            })
+            props.submitNewPlayer(user);   
         }
         setEnteredName('')
         setEnteredEmail('')
@@ -109,7 +90,10 @@ const TempForm = () => {
                     />
                 </div>
                 <button type="submit" className={styles.btn}>
-                    Sign In
+                    Add User
+                </button>
+                <button type="submit" className={styles.btn}>
+                    Get User
                 </button>
             </form>
         </div>
