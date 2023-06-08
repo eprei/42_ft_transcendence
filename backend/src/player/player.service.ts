@@ -1,9 +1,16 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Player } from 'src/typeorm/Player';
 import { CreatePlayerDto } from './dto/create-player.dto';
-import { UpdatePlayerDto } from './dto/update-player.dto';
+import { Repository } from '@nestjs/typeorm'
 
 @Injectable()
 export class PlayerService {
+
+  constructor(
+    @InjectRepository(Player)
+    private readonly playerRepository: Repository<Player>,
+  ) {}
   create(createPlayerDto: CreatePlayerDto) {
     return 'This action adds a new player';
   }
@@ -14,10 +21,6 @@ export class PlayerService {
 
   findOne(id: number) {
     return `This action returns a #${id} player`;
-  }
-
-  update(id: number, updatePlayerDto: UpdatePlayerDto) {
-    return `This action updates a #${id} player`;
   }
 
   remove(id: number) {
