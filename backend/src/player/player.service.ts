@@ -11,7 +11,8 @@ export class PlayerService {
         private readonly playerRepository: Repository<Player>
     ) {}
     create(createPlayerDto: CreatePlayerDto) {
-        return 'This action adds a new player'
+        const newPlayer = this.playerRepository.create(createPlayerDto)
+        return this.playerRepository.save(newPlayer)
     }
 
     findAll() {
