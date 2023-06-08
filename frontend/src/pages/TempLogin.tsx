@@ -1,7 +1,7 @@
-import MainSection from '../components/welcome/MainSection'
+import TempForm from "../components/tempLogin/TempForm";
 
 const TempLogin = () => {
-    return <MainSection></MainSection>
+    return ( <><TempForm></TempForm></> );
 }
-
-export default TempLogin
+ 
+export default TempLogin;
