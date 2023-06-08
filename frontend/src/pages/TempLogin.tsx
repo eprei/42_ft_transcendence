@@ -1,7 +1,14 @@
-import TempForm from "../components/tempLogin/TempForm";
+import TempForm from '../components/tempLogin/TempForm'
+import TempPlayerList from '../components/tempLogin/TempPlayerList'
+import styles from './TempLogin.module.css'
 
 const TempLogin = () => {
-    return ( <><TempForm></TempForm></> );
+    return (
+        <div className={styles.container}>
+            <TempForm></TempForm>
+            <TempPlayerList></TempPlayerList>
+        </div>
+    )
 }
- 
-export default TempLogin;
+
+export default TempLogin
