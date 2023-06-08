@@ -3,6 +3,33 @@ import { useState } from 'react'
 
 import styles from './TempForm.module.css'
 
+interface User {
+    login: string
+    email: string
+    avatarUrl: string
+}
+
+async function postData(data: User) {
+    try {
+        const response = await fetch('http://localhost:8080/api/player', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+
+        if (!response.ok) {
+            throw new Error('Failed to make POST request')
+        }
+
+        const responseData = await response.json()
+        return responseData
+    } catch (error) {
+        console.error(error)
+    }
+}
+
 const TempForm = () => {
     const [enteredName, setEnteredName] = useState('')
     const [enteredEmail, setEnteredEmail] = useState('')
@@ -29,14 +56,15 @@ const TempForm = () => {
             enteredName.trim().length > 0 &&
             enteredPicUrl.trim().length > 0
         ) {
-            const user = {
-                name: enteredName,
+            const user: User = {
+                login: enteredName,
                 email: enteredEmail,
-                picUrl: enteredPicUrl,
+                avatarUrl: enteredPicUrl,
             }
-            console.log(user)
+            postData(user).then((responseData) => {
+                console.log(responseData)
+            })
         }
-
         setEnteredName('')
         setEnteredEmail('')
         setEnteredPicUrl('')
