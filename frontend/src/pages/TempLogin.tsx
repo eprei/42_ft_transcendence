@@ -72,19 +72,20 @@ const TempLogin = () => {
         postData(user).then((responseData) => {
             console.log(responseData)
         })
+        setTimeout(() => {getUsersHandler()}, 500)
     }
-
+    
     const getUsersHandler = () => {
         getUsers().then((users) => {
             setPlayers(users)
             console.log(users)
         })
     }
-
+    
     const deletePlayerHandler = (login: string) => {
         console.log(login)
         deletePlayer(login)
-        getUsers()
+        setTimeout(() => {getUsersHandler()}, 500)
     }
 
     return (
