@@ -33,8 +33,9 @@ export class PlayerController {
         return this.playerService.findOne(+id)
     }
 
-    @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.playerService.remove(+id)
+    @Delete(':login')
+    remove(@Param('login') login: string) {
+        console.log(login);
+        return this.playerService.remove(login)
     }
 }

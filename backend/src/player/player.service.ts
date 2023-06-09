@@ -23,7 +23,8 @@ export class PlayerService {
         return `This action returns a #${id} player`
     }
 
-    remove(id: number) {
-        return `This action removes a #${id} player`
+    async remove(login: string) {
+        const player = await this.playerRepository.delete(login);
+        return player;
     }
 }
