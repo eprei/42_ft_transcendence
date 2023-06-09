@@ -82,7 +82,7 @@ const TempLogin = () => {
     }
 
     const deletePlayerHandler = (login: string) => {
-        console.log(login);
+        console.log(login)
         deletePlayer(login)
         getUsers()
     }

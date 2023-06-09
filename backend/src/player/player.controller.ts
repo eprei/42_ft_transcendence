@@ -21,13 +21,13 @@ export class PlayerController {
     async create(@Body() createPlayerDto: CreatePlayerDto) {
         console.log(createPlayerDto)
         const player = this.playerService.create(createPlayerDto)
-        return player;
+        return player
     }
 
     @Get()
     async findAll() {
         const player = await this.playerService.findAll()
-        return player;
+        return player
     }
 
     @Get(':id')
@@ -37,7 +37,7 @@ export class PlayerController {
 
     @Delete(':login')
     remove(@Param('login') login: string) {
-        console.log(login);
+        console.log(login)
         return this.playerService.remove(login)
     }
 }

@@ -24,7 +24,7 @@ export class PlayerService {
     }
 
     async remove(login: string) {
-        const player = await this.playerRepository.delete(login);
-        return player;
+        const player = await this.playerRepository.delete({ login: login })
+        return player
     }
 }
