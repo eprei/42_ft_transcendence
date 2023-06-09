@@ -10,6 +10,25 @@ interface Player {
     avatarUrl: string
 }
 
+async function deletePlayer(login: string): Promise<void> {
+    try {
+        const response = await fetch(
+            `http://localhost:8080/api/player/${login}`,
+            {
+                method: 'DELETE',
+            }
+        )
+
+        if (!response.ok) {
+            throw new Error('Failed to delete player')
+        }
+
+        console.log('Player deleted successfully')
+    } catch (error) {
+        console.error(error)
+    }
+}
+
 async function getUsers() {
     try {
         const response = await fetch('http://localhost:8080/api/player')
@@ -62,13 +81,21 @@ const TempLogin = () => {
         })
     }
 
+    const deletePlayerHandler = (login: string) => {
+        deletePlayer(login)
+        getUsers()
+    }
+
     return (
         <div className={styles.container}>
             <TempForm
                 submitNewPlayer={submitFormHandler}
                 getUsersHandler={getUsersHandler}
             ></TempForm>
-            <TempPlayerList players={players}></TempPlayerList>
+            <TempPlayerList
+                players={players}
+                deletePlayerHandler={deletePlayerHandler}
+            ></TempPlayerList>
         </div>
     )
 }
