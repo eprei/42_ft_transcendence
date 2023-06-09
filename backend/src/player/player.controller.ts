@@ -18,14 +18,16 @@ export class PlayerController {
 
     @Post()
     @UsePipes(ValidationPipe)
-    create(@Body() createPlayerDto: CreatePlayerDto) {
+    async create(@Body() createPlayerDto: CreatePlayerDto) {
         console.log(createPlayerDto)
-        return this.playerService.create(createPlayerDto)
+        const player = this.playerService.create(createPlayerDto)
+        return player;
     }
 
     @Get()
-    findAll() {
-        return this.playerService.findAll()
+    async findAll() {
+        const player = await this.playerService.findAll()
+        return player;
     }
 
     @Get(':id')
