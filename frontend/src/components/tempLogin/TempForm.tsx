@@ -5,7 +5,7 @@ import styles from './TempForm.module.css'
 
 interface TempFormProps {
     submitNewPlayer: (user: Player) => void
-    getPlayers: () => void
+    getUsersHandler: () => void
 }
 
 const TempForm = (props: TempFormProps) => {
@@ -87,7 +87,7 @@ const TempForm = (props: TempFormProps) => {
                 <button type="submit" className={styles.btn}>
                     Add User
                 </button>
-                <button className={styles.btn} onClick={props.getPlayers}>
+                <button className={styles.btn} onClick={props.getUsersHandler}>
                     Get User
                 </button>
             </form>

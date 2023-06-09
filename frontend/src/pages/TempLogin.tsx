@@ -1,8 +1,14 @@
 import { useState } from 'react'
-import { Player } from '../types/Player'
+
 import TempForm from '../components/tempLogin/TempForm'
 import TempPlayerList from '../components/tempLogin/TempPlayerList'
 import styles from './TempLogin.module.css'
+
+interface Player {
+    login: string
+    email: string
+    avatarUrl: string
+}
 
 async function getUsers() {
     try {
@@ -60,12 +66,9 @@ const TempLogin = () => {
         <div className={styles.container}>
             <TempForm
                 submitNewPlayer={submitFormHandler}
-                getPlayers={getUsersHandler}
+                getUsersHandler={getUsersHandler}
             ></TempForm>
-            <TempPlayerList
-                getPlayers={getUsersHandler}
-                players={players}
-            ></TempPlayerList>
+            <TempPlayerList players={players}></TempPlayerList>
         </div>
     )
 }
