@@ -1,8 +1,6 @@
 import { useState } from 'react'
-
 import TempForm from '../components/tempLogin/TempForm'
 import TempPlayerList from '../components/tempLogin/TempPlayerList'
-import Spinner from '../components/ui/Spinner'
 import styles from './TempLogin.module.css'
 
 interface Player {
@@ -68,7 +66,6 @@ async function postData(data: Player) {
 
 const TempLogin = () => {
     const [players, setPlayers] = useState<Player[]>([])
-    const [isLoading, setIsLoading] = useState(false)
 
     const submitFormHandler = (user: Player) => {
         postData(user).then((responseData) => {
@@ -77,18 +74,15 @@ const TempLogin = () => {
         setTimeout(() => {
             getUsersHandler()
         }, 500)
-        
     }
-    
+
     const getUsersHandler = () => {
-        setIsLoading(true)
         getUsers().then((users) => {
             setPlayers(users)
             console.log(users)
-            setIsLoading(false)
         })
     }
-    
+
     const deletePlayerHandler = (login: string) => {
         console.log(login)
         deletePlayer(login)
@@ -103,13 +97,12 @@ const TempLogin = () => {
                 submitNewPlayer={submitFormHandler}
                 getUsersHandler={getUsersHandler}
             ></TempForm>
-            {!isLoading && (
+            {
                 <TempPlayerList
                     players={players}
                     deletePlayerHandler={deletePlayerHandler}
                 ></TempPlayerList>
-            )}
-            {isLoading && <Spinner></Spinner>}
+            }
         </div>
     )
 }
