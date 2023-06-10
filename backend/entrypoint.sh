@@ -1,6 +1,6 @@
 #!/bin/sh
 
-ln --symbolic \
+ln -s \
   /app/node_modules/@nestjs/cli/bin/nest.js \
   /usr/local/bin/nest
 
