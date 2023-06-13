@@ -30,6 +30,24 @@ export class ChannelService {
         return this.channelRepository.findOneBy({ id: id })
     }
 
+    getChannelUsers(id: number) {
+        return this.channelRepository.findOne({
+            relations: {
+                users: true,
+            },
+            where: { id: id },
+        })
+    }
+
+    async getChannelMsg(id: number) {
+	   return this.channelRepository.findOne({
+            relations: {
+                messages: true
+            },
+            where: { id: id },
+    	})
+	}
+    
     async update(id: number, updateChannelDto: UpdateChannelDto) {
         const channel = await this.findOne(id)
 

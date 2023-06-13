@@ -84,5 +84,15 @@ export class ChannelController {
       } catch (error) {
         throw new Error('Failed to remove user from channel');
       }
+	}
+	
+    @Get(':id/users')
+    async getChannelUsers(@Param('id') id: string) {
+        return await this.channelService.getChannelUsers(+id)
+    }
+
+	@Get(':id/msg')
+    async getChannelMsg(@Param('id') id: string) {
+        return await this.channelService.getChannelMsg(+id)
     }
 }

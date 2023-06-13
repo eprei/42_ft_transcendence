@@ -5,6 +5,7 @@ import {
     Body,
     UsePipes,
     ValidationPipe,
+	Param,
 } from '@nestjs/common'
 import { MessageService } from './message.service'
 import { CreateMessageDto } from './dto/create-message.dto'
@@ -26,5 +27,11 @@ export class MessageController {
     async findAll() {
         const msg = await this.messageService.findAll()
         return msg
+    }
+
+
+	@Get(':id/msg')
+    async getMsgFromChannel(@Param('id') id: string) {
+        return await this.messageService.findAllByChannel(+id)
     }
 }

@@ -5,16 +5,29 @@ import IconPrivate from '../../../assets/icon/lock.svg'
 import ChannelType from '../../../types/ChannelType'
 import { useAppSelector } from '../../../store/types'
 import { UserData } from '../../../types/UserData'
-
+import { atom } from 'jotai'
+import { useAtom } from 'jotai'
 
 interface ChannelLiProps {
     channel: Channel
     type: string
 }
 
+export const chatIdAtom = atom(0)
+
 const ChannelLi = (props: ChannelLiProps) => {
+
+	const [chatId, setChatId] = useAtom(chatIdAtom);
+	
+	const handleClick = () => {
+		if (props.channel.id != chatId) {
+			setChatId(props.channel.id)
+		}
+	}
+
     const userData = useAppSelector((state) => state.user.userData) as UserData
-    async function LeaveChannel(event: React.MouseEvent<HTMLImageElement>) {
+ 
+	async function LeaveChannel(event: React.MouseEvent<HTMLImageElement>) {
         event.stopPropagation();
       
         try {
@@ -34,7 +47,7 @@ const ChannelLi = (props: ChannelLiProps) => {
       }
 
     return (
-        <li className={styles.li} onClick={() => console.log('li clicked')}>
+		<li className={styles.li} onClick={handleClick}>
             <div className={styles.text}>{props.channel.name}</div>
             <div className={styles.iconsContainer}>
                 {props.type !== 'discover' && (

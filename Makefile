@@ -41,8 +41,7 @@ env:
 format:
 	docker run \
 	--rm \
-	--volume $(shell pwd):/app \
-	tgrivel/prettier \
+	--volume $(shell pwd):/app tgrivel/prettier \
 	--write backend \
 	--write frontend \
 	--config .prettierrc \

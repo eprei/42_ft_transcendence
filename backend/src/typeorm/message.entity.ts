@@ -7,6 +7,7 @@ import {
     JoinColumn,
 } from 'typeorm'
 import { Channel } from './channel.entity'
+import { User } from './user.entity'
 
 @Entity()
 export class Message {
@@ -15,6 +16,10 @@ export class Message {
 
     @Column({ type: 'int' })
     creator: number
+
+	@ManyToOne(() => User, (user) => user.id)
+    @JoinColumn({ name: 'creator', referencedColumnName: 'id' })
+    creatorUser: User;
 
     @Column({ type: 'text' })
     content: string

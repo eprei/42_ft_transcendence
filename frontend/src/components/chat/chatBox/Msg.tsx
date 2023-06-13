@@ -1,24 +1,34 @@
 import styles from './Msg.module.css'
+import { useAppSelector } from '../../../store/types'
+import { UserData } from '../../../types/UserData'
 
 export interface MsgProps {
     id: number
-    name: string
-    picture: string
-    text: string
+    content: string 
+    creatorUser: {
+		nickname: string 
+		avatarUrl: string 
+	}
 }
 
 const Msg = ({ msg }: { msg: MsgProps }) => {
+
+	const { nickname, avatarUrl } = msg.creatorUser;
+	const userData = useAppSelector((state) => state.user.userData) as UserData
+	const myNickname = userData.user.nickname
+	
+
     return (
         <>
-            {msg.name === 'rburri' ? (
+            {nickname === myNickname ? (
                 <div className={`${styles.msgContainer} ${styles.me}`}>
                     <div className={styles.textContainer}>
                         <p className={styles.me}>
-                            <b>{msg.name} : </b> {msg.text}
+                            <b>{nickname} : </b> {msg.content}
                         </p>
                     </div>
                     <img
-                        src={msg.picture}
+                        src={avatarUrl}
                         alt="Avatar"
                         className={styles.profilePicture}
                     />
@@ -26,13 +36,13 @@ const Msg = ({ msg }: { msg: MsgProps }) => {
             ) : (
                 <div className={`${styles.msgContainer} ${styles.they}`}>
                     <img
-                        src={msg.picture}
+                        src={avatarUrl}
                         alt="Avatar"
                         className={styles.profilePicture}
                     />
                     <div className={styles.textContainer}>
                         <p className={styles.they}>
-                            <b>{msg.name} : </b> {msg.text}
+                            <b>{nickname} : </b> {msg.content}
                         </p>
                     </div>
                 </div>
