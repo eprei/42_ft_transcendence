@@ -1,0 +1,123 @@
+.chatContainer {
+    width: 90vw;
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+	align-items: center;
+	background: var(--color-black-transparent);
+    box-shadow: 0px -4px 16px var(--color-black);
+    border-radius: 28px;
+	margin: 40px auto 0;
+	/* top, left right, bottom */
+}  
+
+.bodyRightSideB {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 40%;
+    height: 100%;
+}
+
+.h1 {
+	text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ALL THAT IS BELLOW IS NOT USED */
+/* Size Size Size Size Size Size Size Size Size Size Size Size Size Size Size Size Size */
+/* Size Size Size Size Size Size Size Size Size Size Size Size Size Size Size Size Size */
+/* Size Size Size Size Size Size Size Size Size Size Size Size Size Size Size Size Size */
+
+.unqui {
+	width: 20%;
+	overflow: hidden;
+}
+
+.dosqui {
+	width: 40%;
+}
+
+.tresqui {
+	width: 60%;
+	border-radius: 35px;
+	overflow: hidden;
+}
+
+.rojo {
+	border: 8px groove red;
+	border-radius: 30px;	
+}
+
+
+/* Colors Colors Colors Colors Colors Colors Colors Colors Colors Colors */
+/* Colors Colors Colors Colors Colors Colors Colors Colors Colors Colors */
+/* Colors Colors Colors Colors Colors Colors Colors Colors Colors Colors */
+
+.verde {
+	border: 8px groove greenyellow;
+	border-radius: 30px;
+}
+
+.azul{
+	border: 8px groove cornflowerblue;
+	border-radius: 30px;
+}
+
+.amarillo {
+	border: 8px groove yellow;
+	border-radius: 30px;
+} 
+
+/* 
+.box {
+	height: 600px;
+	margin: 15px;
+	border-radius: 25px;
+	background-color: transparent;
+	opacity: 1;
+}
+
+@media screen and (max-width:1200px) {
+	.box {
+		width: 40%;
+	}
+}
+
+@media screen and (max-width:600px) {
+	.box {
+		width: 90%;
+	}
+
+/* .box ul li a {
+	text-decoration: none;
+	color: black;
+}
+
+.box ul li a:hover {
+ color: red; 
+}	  */
+
+

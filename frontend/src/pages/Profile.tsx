@@ -1,8 +1,17 @@
+import Navbar from '../components/navigation/Navbar'
+import MainProfile from '../components/profile/MainProfile'
+import styles from './Profile.module.css'
+
 const Profile = () => {
     return (
-        <>
-            <h1>Profile</h1>
-        </>
+        <div className={styles.container}>
+            <div>
+                <Navbar />
+            </div>
+            <div className={styles.profile}>
+                <MainProfile />
+            </div>
+        </div>
     )
 }
 
