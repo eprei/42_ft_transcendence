@@ -9,7 +9,7 @@ interface TempPlayerListProps {
 
 const TempPlayerList = (props: TempPlayerListProps) => {
     let content: JSX.Element[] | JSX.Element = <p>No Player Found!</p>
-    if (props.players.length > 0) {
+    if (props.players !== undefined && props.players.length > 0) {
         content = props.players.map((player: Player) => (
             <TempPlayerLi
                 key={player.login}
