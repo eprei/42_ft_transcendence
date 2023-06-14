@@ -4,9 +4,6 @@
     justify-content: space-between;
     align-items: center;
     width: 90%;
-    /* flex-flow: row wrap; */
-    /* border: 1px solid #FFFFFF; */
-    /* border-radius: 44px; */
 }
 .left {
     display: flex;

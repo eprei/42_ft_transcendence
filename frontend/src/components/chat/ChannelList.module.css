@@ -7,7 +7,7 @@
     opacity: 1;
     width: 20%;
     overflow: hidden;
-    border: 4px groove var(--color-mid-green);
+    /* border: 4px groove var(--color-mid-green); */
 }
 
 .chBox h2 {
