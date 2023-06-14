@@ -12,6 +12,9 @@ function User() {
 	return (
 	  <>
 		<div className={styles.container}>
+
+<div className={styles.left}>
+
 			<span>
 				<img src={PicturePlaceHolder} alt="Avatar" 
 				className={styles.profilePicture} />
@@ -22,13 +25,16 @@ function User() {
 					<li className={styles.status}>playing</li>
 				</ul>
 			</span>
-						
+	</div>					
+		
+<div className={styles.right}>
 			<span className={styles.iconContainer}>
 				<img src={IconViewProfile} alt="Icon" />
 				<img src={IconInviteToPlay} alt="Icon" />
 				<img src={IconBlockUser} alt="Icon" />
 				<img src={IconMsg} alt="Icon" />
 			</span>
+		</div>
 		</div>
 	</>
 	)

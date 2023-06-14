@@ -1,20 +1,22 @@
 .container {
     display: flex;
 	/* flex-flow: row wrap; */
-	/* justify-content: space-between; */
+	justify-content: space-between;
     align-items: center;
 	border: 1px solid #FFFFFF;
 	border-radius: 44px;
 	margin: 10px;
+	width: 90%;
 }
 
-/* .left {
-	width: 80%;
+.left {
+	display: flex;
+	align-items: center;
 }
 
 .right {
-	width: 20%;
-} */
+	margin-right: 40px;
+}
 
 .profilePicture {
     width: var(--size-picture-profile);
@@ -25,12 +27,12 @@
     transform: scale(60%);
 }
 
+
+
 .uList {
 	text-align: left;
 	font-family: 'Inter';
 	font-style: normal;
-	border: 1px solid #FFFFFF;
-
 } 
 
 .name {
@@ -48,6 +50,8 @@
 	font-weight: 400;
 	color: #11DCE8;
 } 
+
+
 
 .iconContainer {
     display: flex;
