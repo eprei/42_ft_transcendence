@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "owner": 1,
+        "name": "Architecture",
+        "type": "Public",
+        "password": "",
+        "creationDate": "04.04.22"
+    },
+    {
+        "id": 2,
+        "owner": 2,
+        "name": "#PrivateChannel on ne le voit pas si on le connait pas",
+        "type": "Private",
+        "password": "",
+        "creationDate": "04.04.22"
+    },
+    {
+        "id": 3,
+        "owner": 3,
+        "name": "Design",
+        "type": "Public",
+        "password": "asd",
+        "creationDate": "04.04.22"
+    },
+    {
+        "id": 4,
+        "owner": 4,
+        "name": "React",
+        "type": "Public",
+        "password": "",
+        "creationDate": "04.04.22"
+    },
+    {
+        "id": 5,
+        "owner": 5,
+        "name": "TypeORM",
+        "type": "Public",
+        "password": "",
+        "creationDate": "04.04.22"
+    }
+]

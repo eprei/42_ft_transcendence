@@ -1,67 +1,99 @@
 /* Channel list */
 .chBox {
-	height: 600px;
-	margin: 15px;
-	border-radius: 25px;
-	background-color: transparent;
-	opacity: 1;
-	width: 20%;
-		overflow: hidden;
-	/* border: 4px groove red; */
+    /* height: 800px; */
+    margin: 15px;
+    border-radius: 25px;
+    /* background-color: transparent; */
+    background: var(--color-black-transparent);
+    padding: 45px;
+
+    opacity: 1;
+    width: 20%;
+    overflow: hidden;
+    /* border: 4px groove var(--color-mid-green); */
 }
 
 .chBox h2 {
-	font-family: 'Inter';
-	font-style: normal;
-	font-weight: 500;
-	font-size: 16px;
-	line-height: 18px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 18px;
 
-	margin-top: 50px;
-	margin-bottom: 50px;
-	color: #FFFFFF;
-	text-align: center;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    color: #ffffff;
+    text-align: center;
+}
+
+li {
+    list-style-type: none;
 }
 
 .chBox ul {
-	display: block;
+    display: block;
 }
 
 .chList {
-	margin: 10px;
-	text-align: left;
-	padding-left: 10%;
-	font-weight: 400;
-	font-family: 'Inter';
-	font-style: normal;
-	font-weight: 400;
-	font-size: 10px;
-	line-height: 18px;
-	border-radius: 44px;
-	border: 1px solid #FFFFFF;
-	list-style-type: none;
-}
-
-.newCh {
-	box-sizing: border-box;
-	border: 1px solid #FFFFFF;
-	background: linear-gradient(0deg, #027368, #027368), #1B2223;
-	
-	font-family: 'Inter';
-	font-style: normal;
-	font-weight: 700;
-	font-size: 10px;
-	line-height: 18px;
-	
-	color: #FFFFFF;
-}
-
-.silent {
-	color: #FF5858;
-	border: 1px solid #FF5858;
+    margin: 10px;
+    text-align: left;
+    padding-left: 10%;
+    font-weight: 600;
+    font-family: 'Inter';
+    font-style: normal;
+    font-size: 15px;
+    line-height: 28px;
+    border-radius: 44px;
+    border: 1px solid #ffffff;
+    list-style-type: none;
+    align-items: center;
 }
 
 .incomingMsg {
-	color: #aa6ec9;
-	border: 1px solid #aa6ec9;
+    border: 1px solid var(--color-mid-green);
+    color: #aa6ec9;
+}
+
+.newCh {
+    display: flex;
+    justify-content: space-between;
+    width: 60%;
+    font-weight: 700;
+    --bg: #000;
+    --hover-bg: var(--color-mid-green);
+    --hover-text: var(--color-black);
+    color: #fff;
+    box-sizing: border-box;
+    transition: 0.4s;
+    background: var(--color-purple);
+}
+
+.newCh:hover {
+    color: var(--hover-text);
+    transform: translate(+3rem);
+    background: var(--hover-bg);
+    box-shadow: 0.25rem 0.25rem var(--bg);
+}
+
+.newCh:active {
+    transform: translate(0);
+    box-shadow: none;
+}
+
+.addChannelIcon {
+    width: var(--size-icon);
+    height: var(--size-icon);
+    transform: scale(70%);
+}
+
+@media screen and (max-width: 1200px) {
+    .chBox {
+        width: 40%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .chBox {
+        width: 90%;
+    }
 }

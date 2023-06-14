@@ -1,15 +1,15 @@
 .chatContainer {
     width: 90vw;
-	display: flex;
-	flex-flow: row wrap;
-	justify-content: center;
-	align-items: center;
-	background: var(--color-black-transparent);
-    box-shadow: 0px -4px 16px var(--color-black);
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+    /* background: var(--color-black-transparent); */
+    /* box-shadow: 0px -4px 16px var(--color-black); */
     border-radius: 28px;
-	margin: 40px auto 0;
-	/* top, left right, bottom */
-}  
+    margin: 40px auto 0;
+    /* top, left right, bottom */
+}
 
 .bodyRightSideB {
     display: flex;
@@ -21,30 +21,8 @@
 }
 
 .h1 {
-	text-align: center;
+    text-align: center;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /* ALL THAT IS BELLOW IS NOT USED */
 /* Size Size Size Size Size Size Size Size Size Size Size Size Size Size Size Size Size */
@@ -52,44 +30,43 @@
 /* Size Size Size Size Size Size Size Size Size Size Size Size Size Size Size Size Size */
 
 .unqui {
-	width: 20%;
-	overflow: hidden;
+    width: 20%;
+    overflow: hidden;
 }
 
 .dosqui {
-	width: 40%;
+    width: 40%;
 }
 
 .tresqui {
-	width: 60%;
-	border-radius: 35px;
-	overflow: hidden;
+    width: 60%;
+    border-radius: 35px;
+    overflow: hidden;
 }
 
 .rojo {
-	border: 8px groove red;
-	border-radius: 30px;	
+    border: 8px groove red;
+    border-radius: 30px;
 }
-
 
 /* Colors Colors Colors Colors Colors Colors Colors Colors Colors Colors */
 /* Colors Colors Colors Colors Colors Colors Colors Colors Colors Colors */
 /* Colors Colors Colors Colors Colors Colors Colors Colors Colors Colors */
 
 .verde {
-	border: 8px groove greenyellow;
-	border-radius: 30px;
+    border: 8px groove greenyellow;
+    border-radius: 30px;
 }
 
-.azul{
-	border: 8px groove cornflowerblue;
-	border-radius: 30px;
+.azul {
+    border: 8px groove cornflowerblue;
+    border-radius: 30px;
 }
 
 .amarillo {
-	border: 8px groove yellow;
-	border-radius: 30px;
-} 
+    border: 8px groove yellow;
+    border-radius: 30px;
+}
 
 /* 
 .box {
@@ -119,5 +96,3 @@
 .box ul li a:hover {
  color: red; 
 }	  */
-
-

@@ -1,11 +1,30 @@
+.container {
+    box-sizing: border-box;
+    /* height: 800px; */
+    width: 33%;
+    margin: 15px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
 .chatBox {
-	box-sizing: border-box;
-	height: 600px;
-	width: 33%;
-	margin: 15px;
-	border-radius: 10px;
-	border: 1px solid #3A3A42;
-	background: #091522;
-	opacity: 100;
-	overflow: hidden;
+    box-sizing: border-box;
+    height: 85%;
+    border-radius: 10px;
+    border: 1px solid #3a3a42;
+    background: #091522;
+    opacity: 100;
+    overflow: hidden;
+}
+
+/* @media screen and (max-width:1200px) {
+	.chatBox {
+		width: 40%;
+	}
+} */
+
+@media screen and (max-width: 600px) {
+    .chatBox {
+        width: 90%;
+    }
 }

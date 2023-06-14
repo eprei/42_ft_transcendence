@@ -3,33 +3,33 @@
 /* CurrentChat  CurrentChat  CurrentChat  CurrentChat  CurrentChat  CurrentChat */
 /* word-spacing: 0.25em; */
 
-.currentChat { 
-	box-sizing: border-box;
-	height: 20px;
- }
+.currentChat {
+    box-sizing: border-box;
+    height: 20px;
+}
 
 .currentChat ul {
-	margin-left: 20px;
-	display: flex;
-	flex-direction: row;
-	letter-spacing: 0.1em;
+    margin-left: 20px;
+    display: flex;
+    flex-direction: row;
+    letter-spacing: 0.1em;
 }
 /* justify-content: flex-start; */
 
-.currentChat li{
-	margin-left: 10px;
-	font-family: 'Inter';
-	font-style: normal;
-	font-weight: 400;
-	font-size: 10px;
-	line-height: 18px;
-	list-style-type: none;
+.currentChat li {
+    margin-left: 10px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 18px;
+    list-style-type: none;
 }
 
 .activeCh {
-	color: white;
+    color: white;
 }
 
 .inactiveCh {
-	color: #8D8E99;
+    color: #8d8e99;
 }

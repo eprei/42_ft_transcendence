@@ -2,6 +2,9 @@ import styles from './FriendList.module.css'
 import Friend from './Friend'
 import PicturePlaceHolder from '../../assets/img/profil-picture-placeholder.png'
 import { FriendProps } from './Friend'
+// import friendsBack from './friends.json'
+
+// const friendsBack: FriendProps
 
 const friendsRecoveredFromBackend: FriendProps[] = [
     {

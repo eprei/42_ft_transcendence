@@ -1,18 +1,20 @@
 import styles from './ChatBox.module.css'
-import ChatFeed from './ChatFeed.tsx'
 import CurrentChat from './CurrentChat.tsx'
+import ChatFeed from './ChatFeed.tsx'
+import SendForm from './SendForm.tsx'
 
 function ChatBox() {
-	return (
-	  <>
-	  	<div className={`${styles.chatBox}`}>
-			<CurrentChat />
-			<ChatFeed />
-			{/* <SendForm /> */}
-
-		</div>
-	  </>
-	)
+    return (
+        <>
+            <div className={styles.container}>
+                <div className={`${styles.chatBox}`}>
+                    <CurrentChat /> {/*joined channels */}
+                    <ChatFeed />
+                    <SendForm />
+                </div>
+            </div>
+        </>
+    )
 }
 
 export default ChatBox

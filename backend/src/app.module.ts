@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common'
-import { AppController } from './app.controller'
-import { AppService } from './app.service'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { ConfigModule } from '@nestjs/config'
 import { UserModule } from './user/user.module'
@@ -17,7 +15,10 @@ import { AuthModule } from './auth/auth.module'
 
 @Module({
     imports: [
-        ConfigModule.forRoot({ isGlobal: true }),
+        ConfigModule.forRoot({
+            isGlobal: true,
+            envFilePath: '.development.env',
+        }),
         TypeOrmModule.forRoot({
             type: 'postgres',
             url: process.env.DATABASE_URL,
@@ -33,7 +34,11 @@ import { AuthModule } from './auth/auth.module'
         MatchModule,
         AuthModule,
     ],
-    controllers: [AppController],
-    providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+    static port: number
+
+    constructor(private readonly configService: ConfigService) {
+        AppModule.port = +this.configService.get('PORT')
+    }
+}

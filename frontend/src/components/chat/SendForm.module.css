@@ -1,0 +1,80 @@
+.textInputWrapper {
+    margin-top: 12px;
+    width: 95%;
+    --accent-color: var(--color-purple);
+    position: relative;
+}
+
+.textInputWrapper:before,
+.textInputWrapper:after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    pointer-events: none;
+}
+
+.textInputWrapper:before {
+    transition: border-bottom-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    border-bottom: 1px groove rgba(0, 0, 0, 0.42);
+    z-index: 4;
+}
+
+.textInputWrapper:focus-within:before,
+.textInputWrapper:focus-within:after {
+    transform: scaleX(1);
+}
+
+.textInputWrapper:focus-within:before {
+    border-bottom: 1px groove var(--accent-color);
+}
+
+.textInputWrapper:focus-within:after {
+    border-bottom: 2px groove var(--accent-color);
+}
+
+.textInputWrapper:after {
+    transform: scaleX(0);
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+    border-bottom: 2px groove var(--accent-color);
+}
+
+.textInput::placeholder {
+    transition: opacity 250ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+    opacity: 1;
+    user-select: none;
+    color: var(--color-black);
+}
+
+.textInputWrapper .textInput {
+    max-height: 20%;
+    border-radius: 11px;
+    border: 1px groove #3a3a42;
+    background-color: #091522;
+    transition: background-color 200ms cubic-bezier(0.25, 0.8, 0.25, 1);
+    color: #e8e8e8;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 12px;
+    width: 100%;
+    border-left: none;
+    border-bottom: none;
+    border-right: none;
+}
+
+.textInputWrapper .textInput:focus,
+.textInputWrapper .textInput:active {
+    outline: none;
+}
+
+.textInputWrapper:focus-within .textInput,
+.textInputWrapper .textInput:focus,
+.textInputWrapper .textInput:active {
+    background-color: var(--color-black);
+}
+
+.textInputWrapper:focus-within .textInput::placeholder {
+    opacity: 0;
+}
