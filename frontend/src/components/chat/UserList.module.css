@@ -4,32 +4,31 @@
 
 /* Work */
 .usersBox {
-	height: 600px;
-	margin: 15px;
-	border-radius: 25px;
-	background-color: transparent;
-	opacity: 1;
-	overflow: hidden;
-	width: 20%;
-	/* border: 4px groove red; */
+    height: 600px;
+    margin: 15px;
+    border-radius: 25px;
+    background-color: transparent;
+    opacity: 1;
+    overflow: hidden;
+    width: 20%;
+    /* border: 4px groove red; */
 }
 
 /* Work? */
 .usersBox ul {
-	display: block;
+    display: block;
 }
 
 /* WORK */
 .usersBox h2 {
-	font-family: 'Inter';
-	font-style: normal;
-	font-weight: 500;
-	font-size: 16px;
-	line-height: 18px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 18px;
 
-	margin-top: 50px;
-	margin-bottom: 50px;
-	color: #FFFFFF;
-	text-align: center;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    color: #ffffff;
+    text-align: center;
 }
-

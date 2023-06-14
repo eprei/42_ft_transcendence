@@ -1,23 +1,22 @@
+/* Div */
 .container {
     display: flex;
-	/* flex-flow: row wrap; */
-	justify-content: space-between;
+    justify-content: space-between;
     align-items: center;
-	border: 1px solid #FFFFFF;
-	border-radius: 44px;
-	margin: 10px;
-	width: 90%;
+    width: 90%;
+    /* flex-flow: row wrap; */
+    /* border: 1px solid #FFFFFF; */
+    /* border-radius: 44px; */
 }
-
 .left {
-	display: flex;
-	align-items: center;
+    display: flex;
+    align-items: center;
 }
-
 .right {
-	margin-right: 40px;
+    margin-right: 40px;
 }
 
+/* Avatar */
 .profilePicture {
     width: var(--size-picture-profile);
     height: var(--size-picture-profile);
@@ -27,37 +26,32 @@
     transform: scale(60%);
 }
 
-
-
+/* User List */
 .uList {
-	text-align: left;
-	font-family: 'Inter';
-	font-style: normal;
-} 
-
+    text-align: left;
+    font-family: 'Inter';
+    font-style: normal;
+}
 .name {
-	font-size: 10px;
-	line-height: 18px;
-	list-style: none;
-	font-weight: 800;
-} 
-
+    font-size: 10px;
+    line-height: 18px;
+    list-style: none;
+    font-weight: 800;
+}
 .status {
-	font-size: 10px;
-	line-height: 18px;
-	list-style: none;
-	
-	font-weight: 400;
-	color: #11DCE8;
-} 
+    font-size: 10px;
+    line-height: 18px;
+    list-style: none;
 
+    font-weight: 400;
+    color: #11dce8;
+}
 
-
+/* Icons */
 .iconContainer {
     display: flex;
     align-items: center;
 }
-
 .iconContainer img {
-	padding-left: 10%;
+    padding-left: 13%;
 }

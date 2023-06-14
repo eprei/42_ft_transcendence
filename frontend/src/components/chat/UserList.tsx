@@ -3,24 +3,33 @@ import styles from './UserList.module.css'
 import User from './User'
 // import { UserProps } from './User'
 
-{/* const UserList = () => { */}
+{
+    /* const UserList = () => { */
+}
 function UserList() {
     return (
-		<div className={`${styles.usersBox}`}>
-			<h2> online users </h2>
-			<User />
-			<User />
-		</div>
+        <div className={`${styles.usersBox}`}>
+            <h2> online users </h2>
+            <User />
+            <User />
+            <User />
+            <User />
+            <User />
+            <User />
+        </div>
     )
 }
 
 export default UserList
 
-{/* <ul>
+{
+    /* <ul>
 					<li><User /> </li>
 					<li><User /> </li>
-					</ul> */}
-					{/* Le enviamos los parametros
+					</ul> */
+}
+{
+    /* Le enviamos los parametros
 						<User        
                             key={usersRecoveredFromBackend.id}
                             id={usersRecoveredFromBackend.id}
@@ -28,8 +37,8 @@ export default UserList
                             picture={usersRecoveredFromBackend.picture}
                             status={usersRecoveredFromBackend.status}
                             isUser={usersRecoveredFromBackend.isUser}
-                        /> */}
-
+                        /> */
+}
 
 // import ClickableIcon from '../profile/ClickableIcon'
 // import IconViewProfile from '../../assets/icon/view_profile.svg'
@@ -37,8 +46,9 @@ export default UserList
 // import IconBlockUser from '../../assets/icon/block_user.svg'
 // import IconMsg from '../../assets/icon/message.svg'
 // import IconGenericPicture from '../../assets/icon/generic_picture.svg'
-				
-{/* 
+
+{
+    /* 
 import styles from './UserList.module.css'
 import User from './User'
 import PicturePlaceHolder from '../../assets/img/profil-picture-placeholder.png'
@@ -90,12 +100,11 @@ const otherUsersRecoveredFromBackend: UserProps[] = [
         status: 'online',
         isUser: false,
     },
-] */}
+] */
+}
 
-
-
-
-{/* <div className={styles.container}>
+{
+    /* <div className={styles.container}>
             <div className={styles.subtitle}>User list</div>
             <div className={styles.list}>
                 {usersRecoveredFromBackend.map(
@@ -126,5 +135,5 @@ const otherUsersRecoveredFromBackend: UserProps[] = [
                     )
                 )}
             </div>
-        </div> */}
-
+        </div> */
+}
