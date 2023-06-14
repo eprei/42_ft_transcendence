@@ -83,5 +83,5 @@
 .addChannelIcon {
 	width: var(--size-icon);
     height: var(--size-icon);
-    transform: scale(100%);
+    transform: scale(70%);
 }
