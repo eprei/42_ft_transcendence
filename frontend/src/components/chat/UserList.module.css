@@ -1,21 +1,25 @@
 /* Online Users  Online Users  Online Users  Online Users  Online Users */
 /* Online Users  Online Users  Online Users  Online Users  Online Users */
 /* Online Users  Online Users  Online Users  Online Users  Online Users */
+
+/* Work */
 .usersBox {
 	height: 600px;
 	margin: 15px;
 	border-radius: 25px;
 	background-color: transparent;
 	opacity: 1;
-	width: 20%;
 	overflow: hidden;
+	width: 20%;
 	/* border: 4px groove red; */
 }
 
+/* Work? */
 .usersBox ul {
 	display: block;
 }
 
+/* WORK */
 .usersBox h2 {
 	font-family: 'Inter';
 	font-style: normal;
@@ -29,17 +33,3 @@
 	text-align: center;
 }
 
-.uList {
-	margin: 10px;
-	text-align: left;
-	padding-left: 10%;
-	font-weight: 400;
-	font-family: 'Inter';
-	font-style: normal;
-	font-weight: 400;
-	font-size: 10px;
-	line-height: 18px;
-	
-	border-radius: 44px;
-	border: 1px solid #FFFFFF;
-}
