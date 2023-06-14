@@ -6,17 +6,22 @@ import MatchHistory from './pages/MatchHistory'
 import GameLauncher from './pages/GameLauncher'
 import Game from './pages/Game'
 import Chat from './pages/Chat'
-import TempLogin from './pages/TempLogin'
+import RootLayout from './RootLayout'
 
 const router = createBrowserRouter([
-    { path: '/', element: <Welcome /> },
-    { path: '/signin', element: <SignIn /> },
-    { path: '/profile', element: <Profile /> },
-    { path: '/history', element: <MatchHistory /> },
-    { path: '/launcher', element: <GameLauncher /> },
-    { path: '/game', element: <Game /> },
-    { path: '/chat', element: <Chat /> },
-    { path: '/tmp', element: <TempLogin /> },
+    {
+        path: '/',
+        element: <RootLayout />,
+        children: [
+            { index: true, element: <Welcome /> },
+            { path: '/signin', element: <SignIn /> },
+            { path: '/profile', element: <Profile /> },
+            { path: '/history', element: <MatchHistory /> },
+            { path: '/launcher', element: <GameLauncher /> },
+            { path: '/game', element: <Game /> },
+            { path: '/chat', element: <Chat /> },
+        ],
+    },
 ])
 
 function App() {
