@@ -1,5 +1,5 @@
 import styles from './Navbar.module.css'
-import NavLink from './NavLink'
+import { NavLink } from 'react-router-dom'
 import Logo from '../../assets/icon/42.svg'
 
 const Navbar = () => {
@@ -9,25 +9,54 @@ const Navbar = () => {
                 <div className={styles.containers}>
                     <ul>
                         <li>
-                            <NavLink locationPath="/" linkName="CosmicPong" />
+                            <NavLink
+                                to="/"
+                                className={({ isActive }) =>
+                                    isActive ? styles.active : undefined
+                                }
+                            >
+                                CosmicPong
+                            </NavLink>
                         </li>
                         <li>
                             <NavLink
-                                locationPath="/profile"
-                                linkName="Profile"
-                            />
+                                to="/profile"
+                                className={({ isActive }) =>
+                                    isActive ? styles.active : undefined
+                                }
+                            >
+                                Profile
+                            </NavLink>
                         </li>
                         <li>
                             <NavLink
-                                locationPath="/history"
-                                linkName="Match history"
-                            />
+                                to="/history"
+                                className={({ isActive }) =>
+                                    isActive ? styles.active : undefined
+                                }
+                            >
+                                Match history
+                            </NavLink>
                         </li>
                         <li>
-                            <NavLink locationPath="/chat" linkName="Chat" />
+                            <NavLink
+                                to="/chat"
+                                className={({ isActive }) =>
+                                    isActive ? styles.active : undefined
+                                }
+                            >
+                                Chat
+                            </NavLink>
                         </li>
                         <li>
-                            <NavLink locationPath="/game" linkName="Game" />
+                            <NavLink
+                                to="/game"
+                                className={({ isActive }) =>
+                                    isActive ? styles.active : undefined
+                                }
+                            >
+                                Game
+                            </NavLink>
                         </li>
                     </ul>
                 </div>

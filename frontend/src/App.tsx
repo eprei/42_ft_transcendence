@@ -14,12 +14,12 @@ const router = createBrowserRouter([
         element: <RootLayout />,
         children: [
             { index: true, element: <Welcome /> },
-            { path: '/signin', element: <SignIn /> },
-            { path: '/profile', element: <Profile /> },
-            { path: '/history', element: <MatchHistory /> },
-            { path: '/launcher', element: <GameLauncher /> },
-            { path: '/game', element: <Game /> },
-            { path: '/chat', element: <Chat /> },
+            { path: 'signin', element: <SignIn /> },
+            { path: 'profile', element: <Profile /> },
+            { path: 'history', element: <MatchHistory /> },
+            { path: 'launcher', element: <GameLauncher /> },
+            { path: 'game', element: <Game /> },
+            { path: 'chat', element: <Chat /> },
         ],
     },
 ])
