@@ -7,13 +7,12 @@ export interface UserProps {
 }
 
 const Msg: React.FC<{ user: UserProps }> = ({ user }) => {
-  
-	let MsgStyle = ''
+    let MsgStyle = ''
 
     if (user.id !== 1) {
-        MsgStyle = styles.they
-    } else {
         MsgStyle = styles.me
+    } else {
+        MsgStyle = styles.they
     }
 
     let MsgText = ''
@@ -37,32 +36,31 @@ const Msg: React.FC<{ user: UserProps }> = ({ user }) => {
 
     return (
         <>
-            <span className={styles.msgContainer}>
-                <img
-                    src={user.picture}
-                    alt="Avatar"
-                    className={styles.profilePicture}
-                />
-                <p className={`${MsgStyle}`}>
-                    <b>{user.name} : </b> {MsgText}
-                </p>
-            </span>
+            {user.id !== 1 ? (
+                <span className={`${styles.msgContainer} ${MsgStyle}`}>
+                    <img
+                        src={user.picture}
+                        alt="Avatar"
+                        className={styles.profilePicture}
+                    />
+                    <p className={`${MsgStyle}`}>
+                        <b>{user.name} : </b> {MsgText}
+                    </p>
+                </span>
+            ) : (
+                <span className={`${styles.msgContainer} ${MsgStyle}`}>
+                    <p className={`${MsgStyle}`}>
+                        <b>{user.name} : </b> {MsgText}
+                    </p>
+                    <img
+                        src={user.picture}
+                        alt="Avatar"
+                        className={styles.profilePicture}
+                    />
+                </span>
+            )}
         </>
     )
 }
 
 export default Msg
-
-
-// function Msg() {
-// const Msg: React.FC< UserProps> = (u: UserProps ) => {
-// const Msg: React.FC< UserProps> = (u: UserProps ) => {
-// const getTextPos = () => {
-//     if (id !== 3) {
-//         return "textAlign: 'right'"
-//     } else {
-//         return "textAlign: 'left'"
-//     }
-// }
-// // return 'text-align: right, var(--color-purple)'
-// return 'text-align: left, var(--color-mid-green)'

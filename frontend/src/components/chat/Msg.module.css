@@ -3,6 +3,14 @@
     align-items: center;
 }
 
+.msgContainer.me {
+    justify-content: start;
+}
+
+.msgContainer.they {
+    justify-content: end;
+}
+
 /* Avatar */
 .profilePicture {
     width: var(--size-picture-profile);
@@ -14,8 +22,9 @@
 /* border: 0.2rem solid var(--color-white); */
 
 .me {
-    margin-left: 20px;
-    text-align: left;
+    margin-right: 20px;
+    text-align: right;
+
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
@@ -25,8 +34,8 @@
 }
 
 .they {
-    margin-right: 20px;
-    text-align: right;
+    margin-left: 20px;
+    text-align: left;
 
     font-family: 'Inter';
     font-style: normal;

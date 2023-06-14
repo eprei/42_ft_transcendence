@@ -9,7 +9,8 @@
     width: 45vw;
     margin: 5rem;
     padding: 2rem;
-    background-color: var(--color-dark-green);
+    background-color: rgb(5, 35, 82);
+    /* background-color: var(--color-dark-green); */
 }
 .form h2 {
     text-align: center;

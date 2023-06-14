@@ -10,14 +10,14 @@ function ChannelList() {
 
                 <ul>
                     <li>
-						<button  className={`${styles.chList} ${styles.newCh}`}>
-					 	   Create new channel 
-						<img
-                            src={IconAddChannel}
-                            alt="plus sign"
-                            className={styles.addChannelIcon}
-                        />
-						</button>
+                        <button className={`${styles.chList} ${styles.newCh}`}>
+                            Create new channel
+                            <img
+                                src={IconAddChannel}
+                                alt="plus sign"
+                                className={styles.addChannelIcon}
+                            />
+                        </button>
                     </li>
                     <li className={`${styles.chList} ${styles.silent}`}>
                         #PublicChannel1

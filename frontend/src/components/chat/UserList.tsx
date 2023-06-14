@@ -19,25 +19,25 @@ const US: OnlineUserProps[] = [
         id: 2,
         name: 'sbars',
         picture: Samuel,
-		isPlaying: false,
+        isPlaying: false,
     },
     {
-		id: 3,
+        id: 3,
         name: 'mpons',
         picture: Mauro,
-		isPlaying: false,
+        isPlaying: false,
     },
     {
-		id: 4,
+        id: 4,
         name: 'tgrivel',
         picture: Theo,
-		isPlaying: true,
+        isPlaying: true,
     },
     {
         id: 5,
         name: 'epresa-c',
         picture: Emiliano,
-		isPlaying: false,
+        isPlaying: false,
     },
 ]
 
@@ -45,14 +45,11 @@ function UserList() {
     return (
         <div className={`${styles.usersBox}`}>
             <h2> online users </h2>
-            {US.map(
-					(US) => (
-						<User user={US}/>
-						)
-			)}
-		</div>
-	)
+            {US.map((US) => (
+                <User user={US} />
+            ))}
+        </div>
+    )
 }
 
 export default UserList
-

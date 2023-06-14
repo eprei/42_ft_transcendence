@@ -6,13 +6,13 @@ import SendForm from './SendForm.tsx'
 function ChatBox() {
     return (
         <>
-			<div className={styles.container}>
-				<div className={`${styles.chatBox}`}>
-					<CurrentChat />
-					<ChatFeed />
-				</div>
-				<SendForm />
-			</div>
+            <div className={styles.container}>
+                <div className={`${styles.chatBox}`}>
+                    <CurrentChat />
+                    <ChatFeed />
+                </div>
+                <SendForm />
+            </div>
         </>
     )
 }

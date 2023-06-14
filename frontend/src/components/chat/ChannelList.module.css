@@ -51,37 +51,36 @@
     border: 1px solid #ffffff;
     list-style-type: none;
     align-items: center;
-
 }
 
 .newCh {
-	display: flex;
-	justify-content:space-between;
+    display: flex;
+    justify-content: space-between;
     width: 60%;
-	font-weight: 700;
-	--bg: #000;
-	--hover-bg: var(--color-mid-green);
-	--hover-text: var(--color-black);
-	color: #fff;
-	box-sizing: border-box;
-	transition: 0.4s;
-	background: var(--color-purple);
-  }
-  
-  .newCh:hover {
-	color: var(--hover-text);
-	transform: translate(+3rem);
-	background: var(--hover-bg);
-	box-shadow: 0.25rem 0.25rem var(--bg);
-  }
-  
-  .newCh:active {
-	transform: translate(0);
-	box-shadow: none;
-  }
+    font-weight: 700;
+    --bg: #000;
+    --hover-bg: var(--color-mid-green);
+    --hover-text: var(--color-black);
+    color: #fff;
+    box-sizing: border-box;
+    transition: 0.4s;
+    background: var(--color-purple);
+}
+
+.newCh:hover {
+    color: var(--hover-text);
+    transform: translate(+3rem);
+    background: var(--hover-bg);
+    box-shadow: 0.25rem 0.25rem var(--bg);
+}
+
+.newCh:active {
+    transform: translate(0);
+    box-shadow: none;
+}
 
 .addChannelIcon {
-	width: var(--size-icon);
+    width: var(--size-icon);
     height: var(--size-icon);
     transform: scale(70%);
 }

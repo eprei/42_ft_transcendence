@@ -11,12 +11,11 @@ export interface OnlineUserProps {
     id: number
     name: string
     picture: string
-	isPlaying: boolean
+    isPlaying: boolean
 }
 
 const User: React.FC<{ user: OnlineUserProps }> = ({ user }) => {
-
-	let MsgStyle = ''
+    let MsgStyle = ''
 
     if (user.id !== 1) {
         MsgStyle = styles.they
@@ -57,9 +56,9 @@ const User: React.FC<{ user: OnlineUserProps }> = ({ user }) => {
                     <span className={styles.uList}>
                         <ul>
                             <li className={styles.name}>{user.name} </li>
-                            { user.isPlaying ? (
-								<li className={styles.status}>playing</li>
-							) : null }
+                            {user.isPlaying ? (
+                                <li className={styles.status}>playing</li>
+                            ) : null}
                         </ul>
                     </span>
                 </div>
@@ -67,9 +66,9 @@ const User: React.FC<{ user: OnlineUserProps }> = ({ user }) => {
                 <div className={styles.right}>
                     <span className={styles.iconContainer}>
                         <img src={IconViewProfile} alt="Icon" />
-						{ user.isPlaying ? (
-                        <img src={IconInviteToPlay} alt="Icon" />
-						) : null }
+                        {user.isPlaying ? (
+                            <img src={IconInviteToPlay} alt="Icon" />
+                        ) : null}
                         <img src={IconBlockUser} alt="Icon" />
                         <img src={IconMsg} alt="Icon" />
                     </span>
@@ -80,4 +79,3 @@ const User: React.FC<{ user: OnlineUserProps }> = ({ user }) => {
 }
 
 export default User
-
