@@ -6,21 +6,9 @@ export interface UserProps {
     picture: string
 }
 
-// function Msg() {
-// const Msg: React.FC< UserProps> = (u: UserProps ) => {
-// const Msg: React.FC< UserProps> = (u: UserProps ) => {
-// const getTextPos = () => {
-//     if (id !== 3) {
-//         return "textAlign: 'right'"
-//     } else {
-//         return "textAlign: 'left'"
-//     }
-// }
-// // return 'text-align: right, var(--color-purple)'
-// return 'text-align: left, var(--color-mid-green)'
-
 const Msg: React.FC<{ user: UserProps }> = ({ user }) => {
-    let MsgStyle = ''
+  
+	let MsgStyle = ''
 
     if (user.id !== 1) {
         MsgStyle = styles.they
@@ -59,38 +47,22 @@ const Msg: React.FC<{ user: UserProps }> = ({ user }) => {
                     <b>{user.name} : </b> {MsgText}
                 </p>
             </span>
-
-            {/* <p className={`${styles.me}`}> */}
-            {/* <p className={`${MsgStyle}`}>
-               
-                <b>cachi: </b> aucune idee
-            </p> */}
-            {/* <p>
-                
-                <b>pepi: </b> c'est dommage
-            </p>
-            <p>
-                
-                <b>cachi: </b> mais la vie est belle
-            </p>
-            <p>
-                
-                <b>cachi: </b> n'est-ce pas?
-            </p>
-            <p>
-                
-                <b>cachi: </b> Pas
-            </p>
-            <p>
-                
-                <b>cachi: </b> ta
-            </p>
-            <p>
-                
-                <b>cachi: </b> ta
-            </p> */}
         </>
     )
 }
 
 export default Msg
+
+
+// function Msg() {
+// const Msg: React.FC< UserProps> = (u: UserProps ) => {
+// const Msg: React.FC< UserProps> = (u: UserProps ) => {
+// const getTextPos = () => {
+//     if (id !== 3) {
+//         return "textAlign: 'right'"
+//     } else {
+//         return "textAlign: 'left'"
+//     }
+// }
+// // return 'text-align: right, var(--color-purple)'
+// return 'text-align: left, var(--color-mid-green)'

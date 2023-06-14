@@ -1,139 +1,58 @@
 // import React from 'react'
 import styles from './UserList.module.css'
 import User from './User'
-// import { UserProps } from './User'
+import { OnlineUserProps } from './User'
+import Emiliano from '../../assets/img/epresa-c.jpg'
+import Mauro from '../../assets/img/mpons.jpg'
+import Robin from '../../assets/img/rburri.jpg'
+import Samuel from '../../assets/img/sbars.jpg'
+import Theo from '../../assets/img/tgrivel.jpg'
 
-{
-    /* const UserList = () => { */
-}
-function UserList() {
-    return (
-        <div className={`${styles.usersBox}`}>
-            <h2> online users </h2>
-            <User />
-            <User />
-            <User />
-            <User />
-            <User />
-            <User />
-        </div>
-    )
-}
-
-export default UserList
-
-{
-    /* <ul>
-					<li><User /> </li>
-					<li><User /> </li>
-					</ul> */
-}
-{
-    /* Le enviamos los parametros
-						<User        
-                            key={usersRecoveredFromBackend.id}
-                            id={usersRecoveredFromBackend.id}
-                            name={usersRecoveredFromBackend.name}
-                            picture={usersRecoveredFromBackend.picture}
-                            status={usersRecoveredFromBackend.status}
-                            isUser={usersRecoveredFromBackend.isUser}
-                        /> */
-}
-
-// import ClickableIcon from '../profile/ClickableIcon'
-// import IconViewProfile from '../../assets/icon/view_profile.svg'
-// import IconInviteToPlay from '../../assets/icon/invite_to_play.svg'
-// import IconBlockUser from '../../assets/icon/block_user.svg'
-// import IconMsg from '../../assets/icon/message.svg'
-// import IconGenericPicture from '../../assets/icon/generic_picture.svg'
-
-{
-    /* 
-import styles from './UserList.module.css'
-import User from './User'
-import PicturePlaceHolder from '../../assets/img/profil-picture-placeholder.png'
-import { UserProps } from './User'
-
-const usersRecoveredFromBackend: UserProps[] = [
+const US: OnlineUserProps[] = [
     {
         id: 1,
         name: 'rburri',
-        picture: PicturePlaceHolder,
-        status: 'playing',
-        isUser: true,
+        picture: Robin,
+        isPlaying: true,
     },
     {
         id: 2,
         name: 'sbars',
-        picture: PicturePlaceHolder,
-        status: 'online',
-        isUser: true,
+        picture: Samuel,
+		isPlaying: false,
     },
     {
-        id: 3,
+		id: 3,
         name: 'mpons',
-        picture: PicturePlaceHolder,
-        status: 'offline',
-        isUser: true,
+        picture: Mauro,
+		isPlaying: false,
     },
     {
-        id: 4,
+		id: 4,
         name: 'tgrivel',
-        picture: PicturePlaceHolder,
-        status: 'offline',
-        isUser: true,
+        picture: Theo,
+		isPlaying: true,
     },
-]
-
-const otherUsersRecoveredFromBackend: UserProps[] = [
     {
         id: 5,
         name: 'epresa-c',
-        picture: PicturePlaceHolder,
-        status: 'offline',
-        isUser: false,
+        picture: Emiliano,
+		isPlaying: false,
     },
-    {
-        id: 6,
-        name: 'mdavis',
-        picture: PicturePlaceHolder,
-        status: 'online',
-        isUser: false,
-    },
-] */
+]
+
+function UserList() {
+    return (
+        <div className={`${styles.usersBox}`}>
+            <h2> online users </h2>
+            {US.map(
+					(US) => (
+						<User user={US}/>
+						)
+			)}
+		</div>
+	)
 }
 
-{
-    /* <div className={styles.container}>
-            <div className={styles.subtitle}>User list</div>
-            <div className={styles.list}>
-                {usersRecoveredFromBackend.map(
-                    (usersRecoveredFromBackend) => (
-                        <User
-                            key={usersRecoveredFromBackend.id}
-                            id={usersRecoveredFromBackend.id}
-                            name={usersRecoveredFromBackend.name}
-                            picture={usersRecoveredFromBackend.picture}
-                            status={usersRecoveredFromBackend.status}
-                            isUser={usersRecoveredFromBackend.isUser}
-                        />
-                    )
-                )}
-            </div>
-            <div className={styles.subtitle}>Other users</div>
-            <div className={styles.list}>
-                {otherUsersRecoveredFromBackend.map(
-                    (otherUsersRecoveredFromBackend) => (
-                        <User
-                            key={otherUsersRecoveredFromBackend.id}
-                            id={otherUsersRecoveredFromBackend.id}
-                            name={otherUsersRecoveredFromBackend.name}
-                            picture={otherUsersRecoveredFromBackend.picture}
-                            status={otherUsersRecoveredFromBackend.status}
-                            isUser={otherUsersRecoveredFromBackend.isUser}
-                        />
-                    )
-                )}
-            </div>
-        </div> */
-}
+export default UserList
+

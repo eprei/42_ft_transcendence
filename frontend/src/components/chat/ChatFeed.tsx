@@ -43,45 +43,6 @@ function ChatFeed() {
             <Msg user={US[1]} />
             <Msg user={US[3]} />
             <Msg user={US[4]} />
-            {/* <Msg
-                id={US[1].id}
-                name={US[1].name}
-                picture={US[1].picture}
-            /> */}
-            {/* <Msg /> */}
-
-            {/* <p className={`${styles.me}`}>
-                {' '}
-                <b>pepi: </b>tu sait comment coder en React?
-            </p>
-            <p className={`${styles.they}`}>
-                {' '}
-                <b>cachi: </b> aucune idee
-            </p>
-            <p className={`${styles.me}`}>
-                {' '}
-                <b>pepi: </b>c'est dommage
-            </p>
-            <p className={`${styles.me}`}>
-                {' '}
-                <b>cachi: </b>mais la vie est belle
-            </p>
-            <p className={`${styles.me}`}>
-                {' '}
-                <b>cachi: </b>n'est-ce pas?
-            </p>
-            <p className={`${styles.they}`}>
-                {' '}
-                <b>cachi: </b>Pas
-            </p>
-            <p className={`${styles.they}`}>
-                {' '}
-                <b>cachi: </b>ta
-            </p>
-            <p className={`${styles.they}`}>
-                {' '}
-                <b>cachi: </b>ta
-            </p> */}
         </>
     )
 }
