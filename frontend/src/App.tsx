@@ -8,7 +8,7 @@ import Game from './pages/Game'
 import Chat from './pages/Chat'
 import RootLayout from './RootLayout'
 import TempLogin from './pages/TempLogin'
-import ErrorPage from './pages/Error'
+import ErrorPage from './components/error/Error'
 
 const router = createBrowserRouter([
     {
