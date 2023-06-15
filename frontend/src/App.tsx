@@ -6,6 +6,7 @@ import MatchHistory from './pages/MatchHistory'
 import GameLauncher from './pages/GameLauncher'
 import Game from './pages/Game'
 import Chat from './pages/Chat'
+import TempLogin from './pages/TempLogin'
 
 const router = createBrowserRouter([
     { path: '/', element: <Welcome /> },
@@ -15,6 +16,7 @@ const router = createBrowserRouter([
     { path: '/launcher', element: <GameLauncher /> },
     { path: '/game', element: <Game /> },
     { path: '/chat', element: <Chat /> },
+    { path: '/tmp', element: <TempLogin /> },
 ])
 
 function App() {

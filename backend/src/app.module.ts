@@ -3,6 +3,8 @@ import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { ConfigModule } from '@nestjs/config'
+import { PlayerModule } from './player/player.module'
+import { Player } from './typeorm/Player'
 
 @Module({
     imports: [
@@ -12,7 +14,9 @@ import { ConfigModule } from '@nestjs/config'
             url: process.env.DATABASE_URL,
             autoLoadEntities: true,
             synchronize: true,
+            entities: [Player],
         }),
+        PlayerModule,
     ],
     controllers: [AppController],
     providers: [AppService],
