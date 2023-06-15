@@ -2,12 +2,7 @@ import { useState } from 'react'
 import TempForm from '../components/tempLogin/TempForm'
 import TempPlayerList from '../components/tempLogin/TempPlayerList'
 import styles from './TempLogin.module.css'
-
-interface Player {
-    login: string
-    email: string
-    avatarUrl: string
-}
+import { Player } from '../types/Player'
 
 async function deletePlayer(login: string): Promise<void> {
     try {
