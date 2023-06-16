@@ -27,16 +27,6 @@
     display: block;
 }
 
-.silent {
-    color: #ff5858;
-    border: 1px solid #ff5858;
-}
-
-.incomingMsg {
-    color: #aa6ec9;
-    border: 1px solid #aa6ec9;
-}
-
 .chList {
     margin: 10px;
     text-align: left;
@@ -51,6 +41,11 @@
     border: 1px solid #ffffff;
     list-style-type: none;
     align-items: center;
+}
+
+.incomingMsg {
+    border: 1px solid var(--color-mid-green);
+	color: #aa6ec9;
 }
 
 .newCh {

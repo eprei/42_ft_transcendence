@@ -8,10 +8,10 @@ function ChatBox() {
         <>
             <div className={styles.container}>
                 <div className={`${styles.chatBox}`}>
-                    <CurrentChat />
+                    <CurrentChat /> {/*joined channels */}
                     <ChatFeed />
+					<SendForm />
                 </div>
-                <SendForm />
             </div>
         </>
     )

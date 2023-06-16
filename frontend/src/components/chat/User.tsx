@@ -1,16 +1,16 @@
-// import React from 'react'
-import styles from './User.module.css'
 // import ClickableIcon from '../profile/ClickableIcon'
-import IconViewProfile from '../../assets/icon/view_profile.svg'
+// import IconViewProfile from '../../assets/icon/view_profile.svg'
+// import IconBlockUser from '../../assets/icon/block_user.svg'
+import styles from './User.module.css'
 import IconInviteToPlay from '../../assets/icon/invite_to_play.svg'
-import IconBlockUser from '../../assets/icon/block_user.svg'
 import IconMsg from '../../assets/icon/message.svg'
-import React from 'react'
+import IconAddFriend from '../../assets/icon/add_friend.svg'
 
 export interface OnlineUserProps {
     id: number
     name: string
     picture: string
+	isOnline: boolean
     isPlaying: boolean
 }
 
@@ -65,11 +65,16 @@ const User: React.FC<{ user: OnlineUserProps }> = ({ user }) => {
 
                 <div className={styles.right}>
                     <span className={styles.iconContainer}>
-                        <img src={IconViewProfile} alt="Icon" />
-                        {user.isPlaying ? (
+					<img
+                                src={IconAddFriend}
+                                alt="plus sign"
+                                className={styles.addChannelIcon}
+								/>
+                        {/* <img src={IconViewProfile} alt="Icon" /> */}
+                        {!user.isPlaying ? (
                             <img src={IconInviteToPlay} alt="Icon" />
                         ) : null}
-                        <img src={IconBlockUser} alt="Icon" />
+						{/* <img src={IconBlockUser} alt="Icon" /> */}
                         <img src={IconMsg} alt="Icon" />
                     </span>
                 </div>

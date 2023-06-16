@@ -1,52 +1,38 @@
 // import React from 'react'
 import styles from './UserList.module.css'
 import User from './User'
-import { OnlineUserProps } from './User'
-import Emiliano from '../../assets/img/epresa-c.jpg'
-import Mauro from '../../assets/img/mpons.jpg'
-import Robin from '../../assets/img/rburri.jpg'
-import Samuel from '../../assets/img/sbars.jpg'
-import Theo from '../../assets/img/tgrivel.jpg'
+import UsersData from './users.json';
+// import { OnlineUserProps } from './User'
 
-const US: OnlineUserProps[] = [
-    {
-        id: 1,
-        name: 'rburri',
-        picture: Robin,
-        isPlaying: true,
-    },
-    {
-        id: 2,
-        name: 'sbars',
-        picture: Samuel,
-        isPlaying: false,
-    },
-    {
-        id: 3,
-        name: 'mpons',
-        picture: Mauro,
-        isPlaying: false,
-    },
-    {
-        id: 4,
-        name: 'tgrivel',
-        picture: Theo,
-        isPlaying: true,
-    },
-    {
-        id: 5,
-        name: 'epresa-c',
-        picture: Emiliano,
-        isPlaying: false,
-    },
-]
+// const fs = require('fs')
+
+// function readDb(dbName = 'users.json') {
+//     // read JSON object from file
+//     const data = fs.readFileSync(dbName, 'utf8')
+//     return JSON.parse(data)
+// }
+
+// function writeDb(obj: any, dbName = 'users.json') {
+//     if (!obj) return console.log('Please provide data to save')
+//     try {
+//         fs.writeFileSync(dbName, JSON.stringify(obj)) //overwrites current data
+//         return console.log('SAVE SUCESS')
+//     } catch (err) {
+//         return console.log('FAILED TO WRITE')
+//     }
+// }
 
 function UserList() {
     return (
         <div className={`${styles.usersBox}`}>
-            <h2> online users </h2>
-            {US.map((US) => (
-                <User user={US} />
+            <h2> online </h2>
+            {UsersData.map((userData) => (
+				userData.isOnline ? <User user={userData} /> : null
+            ))}
+
+            <h2> offline </h2>
+			{UsersData.map((userData) => (
+				!userData.isOnline ? <User user={userData} /> : null
             ))}
         </div>
     )
