@@ -1,0 +1,8 @@
+{
+    id: number
+	owner: number
+    name: string
+	type: channelType
+	password: string
+	creationDate: number
+}
