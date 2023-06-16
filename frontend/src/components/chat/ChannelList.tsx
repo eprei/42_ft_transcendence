@@ -1,64 +1,22 @@
 import styles from './ChannelList.module.css'
 import IconAddChannel from '../../assets/icon/add_friend.svg'
-// import ClickableIcon from '../profile/ClickableIcon'
+import ChData from './channels.json'
 
+// import ClickableIcon from '../profile/ClickableIcon'
+//
 // interface ChannelProps {
 //     id: number
 // 	owner: number
 //     name: string
 // 	type: channelType
 // 	password: string
-// 	creationDate: number
+// 	creationDate: string
 // }
-
-// // ennum channelType [
-// // 	private,
-// // public,
-// // direct,
-
-// const ChList: ChannelProps[] = [
-//     {
-// 			id: 1,
-// 			owner: 2,//User.id
-// 			name: Tips and Tricks
-// 			type: PUBLIC,
-// 			password: '',
-// 			creationDate: 040422
-// 	},
-// 	{
-// 		id: 1,
-// 		owner: 2,//User.id
-// 		name: Tips and Tricks
-// 		type: PUBLIC,
-// 		password: '',
-// 		creationDate: 040422
-// 	},
-// 	{
-// 		id: 1,
-// 		owner: 2,//User.id
-// 		name: Tips and Tricks
-// 		type: PUBLIC,
-// 		password: '',
-// 		creationDate: 040422
-// 	},
-// 	{
-// 		id: 1,
-// 		owner: 2,//User.id
-// 		name: Tips and Tricks
-// 		type: PUBLIC,
-// 		password: '',
-// 		creationDate: 040422
-// 	},
-// 	{
-// 		id: 1,
-// 		owner: 2,//User.id
-// 		name: Tips and Tricks
-// 		type: PUBLIC,
-// 		password: '',
-// 		creationDate: 040422
-// 	},
-// ]
-
+//
+// ennum channelType [
+// 	private,
+// public,
+// direct,
 
 function ChannelList() {
     return (
@@ -86,17 +44,12 @@ function ChannelList() {
                         </button>
                     </li>
                     
-					<h2> Public Channel list </h2>
-					<li className={`${styles.chList} ${styles.silent}`}>
-                        #Architecture
-                    </li>
-                    <li className={`${styles.chList}`}>#PrivateChannel on ne le voit pas si on le connait pas</li>
-                    <li className={`${styles.chList}`}>#Design (icon cadenas)</li>
-                    <li className={`${styles.chList} ${styles.incomingMsg}`}>
-                        #PongTrics
-                    </li>
-                    <li className={`${styles.chList}`}>#React</li>
-                    <li className={`${styles.chList}`}>#TypeORM</li>
+					<h2> Public channel list </h2>
+					{ChData.map((ch) => (
+						// ch.type === "Public" ?<li className={`${styles.chList} ${styles.silent}`}>{ch.name}</li> : null
+						ch.type === "Public" ?<li className={`${styles.chList} ${styles.incomingMsg}`}>{ch.name}</li> : null
+					))}
+					{/*If Password set -> ajouter icon cadenas*/}
                 </ul>
             </div>
         </>
