@@ -3,7 +3,6 @@ import {
     Get,
     Post,
     Body,
-    Patch,
     Param,
     Delete,
     UsePipes,
@@ -14,7 +13,7 @@ import { CreatePlayerDto } from './dto/create-player.dto'
 
 @Controller('player')
 export class PlayerController {
-    constructor(private readonly playerService: PlayerService) {}
+    constructor(private readonly playerService: PlayerService) {}//depende de un player service para ser instanciada
 
     @Post()
     @UsePipes(ValidationPipe)
@@ -41,3 +40,7 @@ export class PlayerController {
         return this.playerService.remove(login)
     }
 }
+
+
+
+
