@@ -1,9 +1,12 @@
 /* Channel list */
 .chBox {
-    height: 600px;
+    /* height: 800px; */
     margin: 15px;
     border-radius: 25px;
-    background-color: transparent;
+    /* background-color: transparent; */
+    background: var(--color-black-transparent);
+	padding: 45px;
+
     opacity: 1;
     width: 20%;
     overflow: hidden;
@@ -21,6 +24,10 @@
     margin-bottom: 50px;
     color: #ffffff;
     text-align: center;
+}
+
+li {
+    list-style-type: none;
 }
 
 .chBox ul {
@@ -77,4 +84,16 @@
     width: var(--size-icon);
     height: var(--size-icon);
     transform: scale(70%);
+}
+
+@media screen and (max-width:1200px) {
+	.chBox {
+		width: 40%;
+	}
+}
+
+@media screen and (max-width:600px) {
+	.chBox {
+		width: 90%;
+	}
 }

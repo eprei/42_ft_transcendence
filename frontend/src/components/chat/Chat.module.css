@@ -4,8 +4,8 @@
     flex-flow: row wrap;
     justify-content: space-around;
     align-items: center;
-    background: var(--color-black-transparent);
-    box-shadow: 0px -4px 16px var(--color-black);
+    /* background: var(--color-black-transparent); */
+    /* box-shadow: 0px -4px 16px var(--color-black); */
     border-radius: 28px;
     margin: 40px auto 0;
     /* top, left right, bottom */

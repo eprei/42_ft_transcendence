@@ -6,8 +6,13 @@
 .usersBox {
     height: 600px;
     margin: 15px;
+	padding: 45px 10px 25px 45px;
+    /* padding-left: 25px; */
+    /* padding-left: 25px; */
+    /* padding-left: 25px; */
     border-radius: 25px;
-    background-color: transparent;
+    /* background-color: transparent; */
+    background: var(--color-black-transparent);
     opacity: 1;
     overflow: hidden;
     width: 20%;
@@ -31,4 +36,16 @@
     margin-bottom: 50px; */
     color: #ffffff;
     text-align: center;
+}
+
+@media screen and (max-width:1200px) {
+	.usersBox {
+		width: 40%;
+	}
+}
+
+@media screen and (max-width:600px) {
+	.usersBox {
+		width: 90%;
+	}
 }

@@ -1,6 +1,6 @@
 .container {
     box-sizing: border-box;
-    height: 600px;
+    /* height: 800px; */
     width: 33%;
     margin: 15px;
     border-radius: 10px;
@@ -15,4 +15,16 @@
     background: #091522;
     opacity: 100;
     overflow: hidden;
+}
+
+/* @media screen and (max-width:1200px) {
+	.chatBox {
+		width: 40%;
+	}
+} */
+
+@media screen and (max-width:600px) {
+	.chatBox {
+		width: 90%;
+	}
 }

@@ -33,7 +33,7 @@ function ChannelList() {
 								/>
                         </button>
                     </li>
-                    <li>
+					<li style={{ listStyleType: 'none' }}>
                         <button className={`${styles.chList} ${styles.newCh}`}>
                             Create new channel
                             <img
@@ -46,7 +46,6 @@ function ChannelList() {
                     
 					<h2> Public channel list </h2>
 					{ChData.map((ch) => (
-						// ch.type === "Public" ?<li className={`${styles.chList} ${styles.silent}`}>{ch.name}</li> : null
 						ch.type === "Public" ?<li className={`${styles.chList} ${styles.incomingMsg}`}>{ch.name}</li> : null
 					))}
 					{/*If Password set -> ajouter icon cadenas*/}
