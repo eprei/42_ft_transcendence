@@ -7,6 +7,7 @@ import GameLauncher from './pages/GameLauncher'
 import Game from './pages/Game'
 import Chat from './pages/Chat'
 import RootLayout from './RootLayout'
+import TempLogin from './pages/TempLogin'
 
 const router = createBrowserRouter([
     {
@@ -20,6 +21,7 @@ const router = createBrowserRouter([
             { path: 'launcher', element: <GameLauncher /> },
             { path: 'game', element: <Game /> },
             { path: 'chat', element: <Chat /> },
+            { path: 'tmp', element: <TempLogin /> },
         ],
     },
 ])
