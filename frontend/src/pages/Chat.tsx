@@ -1,13 +1,13 @@
-import styles from '../components/chat/Chat.module.css'
+import styles from './Chat.module.css'
+import ChannelBox from '../components/chat/ChannelBox.tsx'
 import ChatBox from '../components/chat/ChatBox'
-import ChannelList from '../components/chat/ChannelList.tsx'
-import UserList from '../components/chat/UserList.tsx'
+import UserList from '../components/chat/UserBox.tsx'
 
 const Chat = () => {
     return (
         <>
             <div className={styles.chatContainer}>
-                <ChannelList />
+                <ChannelBox />
                 <ChatBox />
                 <UserList />
             </div>

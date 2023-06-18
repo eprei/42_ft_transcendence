@@ -19,7 +19,7 @@ li {
     display: block;
 }
 
-/* .chList {
+.chList {
     margin: 10px;
     text-align: left;
     padding-left: 10%;
@@ -32,7 +32,7 @@ li {
     border: 1px solid #ffffff;
     list-style-type: none;
     align-items: center;
-} */
+}
 
 .joined {
     border: 1px solid var(--color-mid-green);

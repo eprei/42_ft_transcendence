@@ -1,6 +1,7 @@
-.chatBox {
-    flex: 1;
+.usersBox {
+    flex: 0 0 18rem;
     padding-left: 2rem;
+    margin-left: 1rem;
     height: 40rem;
     border-radius: 10px;
     border: 1px solid #3a3a42;
@@ -12,16 +13,25 @@
     scrollbar-width: none; /* Firefox */
 }
 
-.chatBox::-webkit-scrollbar {
+.usersBox::-webkit-scrollbar {
     /* Chrome */
     display: none;
 }
 
+.usersBox h2 {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 18px;
+    margin-top: 50px;
+    color: var(--color-white);
+    text-align: center;
+}
+
 @media screen and (max-width: 1200px) {
-    .chatBox {
+    .usersBox {
         flex: none;
         width: 25rem;
-        height: 40rem;
-        margin: 1rem 0;
+        height: 25rem;
+        margin-left: 0;
     }
 }

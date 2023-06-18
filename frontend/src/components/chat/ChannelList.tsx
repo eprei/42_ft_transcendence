@@ -1,77 +1,47 @@
-import { useState } from 'react'
+import { Channel } from "../../types/Channel"
+import JoinnedChannels from './JoinnedChannels'
+import DiscoverChannels from './DiscoverChannels'
 
-import styles from './ChannelList.module.css'
-import IconAddChannel from '../../assets/icon/add_friend.svg'
-import ChData from './channels.json'
-import NewChannelForm from './NewChannelForm'
-
-function ChannelList() {
-    const [showForm, setShowForm] = useState(false)
-
-    const handleClick = () => {
-        //   alert("handleClick");
-        setShowForm(true)
-    }
-
-    return (
-        <>
-            <div className={`${styles.chBox}`}>
-                <ul>
-                    <li>
-                        <button className={`${styles.chList} ${styles.newCh}`}>
-                            Search channel
-                            <img
-                                src={IconAddChannel}
-                                alt="plus sign"
-                                className={styles.addChannelIcon}
-                            />
-                        </button>
-                    </li>
-                    <li style={{ listStyleType: 'none' }}>
-                        <button
-                            className={`${styles.chList} ${styles.newCh}`}
-                            onClick={handleClick}
-                        >
-                            Create new channel
-                            <img
-                                src={IconAddChannel}
-                                alt="plus sign"
-                                className={styles.addChannelIcon}
-                            />
-                        </button>
-                    </li>
-                    {showForm && <NewChannelForm />}
-
-                    <h2> Public channel list </h2>
-                    {ChData.map((ch) =>
-                        ch.type === 'Public' ? (
-                            <li
-                                className={`${styles.chList} ${styles.incomingMsg}`}
-                            >
-                                {ch.name}
-                            </li>
-                        ) : null
-                    )}
-                    {/*If Password set -> ajouter icon cadenas*/}
-                </ul>
-            </div>
-        </>
-    )
+interface ChannelListProps {
+	channels: Channel[]
 }
 
+const ChannelList = ( props: ChannelListProps)  => {
+// 		let content: JSX.Element[] | JSX.Element = <p>CACA</p>
+// 		if (props !== undefined) {
+// 		    content = props.channels.map((channel: Channel) => (
+// 				<li>{channel.name}</li>
+// 			))
+// 			}
+	
+		// let content: JSX.Element[] | JSX.Element = <p>Join a Channel to start chating!</p>
+		// if (props.channels !== undefined && props.channels.length > 0) {
+		// 	content = props.channels.map((channel: Channel) => (
+		// 		<JoinnedChannelsLi
+		// 			key={channel.id}
+		// 			channel={channel}
+		// 		></JoinnedChannelsLi>
+		// 	))
+		// }
+
+	return (
+        // <div className={`${styles.chList}`}>
+		<div>
+            <h2> Joinned Channels </h2>
+			{/* {content} */}
+			<JoinnedChannels
+				channels={props.channels}
+			></JoinnedChannels>
+			<h2> Discover </h2>
+			<DiscoverChannels
+				channels={props.channels}
+			>
+			</DiscoverChannels>
+		</div>
+		)
+	}
+		
 export default ChannelList
 
-//
-// interface ChannelProps {
-//     id: number
-// 	owner: number
-//     name: string
-// 	type: channelType
-// 	password: string
-// 	creationDate: string
-// }
-//
-// ennum channelType [
-// 	private,
-// public,
-// direct,
+
+

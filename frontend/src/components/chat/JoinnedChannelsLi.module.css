@@ -1,0 +1,33 @@
+.chList {
+    margin: 10px;
+    text-align: left;
+    padding-left: 10%;
+    font-weight: 600;
+    font-family: 'Inter';
+    font-style: normal;
+    font-size: 15px;
+    line-height: 28px;
+    border-radius: 44px;
+    border: 1px solid #ffffff;
+    list-style-type: none;
+    align-items: center;
+}
+
+.joined {
+    border: 1px solid var(--color-mid-green);
+    /* color: #aa6ec9; */
+}
+
+.addChannelIcon {
+    width: var(--size-icon);
+    height: var(--size-icon);
+    transform: scale(70%);
+}
+
+.privateIcon {
+    width: var(--size-icon);
+    height: var(--size-icon);
+    transform: scale(70%);
+    background-color: red;
+}
+

@@ -1,7 +1,6 @@
-// import React from 'react'
-import styles from './UserList.module.css'
+import styles from './UserBox.module.css'
 import User from './User'
-import UsersData from './users.json';
+import UsersData from './users.json'
 
 function UserList() {
     return (

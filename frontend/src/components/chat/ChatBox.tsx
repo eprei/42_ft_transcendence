@@ -5,15 +5,11 @@ import SendForm from './SendForm.tsx'
 
 function ChatBox() {
     return (
-        <>
-            <div className={styles.container}>
-                <div className={`${styles.chatBox}`}>
-                    <CurrentChat /> {/*joined channels */}
-                    <ChatFeed />
-                    <SendForm />
-                </div>
-            </div>
-        </>
+        <div className={styles.chatBox}>
+            <CurrentChat /> {/*joined channels */}
+            <ChatFeed />
+            <SendForm />
+        </div>
     )
 }
 

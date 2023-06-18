@@ -11,12 +11,11 @@ export interface OnlineUserProps {
 }
 
 const User = ({ user }: { user: OnlineUserProps }) => {
-
-    let inviteToPlay : JSX.Element | null = null;
+    let inviteToPlay: JSX.Element | null = null
     if (user.isOnline && !user.isPlaying) {
-        inviteToPlay = <img src={IconInviteToPlay} alt="Invite to Play Icon" />;
+        inviteToPlay = <img src={IconInviteToPlay} alt="Invite to Play Icon" />
     }
-    
+
     return (
         <div className={styles.container}>
             <div className={styles.left}>
@@ -34,9 +33,7 @@ const User = ({ user }: { user: OnlineUserProps }) => {
             </div>
 
             <div className={styles.right}>
-                <div>
-                    {inviteToPlay}
-                </div>
+                <div>{inviteToPlay}</div>
                 <div>
                     <img src={IconMsg} alt="Message Icon" />
                 </div>
