@@ -70,10 +70,3 @@
     -moz-transition: box-shadow 0.2s ease-in;
     transition: box-shadow 0.2s ease-in;
 }
-
-.center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
