@@ -8,11 +8,13 @@ import Game from './pages/Game'
 import Chat from './pages/Chat'
 import RootLayout from './RootLayout'
 import TempLogin from './pages/TempLogin'
+import ErrorPage from './components/error/Error'
 
 const router = createBrowserRouter([
     {
         path: '/',
         element: <RootLayout />,
+        errorElement: <ErrorPage />,
         children: [
             { index: true, element: <Welcome /> },
             { path: 'signin', element: <SignIn /> },
