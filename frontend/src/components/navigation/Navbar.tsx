@@ -13,9 +13,11 @@ const Navbar = () => {
                         <li>
                             <NavLink
                                 to="/"
-                                className={({ isActive }: { isActive: boolean }) =>
-                                    isActive ? styles.active : undefined
-                                }
+                                className={({
+                                    isActive,
+                                }: {
+                                    isActive: boolean
+                                }) => (isActive ? styles.active : undefined)}
                             >
                                 Cosmic Pong
                             </NavLink>
@@ -24,7 +26,11 @@ const Navbar = () => {
                             {isLoggedIn && (
                                 <NavLink
                                     to="/profile"
-                                    className={({ isActive }: { isActive: boolean }) =>
+                                    className={({
+                                        isActive,
+                                    }: {
+                                        isActive: boolean
+                                    }) =>
                                         isActive ? styles.active : undefined
                                     }
                                 >
@@ -36,7 +42,11 @@ const Navbar = () => {
                             {isLoggedIn && (
                                 <NavLink
                                     to="/history"
-                                    className={({ isActive }: { isActive: boolean }) =>
+                                    className={({
+                                        isActive,
+                                    }: {
+                                        isActive: boolean
+                                    }) =>
                                         isActive ? styles.active : undefined
                                     }
                                 >
@@ -48,7 +58,11 @@ const Navbar = () => {
                             {isLoggedIn && (
                                 <NavLink
                                     to="/chat"
-                                    className={({ isActive }: { isActive: boolean }) =>
+                                    className={({
+                                        isActive,
+                                    }: {
+                                        isActive: boolean
+                                    }) =>
                                         isActive ? styles.active : undefined
                                     }
                                 >
@@ -60,7 +74,11 @@ const Navbar = () => {
                             {isLoggedIn && (
                                 <NavLink
                                     to="/game"
-                                    className={({ isActive }: { isActive: boolean }) =>
+                                    className={({
+                                        isActive,
+                                    }: {
+                                        isActive: boolean
+                                    }) =>
                                         isActive ? styles.active : undefined
                                     }
                                 >
