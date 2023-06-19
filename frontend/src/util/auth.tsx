@@ -1,4 +1,4 @@
-import { json } from '../../node_modules/react-router-dom/dist/index'
+import { json } from 'react-router-dom'
 import { useAppSelector } from '../store/types'
 
 const checkAuthLoader = () => {
