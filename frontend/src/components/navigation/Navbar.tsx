@@ -15,7 +15,7 @@ const Navbar = () => {
                                     isActive ? styles.active : undefined
                                 }
                             >
-                                CosmicPong
+                                Cosmic Pong
                             </NavLink>
                         </li>
                         <li>
