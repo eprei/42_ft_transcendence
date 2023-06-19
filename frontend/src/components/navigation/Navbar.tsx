@@ -13,7 +13,7 @@ const Navbar = () => {
                         <li>
                             <NavLink
                                 to="/"
-                                className={({ isActive }) =>
+                                className={({ isActive }: { isActive: boolean }) =>
                                     isActive ? styles.active : undefined
                                 }
                             >
@@ -24,7 +24,7 @@ const Navbar = () => {
                             {isLoggedIn && (
                                 <NavLink
                                     to="/profile"
-                                    className={({ isActive }) =>
+                                    className={({ isActive }: { isActive: boolean }) =>
                                         isActive ? styles.active : undefined
                                     }
                                 >
@@ -36,7 +36,7 @@ const Navbar = () => {
                             {isLoggedIn && (
                                 <NavLink
                                     to="/history"
-                                    className={({ isActive }) =>
+                                    className={({ isActive }: { isActive: boolean }) =>
                                         isActive ? styles.active : undefined
                                     }
                                 >
@@ -48,7 +48,7 @@ const Navbar = () => {
                             {isLoggedIn && (
                                 <NavLink
                                     to="/chat"
-                                    className={({ isActive }) =>
+                                    className={({ isActive }: { isActive: boolean }) =>
                                         isActive ? styles.active : undefined
                                     }
                                 >
@@ -60,7 +60,7 @@ const Navbar = () => {
                             {isLoggedIn && (
                                 <NavLink
                                     to="/game"
-                                    className={({ isActive }) =>
+                                    className={({ isActive }: { isActive: boolean }) =>
                                         isActive ? styles.active : undefined
                                     }
                                 >
