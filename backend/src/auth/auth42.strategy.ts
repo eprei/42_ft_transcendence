@@ -36,7 +36,7 @@ export class Auth42Strategy extends PassportStrategy(Strategy, '42') {
             throw new Error('Failed to fetch user profile from 42 API: ${res.status}');
         }
 
-        return await res.json(); // this doesn't work yet, res body too big
+        return await res.json();
     }
 }
 
