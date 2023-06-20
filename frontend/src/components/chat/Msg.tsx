@@ -6,7 +6,7 @@ export interface UserProps {
     picture: string
 }
 
-const Msg: React.FC<{ user: UserProps }> = ({ user }) => {
+const Msg = ({ user }: { user: UserProps }) => {
     let MsgStyle = ''
 
     if (user.id !== 1) {

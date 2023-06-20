@@ -1,4 +1,3 @@
-// import styles from './ChatFeed.module.css'
 import Msg from './Msg'
 import { UserProps } from './Msg'
 import Emiliano from '../../assets/img/epresa-c.jpg'

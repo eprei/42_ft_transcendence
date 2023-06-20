@@ -14,33 +14,7 @@ export interface OnlineUserProps {
     isPlaying: boolean
 }
 
-const User: React.FC<{ user: OnlineUserProps }> = ({ user }) => {
-    let MsgStyle = ''
-
-    if (user.id !== 1) {
-        MsgStyle = styles.they
-    } else {
-        MsgStyle = styles.me
-    }
-
-    let MsgText = ''
-
-    switch (user.name) {
-        case 'rburri':
-            MsgText = 'parfait!'
-            break
-        case 'sbars':
-            MsgText = 'ça marche'
-            break
-        case 'epresa-c':
-            MsgText = `c'est noté`
-            break
-        case 'tgrivel':
-            MsgText = `d'accord!, ça sera à 15h!`
-            break
-        default:
-            MsgText = `Est-ce qu'on peut faire la reunion a 15:15?`
-    }
+const User = ({ user }: { user: OnlineUserProps }) => {
 
     return (
         <>
