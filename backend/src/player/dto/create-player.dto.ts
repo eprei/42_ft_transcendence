@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty } from 'class-validator'
+import { IsEmail, IsNotEmpty, Allow } from 'class-validator'
 
 export class CreatePlayerDto {
     id: number
@@ -10,6 +10,7 @@ export class CreatePlayerDto {
     @IsEmail()
     email: string
 
+	@Allow()
     avatarUrl: string
 
     nbVictory: number
