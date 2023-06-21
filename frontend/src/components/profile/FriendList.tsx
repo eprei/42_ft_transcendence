@@ -69,7 +69,7 @@ const FriendList = () => {
                     )
                 )}
             </div>
-            <div className={styles.subtitle}>Other users</div>
+            <h3>Other users</h3>
             <div className={styles.list}>
                 {otherUsersRecoveredFromBackend.map(
                     (otherUsersRecoveredFromBackend) => (
