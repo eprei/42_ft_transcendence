@@ -4,9 +4,7 @@ import styles from './Profile.module.css'
 const Profile = () => {
     return (
         <div className={styles.container}>
-            <div className={styles.profile}>
-                <MainProfile />
-            </div>
+            <MainProfile />
         </div>
     )
 }
