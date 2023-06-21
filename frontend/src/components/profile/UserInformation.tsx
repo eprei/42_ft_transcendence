@@ -43,8 +43,8 @@ const UserInformation: React.FC<UserInformation> = ({
                     </li>
                     <li>Level {level}</li>
                     <li>
-                        Two-factor authentication is{' '}
-                        {TFA ? 'activated ' : 'deactivated'}
+                        Two-factor authentication is
+                        {TFA ? ' activated ' : ' deactivated'}
                     </li>
                 </ul>
             </div>
