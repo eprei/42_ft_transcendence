@@ -6,30 +6,22 @@ import UserInformation from './UserInformation'
 import PicturePlaceHolder from '../../assets/img/profil-picture-placeholder.png'
 
 const MainProfile = () => {
-    return (
-        <div>
-            <div className={styles.container}>
-                <div className={styles.title}>Profile</div>
-                <div className={styles.body}>
-                    <div className={styles.bodyLeftSide}>
-                        <div>
-                            <UserInformation
-                                picture={PicturePlaceHolder}
-                                name="Name placeholder"
-                                level={42}
-                                TFA={true}
-                            />
-                        </div>
-                        <div>
-                            <Statistics />
-                        </div>
-                        <div>
-                            <SeeMatchHistoryBtn />
-                        </div>
-                    </div>
-                    <div className={styles.bodyRightSide}>
-                        <FriendList />
-                    </div>
+     return (
+        <div className={styles.container}>
+            <h1>Profile</h1>
+            <div className={styles.body}>
+                <div className={styles.bodyLeftSide}>
+                    <UserInformation
+                        picture={PicturePlaceHolder}
+                        name="Name placeholder"
+                        level={42}
+                        TFA={true}
+                    />
+                    <Statistics />
+                    <SeeMatchHistoryBtn />
+                </div>
+                <div className={styles.bodyRightSide}>
+                    <FriendList />
                 </div>
             </div>
         </div>
