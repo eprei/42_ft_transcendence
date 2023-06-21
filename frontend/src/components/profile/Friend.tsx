@@ -67,29 +67,25 @@ const Friend = ({ name, picture, status, isFriend }: FriendProps) => {
     }
 
     return (
-        <div className={styles.container}>
-            <span>
-                {isFriend ? (
+   <div className={styles.container}>
+            <div>
+                {
                     <ClickableIcon
-                        icon={IconRemoveFriend}
-                        onClick={removeFriend}
+                        icon={isFriend ? IconRemoveFriend : IconAddFriend}
+                        onClick={isFriend ? removeFriend : addFriend}
                     />
-                ) : (
-                    <ClickableIcon icon={IconAddFriend} onClick={addFriend} />
-                )}
-            </span>
-            <span
+                }
+            </div>
+            <div
                 className={styles.profilePicture}
                 style={profilePictureStyle}
-            ></span>
-            <span className={styles.nameAndStatus}>
-                <span className={styles.name}>{name}</span>
-                {isFriend ? (
-                    <span className={`${styles.status} ${statusColorClass}`}>
-                        {status}
-                    </span>
-                ) : null}
-            </span>
+            ></div>
+            <div className={styles.nameAndStatus}>
+                <h3>{name}</h3>
+                <p className={`${styles.status} ${statusColorClass}`}>
+                    {status}
+                </p>
+            </div>
         </div>
     )
 }
