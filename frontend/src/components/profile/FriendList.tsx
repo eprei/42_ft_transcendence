@@ -54,7 +54,7 @@ const otherUsersRecoveredFromBackend: FriendProps[] = [
 const FriendList = () => {
     return (
         <div className={styles.container}>
-            <div className={styles.subtitle}>Friend list</div>
+            <h3>Friend list</h3>
             <div className={styles.list}>
                 {friendsRecoveredFromBackend.map(
                     (friendsRecoveredFromBackend) => (
