@@ -13,31 +13,8 @@
     transform: scale(60%);
 }
 
-.name {
-    width: 43px;
-    height: 18px;
-
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 800;
-    font-size: 15px;
-    line-height: 18px;
-
-    color: #ffffff;
-
-    white-space: nowrap;
-}
-
 .status {
-    width: 34px;
-    height: 12px;
-
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 400;
     font-size: 10px;
-    line-height: 12px;
-
     color: var(--color-black-grey);
 }
 
@@ -47,6 +24,12 @@
     gap: 0.2rem;
 }
 
+.nameAndStatus h3 {
+    font-weight: 800;
+    font-size: 15px;
+    color: #ffffff;
+    white-space: nowrap;
+}
 .online {
     color: var(--color-purple);
 }
