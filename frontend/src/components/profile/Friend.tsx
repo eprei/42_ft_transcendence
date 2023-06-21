@@ -13,7 +13,7 @@ export interface FriendProps {
     isFriend: boolean
 }
 
-const Friend: React.FC<FriendProps> = ({ name, picture, status, isFriend }) => {
+const Friend = ({ name, picture, status, isFriend }: FriendProps) => {
     const getBorderColor = () => {
         if (!isFriend) return 'var(--color-black-grey)'
         switch (status) {
