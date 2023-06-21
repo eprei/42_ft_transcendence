@@ -3,15 +3,8 @@
     align-items: flex-start;
     flex-direction: column;
 }
-.subtitle {
-    display: flex;
-    justify-content: center;
-
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 800;
+.container h3 {
     font-size: 16px;
-    line-height: 18px;
 }
 
 .list {
