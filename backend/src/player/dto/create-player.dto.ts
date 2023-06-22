@@ -10,7 +10,7 @@ export class CreatePlayerDto {
     @IsEmail()
     email: string
 
-	@Allow()
+    @Allow()
     avatarUrl: string
 
     nbVictory: number

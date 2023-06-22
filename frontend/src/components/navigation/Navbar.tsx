@@ -1,8 +1,10 @@
 import styles from './Navbar.module.css'
 import { NavLink } from 'react-router-dom'
 import Logo from '../../assets/icon/42.svg'
+import { useAppSelector } from '../../store/types'
 
 const Navbar = () => {
+    const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn)
     return (
         <header>
             <nav className={styles.nav}>
@@ -11,52 +13,78 @@ const Navbar = () => {
                         <li>
                             <NavLink
                                 to="/"
-                                className={({ isActive }) =>
-                                    isActive ? styles.active : undefined
-                                }
+                                className={({
+                                    isActive,
+                                }: {
+                                    isActive: boolean
+                                }) => (isActive ? styles.active : undefined)}
                             >
                                 Cosmic Pong
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink
-                                to="/profile"
-                                className={({ isActive }) =>
-                                    isActive ? styles.active : undefined
-                                }
-                            >
-                                Profile
-                            </NavLink>
+                            {isLoggedIn && (
+                                <NavLink
+                                    to="/profile"
+                                    className={({
+                                        isActive,
+                                    }: {
+                                        isActive: boolean
+                                    }) =>
+                                        isActive ? styles.active : undefined
+                                    }
+                                >
+                                    Profile
+                                </NavLink>
+                            )}
                         </li>
                         <li>
-                            <NavLink
-                                to="/history"
-                                className={({ isActive }) =>
-                                    isActive ? styles.active : undefined
-                                }
-                            >
-                                Match history
-                            </NavLink>
+                            {isLoggedIn && (
+                                <NavLink
+                                    to="/history"
+                                    className={({
+                                        isActive,
+                                    }: {
+                                        isActive: boolean
+                                    }) =>
+                                        isActive ? styles.active : undefined
+                                    }
+                                >
+                                    Match history
+                                </NavLink>
+                            )}
                         </li>
                         <li>
-                            <NavLink
-                                to="/chat"
-                                className={({ isActive }) =>
-                                    isActive ? styles.active : undefined
-                                }
-                            >
-                                Chat
-                            </NavLink>
+                            {isLoggedIn && (
+                                <NavLink
+                                    to="/chat"
+                                    className={({
+                                        isActive,
+                                    }: {
+                                        isActive: boolean
+                                    }) =>
+                                        isActive ? styles.active : undefined
+                                    }
+                                >
+                                    Chat
+                                </NavLink>
+                            )}
                         </li>
                         <li>
-                            <NavLink
-                                to="/game"
-                                className={({ isActive }) =>
-                                    isActive ? styles.active : undefined
-                                }
-                            >
-                                Game
-                            </NavLink>
+                            {isLoggedIn && (
+                                <NavLink
+                                    to="/game"
+                                    className={({
+                                        isActive,
+                                    }: {
+                                        isActive: boolean
+                                    }) =>
+                                        isActive ? styles.active : undefined
+                                    }
+                                >
+                                    Game
+                                </NavLink>
+                            )}
                         </li>
                     </ul>
                 </div>

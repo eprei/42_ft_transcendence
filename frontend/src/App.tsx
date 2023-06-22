@@ -9,6 +9,7 @@ import Chat from './pages/Chat'
 import RootLayout from './RootLayout'
 import TempLogin from './pages/TempLogin'
 import ErrorPage from './components/error/Error'
+import ProtectedRoute from './ProtectedRoute'
 
 const router = createBrowserRouter([
     {
@@ -18,12 +19,50 @@ const router = createBrowserRouter([
         children: [
             { index: true, element: <Welcome /> },
             { path: 'signin', element: <SignIn /> },
-            { path: 'profile', element: <Profile /> },
-            { path: 'history', element: <MatchHistory /> },
-            { path: 'launcher', element: <GameLauncher /> },
-            { path: 'game', element: <Game /> },
-            { path: 'chat', element: <Chat /> },
-            { path: 'tmp', element: <TempLogin /> },
+            {
+                path: 'profile',
+                element: (
+                    <ProtectedRoute>
+                        <Profile />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: 'history',
+                element: (
+                    <ProtectedRoute>
+                        <MatchHistory />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: 'launcher',
+                element: (
+                    <ProtectedRoute>
+                        <GameLauncher />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: 'game',
+                element: (
+                    <ProtectedRoute>
+                        <Game />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: 'chat',
+                element: (
+                    <ProtectedRoute>
+                        <Chat />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: 'tmp',
+                element: <TempLogin />,
+            },
         ],
     },
 ])

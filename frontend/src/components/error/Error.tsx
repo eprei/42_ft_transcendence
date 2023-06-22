@@ -3,8 +3,8 @@ import styles from './Error.module.css'
 import ErrorDisplay from './ErrorDisplay'
 
 const ErrorPage = () => {
-    const title = '404'
-    const text = "This page doesn't exists."
+    let title = '404'
+    let text = "This page doesn't exist."
     return (
         <>
             <Navbar></Navbar>
