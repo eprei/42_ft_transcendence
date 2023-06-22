@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport'
 import { Strategy } from 'passport-oauth2';
 import { AuthService } from './auth.service';
@@ -16,9 +16,13 @@ export class Auth42Strategy extends PassportStrategy(Strategy, '42') {
     });
   }
 
-  async validate(accessToken: string, profile: any, done: Function) {
+  async validate(accessToken: string, profile: any, done: Function): Promise<any> {
     // create new user if he doesn't exist, generate JWT etc
     const user_profile = await this.getUserProfile(accessToken);
+    if (!user_profile) {
+      throw new UnauthorizedException();
+    }
+    // console.log(user_profile); remove after debugging
     return user_profile;
   }
   
@@ -30,7 +34,7 @@ export class Auth42Strategy extends PassportStrategy(Strategy, '42') {
         });
 
         console.log(`Response status: ${res.status}`);
-        // console.log(`Response body: ${await res.text()}`); UNSAFE, only use to debug
+        // console.log(`Response body: ${await res.text()}`);
 
         if (!res.ok) {
             throw new Error('Failed to fetch user profile from 42 API: ${res.status}');
