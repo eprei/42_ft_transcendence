@@ -10,12 +10,7 @@ interface UserInformation {
     TFA: boolean
 }
 
-const UserInformation: React.FC<UserInformation> = ({
-    picture,
-    name,
-    level,
-    TFA,
-}) => {
+const UserInformation = ({ picture, name, level, TFA }: UserInformation) => {
     const profilePictureStyle = {
         backgroundImage: `url(${picture})`,
         backgroundSize: 'cover',
