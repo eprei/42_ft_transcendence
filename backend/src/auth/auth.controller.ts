@@ -15,4 +15,13 @@ export class AuthController {
 
         return req.user;
     }
+
+    @Get('status')
+    getStatus(@Req() req) {
+        if (req.user) {
+            return { status: 'success', user: req.user };
+        } else {
+            return { status: 'error', message: 'Not authenticated' };
+        }
+    }
 }
