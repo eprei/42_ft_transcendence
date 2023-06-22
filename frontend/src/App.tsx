@@ -1,5 +1,4 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import Welcome from './pages/Welcome'
 import SignIn from './pages/SignIn'
 import Profile from './pages/Profile'
 import MatchHistory from './pages/MatchHistory'
