@@ -76,13 +76,13 @@ function App() {
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
-                    dispatchEvent(authActions.setAuthStatus(true));
+                    dispatch(authActions.setAuthStatus(true));
                 } else {
-                    dispatchEvent(authActions.setAuthStatus(false));
+                    dispatch(authActions.setAuthStatus(false));
                 }
             })
     }, [dispatch]);
-    
+
     return (
         <div>
             <RouterProvider router={router} />
