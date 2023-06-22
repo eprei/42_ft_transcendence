@@ -10,14 +10,6 @@ const Navbar = () => {
             <nav className={styles.nav}>
                 <div className={styles.container}>
                     <div className={styles.leftcontainer}>
-                    {isLoggedIn && (<NavLink
-                            to="/"
-                            className={({ isActive }) =>
-                                isActive ? styles.active : undefined
-                            }
-                        >
-                            Sign in
-                        </NavLink>)}
                         {isLoggedIn && (<NavLink
                             to="/profile"
                             className={({ isActive }) =>
