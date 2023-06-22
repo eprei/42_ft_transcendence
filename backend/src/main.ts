@@ -13,6 +13,7 @@ async function bootstrap() {
         origin: 'http://localhost:4040',
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
         allowedHeaders: 'Content-Type, Accept',
+        credentials: true,
     }
     app.setGlobalPrefix('api')
     app.useGlobalPipes(
@@ -26,7 +27,11 @@ async function bootstrap() {
             secret: 'keyboard cat', // this will be changed later by an environment variable or other more secure method
             resave: false,
             saveUninitialized: false,
-            cookie: { maxAge: 3600000 },
+            cookie: { 
+                maxAge: 3600000,
+                sameSite: 'none',
+                secure: false,
+            },
         }),
     );
     app.use(passport.initialize());

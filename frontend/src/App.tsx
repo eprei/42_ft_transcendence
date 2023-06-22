@@ -72,9 +72,10 @@ function App() {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        fetch('http://localhost:8080/api/auth/status')
+        fetch('http://localhost:8080/api/auth/status', { credentials: 'include'})
             .then(response => response.json())
             .then(data => {
+                console.log("data recevied: ");
                 if (data.status === 'success') {
                     dispatch(authActions.login());
                 } else {
