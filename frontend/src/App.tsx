@@ -72,13 +72,13 @@ function App() {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        fetch('http://localhost:8080/auth/status')
+        fetch('http://localhost:8080/api/auth/status')
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
-                    dispatch(authActions.setAuthStatus(true));
+                    dispatch(authActions.login());
                 } else {
-                    dispatch(authActions.setAuthStatus(false));
+                    dispatch(authActions.logout());
                 }
             })
     }, [dispatch]);
