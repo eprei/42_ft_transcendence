@@ -23,8 +23,6 @@ const Friend = ({ name, picture, status, isFriend }: FriendProps) => {
                 return 'var(--color-black-grey)'
             case 'playing':
                 return 'var(--color-mid-green)'
-            default:
-                return 'var(--color-white)'
         }
     }
 
