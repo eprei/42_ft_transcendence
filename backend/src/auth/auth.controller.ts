@@ -1,4 +1,4 @@
-import { UseGuards, Req, Get } from '@nestjs/common';
+import { UseGuards, Req, Res, Get } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Controller } from '@nestjs/common';
 
@@ -10,8 +10,9 @@ export class AuthController {
 
     @Get('42/redirect')
     @UseGuards(AuthGuard('42'))
-    loginRedirect(@Req() req) {
-        //return jwt and redirect to frontend
+    loginRedirect(@Req() req, @Res() res) {
+        res.redirect('http://localhost:4040/profile');
+
         return req.user;
     }
 }
