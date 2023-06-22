@@ -10,46 +10,46 @@ const Navbar = () => {
             <nav className={styles.nav}>
                 <div className={styles.container}>
                     <div className={styles.leftcontainer}>
-                        {/* <NavLink
+                    {isLoggedIn && (<NavLink
                             to="/"
                             className={({ isActive }) =>
                                 isActive ? styles.active : undefined
                             }
                         >
                             Sign in
-                        </NavLink> */}
-                        <NavLink
+                        </NavLink>)}
+                        {isLoggedIn && (<NavLink
                             to="/profile"
                             className={({ isActive }) =>
                                 isActive ? styles.active : undefined
                             }
                         >
                             Profile
-                        </NavLink>
-                        <NavLink
+                        </NavLink>)}
+                        {isLoggedIn && (<NavLink
                             to="/history"
                             className={({ isActive }) =>
                                 isActive ? styles.active : undefined
                             }
                         >
                             Match history
-                        </NavLink>
-                        <NavLink
+                        </NavLink>)}
+                        {isLoggedIn && (<NavLink
                             to="/chat"
                             className={({ isActive }) =>
                                 isActive ? styles.active : undefined
                             }
                         >
                             Chat
-                        </NavLink>
-                        <NavLink
+                        </NavLink>)}
+                        {isLoggedIn && (<NavLink
                             to="/game"
                             className={({ isActive }) =>
                                 isActive ? styles.active : undefined
                             }
                         >
                             Game
-                        </NavLink>
+                        </NavLink>)}
                     </div>
                     <div className={styles.rightContainer}>
                         <div className={styles.imgContainer}>
