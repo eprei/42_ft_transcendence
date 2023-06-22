@@ -3,7 +3,7 @@ import styles from './SignInBtn.module.css'
 
 const SigneInBtn = () => {
     return (
-        <Link to="/signin" className={styles.btn}>
+        <Link to="/profile" className={styles.btn}>
             Sign in
         </Link>
     )
