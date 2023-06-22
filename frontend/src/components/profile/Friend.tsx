@@ -57,7 +57,7 @@ const Friend = ({ name, picture, status, isFriend }: FriendProps) => {
     }
 
     const addFriend = () => {
-        // function to be developed
+        // TODO addFriend backend side
         console.log('Friend added')
     }
 
