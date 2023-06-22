@@ -9,15 +9,15 @@ const Navbar = () => {
         <header>
             <nav className={styles.nav}>
                 <div className={styles.container}>
-                    <div className={styles.containers}>
-                        <NavLink
+                    <div className={styles.leftcontainer}>
+                        {/* <NavLink
                             to="/"
                             className={({ isActive }) =>
                                 isActive ? styles.active : undefined
                             }
                         >
-                            Cosmic Pong
-                        </NavLink>
+                            Sign in
+                        </NavLink> */}
                         <NavLink
                             to="/profile"
                             className={({ isActive }) =>
@@ -51,7 +51,7 @@ const Navbar = () => {
                             Game
                         </NavLink>
                     </div>
-                    <div className={styles.containers}>
+                    <div className={styles.rightContainer}>
                         <div className={styles.imgContainer}>
                             <a href="https://42lausanne.ch/" target="_blank">
                                 <img src={Logo} alt="42 logo" />
