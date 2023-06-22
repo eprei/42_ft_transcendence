@@ -6,7 +6,7 @@ import UserInformation from './UserInformation'
 import PicturePlaceHolder from '../../assets/img/profil-picture-placeholder.png'
 
 const MainProfile = () => {
-     return (
+    return (
         <div className={styles.container}>
             <h1>Profile</h1>
             <div className={styles.body}>

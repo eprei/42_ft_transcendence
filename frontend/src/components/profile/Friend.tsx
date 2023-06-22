@@ -67,7 +67,7 @@ const Friend = ({ name, picture, status, isFriend }: FriendProps) => {
     }
 
     return (
-   <div className={styles.container}>
+        <div className={styles.container}>
             <div>
                 {
                     <ClickableIcon
