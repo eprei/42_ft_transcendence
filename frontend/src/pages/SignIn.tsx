@@ -1,5 +1,7 @@
+import MainSection from '../components/welcome/MainSection'
+
 const Product = () => {
-    return <h1>Sign in</h1>
+    return <MainSection></MainSection>
 }
 
 export default Product
