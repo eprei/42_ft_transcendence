@@ -7,11 +7,7 @@ interface StatisticElement {
     number: number
 }
 
-const StatisticElement: React.FC<StatisticElement> = ({
-    icon,
-    text,
-    number,
-}) => {
+const StatisticElement = ({ icon, text, number }: StatisticElement) => {
     return (
         <div className={styles.container}>
             <img src={icon} alt="Icon" className={styles.icon} />
