@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
-import styles from './WelcomeBtn.module.css'
+import styles from './SignInBtn.module.css'
 
-const WelcomeBtn = () => {
+const SigneInBtn = () => {
     return (
         <Link to="/signin" className={styles.btn}>
             Sign in
@@ -9,4 +9,4 @@ const WelcomeBtn = () => {
     )
 }
 
-export default WelcomeBtn
+export default SigneInBtn
