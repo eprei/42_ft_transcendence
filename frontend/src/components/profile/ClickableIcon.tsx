@@ -6,7 +6,7 @@ interface ClickableIconProps {
     onClick?: () => void
 }
 
-const ClickableIcon: React.FC<ClickableIconProps> = ({ icon, onClick }) => {
+const ClickableIcon = ({ icon, onClick }: ClickableIconProps) => {
     const handleIconClick = () => {
         if (onClick) {
             onClick()
