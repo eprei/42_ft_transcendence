@@ -10,38 +10,46 @@ const Navbar = () => {
             <nav className={styles.nav}>
                 <div className={styles.container}>
                     <div className={styles.leftcontainer}>
-                        {isLoggedIn && (<NavLink
-                            to="/profile"
-                            className={({ isActive }) =>
-                                isActive ? styles.active : undefined
-                            }
-                        >
-                            Profile
-                        </NavLink>)}
-                        {isLoggedIn && (<NavLink
-                            to="/history"
-                            className={({ isActive }) =>
-                                isActive ? styles.active : undefined
-                            }
-                        >
-                            Match history
-                        </NavLink>)}
-                        {isLoggedIn && (<NavLink
-                            to="/chat"
-                            className={({ isActive }) =>
-                                isActive ? styles.active : undefined
-                            }
-                        >
-                            Chat
-                        </NavLink>)}
-                        {isLoggedIn && (<NavLink
-                            to="/game"
-                            className={({ isActive }) =>
-                                isActive ? styles.active : undefined
-                            }
-                        >
-                            Game
-                        </NavLink>)}
+                        {isLoggedIn && (
+                            <NavLink
+                                to="/profile"
+                                className={({ isActive }) =>
+                                    isActive ? styles.active : undefined
+                                }
+                            >
+                                Profile
+                            </NavLink>
+                        )}
+                        {isLoggedIn && (
+                            <NavLink
+                                to="/history"
+                                className={({ isActive }) =>
+                                    isActive ? styles.active : undefined
+                                }
+                            >
+                                Match history
+                            </NavLink>
+                        )}
+                        {isLoggedIn && (
+                            <NavLink
+                                to="/chat"
+                                className={({ isActive }) =>
+                                    isActive ? styles.active : undefined
+                                }
+                            >
+                                Chat
+                            </NavLink>
+                        )}
+                        {isLoggedIn && (
+                            <NavLink
+                                to="/game"
+                                className={({ isActive }) =>
+                                    isActive ? styles.active : undefined
+                                }
+                            >
+                                Game
+                            </NavLink>
+                        )}
                     </div>
                     <div className={styles.rightContainer}>
                         <div className={styles.imgContainer}>

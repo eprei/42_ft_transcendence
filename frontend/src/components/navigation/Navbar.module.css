@@ -1,7 +1,6 @@
 .nav {
     height: 5rem;
     background-color: rgba(0, 0, 0, 0.7);
-    /* border: 1px solid red; */
 }
 
 .container {
@@ -11,8 +10,6 @@
     display: grid;
     grid-template-columns: 2fr 1fr;
     align-items: center;
-    /* border: 1px solid red; */
-
 }
 
 .leftcontainer {
@@ -22,7 +19,6 @@
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
-    /* border: 1px solid red; */
 }
 
 .rightContainer {
@@ -34,7 +30,6 @@
 .imgContainer {
     background-image: url('42.svg');
     width: 70px;
-    /* border: 1px solid red; */
 }
 .nav ul {
     display: flex;
