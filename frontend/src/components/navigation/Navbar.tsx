@@ -8,90 +8,56 @@ const Navbar = () => {
     return (
         <header>
             <nav className={styles.nav}>
-                <div className={styles.containers}>
-                    <ul>
-                        <li>
-                            <NavLink
-                                to="/"
-                                className={({
-                                    isActive,
-                                }: {
-                                    isActive: boolean
-                                }) => (isActive ? styles.active : undefined)}
-                            >
-                                Cosmic Pong
-                            </NavLink>
-                        </li>
-                        <li>
-                            {isLoggedIn && (
-                                <NavLink
-                                    to="/profile"
-                                    className={({
-                                        isActive,
-                                    }: {
-                                        isActive: boolean
-                                    }) =>
-                                        isActive ? styles.active : undefined
-                                    }
-                                >
-                                    Profile
-                                </NavLink>
-                            )}
-                        </li>
-                        <li>
-                            {isLoggedIn && (
-                                <NavLink
-                                    to="/history"
-                                    className={({
-                                        isActive,
-                                    }: {
-                                        isActive: boolean
-                                    }) =>
-                                        isActive ? styles.active : undefined
-                                    }
-                                >
-                                    Match history
-                                </NavLink>
-                            )}
-                        </li>
-                        <li>
-                            {isLoggedIn && (
-                                <NavLink
-                                    to="/chat"
-                                    className={({
-                                        isActive,
-                                    }: {
-                                        isActive: boolean
-                                    }) =>
-                                        isActive ? styles.active : undefined
-                                    }
-                                >
-                                    Chat
-                                </NavLink>
-                            )}
-                        </li>
-                        <li>
-                            {isLoggedIn && (
-                                <NavLink
-                                    to="/game"
-                                    className={({
-                                        isActive,
-                                    }: {
-                                        isActive: boolean
-                                    }) =>
-                                        isActive ? styles.active : undefined
-                                    }
-                                >
-                                    Game
-                                </NavLink>
-                            )}
-                        </li>
-                    </ul>
-                </div>
-                <div className={styles.containers}>
-                    <a href="https://42lausanne.ch/" target="_blank">
-                        <img src={Logo} alt="42 logo" />
-                    </a>
+                <div className={styles.container}>
+                    <div className={styles.containers}>
+                        <NavLink
+                            to="/"
+                            className={({ isActive }) =>
+                                isActive ? styles.active : undefined
+                            }
+                        >
+                            Cosmic Pong
+                        </NavLink>
+                        <NavLink
+                            to="/profile"
+                            className={({ isActive }) =>
+                                isActive ? styles.active : undefined
+                            }
+                        >
+                            Profile
+                        </NavLink>
+                        <NavLink
+                            to="/history"
+                            className={({ isActive }) =>
+                                isActive ? styles.active : undefined
+                            }
+                        >
+                            Match history
+                        </NavLink>
+                        <NavLink
+                            to="/chat"
+                            className={({ isActive }) =>
+                                isActive ? styles.active : undefined
+                            }
+                        >
+                            Chat
+                        </NavLink>
+                        <NavLink
+                            to="/game"
+                            className={({ isActive }) =>
+                                isActive ? styles.active : undefined
+                            }
+                        >
+                            Game
+                        </NavLink>
+                    </div>
+                    <div className={styles.containers}>
+                        <div className={styles.imgContainer}>
+                            <a href="https://42lausanne.ch/" target="_blank">
+                                <img src={Logo} alt="42 logo" />
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </nav>
         </header>

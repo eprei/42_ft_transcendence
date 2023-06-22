@@ -1,15 +1,19 @@
 .nav {
     min-height: 5rem;
-    width: 100%;
     background-color: rgba(0, 0, 0, 0.7);
-    margin-bottom: 1rem;
+}
+
+.container {
+    height: inherit;
+    max-width: 1200px;
+    margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
 }
 
-.container {
-    width: 100%;
+.containers {
+    max-width: 100%;
     height: 100%;
     display: flex;
     flex-direction: row;
@@ -24,11 +28,14 @@
     list-style: none;
 }
 
-.nav img {
-    max-width: 55px;
-    position: absolute;
-    right: 3rem;
-    top: 22px;
+
+.imgContainer {
+    background-image: url('42.svg');
+    height: 50px;
+    width: 50px;
+    /* background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover; */
 }
 
 .active {
@@ -37,7 +44,6 @@
 
 a {
     color: var(--color-white);
-    font-family: Inter;
     font-size: 20px;
     font-weight: 600;
     line-height: 20px;
