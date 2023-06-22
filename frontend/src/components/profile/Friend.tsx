@@ -32,7 +32,7 @@ const Friend = ({ name, picture, status, isFriend }: FriendProps) => {
                 return '100%'
             case 'playing':
                 return '100%'
-            default:
+            case 'offline':
                 return '70%'
         }
     }
