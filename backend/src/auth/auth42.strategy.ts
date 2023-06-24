@@ -12,18 +12,21 @@ export class Auth42Strategy extends PassportStrategy(Strategy, '42') {
       tokenURL: 'https://api.intra.42.fr/oauth/token',
       clientID: process.env.FORTYTWO_APP_ID,
       clientSecret: process.env.FORTYTWO_APP_SECRET,
-      callbackURL: 'http://localhost:8080/api/auth/42/redirect'
+      callbackURL: 'http://localhost:8080/api/auth/42/redirect',
+      passReqToCallback: true
     });
   }
 
   async validate(accessToken: string, profile: any, done: Function): Promise<any> {
     // create new user if he doesn't exist, generate JWT etc
-    const user_profile = await this.getUserProfile(accessToken);
-    if (!user_profile) {
-      throw new UnauthorizedException();
-    }
+    console.log("default profile: ", profile);
+    // const user_profile = await this.getUserProfile(accessToken);
+    // if (!profile {
+    //   throw new UnauthorizedException();
+    // }
     // console.log(user_profile); remove after debugging
-    return user_profile;
+    // console.log("User Profile: ", user_profile.id);
+    return profile;
   }
   
   private async getUserProfile(accessToken: string): Promise<any> {
