@@ -19,10 +19,10 @@ const Friend = ({ name, picture, status, isFriend }: FriendProps) => {
         switch (status) {
             case 'online':
                 return 'var(--color-purple)'
-            case 'offline':
-                return 'var(--color-black-grey)'
             case 'playing':
                 return 'var(--color-mid-green)'
+            case 'offline':
+                return 'var(--color-black-grey)'
         }
     }
 
