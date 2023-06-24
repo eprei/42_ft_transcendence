@@ -17,7 +17,7 @@ const UserInformation = ({ picture, name, level, TFA }: UserInformation) => {
     }
 
     const editProfile = () => {
-        // function to be developed
+        // TODO implement this functionality in both the frontend and the backend
         console.log('Edit Profile')
     }
 

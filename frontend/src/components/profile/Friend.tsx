@@ -60,7 +60,7 @@ const Friend = ({ name, picture, status, isFriend }: FriendProps) => {
     }
 
     const removeFriend = () => {
-        // function to be developed
+        // TODO removeFriend backend side
         console.log('Friend removed')
     }
 
