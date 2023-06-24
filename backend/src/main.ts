@@ -12,7 +12,7 @@ async function bootstrap() {
     const corsOptions: CorsOptions = {
         origin: 'http://localhost:4040',
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-        allowedHeaders: 'Content-Type, Accept',
+        allowedHeaders: 'Content-Type, Accept, Cookie, Set-Cookie',
         credentials: true,
     }
     app.setGlobalPrefix('api')
@@ -30,14 +30,21 @@ async function bootstrap() {
             cookie: { 
                 maxAge: 3600000,
                 sameSite: 'none',
+                httpOnly: true,
                 secure: false,
             },
         }),
     );
     app.use(passport.initialize());
     app.use(passport.session());
+    app.use((req, res, next) => { console.log(req.sessionID); next(); });
+    app.use((req, res, next) => {
+        console.log('Session: ', req.session);
+        next();
+    });
+    
 
     await app.listen(3000)
 }
 
-bootstrap()
+bootstrap().catch((error) => console.error(error));
