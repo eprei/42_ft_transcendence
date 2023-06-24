@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common'
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { TypeOrmModule } from '@nestjs/typeorm'
@@ -17,6 +17,7 @@ import { AuthModule } from './auth/auth.module'
 import { PongModule } from './pong/pong.module'
 import { AuthenticatedGuard } from './auth/guards/authenticated.guard'
 import { APP_GUARD } from '@nestjs/core'
+import { ResponseLoggingMiddleware } from './middlewares/response-logging.middleware'
 
 @Module({
     imports: [
@@ -46,4 +47,9 @@ import { APP_GUARD } from '@nestjs/core'
         },
     ],
 })
-export class AppModule {}
+
+export class AppModule implements NestModule {
+	configure(consumer: MiddlewareConsumer) {
+	  consumer.apply(ResponseLoggingMiddleware).forRoutes('*');
+	}
+}
