@@ -9,4 +9,4 @@ const SeeMatchHistoryBtn = () => {
     )
 }
 
-export default SeeMatchHistory
+export default SeeMatchHistoryBtn
