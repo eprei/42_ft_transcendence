@@ -11,7 +11,10 @@ export class AuthController {
     @Get('42/redirect')
     @UseGuards(AuthGuard('42'))
     loginRedirect(@Req() req, @Res() res) {
+        console.log('User: ', req.user);
+        console.log('Session: ', req.session);
         res.redirect('http://localhost:4040/profile');
+        console.log("Response headers:", res.getHeaders());
 
         return req.user;
     }
