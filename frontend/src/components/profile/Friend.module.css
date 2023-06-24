@@ -27,7 +27,7 @@
 .nameAndStatus h3 {
     font-weight: 800;
     font-size: 15px;
-    color: white;
+    color: var(--color-white);
     white-space: nowrap;
 }
 .online {
