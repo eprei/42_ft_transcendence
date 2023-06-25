@@ -1,5 +1,5 @@
 import styles from './Game.module.css'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const Game = () => {
     const [frame, setFrame] = useState({
@@ -15,7 +15,9 @@ const Game = () => {
         },
     })
 
-    console.log(frame)
+    useEffect(() => {
+        console.log(frame)
+    }, [frame])
 
     return (
         <>
