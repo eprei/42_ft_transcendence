@@ -1,6 +1,16 @@
 import styles from './Game.module.css'
 import { useState, useEffect } from 'react'
 
+function drawRectangle(ctx: CanvasRenderingContext2D, rectangle): void {
+    ctx.fillStyle = 'green'
+    ctx.fillRect(
+        rectangle.position.x,
+        rectangle.position.y,
+        rectangle.size.width,
+        rectangle.size.height
+    )
+}
+
 const Game = () => {
     const [frame, setFrame] = useState({
         paddle: {
@@ -24,13 +34,8 @@ const Game = () => {
             // TODO manage error
         }
         let ctx: CanvasRenderingContext2D = canvas.getContext('2d')
-        ctx.fillStyle = 'green'
-        ctx.fillRect(
-            frame.paddle.position.x,
-            frame.paddle.position.y,
-            frame.paddle.size.width,
-            frame.paddle.size.height
-        )
+
+        drawRectangle(ctx, frame.paddle)
 
         console.log(JSON.stringify(frame))
     }, [frame])
