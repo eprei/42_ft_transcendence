@@ -16,13 +16,29 @@ const Game = () => {
     })
 
     useEffect(() => {
+        let canvas: HTMLCanvasElement | null = document.getElementById(
+            'boardGame'
+        ) as HTMLCanvasElement
+        if (canvas === null) {
+            console.log('fail get canvas element')
+            // TODO manage error
+        }
+        let ctx: CanvasRenderingContext2D = canvas.getContext('2d')
+        ctx.fillStyle = 'green'
+        ctx.fillRect(
+            frame.paddle.position.x,
+            frame.paddle.position.y,
+            frame.paddle.size.width,
+            frame.paddle.size.height
+        )
+
         console.log(JSON.stringify(frame))
     }, [frame])
 
     return (
         <>
             <h1>The Game</h1>
-            <canvas className={styles.boarGame}></canvas>
+            <canvas id="boardGame" className={styles.boarGame}></canvas>
         </>
     )
 }
