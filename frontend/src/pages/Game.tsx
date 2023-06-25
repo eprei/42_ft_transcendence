@@ -12,6 +12,10 @@ function drawRectangle(ctx: CanvasRenderingContext2D, rectangle): void {
 }
 
 const Game = () => {
+    const PADDLE_WIDTH: number = 10
+    const PADDLE_HEIGHT: number = 50
+    const BALL_SIZE: number = 10
+
     const [frame, setFrame] = useState({
         paddle1: {
             position: {
@@ -19,8 +23,8 @@ const Game = () => {
                 y: 20,
             },
             size: {
-                width: 10,
-                height: 50,
+                width: PADDLE_WIDTH,
+                height: PADDLE_HEIGHT,
             },
         },
         paddle2: {
@@ -29,8 +33,8 @@ const Game = () => {
                 y: 20,
             },
             size: {
-                width: 10,
-                height: 50,
+                width: PADDLE_WIDTH,
+                height: PADDLE_HEIGHT,
             },
         },
         ball: {
@@ -39,8 +43,8 @@ const Game = () => {
                 y: 50,
             },
             size: {
-                width: 10,
-                height: 10,
+                width: BALL_SIZE,
+                height: BALL_SIZE,
             },
         },
     })
