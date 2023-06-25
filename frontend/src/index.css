@@ -16,6 +16,10 @@
     --color-light-green: #73d9cf;
     --color-white: #f4fefd;
     --color-purple: #aa6ec9;
+    --color-black-transparent: #091522a4;
+    --color-black-grey: rgba(140, 140, 140, 100);
+
+    --size-picture-profile: 50px;
 }
 
 html {
