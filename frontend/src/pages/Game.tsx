@@ -2,7 +2,7 @@ import styles from './Game.module.css'
 import { useState, useEffect } from 'react'
 
 function drawRectangle(ctx: CanvasRenderingContext2D, rectangle): void {
-    ctx.fillStyle = 'green'
+    ctx.fillStyle = 'white'
     ctx.fillRect(
         rectangle.position.x,
         rectangle.position.y,
