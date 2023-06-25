@@ -1,5 +1,5 @@
 import styles from './MainSection.module.css'
-import WelcomeBtn from './WelcomeBtn'
+import SignInBtn from './SignInBtn'
 
 const MainSection = () => {
     return (
@@ -9,7 +9,7 @@ const MainSection = () => {
                 The coolest way to play pong and test our skills as developers
                 at the same time
             </p>
-            <WelcomeBtn></WelcomeBtn>
+            <SignInBtn></SignInBtn>
         </div>
     )
 }

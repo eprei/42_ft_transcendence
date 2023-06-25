@@ -1,5 +1,4 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import Welcome from './pages/Welcome'
 import SignIn from './pages/SignIn'
 import Profile from './pages/Profile'
 import MatchHistory from './pages/MatchHistory'
@@ -17,8 +16,7 @@ const router = createBrowserRouter([
         element: <RootLayout />,
         errorElement: <ErrorPage />,
         children: [
-            { index: true, element: <Welcome /> },
-            { path: 'signin', element: <SignIn /> },
+            { index: true, element: <SignIn /> },
             {
                 path: 'profile',
                 element: (
