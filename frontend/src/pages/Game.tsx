@@ -16,7 +16,7 @@ const Game = () => {
     })
 
     useEffect(() => {
-        console.log(frame)
+        console.log(JSON.stringify(frame))
     }, [frame])
 
     return (
