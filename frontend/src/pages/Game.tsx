@@ -13,7 +13,7 @@ function drawRectangle(ctx: CanvasRenderingContext2D, rectangle): void {
 
 const Game = () => {
     const [frame, setFrame] = useState({
-        paddle: {
+        paddle1: {
             position: {
                 x: 10,
                 y: 20,
@@ -21,6 +21,26 @@ const Game = () => {
             size: {
                 width: 10,
                 height: 50,
+            },
+        },
+        paddle2: {
+            position: {
+                x: 280,
+                y: 20,
+            },
+            size: {
+                width: 10,
+                height: 50,
+            },
+        },
+        ball: {
+            position: {
+                x: 50,
+                y: 50,
+            },
+            size: {
+                width: 10,
+                height: 10,
             },
         },
     })
@@ -35,7 +55,9 @@ const Game = () => {
         }
         let ctx: CanvasRenderingContext2D = canvas.getContext('2d')
 
-        drawRectangle(ctx, frame.paddle)
+        drawRectangle(ctx, frame.paddle1)
+        drawRectangle(ctx, frame.paddle2)
+        drawRectangle(ctx, frame.ball)
 
         console.log(JSON.stringify(frame))
     }, [frame])
