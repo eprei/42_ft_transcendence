@@ -9,4 +9,4 @@ const SignInBtn = () => {
     )
 }
 
-export default SigneInBtn
+export default SignInBtn
