@@ -18,7 +18,7 @@ import { AuthModule } from './auth/auth.module'
             entities: [Player],
         }),
         PlayerModule,
-        AuthModule
+        AuthModule,
     ],
     controllers: [AppController],
     providers: [AppService],

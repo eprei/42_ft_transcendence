@@ -69,31 +69,34 @@ const router = createBrowserRouter([
 ])
 
 function App() {
-    const dispatch = useAppDispatch();
-  
+    const dispatch = useAppDispatch()
+
     useEffect(() => {
-      async function fetchData() {
-        try {
-          const response = await fetch('http://localhost:8080/api/auth/status', { credentials: 'include' });
-          const data = await response.json();
-          console.log("data received: ", data);
-          if (data.status === 'success') {
-            dispatch(authActions.login());
-          } else {
-            dispatch(authActions.logout());
-          }
-        } catch (error) {
-          console.error("Error fetching data: ", error);
+        async function fetchData() {
+            try {
+                const response = await fetch(
+                    'http://localhost:8080/api/auth/status',
+                    { credentials: 'include' }
+                )
+                const data = await response.json()
+                console.log('data received: ', data)
+                if (data.status === 'success') {
+                    dispatch(authActions.login())
+                } else {
+                    dispatch(authActions.logout())
+                }
+            } catch (error) {
+                console.error('Error fetching data: ', error)
+            }
         }
-      }
-      fetchData();
-    }, [dispatch]);
-  
+        fetchData()
+    }, [dispatch])
+
     return (
-      <div>
-        <RouterProvider router={router} />
-      </div>
+        <div>
+            <RouterProvider router={router} />
+        </div>
     )
-  }
+}
 
 export default App
