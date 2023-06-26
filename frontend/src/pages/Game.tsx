@@ -1,4 +1,4 @@
-import BoardGame from './../components/Pong/BoardGame'
+import BoardGame from './../components/pong/BoardGame'
 
 const Game = () => {
     return (
