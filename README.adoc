@@ -7,6 +7,7 @@ Final project of the common core of school 42
 * https://react.dev/[React] + https://vitejs.dev/[ViteJS]
 * https://nestjs.com/[NestJS]
 * https://www.docker.com/[Docker]
+* https://typeorm.io/[TypeORM]
 
 == Contributors
 
