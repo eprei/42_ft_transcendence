@@ -5,7 +5,7 @@ import { AuthService } from './auth.service';
 import { access } from 'fs/promises';
 
 @Injectable()
-export class Auth42Strategy extends PassportStrategy(Strategy, '42') {
+export class Auth42Strategy extends PassportStrategy(Strategy, 'oauth') {
   constructor(private authService: AuthService) {
     super({
       authorizationURL: 'https://api.intra.42.fr/oauth/authorize',
@@ -18,7 +18,6 @@ export class Auth42Strategy extends PassportStrategy(Strategy, '42') {
   }
 
   async validate(accessToken: string, profile: any, done: Function): Promise<any> {
-    // create new user if he doesn't exist, generate JWT etc
     console.log("default profile: ", profile);
     // const user_profile = await this.getUserProfile(accessToken);
     // if (!profile {
