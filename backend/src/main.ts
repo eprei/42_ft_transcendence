@@ -8,20 +8,22 @@ import * as passport from 'passport'
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule)
+    
+    app.setGlobalPrefix('api')
 
-    const corsOptions: CorsOptions = {
+    app.enableCors({
         origin: 'http://localhost:4040',
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
         allowedHeaders: 'Content-Type, Accept, Cookie, Set-Cookie',
         credentials: true,
-    }
-    app.setGlobalPrefix('api')
+    });
+    
     app.useGlobalPipes(
         new ValidationPipe({
             whitelist: true,
         })
     )
-    app.enableCors(corsOptions)
+
     app.use(
         session({
             secret: 'keyboard cat', // this will be changed later by an environment variable or other more secure method
