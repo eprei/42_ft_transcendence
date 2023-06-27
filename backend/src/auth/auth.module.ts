@@ -3,10 +3,11 @@ import { PassportModule } from '@nestjs/passport'
 import { AuthController } from './auth.controller'
 import { Auth42Strategy } from './auth42.strategy'
 import { SessionSerializer } from './session.serializer'
+import { AuthService } from './auth.service'
 
 @Module({
     imports: [PassportModule.register({ session: true })],
     controllers: [AuthController],
-    providers: [Auth42Strategy, SessionSerializer],
+    providers: [AuthService, Auth42Strategy, SessionSerializer],
 })
 export class AuthModule {}
