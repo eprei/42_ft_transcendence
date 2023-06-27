@@ -6,25 +6,23 @@
 
 [plantuml, target=assets/authentification, format=svg, width=100%]
 ....
+title Sign In Button Click Event
+
 participant client
 participant backend
 participant "42\nAPI" as 42api
 
-client -> backend : pressed sign-in
-note right
-/api/auth/42
-end note
+?-> client : Sign In\nButton Clicked
+
+client -> backend : GET /api/auth/42
 
 hnote over backend : passport start
 
 backend -> 42api
 42api -> client : send a validation page
 client -> 42api : validate
-42api -> backend : code authentification
-note left
-/api/auth/42/redirect
-end note
-backend --> 42api : post request\n""API: UUID""\nAPI: secret\ncode
+42api -> backend : POST /api/auth/42/redirect\ncode authentification
+backend --> 42api : POST\n""API: UUID""\nAPI: secret\ncode
 42api -> backend : token of 42 user
 
 hnote over backend : passport validate()
