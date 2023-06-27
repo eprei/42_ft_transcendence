@@ -8,6 +8,7 @@ Final project of the common core of school 42
 * https://nestjs.com/[NestJS]
 * https://www.docker.com/[Docker]
 * https://typeorm.io/[TypeORM]
+* https://www.typescriptlang.org/[TypeScript]
 
 == Contributors
 
