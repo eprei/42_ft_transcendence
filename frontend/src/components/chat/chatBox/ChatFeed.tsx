@@ -1,10 +1,10 @@
 import Msg from './Msg'
 import { UserProps } from './Msg'
-import Emiliano from '../../assets/img/epresa-c.jpg'
-import Mauro from '../../assets/img/mpons.jpg'
-import Robin from '../../assets/img/rburri.jpg'
-import Samuel from '../../assets/img/sbars.jpg'
-import Theo from '../../assets/img/tgrivel.jpg'
+import Emiliano from '../../../assets/img/epresa-c.jpg'
+import Mauro from '../../../assets/img/mpons.jpg'
+import Robin from '../../../assets/img/rburri.jpg'
+import Samuel from '../../../assets/img/sbars.jpg'
+import Theo from '../../../assets/img/tgrivel.jpg'
 
 const US: UserProps[] = [
     {

@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import IconAddChannel from '../../assets/icon/add_friend.svg'
+import IconAddChannel from '../../../assets/icon/add_friend.svg'
 import styles from './CreateNewCh.module.css'
 import ChannelCreateForm from './ChannelCreateForm'
-import { Channel } from '../../types/Channel'
+import { Channel } from '../../../types/Channel'
 
 
 interface CreateNewChProps {

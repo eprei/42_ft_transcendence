@@ -1,6 +1,6 @@
 import styles from './User.module.css'
-import IconInviteToPlay from '../../assets/icon/invite_to_play.svg'
-import IconMsg from '../../assets/icon/message.svg'
+import IconInviteToPlay from '../../../assets/icon/invite_to_play.svg'
+import IconMsg from '../../../assets/icon/message.svg'
 
 export interface OnlineUserProps {
     id: number

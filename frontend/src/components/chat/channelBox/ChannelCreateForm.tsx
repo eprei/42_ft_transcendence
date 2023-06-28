@@ -1,8 +1,8 @@
 // import { Form, Input, Modal, Radio } from 'antd'
 import { useState } from 'react';
 import { Form, Input, Modal, Radio } from 'antd'
-import { Channel } from '../../types/Channel'
-import channelType from '../../types/ChannelTypes'
+import { Channel } from '../../../types/Channel'
+import channelType from '../../../types/ChannelTypes'
 
 interface ChannelCreateFormProps {
     open: boolean

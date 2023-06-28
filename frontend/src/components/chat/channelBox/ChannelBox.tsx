@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 
 import styles from './ChannelBox.module.css'
-import { Channel } from '../../types/Channel'
+import { Channel } from '../../../types/Channel'
 import CreateNewCh from './CreateNewCh'
 import ChannelList from './ChannelList'
 

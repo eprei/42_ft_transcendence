@@ -1,6 +1,5 @@
 .chatBox {
     flex: 1;
-    padding-left: 2rem;
     height: 40rem;
     border-radius: 10px;
     border: 1px solid #3a3a42;
@@ -10,6 +9,10 @@
     overflow: auto;
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .chatBox::-webkit-scrollbar {
