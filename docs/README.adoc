@@ -6,28 +6,28 @@
 
 [plantuml, target=assets/authentification, format=svg, width=100%]
 ....
-title Sign In Button Click Event
-
 participant client
 participant backend
-participant "42\nAPI" as 42api
-
-hnote over client : Sign In\nButton Clicked
+participant "https://api.intra.42.fr/" as 42api
 
 client -> backend : GET /api/auth/42
+note left : Sign In\nButton Clicked
 
-hnote over backend : passport start
+group passport
 
-backend -> 42api
-42api -> client : send a validation page
-client -> 42api : validate
-42api -> backend : POST /api/auth/42/redirect\ncode authentification
-backend --> 42api : POST\n""API: UUID""\nAPI: secret\ncode
-42api -> backend : token of 42 user
+  hnote over backend : passport: init through guards()
+  backend -> 42api : /oauth/authorize
+  42api -> client : send a validation page
+  client -> 42api : validate
+  42api -> backend : POST /api/auth/42/redirect\n
+  note right : authorization code
+  backend --> 42api : POST /oauth/token
+  note left : ""API: UUID""\n""API: secret""\n""URL: code""
+  42api --> backend : token of 42 user
+  hnote over backend : passport: validate()
+  hnote over backend : passport: login redirect()
 
-hnote over backend : passport validate()
-
-hnote over backend : passport login redirect()
+end
 
 backend -> client : redirection
 ....
