@@ -1,63 +1,41 @@
 import styles from './Msg.module.css'
 
-export interface UserProps {
+export interface MsgProps {
     id: number
     name: string
     picture: string
+    text: string
 }
 
-const Msg = ({ user }: { user: UserProps }) => {
-    let MsgStyle = ''
-
-    if (user.id !== 1) {
-        MsgStyle = styles.me
-    } else {
-        MsgStyle = styles.they
-    }
-
-    let MsgText = ''
-
-    switch (user.name) {
-        case 'rburri':
-            MsgText = 'parfait!'
-            break
-        case 'sbars':
-            MsgText = 'ça marche'
-            break
-        case 'epresa-c':
-            MsgText = `c'est noté`
-            break
-        case 'tgrivel':
-            MsgText = `d'accord!, ça sera à 15h!`
-            break
-        default:
-            MsgText = `Est-ce qu'on peut faire la reunion a 15:15?`
-    }
-
+const Msg = ({ msg }: { msg: MsgProps }) => {
     return (
         <>
-            {user.id !== 1 ? (
-                <span className={`${styles.msgContainer} ${MsgStyle}`}>
+            {msg.name === 'rburri' ? (
+                <div className={`${styles.msgContainer} ${styles.me}`}>
+                    <div className={styles.textContainer}>
+                        <p className={styles.me}>
+                            <b>{msg.name} : </b> {msg.text}
+                        </p>
+                    </div>
                     <img
-                        src={user.picture}
+                        src={msg.picture}
                         alt="Avatar"
                         className={styles.profilePicture}
                     />
-                    <p className={`${MsgStyle}`}>
-                        <b>{user.name} : </b> {MsgText}
-                    </p>
-                </span>
+                </div>
             ) : (
-                <span className={`${styles.msgContainer} ${MsgStyle}`}>
-                    <p className={`${MsgStyle}`}>
-                        <b>{user.name} : </b> {MsgText}
-                    </p>
+                <div className={`${styles.msgContainer} ${styles.they}`}>
                     <img
-                        src={user.picture}
+                        src={msg.picture}
                         alt="Avatar"
                         className={styles.profilePicture}
                     />
-                </span>
+                    <div className={styles.textContainer}>
+                        <p className={styles.they}>
+                            <b>{msg.name} : </b> {msg.text}
+                        </p>
+                    </div>
+                </div>
             )}
         </>
     )

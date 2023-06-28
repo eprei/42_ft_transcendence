@@ -2,7 +2,6 @@ import styles from './SendForm.module.css'
 
 function SendForm() {
     return (
-        <>
             <div className={styles.textInputWrapper}>
                 <input
                     className={styles.textInput}
@@ -10,7 +9,6 @@ function SendForm() {
                     type="text"
                 />
             </div>
-        </>
     )
 }
 
