@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { ConfigModule } from '@nestjs/config'
 import { PlayerModule } from './player/player.module'
 import { Player } from './typeorm/Player'
+import { AuthModule } from './auth/auth.module'
 
 @Module({
     imports: [
@@ -17,6 +18,7 @@ import { Player } from './typeorm/Player'
             entities: [Player],
         }),
         PlayerModule,
+        AuthModule
     ],
     controllers: [AppController],
     providers: [AppService],
