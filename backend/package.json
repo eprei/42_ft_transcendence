@@ -30,6 +30,7 @@
         "class-transformer": "^0.5.1",
         "class-validator": "^0.14.0",
         "cors": "^2.8.5",
+        "express-session": "^1.17.3",
         "npm-check-updates": "^16.10.13",
         "passport-oauth2": "^1.7.0",
         "pg": "^8.10.0",
