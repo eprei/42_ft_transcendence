@@ -12,7 +12,7 @@ participant client
 participant backend
 participant "42\nAPI" as 42api
 
-?-> client : Sign In\nButton Clicked
+hnote over client : Sign In\nButton Clicked
 
 client -> backend : GET /api/auth/42
 
