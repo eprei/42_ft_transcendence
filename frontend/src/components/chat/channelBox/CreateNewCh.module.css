@@ -22,7 +22,6 @@
 }
 .btn:hover {
     color: var(--hover-text);
+    transform: translate(+1rem);
     background: var(--hover-bg);
-    /* transform: translate(+3rem); */
-    /* box-shadow: 0.25rem 0.25rem var(--bg); */
 }

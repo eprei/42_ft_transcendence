@@ -21,6 +21,7 @@
     .channelbox {
         flex: none;
         width: 25rem;
+        max-width: 95vw;
         margin-right: 0;
         height: 25rem;
     }

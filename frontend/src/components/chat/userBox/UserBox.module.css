@@ -31,7 +31,9 @@
     .usersBox {
         flex: none;
         width: 25rem;
+        max-width: 95vw;
         height: 25rem;
         margin-left: 0;
+        padding: 0;
     }
 }

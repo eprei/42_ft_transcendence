@@ -24,6 +24,7 @@
     .chatBox {
         flex: none;
         width: 25rem;
+        max-width: 95vw;
         height: 40rem;
         margin: 1rem 0;
     }
