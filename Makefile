@@ -16,7 +16,7 @@ stop:
 env:
 	@if [ ! -d env ]; then \
 		printf "$(GREEN)Generate environment variables\n$(DEFAULT)"; \
-		sh create-env.sh; \
+		sh scripts/create-env.sh; \
 	fi
 
 format:
