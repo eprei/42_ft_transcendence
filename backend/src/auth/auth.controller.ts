@@ -1,15 +1,15 @@
 import { UseGuards, Req, Res, Get } from '@nestjs/common'
-import { AuthenticatedGuard } from './authenticated/authenticated.guard'
+import { OauthGuard } from './oauth/oauth.guard'
 import { Controller } from '@nestjs/common'
 
 @Controller('auth')
 export class AuthController {
     @Get('42')
-    @UseGuards(AuthenticatedGuard)
+    @UseGuards(OauthGuard)
     async login() {}
 
     @Get('42/redirect')
-    @UseGuards(AuthenticatedGuard)
+    @UseGuards(OauthGuard)
     loginRedirect(@Req() req, @Res() res) {
         console.log('User: ', req.user)
         console.log('Session: ', req.session)
