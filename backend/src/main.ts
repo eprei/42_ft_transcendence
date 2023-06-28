@@ -30,9 +30,10 @@ async function bootstrap() {
             saveUninitialized: false,
             cookie: {
                 maxAge: 3600000,
-                sameSite: 'none',
+                sameSite: 'lax',
                 httpOnly: true,
                 secure: false,
+                path: '/',
             },
         })
     )
