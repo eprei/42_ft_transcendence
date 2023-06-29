@@ -1,12 +1,10 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { PassportStrategy } from '@nestjs/passport'
 import { Strategy } from 'passport-oauth2'
-import { AuthService } from './auth.service'
-import { access } from 'fs/promises'
 
 @Injectable()
 export class Auth42Strategy extends PassportStrategy(Strategy, 'oauth') {
-    constructor(private authService: AuthService) {
+    constructor() {
         super({
             authorizationURL: 'https://api.intra.42.fr/oauth/authorize',
             tokenURL: 'https://api.intra.42.fr/oauth/token',
@@ -23,6 +21,7 @@ export class Auth42Strategy extends PassportStrategy(Strategy, 'oauth') {
         done: Function
     ): Promise<any> {
         console.log('default profile: ', profile)
+        // TODO Creation of the user in the database
         // const user_profile = await this.getUserProfile(accessToken);
         // if (!profile {
         //   throw new UnauthorizedException();
