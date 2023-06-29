@@ -1,5 +1,5 @@
 import { UseGuards, Req, Res, Get } from '@nestjs/common'
-import { OauthGuard } from './oauth/oauth.guard'
+import { OauthGuard } from './guards/oauth.guard'
 import { Controller } from '@nestjs/common'
 
 @Controller('auth')
