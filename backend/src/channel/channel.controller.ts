@@ -26,10 +26,6 @@ export class ChannelController {
         return channel
     }
 
-    // create(@Body() createChannelDto: CreateChannelDto) {
-    //     return this.channelService.create(createChannelDto)
-    // }
-
     @Get()
     async findAll() {
         const channels = await this.channelService.findAll()

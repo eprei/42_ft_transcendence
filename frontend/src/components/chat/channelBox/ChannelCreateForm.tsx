@@ -1,5 +1,5 @@
 // import { Form, Input, Modal, Radio } from 'antd'
-import { useState } from 'react';
+import { useState } from 'react'
 import { Form, Input, Modal, Radio } from 'antd'
 import { Channel } from '../../../types/Channel'
 import channelType from '../../../types/ChannelTypes'
@@ -14,7 +14,7 @@ const ChannelCreateForm = ({
     open,
     onCreate,
     onCancel,
-}:ChannelCreateFormProps ) => {
+}: ChannelCreateFormProps) => {
     const [form] = Form.useForm()
 
     const [isPrivate, setIsPrivate] = useState<boolean>(false)

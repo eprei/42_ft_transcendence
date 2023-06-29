@@ -15,7 +15,6 @@ async function getChannels() {
 
         const channels = await response.json()
         return channels
-        // setChannels(channels);
     } catch (error) {
         console.error(error)
     }
@@ -46,10 +45,6 @@ function ChannelBox() {
     const [channels, setChannels] = useState<Channel[]>([])
 
     const handleCreation = (channel: Channel) => {
-        //     const channelsCpy = [...channels]
-        //     channelsCpy.push(channel)
-        //     setChannels(channelsCpy)
-        // }
         postData(channel).then((responseData) => {
             console.log(responseData)
         })

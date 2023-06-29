@@ -1,7 +1,7 @@
 .textInputWrapper {
     margin-top: 5px;
     border-radius: 11px;
-    border: 1px groove var( --color-dark-green);
+    border: 1px groove var(--color-dark-green);
     padding: 5px 0;
     width: 100%;
     border-left: none;
@@ -23,8 +23,7 @@
     color: var(--color-dark-green);
 }
 
- .textInput:focus {
+.textInput:focus {
     outline: none;
     background: transparent;
 }
-

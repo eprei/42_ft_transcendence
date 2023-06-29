@@ -8,9 +8,7 @@
     max-width: 1400px;
     height: 80vh;
     min-height: 500px;
-
-    background: var(--color-black-transparent);
-    box-shadow: 0px -4px 16px var(--color-black);
+    background: transparent;
     border-radius: 28px;
     padding: 2rem;
 }

@@ -1,4 +1,4 @@
-import { Channel } from "../../../types/Channel"
+import { Channel } from '../../../types/Channel'
 import ChannelLi from './ChannelLi'
 
 interface ChannelsDisplayProps {
@@ -7,25 +7,18 @@ interface ChannelsDisplayProps {
 }
 
 const ChannelsDisplay = (props: ChannelsDisplayProps) => {
-    let content: JSX.Element[] | JSX.Element = <p>{props.title}</p>;
+    let content: JSX.Element[] | JSX.Element = <p>{props.title}</p>
     if (props.channels !== undefined && props.channels.length > 0) {
         content = props.channels.map((channel: Channel) => (
-			<ChannelLi
-                key={channel.id}
-                channel={channel}
-			></ChannelLi>
-				
+            <ChannelLi key={channel.id} channel={channel}></ChannelLi>
         ))
     }
 
     return (
-		 <div>
+        <div>
             <ul>{content}</ul>
         </div>
     )
 }
 
 export default ChannelsDisplay
-
-
-

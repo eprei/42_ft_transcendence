@@ -2,154 +2,35 @@
     {
         "id": 1,
         "name": "rburri",
-        "picture": "src/assets/img/rburri.jpg",
+        "picture": "http://localhost:8080/api/user/picture/user1.webp",
         "isOnline": true,
         "isPlaying": true
     },
     {
         "id": 2,
         "name": "sbars",
-        "picture": "src/assets/img/sbars.jpg",
+        "picture": "http://localhost:8080/api/user/picture/user2.webp",
         "isOnline": true,
         "isPlaying": false
     },
     {
         "id": 5,
         "name": "epresa-c",
-        "picture": "src/assets/img/epresa-c.jpg",
+        "picture": "http://localhost:8080/api/user/picture/user3.webp",
         "isOnline": true,
         "isPlaying": true
     },
     {
         "id": 3,
         "name": "mpons",
-        "picture": "src/assets/img/mpons.jpg",
+        "picture": "http://localhost:8080/api/user/picture/user4.webp",
         "isOnline": false,
         "isPlaying": false
     },
     {
         "id": 4,
         "name": "tgrivel",
-        "picture": "src/assets/img/tgrivel.jpg",
-        "isOnline": false,
-        "isPlaying": false
-    },
-    {
-        "id": 4,
-        "name": "tgrivel",
-        "picture": "src/assets/img/tgrivel.jpg",
-        "isOnline": false,
-        "isPlaying": false
-    },
-    {
-        "id": 4,
-        "name": "tgrivel",
-        "picture": "src/assets/img/tgrivel.jpg",
-        "isOnline": false,
-        "isPlaying": false
-    },
-    {
-        "id": 4,
-        "name": "tgrivel",
-        "picture": "src/assets/img/tgrivel.jpg",
-        "isOnline": false,
-        "isPlaying": false
-    },
-    {
-        "id": 4,
-        "name": "tgrivel",
-        "picture": "src/assets/img/tgrivel.jpg",
-        "isOnline": false,
-        "isPlaying": false
-    },
-    {
-        "id": 4,
-        "name": "tgrivel",
-        "picture": "src/assets/img/tgrivel.jpg",
-        "isOnline": false,
-        "isPlaying": false
-    },
-    {
-        "id": 4,
-        "name": "tgrivel",
-        "picture": "src/assets/img/tgrivel.jpg",
-        "isOnline": false,
-        "isPlaying": false
-    },
-    {
-        "id": 1,
-        "name": "rburri",
-        "picture": "src/assets/img/rburri.jpg",
-        "isOnline": true,
-        "isPlaying": true
-    },
-    {
-        "id": 2,
-        "name": "sbars",
-        "picture": "src/assets/img/sbars.jpg",
-        "isOnline": true,
-        "isPlaying": false
-    },
-    {
-        "id": 5,
-        "name": "epresa-c",
-        "picture": "src/assets/img/epresa-c.jpg",
-        "isOnline": true,
-        "isPlaying": true
-    },
-    {
-        "id": 3,
-        "name": "mpons",
-        "picture": "src/assets/img/mpons.jpg",
-        "isOnline": false,
-        "isPlaying": false
-    },
-    {
-        "id": 4,
-        "name": "tgrivel",
-        "picture": "src/assets/img/tgrivel.jpg",
-        "isOnline": false,
-        "isPlaying": false
-    },
-    {
-        "id": 4,
-        "name": "tgrivel",
-        "picture": "src/assets/img/tgrivel.jpg",
-        "isOnline": false,
-        "isPlaying": false
-    },
-    {
-        "id": 4,
-        "name": "tgrivel",
-        "picture": "src/assets/img/tgrivel.jpg",
-        "isOnline": false,
-        "isPlaying": false
-    },
-    {
-        "id": 4,
-        "name": "tgrivel",
-        "picture": "src/assets/img/tgrivel.jpg",
-        "isOnline": false,
-        "isPlaying": false
-    },
-    {
-        "id": 4,
-        "name": "tgrivel",
-        "picture": "src/assets/img/tgrivel.jpg",
-        "isOnline": false,
-        "isPlaying": false
-    },
-    {
-        "id": 4,
-        "name": "tgrivel",
-        "picture": "src/assets/img/tgrivel.jpg",
-        "isOnline": false,
-        "isPlaying": false
-    },
-    {
-        "id": 4,
-        "name": "tgrivel",
-        "picture": "src/assets/img/tgrivel.jpg",
+        "picture": "http://localhost:8080/api/user/picture/user5.webp",
         "isOnline": false,
         "isPlaying": false
     }
