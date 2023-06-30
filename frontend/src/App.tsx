@@ -11,6 +11,8 @@ import ProtectedRoute from './ProtectedRoute'
 import { authActions } from './store/auth'
 import { useEffect } from 'react'
 import { useAppDispatch } from './store/types'
+import TFAVerify from './pages/TFAAuthenticate'
+import TFATurnOn from './pages/TFATurnOn'
 
 const router = createBrowserRouter([
     {
@@ -56,6 +58,22 @@ const router = createBrowserRouter([
                 element: (
                     <ProtectedRoute>
                         <Chat />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: 'TFAVerify',
+                element: (
+                    <ProtectedRoute>
+                        <TFAVerify />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: 'TFATurnOn',
+                element: (
+                    <ProtectedRoute>
+                        <TFATurnOn />
                     </ProtectedRoute>
                 ),
             },
