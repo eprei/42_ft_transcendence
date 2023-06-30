@@ -1,16 +1,7 @@
-import styles from './SignIn.module.css'
+import MainSection from "../components/signin/MainSection";
 
-const SignIn = () => {
-    return (
-        <div className={styles['center']}>
-            <a
-                href="http://localhost:8080/api/auth/42"
-                className={styles['oauth-button']}
-            >
-                Sign-in with 42
-            </a>
-        </div>
-    )
+const Product = () => {
+    return <MainSection></MainSection>
 }
 
-export default SignIn
+export default Product
