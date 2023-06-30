@@ -1,5 +1,5 @@
 .container {
-    margin-top: 20rem;
+    margin-top: 10rem;
     margin-left: 10%;
     min-height: 15rem;
     max-width: 25rem;
@@ -8,7 +8,7 @@
 }
 
 .title {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     text-align: left;
 }
 

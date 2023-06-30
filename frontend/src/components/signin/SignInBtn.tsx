@@ -1,11 +1,13 @@
-import { Link } from 'react-router-dom'
 import styles from './SignInBtn.module.css'
 
 const SignInBtn = () => {
     return (
-        <Link to="/profile" className={styles.btn}>
-            Sign in
-        </Link>
+        <a
+            href="http://localhost:8080/api/auth/42"
+            className={styles['oauth-button']}
+        >
+            Sign-in with 42
+        </a>
     )
 }
 
