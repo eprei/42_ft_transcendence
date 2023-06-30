@@ -25,7 +25,7 @@ async function bootstrap() {
 
     app.use(
         session({
-            secret: 'keyboard cat', // this will be changed later by an environment variable or other more secure method
+            secret: process.env.XP_SECRET,
             resave: false,
             saveUninitialized: false,
             cookie: {

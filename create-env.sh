@@ -39,12 +39,21 @@ ask_api_42_credentials () {
 	42
 }
 
+ask_express_cookie_signature_secret () {
+	printf "Secret for signing express-sessions cookies (it can be anything): "; read -r XP_SECRET
+
+	cat >> env/nest.env <<- 42
+	XP_SECRET=${XP_SECRET}
+	42
+}
+
 main () {
 	mkdir -p env
 	generate_postgres_credentials
 	create_env_nest
 	create_env_postgres
 	ask_api_42_credentials
+	ask_express_cookie_signature_secret
 }
 
 main
