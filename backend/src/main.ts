@@ -4,6 +4,12 @@ import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.int
 import { ValidationPipe } from '@nestjs/common'
 import * as session from 'express-session'
 import * as passport from 'passport'
+import * as crypto from 'crypto';
+
+const generateSessionSecret = () => {
+  const secretLength = 32; // Longitud del secreto en bytes
+  return crypto.randomBytes(secretLength).toString('hex');
+};
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule)
@@ -25,7 +31,7 @@ async function bootstrap() {
 
     app.use(
         session({
-            secret: process.env.XP_SECRET,
+            secret: generateSessionSecret(),
             resave: false,
             saveUninitialized: false,
             cookie: {
