@@ -8,10 +8,15 @@ import {
     Delete,
     UsePipes,
     ValidationPipe,
+    UseInterceptors,
+    UploadedFiles,
 } from '@nestjs/common'
 import { PlayerService } from './player.service'
 import { CreatePlayerDto } from './dto/create-player.dto'
 import { UpdateChannelDto } from 'src/channel/dto/update-channel.dto'
+import { Express } from 'express'
+import { FileInterceptor } from '@nestjs/platform-express'
+import { diskStorage } from 'multer'
 
 @Controller('player')
 export class PlayerController {
@@ -48,5 +53,36 @@ export class PlayerController {
     async remove(@Param('id') id: string) {
         const user = await this.playerService.remove(+id)
         return user
+    }
+
+    @Post('upload')
+    @UseInterceptors(
+        FileInterceptor('file', {
+            storage: diskStorage({
+                destination: './uploads',
+                filename: (req, file, cb) => {
+                    const name = file.originalname.split('.')[0]
+                    const fileExtension = file.originalname.split('.')[1]
+                    const newFileName =
+                        name.split(' ').join('_') +
+                        '_' +
+                        Date.now() +
+                        '.' +
+                        fileExtension
+
+                    cb(null, newFileName)
+                },
+            }),
+            fileFilter: (req, file, cb) => {
+                if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+                    return cb(null, false)
+                }
+                cb(null, true)
+            },
+        })
+    )
+    uploadFile(@UploadedFiles() file: Express.Multer.File) {
+        console.log('success')
+        console.log(file)
     }
 }
