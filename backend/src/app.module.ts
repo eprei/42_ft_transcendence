@@ -4,8 +4,9 @@ import { AppService } from './app.service'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { ConfigModule } from '@nestjs/config'
 import { PlayerModule } from './player/player.module'
-import { Player } from './typeorm/player.entity'
 import { ChannelModule } from './channel/channel.module'
+import { Player } from './typeorm/player.entity'
+import { Channel } from './typeorm/channel.entity'
 
 @Module({
     imports: [
@@ -17,6 +18,7 @@ import { ChannelModule } from './channel/channel.module'
             synchronize: true,
             entities: [Player],
         }),
+        TypeOrmModule.forFeature([Channel, Player]),
         PlayerModule,
         ChannelModule
     ],
