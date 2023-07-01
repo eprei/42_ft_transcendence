@@ -20,7 +20,7 @@ import { Channel } from './typeorm/channel.entity'
         }),
         TypeOrmModule.forFeature([Channel, Player]),
         PlayerModule,
-        ChannelModule
+        ChannelModule,
     ],
     controllers: [AppController],
     providers: [AppService],

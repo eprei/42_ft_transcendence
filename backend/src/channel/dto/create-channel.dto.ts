@@ -1,4 +1,4 @@
-import { IsNotEmpty,IsOptional } from 'class-validator'
+import { IsNotEmpty, IsOptional } from 'class-validator'
 
 export class CreateChannelDto {
     @IsOptional()
@@ -12,8 +12,7 @@ export class CreateChannelDto {
 
     @IsNotEmpty()
     type: string
-    
+
     @IsOptional()
     password: string
-
 }
