@@ -11,6 +11,7 @@ import {
     UseInterceptors,
     UploadedFile,
     BadRequestException,
+    Res,
 } from '@nestjs/common'
 import { PlayerService } from './player.service'
 import { CreatePlayerDto } from './dto/create-player.dto'
@@ -86,5 +87,15 @@ export class PlayerController {
         if (!file) {
             throw new BadRequestException('File is not an image')
         }
+        const response = {
+            filePath: `http://localhost:8080/api/player/picture/${file.filename}`,
+        }
+
+        return response
+    }
+
+    @Get('picture/:filename')
+    async getPhoto(@Param('filename') filename, @Res() res) {
+        res.sendFile(filename, { root: './uploads' })
     }
 }
