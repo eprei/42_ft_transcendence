@@ -7,6 +7,7 @@ import { PlayerModule } from './player/player.module'
 import { ChannelModule } from './channel/channel.module'
 import { Player } from './typeorm/player.entity'
 import { Channel } from './typeorm/channel.entity'
+import { MessageModule } from './message/message.module';
 
 @Module({
     imports: [
@@ -21,6 +22,7 @@ import { Channel } from './typeorm/channel.entity'
         TypeOrmModule.forFeature([Channel, Player]),
         PlayerModule,
         ChannelModule,
+        MessageModule,
     ],
     controllers: [AppController],
     providers: [AppService],
