@@ -10,6 +10,7 @@ import {
     ValidationPipe,
     UseInterceptors,
     UploadedFile,
+    BadRequestException,
 } from '@nestjs/common'
 import { PlayerService } from './player.service'
 import { CreatePlayerDto } from './dto/create-player.dto'
@@ -81,5 +82,9 @@ export class PlayerController {
             },
         })
     )
-    uploadPhoto(@UploadedFile() file: Express.Multer.File) {}
+    uploadPhoto(@UploadedFile() file: Express.Multer.File) {
+        if (!file) {
+            throw new BadRequestException('File is not an image')
+        }
+    }
 }
