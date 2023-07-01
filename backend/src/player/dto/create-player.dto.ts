@@ -7,10 +7,6 @@ export class CreatePlayerDto {
     @IsNotEmpty()
     login: string
 
-    @IsNotEmpty()
-    @IsEmail()
-    email: string
-
     @IsOptional()
     avatarUrl: string
 
