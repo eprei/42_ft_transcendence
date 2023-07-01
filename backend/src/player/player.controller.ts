@@ -9,7 +9,7 @@ import {
     UsePipes,
     ValidationPipe,
     UseInterceptors,
-    UploadedFiles,
+    UploadedFile,
 } from '@nestjs/common'
 import { PlayerService } from './player.service'
 import { CreatePlayerDto } from './dto/create-player.dto'
@@ -81,8 +81,5 @@ export class PlayerController {
             },
         })
     )
-    uploadFile(@UploadedFiles() file: Express.Multer.File) {
-        console.log('success')
-        console.log(file)
-    }
+    uploadPhoto(@UploadedFile() file: Express.Multer.File) {}
 }
