@@ -20,35 +20,34 @@ export class ChannelController {
     @Post()
     @UsePipes(ValidationPipe)
     async create(@Body() createChannelDto: CreateChannelDto) {
-        console.log(createChannelDto)
-        const channel = this.channelService.create(createChannelDto)
+        const channel = await this.channelService.create(createChannelDto)
         return channel
     }
 
-    // create(@Body() createChannelDto: CreateChannelDto) {
-    //     return this.channelService.create(createChannelDto)
-    // }
-
     @Get()
-    findAll() {
-        return this.channelService.findAll()
+    async findAll() {
+        const channels = await this.channelService.findAll()
+        return channels
     }
 
     @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.channelService.findOne(+id)
+    async findOne(@Param('id') id: string) {
+        const channel = await this.channelService.findOne(+id)
+        return channel
     }
 
     @Patch(':id')
-    update(
+    async update(
         @Param('id') id: string,
         @Body() updateChannelDto: UpdateChannelDto
     ) {
-        return this.channelService.update(+id, updateChannelDto)
+        const channel = await this.channelService.update(+id, updateChannelDto)
+        return channel
     }
 
     @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.channelService.remove(+id)
+    async remove(@Param('id') id: string) {
+        const channel = await this.channelService.remove(+id)
+        return channel
     }
 }

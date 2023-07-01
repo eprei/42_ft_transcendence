@@ -14,8 +14,8 @@ export class ChannelService {
     ) {}
 
     create(createChannelDto: CreateChannelDto) {
-        const channel = this.channelRepository.create(createChannelDto)
-        return this.channelRepository.save(channel)
+        const newChannel = this.channelRepository.create(createChannelDto)
+        return this.channelRepository.save(newChannel)
     }
 
     findAll() {
@@ -23,14 +23,17 @@ export class ChannelService {
     }
 
     findOne(id: number) {
-        return `This action returns a #${id} channel`
+        return this.channelRepository.findOneBy({ id })
     }
 
-    update(id: number, updateChannelDto: UpdateChannelDto) {
-        return `This action updates a #${id} channel`
+    async update(id: number, updateChannelDto: UpdateChannelDto) {
+        const channel = await this.findOne(id)
+
+        return this.channelRepository.save({ ...channel, ...updateChannelDto })
     }
 
-    remove(id: number) {
-        return `This action removes a #${id} channel`
+    async remove(id: number) {
+        const channel = await this.findOne(id)
+        return this.channelRepository.remove(channel)
     }
 }

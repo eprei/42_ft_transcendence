@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common'
 import { PlayerService } from './player.service'
 import { CreatePlayerDto } from './dto/create-player.dto'
+import { UpdateChannelDto } from 'src/channel/dto/update-channel.dto'
 
 @Controller('player')
 export class PlayerController {
@@ -37,9 +38,9 @@ export class PlayerController {
     @Patch(':id')
     async update(
         @Param('id') id: string,
-        @Body() createPlayerDto: CreatePlayerDto
+        @Body() updateChannelDto: UpdateChannelDto
     ) {
-        const user = await this.playerService.update(+id, createPlayerDto)
+        const user = await this.playerService.update(+id, updateChannelDto)
         return user
     }
 

@@ -2,7 +2,6 @@ import {
     Column,
     CreateDateColumn,
     Entity,
-    OneToMany,
     PrimaryGeneratedColumn,
 } from 'typeorm'
 
@@ -14,22 +13,15 @@ export class Channel {
     @Column()
     owner: number
 
-    @Column({
-        unique: true,
-        length: 20,
-    })
+    @Column()
     name: string
 
     @Column()
     type: string
 
-    @Column({
-        length: 30,
-        nullable: true,
-    })
+    @Column()
     password: string
 
     @CreateDateColumn()
     creationDate: Date
-
 }

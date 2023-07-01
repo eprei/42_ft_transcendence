@@ -1,18 +1,19 @@
-import { IsNotEmpty } from 'class-validator'
-import ChannelTypes from 'src/types/ChannelTypes'
+import { IsNotEmpty,IsOptional } from 'class-validator'
 
 export class CreateChannelDto {
+    @IsOptional()
     id: number
+
+    @IsNotEmpty()
     owner: number
 
     @IsNotEmpty()
     name: string
 
-    // type: ChannelTypes
+    @IsNotEmpty()
     type: string
-
+    
+    @IsOptional()
     password: string
-    creationDate: string
-    // creationDate: Date
-    // channelUser: Player[];
+
 }
