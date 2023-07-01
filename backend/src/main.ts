@@ -7,7 +7,7 @@ import * as passport from 'passport'
 import * as crypto from 'crypto';
 
 const generateSessionSecret = () => {
-  const secretLength = 32; // Longitud del secreto en bytes
+  const secretLength = 32; // Secret length in bytes
   return crypto.randomBytes(secretLength).toString('hex');
 };
 
