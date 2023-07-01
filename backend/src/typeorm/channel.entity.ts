@@ -4,8 +4,10 @@ import {
     Entity,
     PrimaryGeneratedColumn,
     ManyToMany,
+    OneToMany,
 } from 'typeorm'
 import { Player } from './player.entity'
+import { Message } from './message.entity'
 
 @Entity()
 export class Channel {
@@ -31,4 +33,7 @@ export class Channel {
 
     @ManyToMany(() => Player, (player) => player.channels)
     players: Player[]
+
+    @OneToMany(() => Message, (message) => message.channel)
+    messages: Message[]
 }
