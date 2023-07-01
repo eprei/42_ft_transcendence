@@ -4,7 +4,7 @@ import { AppService } from './app.service'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { ConfigModule } from '@nestjs/config'
 import { PlayerModule } from './player/player.module'
-import { Player } from './typeorm/Player'
+import { Player } from './typeorm/player.entity'
 
 @Module({
     imports: [
