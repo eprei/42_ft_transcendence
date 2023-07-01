@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import {
+    Column,
+    Entity,
+    PrimaryGeneratedColumn,
+    ManyToMany,
+    JoinTable,
+} from 'typeorm'
+import { Channel } from './channel.entity'
 
 @Entity()
 export class Player {
@@ -21,4 +28,8 @@ export class Player {
 
     @Column({ default: 0 })
     xp: number
+
+    @ManyToMany(() => Channel, (channel) => channel.players)
+    @JoinTable()
+    channels: Channel[]
 }

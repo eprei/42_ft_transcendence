@@ -3,7 +3,9 @@ import {
     CreateDateColumn,
     Entity,
     PrimaryGeneratedColumn,
+    ManyToMany,
 } from 'typeorm'
+import { Player } from './player.entity'
 
 @Entity()
 export class Channel {
@@ -19,9 +21,14 @@ export class Channel {
     @Column()
     type: string
 
-    @Column()
+    @Column({
+        nullable: true,
+    })
     password: string
 
     @CreateDateColumn()
     creationDate: Date
+
+    @ManyToMany(() => Player, (player) => player.channels)
+    players: Player[]
 }
