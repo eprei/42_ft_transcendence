@@ -3,6 +3,7 @@ import {
     Get,
     Post,
     Body,
+    Patch,
     Param,
     Delete,
     UsePipes,
@@ -14,29 +15,37 @@ import { CreatePlayerDto } from './dto/create-player.dto'
 @Controller('player')
 export class PlayerController {
     constructor(private readonly playerService: PlayerService) {}
-
     @Post()
     @UsePipes(ValidationPipe)
     async create(@Body() createPlayerDto: CreatePlayerDto) {
-        console.log(createPlayerDto)
-        const player = this.playerService.create(createPlayerDto)
-        return player
+        const user = await this.playerService.create(createPlayerDto)
+        return user
     }
 
     @Get()
     async findAll() {
-        const player = await this.playerService.findAll()
-        return player
+        const users = await this.playerService.findAll()
+        return users
     }
 
     @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.playerService.findOne(+id)
+    async findOne(@Param('id') id: string) {
+        const user = await this.playerService.findOne(+id)
+        return user
     }
 
-    @Delete(':login')
-    remove(@Param('login') login: string) {
-        console.log(login)
-        return this.playerService.remove(login)
+    @Patch(':id')
+    async update(
+        @Param('id') id: string,
+        @Body() createPlayerDto: CreatePlayerDto
+    ) {
+        const user = await this.playerService.update(+id, createPlayerDto)
+        return user
+    }
+
+    @Delete(':id')
+    async remove(@Param('id') id: string) {
+        const user = await this.playerService.remove(+id)
+        return user
     }
 }
