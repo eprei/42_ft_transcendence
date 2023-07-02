@@ -1,25 +1,29 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
-
+import { Column, Entity, PrimaryGeneratedColumn,ManyToOne,JoinColumn } from 'typeorm'
+import { Player } from './player.entity';
 @Entity()
 export class Match {
-    @PrimaryGeneratedColumn()
-    id: number
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({ type: 'int' })
-    playerHome: number
+  @ManyToOne(() => Player, (player) => player.homeMatches)
+  @JoinColumn({ name: 'playerHome' })
+  playerHome: Player;
 
-    @Column({ type: 'int' })
-    playerForeign: number
+  @ManyToOne(() => Player, (player) => player.foreignMatches)
+  @JoinColumn({ name: 'playerForeign' })
+  playerForeign: Player;
 
-    @Column({ type: 'int' })
-    winner: number
+  @ManyToOne(() => Player, (player) => player.wonMatches)
+  @JoinColumn({ name: 'winner' })
+  winner: Player;
 
-    @Column({ type: 'int' })
-    homeScore: number
+  @Column({ type: 'int' })
+  homeScore: number;
 
-    @Column({ type: 'int' })
-    foreignScore: number
+  @Column({ type: 'int' })
+  foreignScore: number;
 
-    @Column()
-    timestamp: Date
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  timestamp: Date;
 }
+

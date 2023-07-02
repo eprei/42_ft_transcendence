@@ -8,6 +8,7 @@ import {
 } from 'typeorm'
 import { Channel } from './channel.entity'
 import { Friend } from './friend.entity'
+import { Match } from './match.entity'
 
 @Entity()
 export class Player {
@@ -51,4 +52,13 @@ export class Player {
     @ManyToMany(() => Player, (player) => player.blockedPlayers)
     @JoinTable()
     blockedPlayers: Player[]
+
+    @OneToMany(() => Match, (match) => match.playerHome)
+    homeMatches: Match[]
+
+    @OneToMany(() => Match, (match) => match.playerForeign)
+    foreignMatches: Match[]
+
+    @OneToMany(() => Match, (match) => match.winner)
+    wonMatches: Match[]
 }
