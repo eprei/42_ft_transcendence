@@ -38,6 +38,9 @@ export class Player {
     @Column({ default: false })
     TFAEnabled: boolean
 
+    @Column()
+    FT_id: string
+
     @ManyToMany(() => Channel, (channel) => channel.players)
     @JoinTable()
     channels: Channel[]

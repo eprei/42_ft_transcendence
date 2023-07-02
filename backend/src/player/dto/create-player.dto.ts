@@ -24,4 +24,7 @@ export class CreatePlayerDto {
 
     @IsOptional()
     TFAEnabled: boolean
+
+    @IsOptional()
+    FT_id: string
 }
