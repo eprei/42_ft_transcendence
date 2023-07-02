@@ -32,11 +32,11 @@ export class Player {
     @Column({ type: 'int', default: 0 })
     xp: number
 
-    @Column({ default : '' })
-    TFASecret : string
+    @Column({ default: '' })
+    TFASecret: string
 
-    @Column({ default : false })
-    TFAEnabled : boolean
+    @Column({ default: false })
+    TFAEnabled: boolean
 
     @ManyToMany(() => Channel, (channel) => channel.players)
     @JoinTable()
@@ -44,4 +44,8 @@ export class Player {
 
     @OneToMany(() => Friend, (friend) => friend.player)
     friends: Friend[]
+
+    @ManyToMany(() => Player, (player) => player.blockedPlayers)
+    @JoinTable()
+    blockedPlayers: Player[]
 }
