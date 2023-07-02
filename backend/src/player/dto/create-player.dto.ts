@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator'
+import { IsNotEmpty, IsOptional } from 'class-validator'
 
 export class CreatePlayerDto {
     @IsOptional()
@@ -18,4 +18,10 @@ export class CreatePlayerDto {
 
     @IsOptional()
     xp: number
+
+    @IsOptional()
+    TFASecret: string
+
+    @IsOptional()
+    TFAEnabled: boolean
 }

@@ -23,6 +23,7 @@ import { diskStorage } from 'multer'
 @Controller('player')
 export class PlayerController {
     constructor(private readonly playerService: PlayerService) {}
+    
     @Post()
     @UsePipes(ValidationPipe)
     async create(@Body() createPlayerDto: CreatePlayerDto) {
