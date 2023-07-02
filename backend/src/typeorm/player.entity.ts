@@ -33,10 +33,10 @@ export class Player {
     xp: number
 
     @Column({ default : '' })
-    twoFactorAuthenticationSecret : string
+    TFASecret : string
 
     @Column({ default : false })
-    isTwoFactorAuthenticationEnabled : boolean
+    TFAEnabled : boolean
 
     @ManyToMany(() => Channel, (channel) => channel.players)
     @JoinTable()
