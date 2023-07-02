@@ -7,7 +7,7 @@ export class Friend {
     id: number
 
     @Column({ type: 'int' })
-    friend: number
+    friendId: number
 
     @Column()
     isPending: boolean

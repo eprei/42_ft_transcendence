@@ -1,26 +1,54 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { CreateFriendDto } from './dto/create-friend.dto';
 import { UpdateFriendDto } from './dto/update-friend.dto';
+import { InjectRepository } from '@nestjs/typeorm'
+import { Player } from 'src/typeorm/player.entity'
+import { Repository } from 'typeorm'
+import { Friend } from 'src/typeorm/friend.entity'
+import { PlayerService } from 'src/player/player.service';
 
 @Injectable()
 export class FriendService {
-  create(createFriendDto: CreateFriendDto) {
-    return 'This action adds a new friend';
+  constructor(
+    @InjectRepository(Friend)
+    private readonly friendRepository: Repository<Friend>,
+    private readonly playerService: PlayerService,
+  ) {}
+
+  async create(createFriendDto: CreateFriendDto) {
+    const { friendId, isPending } = createFriendDto;
+
+    const friend = new Friend();
+    friend.friendId = friendId;
+    friend.isPending = isPending;
+
+    return this.friendRepository.save(friend);
   }
 
   findAll() {
-    return `This action returns all friend`;
+    return this.friendRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} friend`;
+  findOne(friendId: number) {
+    return this.friendRepository.findOne({ where: { id: friendId } });
   }
 
-  update(id: number, updateFriendDto: UpdateFriendDto) {
-    return `This action updates a #${id} friend`;
+  async update(id: number, updateFriendDto: UpdateFriendDto) {
+    const friend = await this.findOne(id);
+    if (!friend) {
+      throw new NotFoundException('Friend not found');
+    }
+
+    return this.friendRepository.save({ ...friend, ...updateFriendDto });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} friend`;
+  async remove(id: number) {
+    const friend = await this.findOne(id);
+    if (!friend) {
+      throw new NotFoundException('Friend not found');
+    }
+
+    return this.friendRepository.remove(friend);
   }
 }
+

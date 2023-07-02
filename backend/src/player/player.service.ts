@@ -21,7 +21,7 @@ export class PlayerService {
     }
 
     findOne(id: number) {
-        return this.playerRepository.findOneBy({ id })
+        return this.playerRepository.findOneBy({ id: id })
     }
 
     async update(id: number, updatePlayerDto: UpdatePlayerDto) {

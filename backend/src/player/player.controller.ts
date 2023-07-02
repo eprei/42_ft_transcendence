@@ -27,20 +27,20 @@ export class PlayerController {
     @Post()
     @UsePipes(ValidationPipe)
     async create(@Body() createPlayerDto: CreatePlayerDto) {
-        const user = await this.playerService.create(createPlayerDto)
-        return user
+        const player = await this.playerService.create(createPlayerDto)
+        return player
     }
 
     @Get()
     async findAll() {
-        const users = await this.playerService.findAll()
-        return users
+        const players = await this.playerService.findAll()
+        return players
     }
 
     @Get(':id')
     async findOne(@Param('id') id: string) {
-        const user = await this.playerService.findOne(+id)
-        return user
+        const player = await this.playerService.findOne(+id)
+        return player
     }
 
     @Patch(':id')
@@ -48,14 +48,14 @@ export class PlayerController {
         @Param('id') id: string,
         @Body() updateChannelDto: UpdateChannelDto
     ) {
-        const user = await this.playerService.update(+id, updateChannelDto)
-        return user
+        const player = await this.playerService.update(+id, updateChannelDto)
+        return player
     }
 
     @Delete(':id')
     async remove(@Param('id') id: string) {
-        const user = await this.playerService.remove(+id)
-        return user
+        const player = await this.playerService.remove(+id)
+        return player
     }
 
     @Post('upload')
