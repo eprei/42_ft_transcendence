@@ -1,10 +1,10 @@
-import { Column, Entity, ManyToOne } from 'typeorm'
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
 import { Player } from './player.entity'
 
 @Entity()
 export class Friend {
-    // @Column({ type: 'int' })
-    // player: number
+    @PrimaryGeneratedColumn()
+    id: number
 
     @Column({ type: 'int' })
     friend: number

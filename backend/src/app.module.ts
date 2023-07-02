@@ -8,6 +8,9 @@ import { ChannelModule } from './channel/channel.module'
 import { Player } from './typeorm/player.entity'
 import { Channel } from './typeorm/channel.entity'
 import { MessageModule } from './message/message.module'
+import { Message } from './typeorm/message.entity'
+import { Friend } from './typeorm/friend.entity'
+import { Match } from './typeorm/match.entity'
 
 @Module({
     imports: [
@@ -17,9 +20,9 @@ import { MessageModule } from './message/message.module'
             url: process.env.DATABASE_URL,
             autoLoadEntities: true,
             synchronize: true,
-            entities: [Player],
+            entities: [Player, Channel, Message, Friend, Match],
         }),
-        TypeOrmModule.forFeature([Channel, Player]),
+        TypeOrmModule.forFeature([Channel, Player, Message, Friend, Match]),
         PlayerModule,
         ChannelModule,
         MessageModule,

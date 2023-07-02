@@ -32,6 +32,12 @@ export class Player {
     @Column({ type: 'int', default: 0 })
     xp: number
 
+    @Column({ default : '' })
+    twoFactorAuthenticationSecret : string
+
+    @Column({ default : false })
+    isTwoFactorAuthenticationEnabled : boolean
+
     @ManyToMany(() => Channel, (channel) => channel.players)
     @JoinTable()
     channels: Channel[]
