@@ -14,19 +14,20 @@ export class Player {
 
     @Column({
         unique: true,
+        type: 'text',
     })
     login: string
 
-    @Column()
+    @Column('text')
     avatarUrl: string
 
-    @Column({ default: 0 })
+    @Column({ type: 'int', default: 0 })
     nbVictory: number
 
-    @Column({ default: 0 })
+    @Column({ type: 'int', default: 0 })
     totalPlay: number
 
-    @Column({ default: 0 })
+    @Column({ type: 'int', default: 0 })
     xp: number
 
     @ManyToMany(() => Channel, (channel) => channel.players)

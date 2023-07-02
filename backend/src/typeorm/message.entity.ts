@@ -12,10 +12,10 @@ export class Message {
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column()
+    @Column({type: "int"})
     creator: number
 
-    @Column()
+    @Column({type: "text"})
     content: string
 
     @CreateDateColumn()

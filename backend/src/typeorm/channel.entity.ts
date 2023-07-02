@@ -14,10 +14,10 @@ export class Channel {
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column()
+    @Column('int')
     owner: number
 
-    @Column()
+    @Column({ type: 'varchar', length: 500 })
     name: string
 
     @Column()
