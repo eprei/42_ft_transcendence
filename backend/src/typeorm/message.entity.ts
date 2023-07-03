@@ -19,10 +19,10 @@ export class Message {
     @Column({ type: 'text' })
     content: string
 
-    @CreateDateColumn()
-    creationDate: Date
-
     @ManyToOne(() => Channel, (channel) => channel.messages)
     @JoinColumn({ name: 'channelId' })
     channelId: Channel
+
+    @CreateDateColumn()
+    creationDate: Date
 }

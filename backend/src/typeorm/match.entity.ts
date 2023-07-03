@@ -30,5 +30,5 @@ export class Match {
     foreignScore: number
 
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-    timestamp: Date
+    creationDate: Date
 }
