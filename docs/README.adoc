@@ -267,3 +267,7 @@ rectangle {
 	Page4 --> Navbar
 }
 ....
+
+== Database
+
+image::./assets/data.png[]
