@@ -8,22 +8,15 @@ import { Repository } from 'typeorm'
 export class MessageService {
     constructor(
         @InjectRepository(Message)
-        private readonly playerRepository: Repository<Message>
+        private readonly messageRepository: Repository<Message>
     ) {}
 
-    create(createMessageDto: CreateMessageDto) {
-        return 'This action adds a new message'
+    async create(createMessageDto: CreateMessageDto): Promise<Message> {
+        const newMessage = this.messageRepository.create(createMessageDto)
+        return this.messageRepository.save(newMessage)
     }
 
     findAll() {
-        return `This action returns all message`
+        return this.messageRepository.find()
     }
-
-    findOne(id: number) {
-        return `This action returns a #${id} message`
-    }
-
-    // remove(id: number) {
-    //     return `This action removes a #${id} message`
-    // }
 }

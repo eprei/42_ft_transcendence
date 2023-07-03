@@ -16,7 +16,7 @@ export class PlayerService {
         return this.playerRepository.save(newUser)
     }
 
-    findAll() {
+    findAll(){
         return this.playerRepository.find()
     }
 

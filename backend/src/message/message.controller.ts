@@ -29,10 +29,4 @@ export class MessageController {
         const msg = await this.messageService.findAll()
         return msg
     }
-
-    @Get(':id')
-    async findOne(@Param('id') id: string) {
-        const msg = await this.messageService.findOne(+id)
-        return msg
-    }
 }
