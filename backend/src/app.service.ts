@@ -155,7 +155,7 @@ export class AppService {
                     creator,
                     content,
                     creationDate: new Date(),
-                    channel,
+                    channelId: channel,
                 })
 
                 await this.messageRepo.save(message)
@@ -188,7 +188,7 @@ export class AppService {
                 winner,
                 homeScore,
                 foreignScore,
-                timestamp: new Date(),
+                creationDate: new Date(),
             })
 
             await this.matchRepo.save(match)
