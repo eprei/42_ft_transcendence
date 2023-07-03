@@ -1,4 +1,4 @@
-import MainSection from "../components/signin/MainSection";
+import MainSection from '../components/signin/MainSection'
 
 const Product = () => {
     return <MainSection></MainSection>
