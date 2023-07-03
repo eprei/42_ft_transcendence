@@ -4,13 +4,15 @@ import { Player } from './typeorm/player.entity'
 import { Repository } from 'typeorm'
 import { Channel } from './typeorm/channel.entity'
 import { Friend } from './typeorm/friend.entity'
+import { Message } from './typeorm/message.entity'
 
 @Injectable()
 export class AppService {
     constructor(
         @InjectRepository(Player) private playerRepo: Repository<Player>,
         @InjectRepository(Channel) private channelRepo: Repository<Channel>,
-        @InjectRepository(Friend) private friendRepo: Repository<Friend>
+        @InjectRepository(Friend) private friendRepo: Repository<Friend>,
+        @InjectRepository(Message) private messageRepo: Repository<Message>
     ) {}
 
     async seed() {
@@ -118,6 +120,42 @@ export class AppService {
                 })
 
                 await this.friendRepo.save(friendship)
+            }
+        }
+
+        // Create messages
+        const channels = await this.channelRepo.find()
+        for (const channel of channels) {
+            let playerCount = 3
+            if (channel.type === 'direct') {
+                playerCount = 2
+            }
+
+            const players = await this.playerRepo.find({ take: playerCount })
+            console.log(players)
+            const channelPlayers = players
+                .filter((player) => player.id !== channel.owner)
+                .filter((player) => player !== undefined)
+            if (channelPlayers.length >= playerCount) {
+                channelPlayers.pop()
+            }
+
+            const allPlayers = await this.playerRepo.find();
+            const owner = allPlayers.find((player) => player.id === channel.owner)
+            channelPlayers.unshift(owner)
+
+            for (let i = 0; i < 10; i++) {
+                const creator = channelPlayers[i % playerCount].id
+                const content = `Message ${i + 1}`
+
+                const message = this.messageRepo.create({
+                    creator,
+                    content,
+                    creationDate: new Date(),
+                    channel,
+                })
+
+                await this.messageRepo.save(message)
             }
         }
     }
