@@ -48,6 +48,13 @@ usage_npm_install () {
 # $2            : [normal / dev] dependency
 # $3            : package name
 npm_install () {
+	# check if the arguments are empty
+	if [ -z "${2}" ] || [ -z "${3}" ]
+	then
+		usage_npm_install
+		exit
+	fi
+
 	if [ "${2}" == "normal" ]
 	then
 		flag_save="--save"
