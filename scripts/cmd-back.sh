@@ -30,11 +30,31 @@ nestcli () {
 	body
 }
 
+# $1 (useless)  : option
+# $2            : package name
+npm_install () {
+	docker exec our-backend npm install --save ${2}
+	format_code
+	git add .
+	git commit -F - <<- body
+	npm install: ${2}
+
+	command used:
+
+	docker exec our-backend npm install \\
+	--save ${2}
+	body
+
+}
+
 # $1 : option
 main () {
 	if [ "${1}" == "nestcli" ]
 	then
 		nestcli "${@}"
+	elif [ "${1}" == "npm" ]
+	then
+		npm_install "${@}"
 	else
 		usage
 	fi
