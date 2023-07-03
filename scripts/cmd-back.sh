@@ -35,19 +35,40 @@ nestcli () {
 	body
 }
 
+usage_npm_install () {
+	printf "Usage cmd-back.sh:\n\n"
+
+	printf "npm install:\n"
+	printf "sh ./cmd-back.sh npm <type_dependency> <package_to_install>\n"
+	printf "the <type_dependency> is either \"normal\" or either \"dev\"\n"
+
+}
+
 # $1 (useless)  : option
-# $2            : package name
+# $2            : [normal / dev] dependency
+# $3            : package name
 npm_install () {
-	docker exec our-backend npm install ${2}
+	if [ "${2}" == "normal" ]
+	then
+		flag_save="--save"
+	elif [ "${2}" == "dev" ]
+	then
+		flag_save="--save-dev"
+	else
+		usage_npm_install
+		exit
+	fi
+
+	docker exec our-backend npm install "${flag_save}" ${3}
 	format_code
 	git add .
 	git commit -F - <<- body
-	npm install: ${2}
+	npm install: ${3}
 
 	command used:
 
 	docker exec our-backend npm install \\
-	${2}
+	${3}
 	body
 
 }
