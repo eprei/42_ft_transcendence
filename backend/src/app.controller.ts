@@ -7,9 +7,7 @@ export class AppController {
 
     @Get()
     async getHello(): Promise<string> {
-        console.log('Seed starting')
         await this.appService.seed()
-        console.log('Seed ended')
         return 'Seed complete'
     }
 }

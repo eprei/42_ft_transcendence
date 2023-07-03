@@ -34,12 +34,13 @@ export class Channel {
     creationDate: Date
 
     @ManyToOne(() => Player, (player) => player.channels)
-    @JoinColumn({ name: 'owner' })
+    @JoinColumn({ name: 'admin' })
     admin: Player
 
     @ManyToMany(() => Player, (player) => player.channels)
     players: Player[]
 
     @OneToMany(() => Message, (message) => message.channelId)
+    @JoinColumn({ name: 'messages' })
     messages: Message[]
 }

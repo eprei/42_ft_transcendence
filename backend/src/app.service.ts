@@ -57,8 +57,9 @@ export class AppService {
             name: 'chan 1',
             type: 'public',
             password: null,
+            admin: player1,
+            players: [player1, player2, player5],
         })
-        chan1.players = [player1]
         await this.channelRepo.save(chan1)
 
         const chan2 = this.channelRepo.create({
@@ -66,8 +67,9 @@ export class AppService {
             name: 'chan 2',
             type: 'public',
             password: null,
+            admin: player1,
+            players: [player1, player4],
         })
-        chan2.players = [player1, player4]
         await this.channelRepo.save(chan2)
 
         const chan3 = this.channelRepo.create({
@@ -75,8 +77,9 @@ export class AppService {
             name: 'chan 3',
             type: 'private',
             password: '1234',
+            admin: player1,
+            players: [player1, player3],
         })
-        chan3.players = [player1, player3]
         await this.channelRepo.save(chan3)
 
         const chan4 = this.channelRepo.create({
@@ -84,8 +87,9 @@ export class AppService {
             name: 'chan 4',
             type: 'private',
             password: '1234',
+            admin: player2,
+            players: [player2, player4],
         })
-        chan4.players = [player2]
         await this.channelRepo.save(chan4)
 
         const chan5 = this.channelRepo.create({
@@ -93,8 +97,9 @@ export class AppService {
             name: 'chan 5',
             type: 'direct',
             password: null,
+            admin: player2,
+            players: [player2, player5],
         })
-        chan5.players = [player2, player5]
         await this.channelRepo.save(chan5)
 
         const chan6 = this.channelRepo.create({
@@ -102,6 +107,7 @@ export class AppService {
             name: 'chan 6',
             type: 'direct',
             password: null,
+            admin: player3,
         })
         chan6.players = [player3, player4]
         await this.channelRepo.save(chan6)
