@@ -40,6 +40,6 @@ export class Channel {
     @ManyToMany(() => Player, (player) => player.channels)
     players: Player[]
 
-    @OneToMany(() => Message, (message) => message.channel)
+    @OneToMany(() => Message, (message) => message.channelId)
     messages: Message[]
 }
