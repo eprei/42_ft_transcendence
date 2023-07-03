@@ -1,8 +1,7 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateFriendDto } from './dto/create-friend.dto';
 import { UpdateFriendDto } from './dto/update-friend.dto';
 import { InjectRepository } from '@nestjs/typeorm'
-import { Player } from 'src/typeorm/player.entity'
 import { Repository } from 'typeorm'
 import { Friend } from 'src/typeorm/friend.entity'
 import { PlayerService } from 'src/player/player.service';

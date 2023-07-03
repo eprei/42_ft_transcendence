@@ -49,10 +49,6 @@ export class Player {
     @OneToMany(() => Friend, (friend) => friend.player)
     friends: Friend[]
 
-    @ManyToMany(() => Player, (player) => player.blockedPlayers)
-    @JoinTable()
-    blockedPlayers: Player[]
-
     @OneToMany(() => Match, (match) => match.playerHome)
     homeMatches: Match[]
 

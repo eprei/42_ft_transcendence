@@ -5,6 +5,9 @@ import {
     PrimaryGeneratedColumn,
     ManyToMany,
     OneToMany,
+    OneToOne,
+    ManyToOne,
+    JoinColumn,
 } from 'typeorm'
 import { Player } from './player.entity'
 import { Message } from './message.entity'
@@ -31,9 +34,15 @@ export class Channel {
     @CreateDateColumn()
     creationDate: Date
 
+    @ManyToOne(() => Player, (player) => player.channels)
+    @JoinColumn({ name: 'owner' })
+    admin: Player;
+
     @ManyToMany(() => Player, (player) => player.channels)
     players: Player[]
 
     @OneToMany(() => Message, (message) => message.channel)
     messages: Message[]
+
+
 }
