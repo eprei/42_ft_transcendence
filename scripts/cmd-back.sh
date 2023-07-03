@@ -38,7 +38,7 @@ nestcli () {
 # $1 (useless)  : option
 # $2            : package name
 npm_install () {
-	docker exec our-backend npm install --save ${2}
+	docker exec our-backend npm install ${2}
 	format_code
 	git add .
 	git commit -F - <<- body
@@ -47,7 +47,7 @@ npm_install () {
 	command used:
 
 	docker exec our-backend npm install \\
-	--save ${2}
+	${2}
 	body
 
 }
