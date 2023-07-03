@@ -2,8 +2,8 @@ import { IsNotEmpty, IsOptional } from 'class-validator'
 
 export class CreateFriendDto {
     @IsNotEmpty()
-    friendId: number;
-  
+    friendId: number
+
     @IsNotEmpty()
-    isPending: boolean;
-  }
+    isPending: boolean
+}

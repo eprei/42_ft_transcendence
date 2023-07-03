@@ -11,5 +11,5 @@ import { PlayerService } from 'src/player/player.service'
     imports: [TypeOrmModule.forFeature([Friend, Player]), PlayerModule],
     controllers: [FriendController],
     providers: [FriendService, PlayerService],
-  })
+})
 export class FriendModule {}

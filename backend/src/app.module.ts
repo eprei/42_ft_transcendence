@@ -11,8 +11,8 @@ import { MessageModule } from './message/message.module'
 import { Message } from './typeorm/message.entity'
 import { Friend } from './typeorm/friend.entity'
 import { Match } from './typeorm/match.entity'
-import { FriendModule } from './friend/friend.module';
-import { MatchModule } from './match/match.module';
+import { FriendModule } from './friend/friend.module'
+import { MatchModule } from './match/match.module'
 
 @Module({
     imports: [

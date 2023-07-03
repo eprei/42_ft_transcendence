@@ -4,11 +4,11 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Message } from 'src/typeorm/message.entity'
 import { Repository } from 'typeorm'
 
-
 @Injectable()
 export class MessageService {
     constructor(
-        @InjectRepository(Message) private readonly playerRepository: Repository<Message>
+        @InjectRepository(Message)
+        private readonly playerRepository: Repository<Message>
     ) {}
 
     create(createMessageDto: CreateMessageDto) {

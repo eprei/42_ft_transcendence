@@ -35,7 +35,7 @@ export class FriendService {
             .where('friend.id = :id', { id: friendId })
             .getOne()
     }
-    
+
     async update(id: number, updateFriendDto: UpdateFriendDto) {
         const friend = await this.findOne(id)
         if (!friend) {

@@ -35,5 +35,4 @@ export class MessageController {
         const msg = await this.messageService.findOne(+id)
         return msg
     }
-
 }

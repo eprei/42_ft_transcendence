@@ -5,6 +5,7 @@ import { Repository } from 'typeorm'
 import { Channel } from './typeorm/channel.entity'
 import { Friend } from './typeorm/friend.entity'
 import { Message } from './typeorm/message.entity'
+import { Match } from './typeorm/match.entity'
 
 @Injectable()
 export class AppService {
@@ -12,11 +13,12 @@ export class AppService {
         @InjectRepository(Player) private playerRepo: Repository<Player>,
         @InjectRepository(Channel) private channelRepo: Repository<Channel>,
         @InjectRepository(Friend) private friendRepo: Repository<Friend>,
-        @InjectRepository(Message) private messageRepo: Repository<Message>
+        @InjectRepository(Message) private messageRepo: Repository<Message>,
+        @InjectRepository(Match) private matchRepo: Repository<Match>
     ) {}
 
     async seed() {
-        // Players
+        //  create Players
         const player1 = this.playerRepo.create({
             login: 'Boss',
             avatarUrl:
@@ -49,7 +51,7 @@ export class AppService {
         })
         await this.playerRepo.save(player6)
 
-        // Channels
+        //   create Channels
         const chan1 = this.channelRepo.create({
             owner: 1,
             name: 'chan 1',
@@ -132,7 +134,6 @@ export class AppService {
             }
 
             const players = await this.playerRepo.find({ take: playerCount })
-            console.log(players)
             const channelPlayers = players
                 .filter((player) => player.id !== channel.owner)
                 .filter((player) => player !== undefined)
@@ -140,8 +141,10 @@ export class AppService {
                 channelPlayers.pop()
             }
 
-            const allPlayers = await this.playerRepo.find();
-            const owner = allPlayers.find((player) => player.id === channel.owner)
+            const allPlayers = await this.playerRepo.find()
+            const owner = allPlayers.find(
+                (player) => player.id === channel.owner
+            )
             channelPlayers.unshift(owner)
 
             for (let i = 0; i < 10; i++) {
@@ -158,8 +161,37 @@ export class AppService {
                 await this.messageRepo.save(message)
             }
         }
-    }
-    getHello(): string {
-        return 'Hello World!!!'
+
+        // Create matches
+        const players2 = await this.playerRepo.find()
+
+        for (let i = 0; i < 10; i++) {
+            const playerHome =
+                players2[Math.floor(Math.random() * players2.length)]
+            const playerForeign =
+                players2[Math.floor(Math.random() * players2.length)]
+            const isPlayerHomeWinner = Math.random() >= 0.5 // 50% chance for playerHome to win
+
+            let winner
+            if (isPlayerHomeWinner) {
+                winner = playerHome
+            } else {
+                winner = playerForeign
+            }
+
+            const homeScore = Math.floor(Math.random() * 6)
+            const foreignScore = Math.floor(Math.random() * 6)
+
+            const match = this.matchRepo.create({
+                playerHome,
+                playerForeign,
+                winner,
+                homeScore,
+                foreignScore,
+                timestamp: new Date(),
+            })
+
+            await this.matchRepo.save(match)
+        }
     }
 }

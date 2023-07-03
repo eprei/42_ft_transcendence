@@ -36,13 +36,11 @@ export class Channel {
 
     @ManyToOne(() => Player, (player) => player.channels)
     @JoinColumn({ name: 'owner' })
-    admin: Player;
+    admin: Player
 
     @ManyToMany(() => Player, (player) => player.channels)
     players: Player[]
 
     @OneToMany(() => Message, (message) => message.channel)
     messages: Message[]
-
-
 }
