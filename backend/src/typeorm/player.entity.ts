@@ -39,7 +39,7 @@ export class Player {
     @Column({ default: false })
     TFAEnabled: boolean
 
-    @Column()
+    @Column({ default: '' })
     FT_id: string
 
     @ManyToMany(() => Channel, (channel) => channel.players)
@@ -48,6 +48,9 @@ export class Player {
 
     @OneToMany(() => Friend, (friend) => friend.player)
     friends: Friend[]
+
+    @OneToMany(() => Friend, (friend) => friend.friend)
+    friendOf: Friend[]
 
     @OneToMany(() => Match, (match) => match.playerHome)
     homeMatches: Match[]

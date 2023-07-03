@@ -3,15 +3,15 @@ import { Player } from './player.entity'
 
 @Entity()
 export class Friend {
-    @PrimaryGeneratedColumn()
-    id: number
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({ type: 'int' })
-    friendId: number
+  @ManyToOne(() => Player, (player) => player.friends)
+  player: Player;
 
-    @Column()
-    isPending: boolean
+  @ManyToOne(() => Player, (player) => player.friendOf)
+  friend: Player;
 
-    @ManyToOne(() => Player, (player) => player.id)
-    player: Player
+  @Column()
+  isPending: boolean;
 }

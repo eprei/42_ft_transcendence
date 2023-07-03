@@ -3,12 +3,14 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Player } from './typeorm/player.entity'
 import { Repository } from 'typeorm'
 import { Channel } from './typeorm/channel.entity'
+import { Friend } from './typeorm/friend.entity'
 
 @Injectable()
 export class AppService {
     constructor(
         @InjectRepository(Player) private playerRepo: Repository<Player>,
-        @InjectRepository(Channel) private channelRepo: Repository<Channel>
+        @InjectRepository(Channel) private channelRepo: Repository<Channel>,
+        @InjectRepository(Friend) private friendRepo: Repository<Friend>
     ) {}
 
     async seed() {
@@ -99,6 +101,25 @@ export class AppService {
         })
         chan6.players = [player3, player4]
         await this.channelRepo.save(chan6)
+
+        // Create friendships
+        const players = [player1, player2, player3, player4, player5, player6]
+
+        for (const player of players) {
+            const friends = players
+                .filter((p) => p.id !== player.id)
+                .slice(0, 3)
+
+            for (const friend of friends) {
+                const friendship = this.friendRepo.create({
+                    player: player,
+                    friend: friend,
+                    isPending: false,
+                })
+
+                await this.friendRepo.save(friendship)
+            }
+        }
     }
     getHello(): string {
         return 'Hello World!!!'
