@@ -11,24 +11,20 @@ export class Match {
     @PrimaryGeneratedColumn()
     id: number
 
-    @ManyToOne(() => Player, (player) => player.homeMatches)
-    @JoinColumn({ name: 'playerHome' })
-    playerHome: Player
-
-    @ManyToOne(() => Player, (player) => player.foreignMatches)
-    @JoinColumn({ name: 'playerForeign' })
-    playerForeign: Player
-
-    @ManyToOne(() => Player, (player) => player.wonMatches)
+    @ManyToOne(() => Player, (player) => player.matchWon)
     @JoinColumn({ name: 'winner' })
     winner: Player
 
-    @Column({ type: 'int' })
-    homeScore: number
+    @ManyToOne(() => Player, (player) => player.matchLost)
+    @JoinColumn({ name: 'looser' })
+    looser: Player
 
     @Column({ type: 'int' })
-    foreignScore: number
+    scoreWinner: number
+
+    @Column({ type: 'int' })
+    scoreLooser: number
 
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-    creationDate: Date
+    dateGame: Date
 }

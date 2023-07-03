@@ -52,12 +52,9 @@ export class Player {
     @OneToMany(() => Friend, (friend) => friend.friend)
     friendOf: Friend[]
 
-    @OneToMany(() => Match, (match) => match.playerHome)
-    homeMatches: Match[]
-
-    @OneToMany(() => Match, (match) => match.playerForeign)
-    foreignMatches: Match[]
+    @OneToMany(() => Match, (match) => match.looser)
+    matchLost: Match[]
 
     @OneToMany(() => Match, (match) => match.winner)
-    wonMatches: Match[]
+    matchWon: Match[]
 }

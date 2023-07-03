@@ -168,33 +168,27 @@ export class AppService {
             }
         }
 
-        // Create matches
-        const players2 = await this.playerRepo.find()
+        const allplayers = await this.playerRepo.find()
 
         for (let i = 0; i < 10; i++) {
-            const playerHome =
-                players2[Math.floor(Math.random() * players2.length)]
-            const playerForeign =
-                players2[Math.floor(Math.random() * players2.length)]
-            const isPlayerHomeWinner = Math.random() >= 0.5 // 50% chance for playerHome to win
+            const playerA =
+                allplayers[Math.floor(Math.random() * allplayers.length)]
+            const playerB =
+                allplayers[Math.floor(Math.random() * allplayers.length)]
+            const isPlayerAWinner = Math.random() >= 0.5 // 50% chance for playerA to win
 
-            let winner
-            if (isPlayerHomeWinner) {
-                winner = playerHome
-            } else {
-                winner = playerForeign
-            }
-
-            const homeScore = Math.floor(Math.random() * 6)
-            const foreignScore = Math.floor(Math.random() * 6)
+            const winner = isPlayerAWinner ? playerA : playerB
+            const looser = isPlayerAWinner ? playerB : playerA
+            const scoreWinner = Math.floor(Math.random() * 6)
+            const scoreLooser = Math.floor(Math.random() * 6)
+            const dateGame = new Date()
 
             const match = this.matchRepo.create({
-                playerHome,
-                playerForeign,
                 winner,
-                homeScore,
-                foreignScore,
-                creationDate: new Date(),
+                looser,
+                scoreWinner,
+                scoreLooser,
+                dateGame,
             })
 
             await this.matchRepo.save(match)
