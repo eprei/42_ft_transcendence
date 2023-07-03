@@ -12,8 +12,8 @@ export class PlayerService {
         private readonly playerRepository: Repository<Player>
     ) {}
     create(createPlayerDto: CreatePlayerDto) {
-        const newUser = this.playerRepository.create(createPlayerDto)
-        return this.playerRepository.save(newUser)
+        const player = this.playerRepository.create(createPlayerDto)
+        return this.playerRepository.save(player)
     }
 
     findAll() {
@@ -25,12 +25,12 @@ export class PlayerService {
     }
 
     async update(id: number, updatePlayerDto: UpdatePlayerDto) {
-        const user = await this.findOne(id)
-        return this.playerRepository.save({ ...user, ...updatePlayerDto })
+        const player = await this.findOne(id)
+        return this.playerRepository.save({ ...player, ...updatePlayerDto })
     }
 
     async remove(id: number) {
-        const user = await this.findOne(id)
-        return this.playerRepository.remove(user)
+        const player = await this.findOne(id)
+        return this.playerRepository.remove(player)
     }
 }
