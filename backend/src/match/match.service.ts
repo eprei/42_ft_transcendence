@@ -12,16 +12,16 @@ export class MatchService {
         private readonly matchRepository: Repository<Match>
     ) {}
 
-    async create(createMatchDto: CreateMatchDto) {
+    create(createMatchDto: CreateMatchDto) {
         const newMatch = this.matchRepository.create(createMatchDto)
         return this.matchRepository.save(newMatch)
     }
 
-    async findAll() {
+    findAll() {
         return this.matchRepository.find()
     }
 
-    async findOne(id: number) {
+    findOne(id: number) {
         return this.matchRepository.findOne({ where: { id } })
     }
 
@@ -31,7 +31,8 @@ export class MatchService {
         return this.matchRepository.save(updatedMatch)
     }
 
-    async remove(id: number): Promise<void> {
-        await this.matchRepository.delete(id)
+    async remove(id: number) {
+        const match = await this.matchRepository.findOne({ where: { id } })
+        return this.matchRepository.remove(match)
     }
 }
