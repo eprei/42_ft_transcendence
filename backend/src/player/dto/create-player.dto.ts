@@ -2,29 +2,29 @@ import { IsNotEmpty, IsOptional } from 'class-validator'
 
 export class CreatePlayerDto {
     @IsOptional()
-    id: number
+    id?: number
 
     @IsNotEmpty()
     login: string
 
-    @IsOptional()
+    @IsNotEmpty()
     avatarUrl: string
 
     @IsOptional()
-    nbVictory: number
+    nbVictory?: number
 
     @IsOptional()
-    totalPlay: number
+    totalPlay?: number
 
     @IsOptional()
-    xp: number
+    xp?: number
 
     @IsOptional()
-    TFASecret: string
+    TFASecret?: string
 
     @IsOptional()
-    TFAEnabled: boolean
+    TFAEnabled?: boolean
 
     @IsOptional()
-    FT_id: string
+    FT_id?: string
 }
