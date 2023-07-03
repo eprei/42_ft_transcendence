@@ -3,8 +3,13 @@
 # no parameters
 usage () {
 	printf "Usage cmd-back.sh:\n\n"
+
+	printf "nest generate:\n"
 	printf "sh ./cmd-back.sh nestcli <nest_element_type> <name> (<path>)\n"
-	printf "the <path> is optional\n"
+	printf "the <path> is optional\n\n"
+
+	printf "npm install:\n"
+	printf "sh ./cmd-back.sh npm <package_to_install>\n"
 }
 
 # no parameters
