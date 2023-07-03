@@ -4,6 +4,7 @@ import {
     Entity,
     PrimaryGeneratedColumn,
     ManyToOne,
+    JoinColumn,
 } from 'typeorm'
 import { Channel } from './channel.entity'
 
@@ -22,5 +23,6 @@ export class Message {
     creationDate: Date
 
     @ManyToOne(() => Channel, (channel) => channel.messages)
-    channel: Channel
+    @JoinColumn({ name: 'channelId' })
+    channelId: Channel
 }
