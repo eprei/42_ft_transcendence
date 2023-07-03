@@ -16,27 +16,35 @@ export class MatchController {
     constructor(private readonly matchService: MatchService) {}
 
     @Post()
-    create(@Body() createMatchDto: CreateMatchDto) {
-        return this.matchService.create(createMatchDto)
+    async create(@Body() createMatchDto: CreateMatchDto) {
+        const match = await this.matchService.create(createMatchDto)
+        return match
     }
 
     @Get()
-    findAll() {
-        return this.matchService.findAll()
+    async findAll() {
+        const matches = await this.matchService.findAll()
+        return matches
     }
 
     @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.matchService.findOne(+id)
+    async findOne(@Param('id') id: string) {
+        const match = await this.matchService.findOne(+id)
+        return match
     }
 
     @Patch(':id')
-    update(@Param('id') id: string, @Body() updateMatchDto: UpdateMatchDto) {
-        return this.matchService.update(+id, updateMatchDto)
+    async update(
+        @Param('id') id: string,
+        @Body() updateMatchDto: UpdateMatchDto
+    ) {
+        const match = await this.matchService.update(+id, updateMatchDto)
+        return match
     }
 
     @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.matchService.remove(+id)
+    async remove(@Param('id') id: string) {
+        await this.matchService.remove(+id)
+        return `Match with ID ${id} has been removed`
     }
 }

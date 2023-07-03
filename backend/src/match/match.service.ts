@@ -1,26 +1,37 @@
 import { Injectable } from '@nestjs/common'
 import { CreateMatchDto } from './dto/create-match.dto'
 import { UpdateMatchDto } from './dto/update-match.dto'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Repository } from 'typeorm'
+import { Match } from '../typeorm/match.entity'
 
 @Injectable()
 export class MatchService {
-    create(createMatchDto: CreateMatchDto) {
-        return 'This action adds a new match'
+    constructor(
+        @InjectRepository(Match)
+        private readonly matchRepository: Repository<Match>
+    ) {}
+
+    async create(createMatchDto: CreateMatchDto) {
+        const newMatch = this.matchRepository.create(createMatchDto)
+        return this.matchRepository.save(newMatch)
     }
 
-    findAll() {
-        return `This action returns all match`
+    async findAll() {
+        return this.matchRepository.find()
     }
 
-    findOne(id: number) {
-        return `This action returns a #${id} match`
+    async findOne(id: number) {
+        return this.matchRepository.findOne({ where: { id } })
     }
 
-    update(id: number, updateMatchDto: UpdateMatchDto) {
-        return `This action updates a #${id} match`
+    async update(id: number, updateMatchDto: UpdateMatchDto) {
+        const match = await this.findOne(id)
+        const updatedMatch = { ...match, ...updateMatchDto }
+        return this.matchRepository.save(updatedMatch)
     }
 
-    remove(id: number) {
-        return `This action removes a #${id} match`
+    async remove(id: number): Promise<void> {
+        await this.matchRepository.delete(id)
     }
 }

@@ -22,7 +22,7 @@ export class ChannelService {
     }
 
     findOne(id: number) {
-        return this.channelRepository.findOneBy({ id })
+        return this.channelRepository.findOneBy({ id: id })
     }
 
     async update(id: number, updateChannelDto: UpdateChannelDto) {
