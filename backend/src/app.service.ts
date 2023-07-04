@@ -20,34 +20,34 @@ export class AppService {
     async seed() {
         //  create Players
         const player1 = this.playerRepo.create({
-            login: 'Boss',
+            login: 'user1',
             avatarUrl:
-                'http://localhost:8080/api/player/picture/profil-picture-placeholder.png',
+                'http://localhost:8080/api/player/picture/user1.webp',
         })
         await this.playerRepo.save(player1)
         const player2 = this.playerRepo.create({
-            login: 'epresa-c',
-            avatarUrl: 'http://localhost:8080/api/player/picture/epresa-c.jgp',
+            login: 'user2',
+            avatarUrl: 'http://localhost:8080/api/player/picture/user2.webp',
         })
         await this.playerRepo.save(player2)
         const player3 = this.playerRepo.create({
-            login: 'mpons',
-            avatarUrl: 'http://localhost:8080/api/player/picture/mpons.jpg',
+            login: 'user3',
+            avatarUrl: 'http://localhost:8080/api/player/picture/user3.webp',
         })
         await this.playerRepo.save(player3)
         const player4 = this.playerRepo.create({
-            login: 'rburri',
-            avatarUrl: 'http://localhost:8080/api/player/picture/rburri.jpg',
+            login: 'user4',
+            avatarUrl: 'http://localhost:8080/api/player/picture/user4.webp',
         })
         await this.playerRepo.save(player4)
         const player5 = this.playerRepo.create({
-            login: 'sbars',
-            avatarUrl: 'http://localhost:8080/api/player/picture/sbars.jpg',
+            login: 'user5',
+            avatarUrl: 'http://localhost:8080/api/player/picture/user5.webp',
         })
         await this.playerRepo.save(player5)
         const player6 = this.playerRepo.create({
-            login: 'tgrivel',
-            avatarUrl: 'http://localhost:8080/api/player/picture/tgrivel.jpg',
+            login: 'user6',
+            avatarUrl: 'http://localhost:8080/api/player/picture/user6.webp',
         })
         await this.playerRepo.save(player6)
 
