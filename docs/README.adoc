@@ -2,6 +2,36 @@
 :nofooter:
 :toc: left
 
+== 42 authentification
+
+[plantuml, target=assets/authentification, format=svg, width=100%]
+....
+participant client
+participant backend
+participant "https://api.intra.42.fr/" as 42api
+
+client -> backend : GET /api/auth/42
+note left : Sign In\nButton Clicked
+
+group passport
+
+  hnote over backend : passport: init through guards()
+  backend -> 42api : /oauth/authorize
+  42api -> client : send a validation page
+  client -> 42api : validate
+  42api -> backend : POST /api/auth/42/redirect\n
+  note right : authorization code
+  backend --> 42api : POST /oauth/token
+  note left : ""API: UUID""\n""API: secret""\n""URL: code""
+  42api --> backend : token of 42 user
+  hnote over backend : passport: validate()
+  hnote over backend : passport: login redirect()
+
+end
+
+backend -> client : redirection
+....
+
 == Docker environment for development
 
 image::assets/docker_env_dev.png[]
