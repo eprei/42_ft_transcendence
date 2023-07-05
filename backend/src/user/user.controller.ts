@@ -13,34 +13,34 @@ import {
     BadRequestException,
     Res,
 } from '@nestjs/common'
-import { PlayerService } from './player.service'
-import { CreatePlayerDto } from './dto/create-player.dto'
+import { UserService } from './user.service'
+import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateChannelDto } from 'src/channel/dto/update-channel.dto'
 import { Express } from 'express'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { diskStorage } from 'multer'
 
-@Controller('player')
-export class PlayerController {
-    constructor(private readonly playerService: PlayerService) {}
+@Controller('user')
+export class UserController {
+    constructor(private readonly userService: UserService) {}
 
     @Post()
     @UsePipes(ValidationPipe)
-    async create(@Body() createPlayerDto: CreatePlayerDto) {
-        const player = await this.playerService.create(createPlayerDto)
-        return player
+    async create(@Body() createUserDto: CreateUserDto) {
+        const user = await this.userService.create(createUserDto)
+        return user
     }
 
     @Get()
     async findAll() {
-        const players = await this.playerService.findAll()
-        return players
+        const users = await this.userService.findAll()
+        return users
     }
 
     @Get(':id')
     async findOne(@Param('id') id: string) {
-        const player = await this.playerService.findOne(+id)
-        return player
+        const user = await this.userService.findOne(+id)
+        return user
     }
 
     @Patch(':id')
@@ -48,14 +48,14 @@ export class PlayerController {
         @Param('id') id: string,
         @Body() updateChannelDto: UpdateChannelDto
     ) {
-        const player = await this.playerService.update(+id, updateChannelDto)
-        return player
+        const user = await this.userService.update(+id, updateChannelDto)
+        return user
     }
 
     @Delete(':id')
     async remove(@Param('id') id: string) {
-        const player = await this.playerService.remove(+id)
-        return player
+        const user = await this.userService.remove(+id)
+        return user
     }
 
     @Post('upload')
@@ -89,7 +89,7 @@ export class PlayerController {
             throw new BadRequestException('File is not an image')
         }
         const response = {
-            filePath: `http://localhost:8080/api/player/picture/${file.filename}`,
+            filePath: `http://localhost:8080/api/user/picture/${file.filename}`,
         }
 
         return response

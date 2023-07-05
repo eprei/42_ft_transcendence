@@ -11,7 +11,7 @@ import { Friend } from './friend.entity'
 import { Match } from './match.entity'
 
 @Entity()
-export class Player {
+export class User {
     @PrimaryGeneratedColumn()
     id: number
 
@@ -42,11 +42,11 @@ export class Player {
     @Column({ default: '' })
     FT_id: string
 
-    @ManyToMany(() => Channel, (channel) => channel.players)
+    @ManyToMany(() => Channel, (channel) => channel.users)
     @JoinTable()
     channels: Channel[]
 
-    @OneToMany(() => Friend, (friend) => friend.player)
+    @OneToMany(() => Friend, (friend) => friend.user)
     friends: Friend[]
 
     @OneToMany(() => Friend, (friend) => friend.friend)

@@ -8,7 +8,7 @@ import {
     ManyToOne,
     JoinColumn,
 } from 'typeorm'
-import { Player } from './player.entity'
+import { User } from './user.entity'
 import { Message } from './message.entity'
 
 @Entity()
@@ -33,12 +33,12 @@ export class Channel {
     @CreateDateColumn()
     creationDate: Date
 
-    @ManyToOne(() => Player, (player) => player.channels)
+    @ManyToOne(() => User, (user) => user.channels)
     @JoinColumn({ name: 'admin' })
-    admin: Player
+    admin: User
 
-    @ManyToMany(() => Player, (player) => player.channels)
-    players: Player[]
+    @ManyToMany(() => User, (user) => user.channels)
+    users: User[]
 
     @OneToMany(() => Message, (message) => message.channelId)
     @JoinColumn({ name: 'messages' })

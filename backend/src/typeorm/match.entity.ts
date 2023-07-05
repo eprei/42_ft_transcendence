@@ -5,19 +5,19 @@ import {
     ManyToOne,
     JoinColumn,
 } from 'typeorm'
-import { Player } from './player.entity'
+import { User } from './user.entity'
 @Entity()
 export class Match {
     @PrimaryGeneratedColumn()
     id: number
 
-    @ManyToOne(() => Player, (player) => player.matchWon)
+    @ManyToOne(() => User, (user) => user.matchWon)
     @JoinColumn({ name: 'winner' })
-    winner: Player
+    winner: User
 
-    @ManyToOne(() => Player, (player) => player.matchLost)
+    @ManyToOne(() => User, (user) => user.matchLost)
     @JoinColumn({ name: 'looser' })
-    looser: Player
+    looser: User
 
     @Column({ type: 'int' })
     scoreWinner: number

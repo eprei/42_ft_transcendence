@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsOptional } from 'class-validator'
 
-export class CreatePlayerDto {
+export class CreateUserDto {
     @IsOptional()
     id?: number
 
