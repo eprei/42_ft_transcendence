@@ -4,8 +4,10 @@ import {
     PrimaryGeneratedColumn,
     ManyToOne,
     JoinColumn,
+    CreateDateColumn,
 } from 'typeorm'
 import { User } from './user.entity'
+
 @Entity()
 export class Match {
     @PrimaryGeneratedColumn()
@@ -25,6 +27,6 @@ export class Match {
     @Column({ type: 'int' })
     scoreLooser: number
 
-    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+    @CreateDateColumn()
     dateGame: Date
 }
