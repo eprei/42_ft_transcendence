@@ -1,9 +1,6 @@
 import { IsNotEmpty, IsOptional } from 'class-validator'
 
 export class CreateUserDto {
-    @IsOptional()
-    id?: number
-
     @IsNotEmpty()
     login: string
 

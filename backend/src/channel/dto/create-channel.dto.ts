@@ -1,9 +1,6 @@
 import { IsNotEmpty, IsOptional } from 'class-validator'
 
 export class CreateChannelDto {
-    @IsOptional()
-    id: number
-
     @IsNotEmpty()
     owner: number
 

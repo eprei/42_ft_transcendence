@@ -21,8 +21,7 @@ export class AppService {
         //  create Users
         const user1 = this.userRepo.create({
             login: 'user1',
-            avatarUrl:
-                'http://localhost:8080/api/user/picture/user1.webp',
+            avatarUrl: 'http://localhost:8080/api/user/picture/user1.webp',
         })
         await this.userRepo.save(user1)
         const user2 = this.userRepo.create({
@@ -116,9 +115,7 @@ export class AppService {
         const users = [user1, user2, user3, user4, user5, user6]
 
         for (const user of users) {
-            const friends = users
-                .filter((p) => p.id !== user.id)
-                .slice(0, 3)
+            const friends = users.filter((p) => p.id !== user.id).slice(0, 3)
 
             for (const friend of friends) {
                 const friendship = this.friendRepo.create({
@@ -148,9 +145,7 @@ export class AppService {
             }
 
             const allUsers = await this.userRepo.find()
-            const owner = allUsers.find(
-                (user) => user.id === channel.owner
-            )
+            const owner = allUsers.find((user) => user.id === channel.owner)
             channelUsers.unshift(owner)
 
             for (let i = 0; i < 10; i++) {
@@ -171,10 +166,8 @@ export class AppService {
         const allusers = await this.userRepo.find()
 
         for (let i = 0; i < 10; i++) {
-            const userA =
-                allusers[Math.floor(Math.random() * allusers.length)]
-            const userB =
-                allusers[Math.floor(Math.random() * allusers.length)]
+            const userA = allusers[Math.floor(Math.random() * allusers.length)]
+            const userB = allusers[Math.floor(Math.random() * allusers.length)]
             const isUserAWinner = Math.random() >= 0.5 // 50% chance for userA to win
 
             const winner = isUserAWinner ? userA : userB
