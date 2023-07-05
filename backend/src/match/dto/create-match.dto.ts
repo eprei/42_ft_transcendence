@@ -2,9 +2,6 @@ import { IsNotEmpty, IsOptional } from 'class-validator'
 import { User } from '../../typeorm/user.entity'
 
 export class CreateMatchDto {
-    @IsOptional()
-    id?: number
-
     @IsNotEmpty()
     userHome: User
 
