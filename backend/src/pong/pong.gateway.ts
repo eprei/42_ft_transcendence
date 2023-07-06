@@ -7,7 +7,11 @@ import { PongService } from './pong.service'
 import { CreatePongDto } from './dto/create-pong.dto'
 import { UpdatePongDto } from './dto/update-pong.dto'
 
-@WebSocketGateway()
+@WebSocketGateway({
+    cors: {
+        origin: '*',
+    },
+})
 export class PongGateway {
     constructor(private readonly pongService: PongService) {}
 
