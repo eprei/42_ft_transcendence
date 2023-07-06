@@ -28,9 +28,9 @@
 }
 
 .imgContainer {
-    background-image: url('42.svg');
     width: 70px;
 }
+
 .nav ul {
     display: flex;
     flex-direction: row;
