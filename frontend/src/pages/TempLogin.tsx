@@ -4,10 +4,10 @@ import TempPlayerList from '../components/tempLogin/TempPlayerList'
 import styles from './TempLogin.module.css'
 import { Player } from '../types/Player'
 
-async function deletePlayer(login: string): Promise<void> {
+async function deletePlayer(first_name: string): Promise<void> {
     try {
         const response = await fetch(
-            `http://localhost:8080/api/player/${login}`,
+            `http://localhost:8080/api/player/${first_name}`,
             {
                 method: 'DELETE',
             }
@@ -78,9 +78,9 @@ const TempLogin = () => {
         })
     }
 
-    const deletePlayerHandler = (login: string) => {
-        console.log(login)
-        deletePlayer(login)
+    const deletePlayerHandler = (first_name: string) => {
+        console.log(first_name)
+        deletePlayer(first_name)
         setTimeout(() => {
             getUsersHandler()
         }, 500)

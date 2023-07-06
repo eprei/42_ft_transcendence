@@ -20,32 +20,32 @@ export class AppService {
     async seed() {
         //  create Users
         const user1 = this.userRepo.create({
-            login: 'user1',
+            first_name: 'user1',
             avatarUrl: 'http://localhost:8080/api/user/picture/user1.webp',
         })
         await this.userRepo.save(user1)
         const user2 = this.userRepo.create({
-            login: 'user2',
+            first_name: 'user2',
             avatarUrl: 'http://localhost:8080/api/user/picture/user2.webp',
         })
         await this.userRepo.save(user2)
         const user3 = this.userRepo.create({
-            login: 'user3',
+            first_name: 'user3',
             avatarUrl: 'http://localhost:8080/api/user/picture/user3.webp',
         })
         await this.userRepo.save(user3)
         const user4 = this.userRepo.create({
-            login: 'user4',
+            first_name: 'user4',
             avatarUrl: 'http://localhost:8080/api/user/picture/user4.webp',
         })
         await this.userRepo.save(user4)
         const user5 = this.userRepo.create({
-            login: 'user5',
+            first_name: 'user5',
             avatarUrl: 'http://localhost:8080/api/user/picture/user5.webp',
         })
         await this.userRepo.save(user5)
         const user6 = this.userRepo.create({
-            login: 'user6',
+            first_name: 'user6',
             avatarUrl: 'http://localhost:8080/api/user/picture/user6.webp',
         })
         await this.userRepo.save(user6)

@@ -4,7 +4,7 @@ import { Player } from '../../types/Player'
 
 interface TempPlayerListProps {
     players: Player[]
-    deletePlayerHandler: (login: string) => void
+    deletePlayerHandler: (first_name: string) => void
 }
 
 const TempPlayerList = (props: TempPlayerListProps) => {
@@ -12,7 +12,7 @@ const TempPlayerList = (props: TempPlayerListProps) => {
     if (props.players !== undefined && props.players.length > 0) {
         content = props.players.map((player: Player) => (
             <TempPlayerLi
-                key={player.login}
+                key={player.first_name}
                 player={player}
                 deletePlayerHandler={props.deletePlayerHandler}
             ></TempPlayerLi>

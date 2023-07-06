@@ -35,7 +35,7 @@ const TempForm = (props: TempFormProps) => {
             enteredPicUrl.trim().length > 0
         ) {
             const user = {
-                login: enteredName,
+                first_name: enteredName,
                 email: enteredEmail,
                 avatarUrl: enteredPicUrl,
             }
@@ -55,11 +55,11 @@ const TempForm = (props: TempFormProps) => {
             >
                 <h2>Sign In Now</h2>
                 <div className={styles.inputLabelPair}>
-                    <label htmlFor="login">42 Login name:</label>
+                    <label htmlFor="first_name">42 first_name name:</label>
                     <input
                         type="text"
-                        name="login"
-                        id="login"
+                        name="first_name"
+                        id="first_name"
                         onChange={nameChangeHandler}
                         value={enteredName}
                     />
