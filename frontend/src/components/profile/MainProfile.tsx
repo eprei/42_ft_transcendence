@@ -3,12 +3,23 @@ import SeeMatchHistoryBtn from './SeeMatchHistoryBtn'
 import FriendList from './FriendList'
 import Statistics from './Statistics'
 import UserInformation from './UserInformation'
-import PicturePlaceHolder from '../../assets/img/profil-picture-placeholder.png'
 import { useEffect, useState } from 'react'
+
+export interface UserData {
+    login: string;
+    avatarUrl: string;
+    nbVictory: number;
+    TFAEnabled: boolean;
+    totalPlay: number;
+  }
+  
+export interface UserInformationProps {
+    userData: UserData;
+  }
 
 const MainProfile = () => {
 
-    const [userData, setUserData] = useState(null);
+    const [userData, setUserData] = useState<UserData>({} as UserData);
 
     useEffect(() => {
         getCurrentUser();
@@ -24,8 +35,9 @@ const MainProfile = () => {
             if (!response.ok) {
                 throw new Error('Failed to fetch user ME')
             }
-
+            console.log("WELL FETCHED")
             const data = await response.json();
+            console.log("Data:", data); // Imprime la variable data en la consola
             setUserData(data);
 
         } catch (error) {
@@ -38,13 +50,9 @@ const MainProfile = () => {
             <h1>Profile</h1>
             <div className={styles.body}>
                 <div className={styles.bodyLeftSide}>
-                    <UserInformation
-                        picture={PicturePlaceHolder}
-                        name="Name placeholder"
-                        level={42}
-                        TFA={true}
-                    />
-                    <Statistics />
+                    <UserInformation userData={userData}/>
+           
+                    <Statistics userData={userData}/>
                     <SeeMatchHistoryBtn />
                 </div>
                 <div className={styles.bodyRightSide}>

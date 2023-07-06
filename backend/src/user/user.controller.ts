@@ -105,8 +105,10 @@ export class UserController {
     
     @Get("me")
     async getUser(@Req() req: any) {
-        const user = await this.userService.findOne(req.user.id)
-        return user
+      const user = await this.userService.findMe(1, ["login", "avatarUrl", "nbVictory", "totalPlay", "TFAEnabled"]);
+    //   const user = await this.userService.findMe(req.user.id, ["login", "avatarUrl", "nbVictory", "totalPlay"]);
+    
+      return { user };
     }
 
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { User } from 'src/typeorm/user.entity'
 import { CreateUserDto } from './dto/create-user.dto'
-import { Repository } from 'typeorm'
+import { Repository, SelectQueryBuilder, getRepository } from 'typeorm'
 import { UpdateUserDto } from './dto/update-user.dto'
 
 @Injectable()
@@ -32,5 +32,19 @@ export class UserService {
     async remove(id: number) {
         const user = await this.findOne(id)
         return this.userRepository.remove(user)
+    }
+
+    async findMe(id: number, selectFields?: string[]) {
+        const queryBuilder = this.userRepository
+          .createQueryBuilder('user')
+          .where('user.id = :id', { id });
+      
+        if (selectFields && selectFields.length > 0) {
+          selectFields.forEach(field => {
+            queryBuilder.addSelect(`user.${field}`);
+          });
+        }
+      
+        return queryBuilder.getOne();
     }
 }
