@@ -33,18 +33,5 @@ export class UserService {
         const user = await this.findOne(id)
         return this.userRepository.remove(user)
     }
-
-    async findMe(id: number, selectFields?: string[]) {
-        const queryBuilder = this.userRepository
-          .createQueryBuilder('user')
-          .where('user.id = :id', { id });
-      
-        if (selectFields && selectFields.length > 0) {
-          selectFields.forEach(field => {
-            queryBuilder.addSelect(`user.${field}`);
-          });
-        }
-      
-        return queryBuilder.getOne();
-    }
 }
+ 

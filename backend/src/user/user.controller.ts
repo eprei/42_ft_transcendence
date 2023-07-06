@@ -102,13 +102,16 @@ export class UserController {
     async getPhoto(@Param('filename') filename, @Res() res) {
         res.sendFile(filename, { root: './uploads' })
     }
-    
-    @Get("me")
-    async getUser(@Req() req: any) {
-      const user = await this.userService.findMe(1, ["login", "avatarUrl", "nbVictory", "totalPlay", "TFAEnabled"]);
-    //   const user = await this.userService.findMe(req.user.id, ["login", "avatarUrl", "nbVictory", "totalPlay"]);
-    
-      return { user };
-    }
 
+    // @Get("me")
+    // async getUser() {
+    //   const user = await this.userService.findOne(1)
+    // //   const user = await this.userService.findOne(req.user.id);
+    // // enable the ligne above
+
+    // const { id, TFASecret, FT_id, ...rest} = user
+
+    // return { rest };
+
+    // }
 }
