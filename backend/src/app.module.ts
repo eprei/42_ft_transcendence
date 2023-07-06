@@ -13,6 +13,7 @@ import { Friend } from './typeorm/friend.entity'
 import { Match } from './typeorm/match.entity'
 import { FriendModule } from './friend/friend.module'
 import { MatchModule } from './match/match.module'
+import { AuthModule } from './auth/auth.module'
 
 @Module({
     imports: [
@@ -30,6 +31,7 @@ import { MatchModule } from './match/match.module'
         MessageModule,
         FriendModule,
         MatchModule,
+        AuthModule,
     ],
     controllers: [AppController],
     providers: [AppService],
