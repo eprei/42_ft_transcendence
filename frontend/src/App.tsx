@@ -9,6 +9,9 @@ import RootLayout from './RootLayout'
 import TempLogin from './pages/TempLogin'
 import ErrorPage from './components/error/Error'
 import ProtectedRoute from './ProtectedRoute'
+import { authActions } from './store/auth'
+import { useEffect } from 'react'
+import { useAppDispatch } from './store/types'
 
 const router = createBrowserRouter([
     {
@@ -66,6 +69,29 @@ const router = createBrowserRouter([
 ])
 
 function App() {
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        async function getAuthStatus() {
+            try {
+                const response = await fetch(
+                    'http://localhost:8080/api/auth/status',
+                    { credentials: 'include' }
+                )
+                const data = await response.json()
+                console.log('data received: ', data)
+                if (data.status === 'success') {
+                    dispatch(authActions.login())
+                } else {
+                    dispatch(authActions.logout())
+                }
+            } catch (error) {
+                console.error('Error fetching data: ', error)
+            }
+        }
+        getAuthStatus()
+    }, [dispatch])
+
     return (
         <div>
             <RouterProvider router={router} />

@@ -29,11 +29,22 @@ create_env_nest () {
 	eof
 }
 
+ask_api_42_credentials () {
+	printf "42 UID   : "; read -r FT_UUID
+	printf "42 SECRET: "; read -r FT_SECRET
+
+	cat >> env/nest.env <<- 42
+	FT_UUID=${FT_UUID}
+	FT_SECRET=${FT_SECRET}
+	42
+}
+
 main () {
 	mkdir -p env
 	generate_postgres_credentials
 	create_env_nest
 	create_env_postgres
+	ask_api_42_credentials
 }
 
 main
