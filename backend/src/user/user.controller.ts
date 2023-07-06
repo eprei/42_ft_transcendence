@@ -12,6 +12,7 @@ import {
     UploadedFile,
     BadRequestException,
     Res,
+    Req
 } from '@nestjs/common'
 import { UserService } from './user.service'
 import { CreateUserDto } from './dto/create-user.dto'
@@ -101,4 +102,11 @@ export class UserController {
     async getPhoto(@Param('filename') filename, @Res() res) {
         res.sendFile(filename, { root: './uploads' })
     }
+    
+    @Get("me")
+    async getUser(@Req() req: any) {
+        const user = await this.userService.findOne(req.user.id)
+        return user
+    }
+
 }
