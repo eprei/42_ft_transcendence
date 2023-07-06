@@ -11,7 +11,6 @@ export class Auth42Strategy extends PassportStrategy(Strategy, 'oauth') {
             clientID: process.env.FT_UUID,
             clientSecret: process.env.FT_SECRET,
             callbackURL: 'http://localhost:8080/api/auth/42/redirect',
-            // passReqToCallback: true,
         })
     }
 
@@ -21,13 +20,12 @@ export class Auth42Strategy extends PassportStrategy(Strategy, 'oauth') {
         done: Function
     ): Promise<any> {
         console.log('default profile: ', profile)
-        // TODO Creation of the user in the database
         const user_profile = await this.getUserProfile(accessToken);
         if (!user_profile) {
           throw new UnauthorizedException();
         }
         console.log("API TOKEN FUNCTIONAL, 42 id: ", user_profile.id);
-        return profile
+        return user_profile.id
     }
 
     private async getUserProfile(accessToken: string): Promise<any> {
@@ -38,7 +36,6 @@ export class Auth42Strategy extends PassportStrategy(Strategy, 'oauth') {
         })
 
         console.log(`Response status: ${res.status}`)
-        // console.log(`Response body: ${await res.text()}`);
 
         if (!res.ok) {
             throw new Error(
