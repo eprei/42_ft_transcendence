@@ -72,7 +72,7 @@ function App() {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        async function fetchData() {
+        async function getAuthStatus() {
             try {
                 const response = await fetch(
                     'http://localhost:8080/api/auth/status',
@@ -89,7 +89,7 @@ function App() {
                 console.error('Error fetching data: ', error)
             }
         }
-        fetchData()
+        getAuthStatus()
     }, [dispatch])
 
     return (
