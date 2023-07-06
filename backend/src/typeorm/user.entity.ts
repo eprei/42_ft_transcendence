@@ -19,7 +19,7 @@ export class User {
         unique: true,
         type: 'text',
     })
-    login: string
+    nickname: string
 
     @Column('text')
     avatarUrl: string

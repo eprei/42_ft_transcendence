@@ -2,7 +2,7 @@ import { IsNotEmpty, IsOptional } from 'class-validator'
 
 export class CreateUserDto {
     @IsNotEmpty()
-    login: string
+    nickname: string
 
     @IsNotEmpty()
     avatarUrl: string
