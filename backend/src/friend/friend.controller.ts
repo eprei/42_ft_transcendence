@@ -10,7 +10,9 @@ import {
 import { FriendService } from './friend.service'
 import { CreateFriendDto } from './dto/create-friend.dto'
 import { UpdateFriendDto } from './dto/update-friend.dto'
+import { ApiTags } from '@nestjs/swagger'
 
+@ApiTags('friend')
 @Controller('friend')
 export class FriendController {
     constructor(private readonly friendService: FriendService) {}
