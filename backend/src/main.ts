@@ -53,7 +53,9 @@ async function bootstrap() {
 
     const config = new DocumentBuilder()
         .setTitle('CosmicPong API')
-        .setDescription('The coolest way to play pong and test our skills as developers at the same time')
+        .setDescription(
+            'The coolest way to play pong and test our skills as developers at the same time'
+        )
         .setVersion('1.0')
         .build()
     const document = SwaggerModule.createDocument(app, config)
