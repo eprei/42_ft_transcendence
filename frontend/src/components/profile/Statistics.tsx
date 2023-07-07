@@ -6,7 +6,10 @@ import IconRanking from '../../assets/icon/ranking.svg'
 import { UserInformationProps } from './MainProfile'
 
 const Statistics = (  {userData}: UserInformationProps ) => {
-    return (
+	console.log("userData", userData)
+	console.log("number of victories", userData?.nbVictory)
+
+	return (
         <div>
             <div className={styles.container}>
                 <div className={styles.subtitle}>Statistics</div>
@@ -14,13 +17,12 @@ const Statistics = (  {userData}: UserInformationProps ) => {
                     <StatisticElement
                         icon={IconVictoire}
                         text="Victorires"
-                        number={userData.nbVictory}
+                        number={userData?.nbVictory || 0}
                     />
                     <StatisticElement
                         icon={IconDefeat}
                         text="Defeats"
-                        number={userData.totalPlay - userData.nbVictory}
-                    />
+						number={userData?.totalPlay - userData?.nbVictory || 0}                    />
                     <StatisticElement
                         icon={IconRanking}
                         text="Ranking"

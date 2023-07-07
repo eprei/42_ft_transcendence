@@ -1,12 +1,12 @@
 import styles from './StatisticElement.module.css'
 
-interface StatisticElement {
+interface StatisticElementProps {
     icon: string
     text: string
     number: number
 }
 
-const StatisticElement = ({ icon, text, number }: StatisticElement) => {
+const StatisticElement = ({ icon, text, number }: StatisticElementProps) => {
     return (
         <div className={styles.container}>
             <img src={icon} alt="Icon" className={styles.icon} />

@@ -12,7 +12,7 @@ import {
     UploadedFile,
     BadRequestException,
     Res,
-    Req
+    Request
 } from '@nestjs/common'
 import { UserService } from './user.service'
 import { CreateUserDto } from './dto/create-user.dto'
@@ -40,8 +40,8 @@ export class UserController {
         return users
     }
 
-    @Get(':id')
-    async findOne(@Param('id') id: string) {
+	@Get('id/:id')
+	async findOne(@Param('id') id: string) {
         const user = await this.userService.findOne(+id)
         return user
     }
@@ -103,15 +103,12 @@ export class UserController {
         res.sendFile(filename, { root: './uploads' })
     }
 
-    // @Get("me")
-    // async getUser() {
-    //   const user = await this.userService.findOne(1)
-    // //   const user = await this.userService.findOne(req.user.id);
-    // // enable the ligne above
+    @Get("me")
+    async getUser(@Request() req: any) {
+		const user = await this.userService.findOne(req.user.id);
 
-    // const { id, TFASecret, FT_id, ...rest} = user
+		const { id, TFASecret, FT_id, ...rest} = user
 
-    // return { rest };
-
-    // }
+		return { rest };
+    }
 }

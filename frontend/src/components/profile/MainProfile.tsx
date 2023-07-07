@@ -9,16 +9,18 @@ export interface UserData {
     login: string;
     avatarUrl: string;
     nbVictory: number;
-    TFAEnabled: boolean;
     totalPlay: number;
+	xp: number,
+    TFAEnabled: boolean;
   }
-  
+
 export interface UserInformationProps {
     userData: UserData;
   }
 
 const MainProfile = () => {
 
+	const [loading, setLoading] = useState(true);
     const [userData, setUserData] = useState<UserData>({} as UserData);
 
     useEffect(() => {
@@ -36,13 +38,17 @@ const MainProfile = () => {
             }
             console.log("WELL FETCHED")
             const data = await response.json();
-            console.log("Data:", data); // Imprime la variable data en la consola
             setUserData(data);
+			setLoading(false);
 
         } catch (error) {
             console.log('Error:', error);
         }
     }
+
+	if (loading) {
+		return <div>Loading...</div>;
+	}
 
     return (
         <div className={styles.container}>
@@ -50,7 +56,6 @@ const MainProfile = () => {
             <div className={styles.body}>
                 <div className={styles.bodyLeftSide}>
                     <UserInformation userData={userData}/>
-           
                     <Statistics userData={userData}/>
                     <SeeMatchHistoryBtn />
                 </div>
