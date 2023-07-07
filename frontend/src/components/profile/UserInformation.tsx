@@ -3,7 +3,7 @@ import ClickableIcon from './ClickableIcon'
 import IconEditProfile from '../../assets/icon/edit_profile.svg'
 import { UserInformationProps } from './MainProfile'
 
-const UserInformation = ( {userData}: UserInformationProps ) => {
+const UserInformation = ({ userData }: UserInformationProps) => {
     const profilePictureStyle = {
         backgroundImage: `url(${userData.avatarUrl})`,
         backgroundSize: 'cover',
@@ -29,7 +29,7 @@ const UserInformation = ( {userData}: UserInformationProps ) => {
                             onClick={editProfile}
                         />
                     </li>
-                    <li>Level {userData.nbVictory}</li> {/* // TODO CHANGE THIS VALUE WITH THE CALCULE OF LEVEL */}
+                    <li>Level {Math.floor(userData.nbVictory / 5) + 1}</li>
                     <li>
                         Two-factor authentication is
                         {userData.TFAEnabled ? ' activated ' : ' deactivated'}

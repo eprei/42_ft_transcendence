@@ -25,21 +25,21 @@ export class Auth42Strategy extends PassportStrategy(Strategy, 'oauth') {
         if (!user_profile) {
             throw new UnauthorizedException()
         }
-        console.log("API TOKEN FUNCTIONAL, 42 id: ", user_profile.id);
+        console.log('API TOKEN FUNCTIONAL, 42 id: ', user_profile.id)
 
-		let user = await this.userService.create({
-			login: "titfddxdfsddfs",
-			avatarUrl: "https://cdn.intra.42.fr/users/8064d076cacd8605b412baca23d88b3b/epresa-c.jpg",
-			nbVictory: 32,
-			totalPlay: 42,
-			xp: 99,
-			TFASecret: "99999",
-			TFAEnabled: false,
-		})
+		// This is a temporary user. The real one will be created in the s_create_player branch
+        let user = await this.userService.create({
+            login: 'Leonidas',
+            avatarUrl:
+                'https://cdn.intra.42.fr/users/8064d076cacd8605b412baca23d88b3b/epresa-c.jpg',
+            nbVictory: 16,
+            totalPlay: 1030,
+            xp: 5,
+            TFASecret: '99999',
+            TFAEnabled: false,
+        })
 
-		console.log(user)
-
-		return user
+        return user
     }
 
     private async getUserProfile(accessToken: string): Promise<any> {

@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { User } from 'src/typeorm/user.entity'
 import { CreateUserDto } from './dto/create-user.dto'
-import { Repository, SelectQueryBuilder, getRepository } from 'typeorm'
+import { Repository } from 'typeorm'
 import { UpdateUserDto } from './dto/update-user.dto'
 
 @Injectable()
@@ -33,5 +33,18 @@ export class UserService {
         const user = await this.findOne(id)
         return this.userRepository.remove(user)
     }
+
+    async getUserPosition(userId: number): Promise<number> {
+        const user = await this.findOne(userId)
+        if (!user) {
+            throw new NotFoundException('User not found')
+        }
+
+        const userPosition = await this.userRepository
+            .createQueryBuilder('user')
+            .where('user.xp <= :userXp', { userXp: user.xp })
+            .getCount()
+
+        return userPosition
+    }
 }
- 
