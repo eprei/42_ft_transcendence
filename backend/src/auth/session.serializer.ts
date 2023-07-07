@@ -40,4 +40,3 @@ export class SessionSerializer extends PassportSerializer {
 	picture. The req.user property is then set to the yielded information.
 
 */
-

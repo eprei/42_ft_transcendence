@@ -6,10 +6,10 @@ export class AuthenticatedGuard implements CanActivate {
         const request = context.switchToHttp().getRequest()
 
         return request.isAuthenticated() // && !request.session.totpRequire
-		/// TODO Here we will verify that the 2fa authentication has been
-		// performed in case the user has enabled this option. This way we
-		// will have a unique guard that will verify that the two
-		// authentication factors have been correctly validated.
+        /// TODO Here we will verify that the 2fa authentication has been
+        // performed in case the user has enabled this option. This way we
+        // will have a unique guard that will verify that the two
+        // authentication factors have been correctly validated.
     }
 }
 
