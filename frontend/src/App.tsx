@@ -6,7 +6,6 @@ import GameLauncher from './pages/GameLauncher'
 import Game from './pages/Game'
 import Chat from './pages/Chat'
 import RootLayout from './RootLayout'
-import TempLogin from './pages/TempLogin'
 import ErrorPage from './components/error/Error'
 import ProtectedRoute from './ProtectedRoute'
 import { authActions } from './store/auth'
@@ -59,10 +58,6 @@ const router = createBrowserRouter([
                         <Chat />
                     </ProtectedRoute>
                 ),
-            },
-            {
-                path: 'tmp',
-                element: <TempLogin />,
             },
         ],
     },
