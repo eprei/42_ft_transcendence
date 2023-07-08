@@ -5,7 +5,7 @@ import { UserInformationProps } from './MainProfile'
 
 const UserInformation = ({ userData }: UserInformationProps) => {
     const profilePictureStyle = {
-        backgroundImage: `url(${userData.avatarUrl})`,
+        backgroundImage: `url(${userData.user.avatarUrl})`,
         backgroundSize: 'cover',
     }
 
@@ -23,16 +23,18 @@ const UserInformation = ({ userData }: UserInformationProps) => {
             <div>
                 <ul className={styles.verticalList}>
                     <li>
-                        {userData.login}
+                        {userData.user.login}
                         <ClickableIcon
                             icon={IconEditProfile}
                             onClick={editProfile}
                         />
                     </li>
-                    <li>Level {Math.floor(userData.nbVictory / 5) + 1}</li>
+                    <li>Level {Math.floor(userData.user.nbVictory / 5) + 1}</li>
                     <li>
                         Two-factor authentication is
-                        {userData.TFAEnabled ? ' activated ' : ' deactivated'}
+                        {userData.user.TFAEnabled
+                            ? ' activated '
+                            : ' deactivated'}
                     </li>
                 </ul>
             </div>

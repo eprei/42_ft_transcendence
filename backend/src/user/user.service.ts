@@ -42,7 +42,7 @@ export class UserService {
 
         const userPosition = await this.userRepository
             .createQueryBuilder('user')
-            .where('user.xp <= :userXp', { userXp: user.xp })
+            .where('user.xp >= :userXp', { userXp: user.xp })
             .getCount()
 
         return userPosition

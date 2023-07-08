@@ -6,12 +6,15 @@ import UserInformation from './UserInformation'
 import { useEffect, useState } from 'react'
 
 export interface UserData {
-    login: string
-    avatarUrl: string
-    nbVictory: number
-    totalPlay: number
-    xp: number
-    TFAEnabled: boolean
+    user: {
+        login: string
+        avatarUrl: string
+        nbVictory: number
+        totalPlay: number
+        xp: number
+        TFAEnabled: boolean
+    }
+    userPosition: number
 }
 
 export interface UserInformationProps {
@@ -26,11 +29,6 @@ const MainProfile = () => {
         getCurrentUser()
     }, [])
 
-    useEffect(() => {
-        console.log('data : ', userData)
-        console.log('userData.login : ', userData.login)
-    }, [userData])
-
     async function getCurrentUser() {
         try {
             const response = await fetch(`http://localhost:8080/api/user/me`, {
@@ -41,7 +39,7 @@ const MainProfile = () => {
                 throw new Error('Failed to fetch user ME')
             }
             const data = await response.json()
-            setUserData(data)
+            setUserData({ user: data, userPosition: data.userPosition }) // setUserData({ login: data.login, userPosition: data.userPosition })
             setLoading(false)
         } catch (error) {
             console.log('Error:', error)
@@ -51,14 +49,13 @@ const MainProfile = () => {
     if (loading) {
         return <div>Loading...</div>
     }
-
     return (
         <div className={styles.container}>
             <h1>Profile</h1>
             <div className={styles.body}>
                 <div className={styles.bodyLeftSide}>
-                    <UserInformation userData={userData.rest} />
-                    <Statistics userData={userData.rest} />
+                    <UserInformation userData={userData} />
+                    <Statistics userData={userData} />
                     <SeeMatchHistoryBtn />
                 </div>
                 <div className={styles.bodyRightSide}>

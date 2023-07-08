@@ -14,17 +14,20 @@ const Statistics = ({ userData }: UserInformationProps) => {
                     <StatisticElement
                         icon={IconVictoire}
                         text="Victorires"
-                        number={userData?.nbVictory || 0}
+                        number={userData.user.nbVictory || 0}
                     />
                     <StatisticElement
                         icon={IconDefeat}
                         text="Defeats"
-                        number={userData?.totalPlay - userData?.nbVictory || 0}
+                        number={
+                            userData.user.totalPlay - userData.user.nbVictory ||
+                            0
+                        }
                     />
                     <StatisticElement
                         icon={IconRanking}
                         text="Ranking"
-                        number={1}
+                        number={userData.userPosition}
                     />
                 </div>
             </div>

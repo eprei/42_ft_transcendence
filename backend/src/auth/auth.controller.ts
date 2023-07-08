@@ -23,7 +23,7 @@ export class AuthController {
     @Get('status')
     getStatus(@Req() req) {
         if (req.user) {
-            return { status: 'success'}
+            return { status: 'success' }
         } else {
             return { status: 'error', message: 'Not authenticated' }
         }

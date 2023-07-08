@@ -2,6 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { PassportStrategy } from '@nestjs/passport'
 import { Strategy } from 'passport-oauth2'
 import { UserService } from 'src/user/user.service'
+import * as crypto from 'crypto'
 
 @Injectable()
 export class Auth42Strategy extends PassportStrategy(Strategy, 'oauth') {
@@ -27,17 +28,22 @@ export class Auth42Strategy extends PassportStrategy(Strategy, 'oauth') {
         }
         console.log('API TOKEN FUNCTIONAL, 42 id: ', user_profile.id)
 
-		// This is a temporary user. The real one will be created in the s_create_player branch
+        // This is a temporary randomly created user.
+        // The real one will be created in the s_create_player branch
+        const randomString = crypto.randomBytes(5).toString('hex')
+        const username = `User_${randomString}`
+        const xp = Math.floor(Math.random() * 99) + 1
         let user = await this.userService.create({
-            login: 'Leonidas',
+            login: username,
             avatarUrl:
                 'https://cdn.intra.42.fr/users/8064d076cacd8605b412baca23d88b3b/epresa-c.jpg',
-            nbVictory: 16,
-            totalPlay: 1030,
-            xp: 5,
+            nbVictory: 60,
+            totalPlay: 100,
+            xp: xp,
             TFASecret: '99999',
             TFAEnabled: false,
         })
+        // End of randomly created user
 
         return user
     }

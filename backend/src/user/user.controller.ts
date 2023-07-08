@@ -114,9 +114,8 @@ export class UserController {
 
         const { id, TFASecret, FT_id, ...rest } = user
 
-        // const userPosition = await this.userService.getUserPosition(req.user.id);
-        return { rest };
+        const userPosition = await this.userService.getUserPosition(req.user.id)
 
-        // return { ...rest, userPosition };
+        return { ...rest, userPosition }
     }
 }
