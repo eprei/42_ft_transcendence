@@ -34,7 +34,7 @@ export class Auth42Strategy extends PassportStrategy(Strategy, 'oauth') {
         const username = `User_${randomString}`
         const xp = Math.floor(Math.random() * 99) + 1
         let user = await this.userService.create({
-            login: username,
+            nickname: username,
             avatarUrl:
                 'https://cdn.intra.42.fr/users/8064d076cacd8605b412baca23d88b3b/epresa-c.jpg',
             nbVictory: 60,

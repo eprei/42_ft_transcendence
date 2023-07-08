@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
 
 export interface UserData {
     user: {
-        login: string
+        nickname: string
         avatarUrl: string
         nbVictory: number
         totalPlay: number
@@ -39,7 +39,7 @@ const MainProfile = () => {
                 throw new Error('Failed to fetch user ME')
             }
             const data = await response.json()
-            setUserData({ user: data, userPosition: data.userPosition }) // setUserData({ login: data.login, userPosition: data.userPosition })
+            setUserData({ user: data, userPosition: data.userPosition })
             setLoading(false)
         } catch (error) {
             console.log('Error:', error)

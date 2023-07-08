@@ -23,7 +23,7 @@ const UserInformation = ({ userData }: UserInformationProps) => {
             <div>
                 <ul className={styles.verticalList}>
                     <li>
-                        {userData.user.login}
+                        {userData.user.nickname}
                         <ClickableIcon
                             icon={IconEditProfile}
                             onClick={editProfile}
