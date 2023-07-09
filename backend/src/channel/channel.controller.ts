@@ -26,6 +26,12 @@ export class ChannelController {
         return channel
     }
 
+    @Get('user-channels/:id')
+    async getUserChannels(@Param('id') id: string) {
+        const channels = await this.channelService.getUserChannels(+id)
+        return channels
+    }
+
     @Get()
     async findAll() {
         const channels = await this.channelService.findAll()
