@@ -1,7 +1,24 @@
 import styles from './BoardGame.module.css'
 import { useState, useEffect } from 'react'
 
-function drawRectangle(ctx: CanvasRenderingContext2D, rectangle): void {
+interface Position {
+    x: number
+    y: number
+}
+interface Size {
+    width: number
+    height: number
+}
+
+interface Rectangle {
+    size: Size
+    position: Position
+}
+
+function drawRectangle(
+    ctx: CanvasRenderingContext2D,
+    rectangle: Rectangle
+): void {
     ctx.fillStyle = 'white'
     ctx.fillRect(
         rectangle.position.x,
