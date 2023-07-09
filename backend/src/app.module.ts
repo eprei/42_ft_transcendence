@@ -18,6 +18,7 @@ import { PongModule } from './pong/pong.module'
 import { AuthenticatedGuard } from './auth/guards/authenticated.guard'
 import { APP_GUARD } from '@nestjs/core'
 import { RoomModule } from './room/room.module'
+import { ChatModule } from './chat/chat.module';
 
 @Module({
     imports: [
@@ -37,6 +38,7 @@ import { RoomModule } from './room/room.module'
         MatchModule,
         AuthModule,
         PongModule,
+        ChatModule,
         RoomModule,
     ],
     controllers: [AppController],
