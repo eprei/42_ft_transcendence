@@ -10,6 +10,8 @@ services:
             - '80:80'
         volumes:
             - ./frontend/dist/:/var/www/cosmic-pong
+        depends_on:
+            - backend
         networks:
             - prod-appnet
 
