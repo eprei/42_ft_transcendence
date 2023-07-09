@@ -64,7 +64,7 @@ const router = createBrowserRouter([
                     </ProtectedRoute>
                 ),
                 loader: async () => {
-                    const response = await fetch('http://localhost:8080/api/user-channels/1');
+                    const response = await fetch('http://localhost:8080/api/channel/user-channels/2');
                     if (!response.ok) {
                         throw new Error(response.statusText);
                     }
