@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface'
 import { ValidationPipe } from '@nestjs/common'
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 import * as session from 'express-session'
 import * as passport from 'passport'
 import * as crypto from 'crypto'
@@ -46,9 +47,19 @@ async function bootstrap() {
     app.use(passport.initialize())
     app.use(passport.session())
     app.use((req, res, next) => {
-        console.log("Session id: ", req.sessionID)
+        console.log('Session id: ', req.sessionID)
         next()
     })
+
+    const config = new DocumentBuilder()
+        .setTitle('CosmicPong API')
+        .setDescription(
+            'The coolest way to play pong and test our skills as developers at the same time'
+        )
+        .setVersion('1.0')
+        .build()
+    const document = SwaggerModule.createDocument(app, config)
+    SwaggerModule.setup('swagger', app, document)
 
     await app.listen(3000)
 }

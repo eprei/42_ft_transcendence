@@ -20,11 +20,11 @@ export class Auth42Strategy extends PassportStrategy(Strategy, 'oauth') {
         done: Function
     ): Promise<any> {
         console.log('default profile: ', profile)
-        const user_profile = await this.getUserProfile(accessToken);
+        const user_profile = await this.getUserProfile(accessToken)
         if (!user_profile) {
-          throw new UnauthorizedException();
+            throw new UnauthorizedException()
         }
-        console.log("API TOKEN FUNCTIONAL, 42 id: ", user_profile.id);
+        console.log('API TOKEN FUNCTIONAL, 42 id: ', user_profile.id)
         return user_profile.id
     }
 

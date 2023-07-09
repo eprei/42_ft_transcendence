@@ -19,7 +19,9 @@ import { UpdateChannelDto } from 'src/channel/dto/update-channel.dto'
 import { Express } from 'express'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { diskStorage } from 'multer'
+import { ApiTags } from '@nestjs/swagger'
 
+@ApiTags('user')
 @Controller('user')
 export class UserController {
     constructor(private readonly userService: UserService) {}

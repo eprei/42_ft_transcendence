@@ -2,14 +2,16 @@ import { ExecutionContext, Injectable } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 
 @Injectable()
-export class OauthGuard extends AuthGuard('oauth') {					// 1
-    async canActivate(context: ExecutionContext) {						// 2
+export class OauthGuard extends AuthGuard('oauth') {
+    // 1
+    async canActivate(context: ExecutionContext) {
+        // 2
         const result = (await super.canActivate(context)) as boolean
-        const request = context.switchToHttp().getRequest()				// 3
-        await super.logIn(request)										// 4
+        const request = context.switchToHttp().getRequest() // 3
+        await super.logIn(request) // 4
         // if (request.user.auth) request.session.totpRequire = true	// 5
 
-        return result													// 6
+        return result // 6
     }
 }
 
