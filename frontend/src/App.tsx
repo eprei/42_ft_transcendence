@@ -61,14 +61,14 @@ const router = createBrowserRouter([
                     </ProtectedRoute>
                 ),
             },
-			{
-				path: 'TFATurnOn',
-				element: (
-					<ProtectedRoute>
-						<TFATurnOn />
-					</ProtectedRoute>
-				),
-			},
+            {
+                path: 'TFATurnOn',
+                element: (
+                    <ProtectedRoute>
+                        <TFATurnOn />
+                    </ProtectedRoute>
+                ),
+            },
         ],
     },
     {

@@ -63,41 +63,13 @@ export class AuthController {
 
     @Post('2fa/authenticate')
     // @UseGuards(AuthenticatedGuard)
-    async authenticate(@Request() req: any, @Body() body) {
-        const user = await this.userService.findOne(req.user.id)
-
-        if (!user) {
-            throw new NotFoundException('User not found')
-        }
-        const isCodeValid = this.authService.isTwoFactorAuthenticationCodeValid(
-            body.twoFactorAuthenticationCode,
-            user
-        )
-
-        if (!isCodeValid) {
-            throw new UnauthorizedException('Wrong authentication code')
-        }
-
-		req.session.needTFA = false
-		return user
+    async authenticateTOTP(@Request() req: any, @Body() body) {
+        return await this.authService.authenticateTOTP(req, body)
     }
 
     @Get('2fa/generate')
     // @UseGuards(OauthGuard)
     async generateQR(@Request() req: any) {
-        const user = await this.userService.findOne(req.user.id)
-
-        if (!user) {
-            throw new NotFoundException('User not found')
-        }
-        const secretAndUrl =
-            await this.authService.generateTwoFactorAuthenticationSecret(user)
-
-        const qrCode = await this.authService.generateQrCodeDataURL(
-            (
-                await secretAndUrl
-            ).otpauthUrl
-        )
-        return qrCode
+        return await this.authService.generateQR(req)
     }
 }

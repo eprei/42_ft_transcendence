@@ -1,4 +1,10 @@
-import { Injectable, Request } from '@nestjs/common'
+import {
+    Injectable,
+    Request,
+    NotFoundException,
+    UnauthorizedException,
+    Body,
+} from '@nestjs/common'
 import { User } from '../types/User'
 import { authenticator } from 'otplib'
 import { UserService } from 'src/user/user.service'
@@ -42,5 +48,42 @@ export class AuthService {
             token: twoFactorAuthenticationCode,
             secret: User.TFASecret,
         })
+    }
+
+    async authenticateTOTP(@Request() req: any, @Body() body) {
+        const user = await this.userService.findOne(req.user.id)
+
+        if (!user) {
+            throw new NotFoundException('User not found')
+        }
+        const isCodeValid = this.isTwoFactorAuthenticationCodeValid(
+            body.twoFactorAuthenticationCode,
+            user
+        )
+
+        if (!isCodeValid) {
+            throw new UnauthorizedException('Wrong authentication code')
+        }
+
+        req.session.needTFA = false
+        return user
+    }
+
+    async generateQR(@Request() req: any) {
+        const user = await this.userService.findOne(req.user.id)
+
+        if (!user) {
+            throw new NotFoundException('User not found')
+        }
+        const secretAndUrl = await this.generateTwoFactorAuthenticationSecret(
+            user
+        )
+
+        const qrCode = await this.generateQrCodeDataURL(
+            (
+                await secretAndUrl
+            ).otpauthUrl
+        )
+        return qrCode
     }
 }

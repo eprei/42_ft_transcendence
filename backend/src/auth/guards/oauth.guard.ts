@@ -10,10 +10,9 @@ export class OauthGuard extends AuthGuard('oauth') {
         const request = context.switchToHttp().getRequest() // 3
         await super.logIn(request) // 4
 
-		request.session.needTFA = request.user.TFAEnabled ? true : false; // 5
+        request.session.needTFA = request.user.TFAEnabled ? true : false // 5
 
-		return result // 6
-
+        return result // 6
     }
 }
 
