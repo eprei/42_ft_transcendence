@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, } from 'react'
 
 import styles from './ChannelBox.module.css'
 import { Channel } from '../../../types/Channel'
@@ -28,9 +28,7 @@ async function postData(data: Channel) {
 }
 
 function ChannelBox() {
-    let importedChannels: Channel[] = channeljson
-    console.log(importedChannels)
-    const [channels, setChannels] = useState<Channel[]>(importedChannels)
+    const [channels, setChannels] = useState<Channel[]>([])
 
     const handleCreation = (channel: Channel) => {
         //     const channelsCpy = [...channels]
@@ -44,17 +42,6 @@ function ChannelBox() {
         //     getChannelHandler()
         // }, 500)
     }
-
-    // useEffect(() => {
-    //     getChannelHandler()
-    // }, [])
-
-    // const getChannelHandler = () => {
-    //     getChannels().then((channels) => {
-    //         setChannels(channels)
-    //         console.log(channels)
-    //     })
-    // }
 
     return (
         <div className={styles.channelbox}>
