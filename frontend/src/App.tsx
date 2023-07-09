@@ -63,6 +63,15 @@ const router = createBrowserRouter([
                         <Chat />
                     </ProtectedRoute>
                 ),
+                loader: async () => {
+                    const response = await fetch('http://localhost:8080/api/channel');
+                    if (!response.ok) {
+                        throw new Error(response.statusText);
+                    }
+                    const channelsData = await response.json();
+                    console.log('channelsData: ', channelsData);
+                    return  channelsData;
+                }
             },
             {
                 path: 'TFATurnOn',
