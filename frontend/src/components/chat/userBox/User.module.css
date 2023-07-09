@@ -1,0 +1,34 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 2rem;
+}
+.left {
+    display: flex;
+    align-items: center;
+}
+.right {
+    display: flex;
+    margin-right: 4rem;
+    align-items: center;
+}
+.right div {
+    margin: 0 0.5rem;
+    cursor: pointer;
+}
+
+.profilePicture {
+    width: 40px;
+    height: 40px;
+    border: 0.2rem solid var(--color-white);
+    filter: drop-shadow(0px -4px 16px var(--color-black));
+    border-radius: 50%;
+    transform: scale(80%);
+}
+
+.status {
+    font-size: 10px;
+    line-height: 18px;
+    color: #11dce8;
+}
