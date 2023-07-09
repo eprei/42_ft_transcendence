@@ -34,7 +34,7 @@ export class UserService {
         return this.userRepository.remove(user)
     }
 
-    async getUserPosition(userId: number): Promise<number> {
+    async getUserRankingPosition(userId: number): Promise<number> {
         const user = await this.findOne(userId)
         if (!user) {
             throw new NotFoundException('User not found')
@@ -44,7 +44,7 @@ export class UserService {
             .createQueryBuilder('user')
             .where('user.xp >= :userXp', { userXp: user.xp })
             .getCount()
-
+        console.log('USER position: ', userPosition)
         return userPosition
     }
 }
