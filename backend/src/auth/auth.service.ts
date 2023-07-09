@@ -66,7 +66,28 @@ export class AuthService {
         }
 
         req.session.needTFA = false
-        return user
+        return true
+    }
+
+
+	async activate2fa(@Request() req: any, @Body() body) {
+        const user = await this.userService.findOne(req.user.id)
+
+        if (!user) {
+            throw new NotFoundException('User not found')
+        }
+        const isCodeValid = this.isTwoFactorAuthenticationCodeValid(
+            body.twoFactorAuthenticationCode,
+            user
+        )
+
+        if (!isCodeValid) {
+            throw new UnauthorizedException('Wrong authentication code')
+        }
+
+		this.userService.turnOnTwoFactorAuthentication(user.id)
+
+        return true
     }
 
     async generateQR(@Request() req: any) {

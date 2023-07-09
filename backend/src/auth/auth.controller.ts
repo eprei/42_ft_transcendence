@@ -49,17 +49,10 @@ export class AuthController {
     }
 
     @Post('2fa/turn-on')
-    @UseGuards(OauthGuard)
-    async turnOnTwoFactorAuthentication(@Req() request, @Body() body) {
-        const isCodeValid = this.authService.isTwoFactorAuthenticationCodeValid(
-            body.twoFactorAuthenticationCode,
-            request.user
-        )
-        if (!isCodeValid) {
-            throw new UnauthorizedException('Wrong authentication code')
-        }
-        await this.userService.turnOnTwoFactorAuthentication(request.user.id)
-    }
+    // @UseGuards(OauthGuard)
+    async activate2fa(@Request() req: any, @Body() body) {
+		return await this.authService.activate2fa(req, body)
+	}
 
     @Post('2fa/authenticate')
     // @UseGuards(AuthenticatedGuard)

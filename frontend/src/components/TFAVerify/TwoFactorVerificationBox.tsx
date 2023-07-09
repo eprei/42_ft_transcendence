@@ -49,10 +49,10 @@ const TwoFactorVerificationBox = ({ url }: TwoFactorVerificationBoxProps) => {
                 data.message === 'Wrong authentication code'
             ) {
                 setErrorMessage('Wrong code')
-                console.log('wrong code')
+                console.log('Wrong code')
             } else {
                 setErrorMessage('')
-                console.log('good code')
+                console.log('Valid code')
             }
 
             console.log(data)
