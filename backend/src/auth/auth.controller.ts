@@ -51,8 +51,14 @@ export class AuthController {
     @Post('2fa/turn-on')
     // @UseGuards(OauthGuard)
     async activate2fa(@Request() req: any, @Body() body) {
-		return await this.authService.activate2fa(req, body)
-	}
+        return await this.authService.activate2fa(req, body)
+    }
+
+    @Post('2fa/turn-off')
+    // @UseGuards(OauthGuard)
+    async deactivate2fa(@Request() req: any) {
+        return await this.authService.deactivate2fa(req)
+    }
 
     @Post('2fa/authenticate')
     // @UseGuards(AuthenticatedGuard)

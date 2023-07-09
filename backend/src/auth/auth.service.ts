@@ -69,8 +69,7 @@ export class AuthService {
         return true
     }
 
-
-	async activate2fa(@Request() req: any, @Body() body) {
+    async activate2fa(@Request() req: any, @Body() body) {
         const user = await this.userService.findOne(req.user.id)
 
         if (!user) {
@@ -85,8 +84,21 @@ export class AuthService {
             throw new UnauthorizedException('Wrong authentication code')
         }
 
-		this.userService.turnOnTwoFactorAuthentication(user.id)
+        this.userService.turnOnTwoFactorAuthentication(user.id)
 
+        return true
+    }
+
+    async deactivate2fa(@Request() req: any) {
+        const user = await this.userService.findOne(req.user.id)
+
+        if (!user) {
+            throw new NotFoundException('User not found')
+        }
+
+        this.userService.turnOffTwoFactorAuthentication(user.id)
+        const user2 = await this.userService.findOne(req.user.id)
+        console.log('user2 = ', user2)
         return true
     }
 
