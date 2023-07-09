@@ -246,39 +246,39 @@ export class AppService {
         await this.friendRepo.save(friendship6)
 
         // Create messages
-        const channels = await this.channelRepo.find()
-        for (const channel of channels) {
-            let userCount = 3
-            if (channel.type === 'direct') {
-                userCount = 2
-            }
+        // const channels = await this.channelRepo.find()
+        // for (const channel of channels) {
+        //     let userCount = 3
+        //     if (channel.type === 'direct') {
+        //         userCount = 2
+        //     }
 
-            const users = await this.userRepo.find({ take: userCount })
-            const channelUsers = users
-                .filter((user) => user !== channel.owner)
-                .filter((user) => user !== undefined)
-            if (channelUsers.length >= userCount) {
-                channelUsers.pop()
-            }
+        //     const users = await this.userRepo.find({ take: userCount })
+        //     const channelUsers = users
+        //         .filter((user) => user !== channel.owner)
+        //         .filter((user) => user !== undefined)
+        //     if (channelUsers.length >= userCount) {
+        //         channelUsers.pop()
+        //     }
 
-            const allUsers = await this.userRepo.find()
-            const owner = allUsers.find((user) => user === channel.owner)
-            channelUsers.unshift(owner)
+        //     const allUsers = await this.userRepo.find()
+        //     const owner = allUsers.find((user) => user === channel.owner)
+        //     channelUsers.unshift(owner)
 
-            for (let i = 0; i < 10; i++) {
-                const creator = channelUsers[i % userCount].id
-                const content = `Message ${i + 1}`
+        //     for (let i = 0; i < 10; i++) {
+        //         const creator = channelUsers[i % userCount].id
+        //         const content = `Message ${i + 1}`
 
-                const message = this.messageRepo.create({
-                    creator,
-                    content,
-                    creationDate: new Date(),
-                    channelId: channel,
-                })
+        //         const message = this.messageRepo.create({
+        //             creator,
+        //             content,
+        //             creationDate: new Date(),
+        //             channelId: channel,
+        //         })
 
-                await this.messageRepo.save(message)
-            }
-        }
+        //         await this.messageRepo.save(message)
+        //     }
+        // }
 
         const allusers = await this.userRepo.find()
 
