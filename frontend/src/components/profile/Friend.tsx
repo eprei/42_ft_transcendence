@@ -1,4 +1,3 @@
-import React from 'react'
 import styles from './Friend.module.css'
 import IconAddFriend from '../../assets/icon/add_friend.svg'
 import IconRemoveFriend from '../../assets/icon/remove_friend.svg'

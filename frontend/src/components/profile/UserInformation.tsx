@@ -1,4 +1,3 @@
-import React from 'react'
 import styles from './UserInformation.module.css'
 import ClickableIcon from './ClickableIcon'
 import IconEditProfile from '../../assets/icon/edit_profile.svg'
