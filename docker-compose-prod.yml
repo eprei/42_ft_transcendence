@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+    webserv:
+        container_name: our-prod-nginx
+        image: our-nginx-image
+        build:
+            context: ./nginx/
+        ports:
+            - '80:80'
+        volumes:
+            - ./frontend/dist/:/var/www/cosmic-pong
+        networks:
+            - prod-appnet
+
+    postgres:
+        container_name: our-prod-postgresql
+        image: postgres:latest
+        volumes:
+            - prod-data:/var/lib/postgresql/data
+        env_file:
+            - './env/postgres.env'
+        networks:
+            - prod-appnet
+
+    backend:
+        container_name: our-prod-backend
+        image: node:18-alpine
+        working_dir: /app
+        ports:
+            - '8080:3000'
+        volumes:
+            - ./backend:/app
+        depends_on:
+            - postgres
+        env_file:
+            - ./env/nest.env
+        networks:
+            - prod-appnet
+        command: node /app/dist/main
+
+volumes:
+    prod-data:
+      name: our-prod-volume
+
+networks:
+    prod-appnet:
