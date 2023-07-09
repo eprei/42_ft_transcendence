@@ -3,8 +3,9 @@ import StatisticElement from './StatisticElement'
 import IconVictoire from '../../assets/icon/victoires.svg'
 import IconDefeat from '../../assets/icon/defeats.svg'
 import IconRanking from '../../assets/icon/ranking.svg'
+import { UserInformationProps } from './MainProfile'
 
-const Statistics = () => {
+const Statistics = ({ userData }: UserInformationProps) => {
     return (
         <div>
             <div className={styles.container}>
@@ -13,17 +14,19 @@ const Statistics = () => {
                     <StatisticElement
                         icon={IconVictoire}
                         text="Victorires"
-                        number={42}
+                        number={userData.user.nbVictory}
                     />
                     <StatisticElement
                         icon={IconDefeat}
                         text="Defeats"
-                        number={0}
+                        number={
+                            userData.user.totalPlay - userData.user.nbVictory
+                        }
                     />
                     <StatisticElement
                         icon={IconRanking}
                         text="Ranking"
-                        number={1}
+                        number={userData.userPosition}
                     />
                 </div>
             </div>

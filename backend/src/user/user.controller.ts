@@ -12,6 +12,8 @@ import {
     UploadedFile,
     BadRequestException,
     Res,
+    Request,
+    NotFoundException,
 } from '@nestjs/common'
 import { UserService } from './user.service'
 import { CreateUserDto } from './dto/create-user.dto'
@@ -39,7 +41,7 @@ export class UserController {
         return users
     }
 
-    @Get(':id')
+    @Get('id/:id')
     async findOne(@Param('id') id: string) {
         const user = await this.userService.findOne(+id)
         return user
@@ -100,5 +102,22 @@ export class UserController {
     @Get('picture/:filename')
     async getPhoto(@Param('filename') filename, @Res() res) {
         res.sendFile(filename, { root: './uploads' })
+    }
+
+    @Get('me')
+    async getUser(@Request() req: any) {
+        const user = await this.userService.findOne(req.user.id)
+
+        if (!user) {
+            throw new NotFoundException('User not found')
+        }
+
+        const { id, TFASecret, FT_id, ...rest } = user
+
+        const userPosition = await this.userService.getUserRankingPosition(
+            req.user.id
+        )
+
+        return { ...rest, userPosition }
     }
 }

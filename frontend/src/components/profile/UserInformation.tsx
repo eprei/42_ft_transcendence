@@ -1,17 +1,11 @@
 import styles from './UserInformation.module.css'
 import ClickableIcon from './ClickableIcon'
 import IconEditProfile from '../../assets/icon/edit_profile.svg'
+import { UserInformationProps } from './MainProfile'
 
-interface UserInformation {
-    picture: string
-    name: string
-    level: number
-    TFA: boolean
-}
-
-const UserInformation = ({ picture, name, level, TFA }: UserInformation) => {
+const UserInformation = ({ userData }: UserInformationProps) => {
     const profilePictureStyle = {
-        backgroundImage: `url(${picture})`,
+        backgroundImage: `url(${userData.user.avatarUrl})`,
         backgroundSize: 'cover',
     }
 
@@ -29,16 +23,18 @@ const UserInformation = ({ picture, name, level, TFA }: UserInformation) => {
             <div>
                 <ul className={styles.verticalList}>
                     <li>
-                        {name}
+                        {userData.user.nickname}
                         <ClickableIcon
                             icon={IconEditProfile}
                             onClick={editProfile}
                         />
                     </li>
-                    <li>Level {level}</li>
+                    <li>Level {Math.floor(userData.user.nbVictory / 5) + 1}</li>
                     <li>
                         Two-factor authentication is
-                        {TFA ? ' activated ' : ' deactivated'}
+                        {userData.user.TFAEnabled
+                            ? ' activated '
+                            : ' deactivated'}
                     </li>
                 </ul>
             </div>
