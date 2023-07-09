@@ -53,6 +53,7 @@ const TwoFactorVerificationBox = ({ url }: TwoFactorVerificationBoxProps) => {
             } else {
                 setErrorMessage('')
                 console.log('Valid code')
+				window.location.href = 'http://localhost:4040/profile'
             }
 
             console.log(data)
