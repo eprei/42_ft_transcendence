@@ -5,22 +5,6 @@ import { Channel } from '../../../types/Channel'
 import CreateNewCh from './CreateNewCh'
 import ChannelList from './ChannelList'
 
-import channeljson from './channels.json'
-async function getChannels() {
-    try {
-        const response = await fetch('http://localhost:8080/api/channel')
-
-        if (!response.ok) {
-            throw new Error('Failed to fetch channels')
-        }
-
-        const channels = await response.json()
-        return channels
-        // setChannels(channels);
-    } catch (error) {
-        console.error(error)
-    }
-}
 
 async function postData(data: Channel) {
     try {
