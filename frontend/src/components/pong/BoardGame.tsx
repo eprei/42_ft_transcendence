@@ -1,5 +1,5 @@
 import styles from './BoardGame.module.css'
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 
 interface Position {
     x: number
@@ -33,7 +33,7 @@ const BoardGame = () => {
     const PADDLE_HEIGHT: number = 50
     const BALL_SIZE: number = 10
 
-    const [frame, setFrame] = useState({
+    const frame = {
         paddle1: {
             position: {
                 x: 10,
@@ -64,7 +64,7 @@ const BoardGame = () => {
                 height: BALL_SIZE,
             },
         },
-    })
+    }
 
     useEffect(() => {
         let canvas: HTMLCanvasElement | null = document.getElementById(
