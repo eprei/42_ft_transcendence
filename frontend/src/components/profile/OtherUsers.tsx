@@ -21,7 +21,7 @@ const OtherUser = ({ id, nickname, avatarUrl }: OtherUserProps) => {
     const sendFriendRequest = async (id: number) => {
         try {
             const response = await fetch(
-                `http://localhost:8080/api/friend/create/${id}`,
+                `http://localhost/api/friend/create/${id}`,
                 {
                     method: 'POST',
                     credentials: 'include',

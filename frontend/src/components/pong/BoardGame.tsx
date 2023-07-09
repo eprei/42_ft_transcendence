@@ -51,7 +51,7 @@ export interface BoardGameProps {
 async function deleteRoomFromMatchingSystem(room: string) {
     try {
         const response = await fetch(
-            `http://localhost:8080/api/room/id/${room}`,
+            `http://localhost/api/room/id/${room}`,
             {
                 method: 'DELETE',
                 credentials: 'include',
@@ -113,7 +113,7 @@ const BoardGame = ({
 
     async function getUserData(userId: number) {
         const response = await fetch(
-            `http://localhost:8080/api/user/id/${userId}`,
+            `http://localhost/api/user/id/${userId}`,
             {
                 method: 'GET',
                 credentials: 'include',
@@ -264,7 +264,7 @@ const BoardGame = ({
                                         : updatedFrame.score.playerOne,
                             }
                             const response = await fetch(
-                                `http://localhost:8080/api/match`,
+                                `http://localhost/api/match`,
                                 {
                                     method: 'POST',
                                     credentials: 'include',
@@ -305,7 +305,7 @@ const BoardGame = ({
                                         : player_one,
                             }
                             const response = await fetch(
-                                `http://localhost:8080/api/user/updatePlayersStats`,
+                                `http://localhost/api/user/updatePlayersStats`,
                                 {
                                     method: 'POST',
                                     credentials: 'include',

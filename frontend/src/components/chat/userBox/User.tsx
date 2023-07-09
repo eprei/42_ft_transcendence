@@ -67,7 +67,7 @@ const User = ({
 
     const createRoom = async (player_two: number) => {
         try {
-            const response = await fetch('http://localhost:8080/api/room', {
+            const response = await fetch('http://localhost/api/room', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -216,7 +216,7 @@ const User = ({
                             : `${styles.profilePicture} ${styles.user}`
                     }
                     onClick={() =>
-                        (window.location.href = `http://localhost:4040/user/${nickname}`)
+                        (window.location.href = `http://localhost/user/${nickname}`)
                     }
                     onContextMenu={id !== myId ? handleContextMenu : undefined}
                 />

@@ -59,7 +59,7 @@ const UserLambdaInformation = ({ userData }: UserLambdaInformationProps) => {
 
     const isBlockedByMe = async () => {
         const response = await fetch(
-            `http://localhost:8080/api/user/isBlockedByMe/${id}`,
+            `http://localhost/api/user/isBlockedByMe/${id}`,
             {
                 method: 'GET',
                 credentials: 'include',
@@ -79,7 +79,7 @@ const UserLambdaInformation = ({ userData }: UserLambdaInformationProps) => {
 
     const blockUser = async () => {
         const response = await fetch(
-            `http://localhost:8080/api/user/block/${id}`,
+            `http://localhost/api/user/block/${id}`,
             {
                 method: 'POST',
                 credentials: 'include',
@@ -93,7 +93,7 @@ const UserLambdaInformation = ({ userData }: UserLambdaInformationProps) => {
 
     const unblockUser = async () => {
         const response = await fetch(
-            `http://localhost:8080/api/user/unblock/${id}`,
+            `http://localhost/api/user/unblock/${id}`,
             {
                 method: 'DELETE',
                 credentials: 'include',

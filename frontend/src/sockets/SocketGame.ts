@@ -16,7 +16,7 @@ class SocketGameService {
 
     connect(): Socket {
         if (!this.socket) {
-            this.socket = io('http://localhost:8080/game')
+            this.socket = io('http://localhost/game')
         }
 
         return this.socket

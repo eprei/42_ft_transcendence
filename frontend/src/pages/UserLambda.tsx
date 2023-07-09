@@ -19,7 +19,7 @@ const UserLambda = () => {
     async function getCurrentUser() {
         try {
             const response = await fetch(
-                `http://localhost:8080/api/user/nickname/${nickname}`,
+                `http://localhost/api/user/nickname/${nickname}`,
                 {
                     method: 'GET',
                     credentials: 'include',
