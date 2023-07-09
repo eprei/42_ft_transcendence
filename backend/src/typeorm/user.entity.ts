@@ -54,7 +54,11 @@ export class User {
     })
     status: UserStatus
     @OneToMany(() => Channel, (channel) => channel.admin)
+<<<<<<< HEAD
     owner: Channel[]
+=======
+    owner: Channel[];
+>>>>>>> 03bd36a (Channel owner is a User not and id anymore)
 
     @ManyToMany(() => Channel, (channel) => channel.users)
     @JoinTable()
