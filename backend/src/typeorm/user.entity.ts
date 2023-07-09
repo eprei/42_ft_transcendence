@@ -53,10 +53,12 @@ export class User {
         default: UserStatus.Online,
     })
     status: UserStatus
+    @OneToMany(() => Channel, (channel) => channel.admin)
+    owner: Channel[];
 
     @ManyToMany(() => Channel, (channel) => channel.users)
     @JoinTable()
-    channels: Channel[]
+    joinedChannel: Channel[]
 
     @OneToMany(() => Friend, (friend) => friend.user)
     friends: Friend[]

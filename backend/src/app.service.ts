@@ -120,7 +120,7 @@ export class AppService {
 
         //   create Channels
         const chan1 = this.channelRepo.create({
-            owner: 1,
+            owner: user1,
             name: 'chan 1',
             type: 'public',
             password: null,
@@ -130,7 +130,7 @@ export class AppService {
         await this.channelRepo.save(chan1)
 
         const chan2 = this.channelRepo.create({
-            owner: 1,
+            owner: user1,
             name: 'chan 2',
             type: 'public',
             password: null,
@@ -140,7 +140,7 @@ export class AppService {
         await this.channelRepo.save(chan2)
 
         const chan3 = this.channelRepo.create({
-            owner: 1,
+            owner: user1,
             name: 'chan 3',
             type: 'private',
             password: '1234',
@@ -150,7 +150,7 @@ export class AppService {
         await this.channelRepo.save(chan3)
 
         const chan4 = this.channelRepo.create({
-            owner: 2,
+            owner: user2,
             name: 'chan 4',
             type: 'private',
             password: '1234',
@@ -160,7 +160,7 @@ export class AppService {
         await this.channelRepo.save(chan4)
 
         const chan5 = this.channelRepo.create({
-            owner: 2,
+            owner: user2,
             name: 'chan 5',
             type: 'direct',
             password: null,
@@ -170,7 +170,7 @@ export class AppService {
         await this.channelRepo.save(chan5)
 
         const chan6 = this.channelRepo.create({
-            owner: 3,
+            owner: user3,
             name: 'chan 6',
             type: 'direct',
             password: null,
@@ -255,14 +255,14 @@ export class AppService {
 
             const users = await this.userRepo.find({ take: userCount })
             const channelUsers = users
-                .filter((user) => user.id !== channel.owner)
+                .filter((user) => user !== channel.owner)
                 .filter((user) => user !== undefined)
             if (channelUsers.length >= userCount) {
                 channelUsers.pop()
             }
 
             const allUsers = await this.userRepo.find()
-            const owner = allUsers.find((user) => user.id === channel.owner)
+            const owner = allUsers.find((user) => user === channel.owner)
             channelUsers.unshift(owner)
 
             for (let i = 0; i < 10; i++) {
