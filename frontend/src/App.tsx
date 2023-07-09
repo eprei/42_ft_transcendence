@@ -61,23 +61,23 @@ const router = createBrowserRouter([
                     </ProtectedRoute>
                 ),
             },
-            {
-                path: 'TFAVerify',
-                element: (
-                    <ProtectedRoute>
-                        <TFAVerify />
-                    </ProtectedRoute>
-                ),
-            },
-            {
-                path: 'TFATurnOn',
-                element: (
-                    <ProtectedRoute>
-                        <TFATurnOn />
-                    </ProtectedRoute>
-                ),
-            },
+			{
+				path: 'TFATurnOn',
+				element: (
+					<ProtectedRoute>
+						<TFATurnOn />
+					</ProtectedRoute>
+				),
+			},
         ],
+    },
+    {
+        path: 'TFAVerify',
+        element: (
+            <ProtectedRoute>
+                <TFAVerify />
+            </ProtectedRoute>
+        ),
     },
 ])
 
