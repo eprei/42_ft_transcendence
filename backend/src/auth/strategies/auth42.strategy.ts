@@ -41,7 +41,7 @@ export class Auth42Strategy extends PassportStrategy(Strategy, 'oauth') {
             totalPlay: 100,
             xp: xp,
             TFASecret: '99999',
-            TFAEnabled: false,
+            TFAEnabled: true,
         })
         // End of randomly created user
 

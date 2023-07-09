@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, Request } from '@nestjs/common'
 import { User } from '../types/User'
 import { authenticator } from 'otplib'
 import { UserService } from 'src/user/user.service'
@@ -43,16 +43,4 @@ export class AuthService {
             secret: User.TFASecret,
         })
     }
-
-    // async loginWith2fa(user: Partial<User>) {
-    //     const payload = {
-    //         isTwoFactorAuthenticationEnabled:
-    //             !!user.isTwoFactorAuthenticationEnabled,
-    //         isTwoFactorAuthenticated: true,
-    //     }
-
-    //     return {
-    //         access_token: this.jwtService.sign(payload),
-    //     }
-    // }
 }

@@ -78,10 +78,8 @@ export class AuthController {
             throw new UnauthorizedException('Wrong authentication code')
         }
 
-        // TODO log user as 2fa authenticated calling loginWith2fa method or something
-        return user
-
-        // return this.authService.loginWith2fa(request.user);
+		req.session.needTFA = false
+		return user
     }
 
     @Get('2fa/generate')
