@@ -28,6 +28,7 @@
         "@nestjs/platform-express": "^10.0.3",
         "@nestjs/platform-socket.io": "^10.0.5",
         "@nestjs/swagger": "^7.1.1",
+        "@nestjs/platform-socket.io": "^10.0.5",
         "@nestjs/typeorm": "^10.0.0",
         "@nestjs/websockets": "^10.0.5",
         "class-transformer": "^0.5.1",
