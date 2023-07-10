@@ -3,10 +3,11 @@ import { PassportStrategy } from '@nestjs/passport'
 import { Strategy } from 'passport-oauth2'
 import { UserService } from 'src/user/user.service'
 import * as crypto from 'crypto'
+import { AuthService } from '../auth.service'
 
 @Injectable()
 export class Auth42Strategy extends PassportStrategy(Strategy, 'oauth') {
-    constructor(private userService: UserService) {
+    constructor(private userService: UserService, private authService: AuthService) {
         super({
             authorizationURL: 'https://api.intra.42.fr/oauth/authorize',
             tokenURL: 'https://api.intra.42.fr/oauth/token',
@@ -16,69 +17,32 @@ export class Auth42Strategy extends PassportStrategy(Strategy, 'oauth') {
         })
     }
 
-    // async validate(
-    //     accessToken: string,
-    //     profile: any,
-    //     done: Function
-    // ): Promise<any> {
-    //     console.log('default profile: ', profile)
-    //     const user_profile = await this.getUserProfile(accessToken)
-    //     if (!user_profile) {
-    //         throw new UnauthorizedException()
-    //     }
-    //     console.log('API TOKEN FUNCTIONAL, 42 id: ', user_profile.id)
-        
-
-    //     // This is a temporary randomly created user.
-    //     // The real one will be created in the s_create_player branch
-    //     const randomString = crypto.randomBytes(5).toString('hex')
-    //     const username = `User_${randomString}`
-    //     const xp = Math.floor(Math.random() * 99) + 1
-    //     let user = await this.userService.create({
-    //         nickname: username,
-    //         avatarUrl:
-    //             'https://cdn.intra.42.fr/users/8064d076cacd8605b412baca23d88b3b/epresa-c.jpg',
-    //         nbVictory: 60,
-    //         totalPlay: 100,
-    //         xp: xp,
-    //         TFASecret: '99999',
-    //         TFAEnabled: false,
-    //     })
-    //     // End of randomly created user
-
-    //     return user
-    // }
-
     async validate(
         accessToken: string,
-        profile: any,
-        done: Function
     ): Promise<any> {
-        console.log('default profile: ', profile)
-        const user_json = await this.getUserProfile(accessToken);
-        if (!user_json) {
+        const user = await this.getUserProfile(accessToken);
+        if (!user) {
+            console.log('NO USER FOUND');
           throw new UnauthorizedException();
         }
-        console.log("API TOKEN FUNCTIONAL, 42 id: ", user_json.id);
-        const new_user = await this.authService.validateUser(user_json.id, user_json.first_name, user_json.avatarURL)
-        return user_json.id;
+        console.log("API TOKEN FUNCTIONAL, 42 id: ", user.FT_id);
+        const new_user = await this.authService.validateUser(user)
+        return new_user;
     }
 
-    private async getUserProfile(accessToken: string): Promise<any> {
+    private async getUserProfile(accessToken: string) {
         const res = await fetch('https://api.intra.42.fr/v2/me', {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
         })
 
-        console.log(`Response status: ${res.status}`)
-
         if (!res.ok) {
             throw new Error(
-                'Failed to fetch user profile from 42 API: ${res.status}'
+                `Failed to fetch user profile from 42 API: ${res.status}`
             )
         }
-
-        return await res.json()
+         const data = await res.json();
+        return {nickname: data.login, avatarUrl: data.image.versions.small, FT_id: data.id}
     }
 }
