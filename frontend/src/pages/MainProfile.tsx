@@ -1,8 +1,8 @@
 import styles from './MainProfile.module.css'
-import SeeMatchHistoryBtn from './SeeMatchHistoryBtn'
-import FriendList from './FriendList'
-import Statistics from './Statistics'
-import UserInformation from './UserInformation'
+import SeeMatchHistoryBtn from '../components/profile/SeeMatchHistoryBtn'
+import FriendList from '../components/profile/FriendList'
+import Statistics from '../components/profile/Statistics'
+import UserInformation from '../components/profile/UserInformation'
 import { useEffect, useState } from 'react'
 
 export interface UserData {

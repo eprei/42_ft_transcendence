@@ -3,7 +3,7 @@ import StatisticElement from './StatisticElement'
 import IconVictoire from '../../assets/icon/victoires.svg'
 import IconDefeat from '../../assets/icon/defeats.svg'
 import IconRanking from '../../assets/icon/ranking.svg'
-import { UserInformationProps } from './MainProfile'
+import { UserInformationProps } from '../../pages/MainProfile'
 
 const Statistics = ({ userData }: UserInformationProps) => {
     return (

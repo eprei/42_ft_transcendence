@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import SignIn from './pages/SignIn'
-import Profile from './pages/Profile'
+import MainProfile from './pages/MainProfile'
 import MatchHistory from './pages/MatchHistory'
 import GameLauncher from './pages/GameLauncher'
 import Game from './pages/Game'
@@ -23,7 +23,7 @@ const router = createBrowserRouter([
                 path: 'profile',
                 element: (
                     <ProtectedRoute>
-                        <Profile />
+                        <MainProfile />
                     </ProtectedRoute>
                 ),
             },
