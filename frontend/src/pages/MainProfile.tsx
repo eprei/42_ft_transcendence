@@ -4,6 +4,9 @@ import FriendList from '../components/profile/FriendList'
 import Statistics from '../components/profile/Statistics'
 import UserInformation from '../components/profile/UserInformation'
 import { useEffect, useState } from 'react'
+import { userActions } from '../store/user'
+import { useAppDispatch, useAppSelector } from '../store/types'
+
 
 export interface UserData {
     user: {
@@ -22,9 +25,9 @@ export interface UserInformationProps {
 }
 
 const MainProfile = () => {
+    const dispatch = useAppDispatch()
+    const userData = useAppSelector(state => state.user.userData);
     const [loading, setLoading] = useState(true)
-    const [userData, setUserData] = useState<UserData>({} as UserData)
-
     useEffect(() => {
         getCurrentUser()
     }, [])
@@ -39,7 +42,10 @@ const MainProfile = () => {
                 throw new Error('Failed to fetch user ME')
             }
             const data = await response.json()
-            setUserData({ user: data, userPosition: data.userPosition })
+            console.log(`MainProfile => DATA: ${data}`);
+            dispatch(userActions.update({ user: data, userPosition: data.userPosition }))
+            // console.log(`UserData after: ${userData?.nickname}`);
+
             setLoading(false)
         } catch (error) {
             console.log('Error:', error)
