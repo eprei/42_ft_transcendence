@@ -34,6 +34,11 @@ export class UserService {
         return this.userRepository.remove(user)
     }
 
+    findByFT_id(FT_id: string) {
+        return this.userRepository.findOneBy({ FT_id: FT_id })
+    }
+
+
     async getUserRankingPosition(userId: number): Promise<number> {
         const user = await this.findOne(userId)
         if (!user) {
