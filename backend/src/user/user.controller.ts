@@ -13,7 +13,6 @@ import {
     BadRequestException,
     Res,
     Request,
-    NotFoundException,
 } from '@nestjs/common'
 import { UserService } from './user.service'
 import { CreateUserDto } from './dto/create-user.dto'
@@ -111,16 +110,18 @@ export class UserController {
 
     @Public()
     @Get('me')
-    async getUser(@Request() req: any) {
-        const user = await this.userService.findOne(req.user.id)
-        if (!user) {
-            throw new NotFoundException('User not found')
-        }
-        const { id, TFASecret, FT_id, ...rest } = user
-        const userPosition = await this.userService.getUserRankingPosition(
-            req.user.id
-        )
-        return { ...rest, userPosition }
+    async getMyInfo(@Request() req: any) {
+        return await this.userService.getMyInfo(req)
+    }
+
+    @Get('getmyfriends')
+    async getMyFriends(@Request() req: any) {
+        return await this.userService.getMyFriends(req)
+    }
+
+	@Get('getallnonfriendusers')
+    async getOtherUsers(@Request() req: any) {
+        return await this.userService.getAllNonFriendsUsers(req)
     }
 
     @Get('nickname/:nickname')
@@ -138,10 +139,7 @@ export class UserController {
 
     @Post('logout')
     async logout(@Request() req: any, @Res() res: any) {
-        console.log('user.controller: logout')
-        await req.session.destroy()
-        res.clearCookie('sessionID')
-        res.status(200).json({ message: 'Logout successful' })
+        return await this.userService.logout(req, res)
     }
 
     @Post('upload-profile-picture')

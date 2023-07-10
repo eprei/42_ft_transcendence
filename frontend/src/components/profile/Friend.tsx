@@ -1,7 +1,6 @@
 import styles from './Friend.module.css'
 import IconAddFriend from '../../assets/icon/add_friend.svg'
 import IconRemoveFriend from '../../assets/icon/remove_friend.svg'
-import IconGenericPicture from '../../assets/icon/generic_picture.svg'
 import ClickableIcon from './ClickableIcon'
 
 import { Link, useMatch, useResolvedPath } from 'react-router-dom'
@@ -27,15 +26,14 @@ function CustomLink({ children, to, ...props }: LinkProps) {
 
 export interface FriendProps {
     id: number
-    name: string
-    picture: string
+    nickname: string
+    avatarUrl: string
     status: 'online' | 'offline' | 'playing'
-    isFriend: boolean
+    isPending: boolean
 }
 
-const Friend = ({ name, picture, status, isFriend }: FriendProps) => {
+const Friend = ({ nickname, avatarUrl, status, isPending }: FriendProps) => {
     const getBorderColor = () => {
-        if (!isFriend) return 'var(--color-black-grey)'
         switch (status) {
             case 'online':
                 return 'var(--color-purple)'
@@ -58,9 +56,7 @@ const Friend = ({ name, picture, status, isFriend }: FriendProps) => {
     }
 
     const profilePictureStyle = {
-        backgroundImage: isFriend
-            ? `url(${picture})`
-            : `url(${IconGenericPicture})`,
+        backgroundImage: `url(${avatarUrl})`,
         backgroundSize: 'cover',
         borderColor: getBorderColor(),
         opacity: getOpacity(),
@@ -88,8 +84,8 @@ const Friend = ({ name, picture, status, isFriend }: FriendProps) => {
         <div className={styles.container}>
             <div>
                 <ClickableIcon
-                    icon={isFriend ? IconRemoveFriend : IconAddFriend}
-                    onClick={isFriend ? removeFriend : addFriend}
+                    icon={isPending ? IconRemoveFriend : IconAddFriend}
+                    onClick={isPending ? removeFriend : addFriend}
                 />
             </div>
             <div
@@ -97,8 +93,8 @@ const Friend = ({ name, picture, status, isFriend }: FriendProps) => {
                 style={profilePictureStyle}
             ></div>
             <div className={styles.nameAndStatus}>
-                <CustomLink to={`/user/${name}`}>
-                    <h3>{name}</h3>
+                <CustomLink to={`/user/${nickname}`}>
+                    <h3>{nickname}</h3>
                 </CustomLink>
                 <p className={`${styles.status} ${statusColorClass}`}>
                     {status}

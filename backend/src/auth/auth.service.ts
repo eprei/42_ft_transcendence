@@ -9,6 +9,7 @@ import { User } from '../types/User'
 import { authenticator } from 'otplib'
 import { UserService } from 'src/user/user.service'
 import { toDataURL } from 'qrcode'
+import { UserStatus } from 'src/typeorm/user.entity'
 
 @Injectable()
 export class AuthService {
@@ -21,8 +22,12 @@ export class AuthService {
                 FT_id: user42.FT_id,
                 nickname: user42.nickname,
                 avatarUrl: user42.avatarUrl,
+                status: UserStatus.Online,
             })
+        } else {
+            await this.userService.changeStatusOnLine(user.id)
         }
+        console.log(user)
         return user
     }
 

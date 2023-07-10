@@ -7,6 +7,7 @@ import {
     Req,
     BadRequestException,
     InternalServerErrorException,
+    Res,
 } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { User } from 'src/typeorm/user.entity'
@@ -17,12 +18,15 @@ import { UpdateNicknameDto } from './dto/update-nickname.dto'
 import { v4 as uuidv4 } from 'uuid'
 import { extname, basename } from 'path'
 import * as fs from 'fs'
+import { FriendService } from 'src/friend/friend.service'
+import { UserStatus } from 'src/typeorm/user.entity'
 
 @Injectable()
 export class UserService {
     constructor(
         @InjectRepository(User)
-        private readonly userRepository: Repository<User>
+        private readonly userRepository: Repository<User>,
+        private readonly friendService: FriendService
     ) {}
     create(createUserDto: CreateUserDto) {
         const user = this.userRepository.create(createUserDto)
@@ -236,5 +240,63 @@ export class UserService {
                 'An error occurred when saving the profile image'
             )
         }
+    }
+    
+    async getMyInfo(@Request() req: any) {
+        const user = await this.findOne(req.user.id)
+
+        if (!user) {
+            throw new NotFoundException('User not found')
+        }
+
+        const { id, TFASecret, FT_id, ...rest } = user
+
+        const userPosition = await this.getUserRankingPosition(req.user.id)
+
+        return { ...rest, userPosition }
+    }
+
+    async getMyFriends(@Request() req: any) {
+        const user = await this.findOne(req.user.id)
+
+        if (!user) {
+            throw new NotFoundException('User not found')
+        }
+
+        return this.friendService.getAllFriendsByUserId(user.id)
+    }
+
+	async getAllNonFriendsUsers(@Request() req: any) {
+        const user = await this.findOne(req.user.id)
+
+        if (!user) {
+            throw new NotFoundException('User not found')
+        }
+
+        return this.friendService.getAllNonFriendUsers(user.id)
+    }
+
+    async logout(@Request() req: any, @Res() res: any) {
+        const user = await this.findOne(req.user.id)
+
+        if (!user) {
+            throw new NotFoundException('User not found')
+        }
+        console.log('user.status: logout')
+        this.update(user.id, { id: user.id, status: UserStatus.Offline })
+
+        await req.session.destroy()
+        res.clearCookie('sessionID')
+        res.status(200).json({ message: 'Logout successful' })
+    }
+
+    async changeStatusOnLine(userId: number) {
+        console.log('user.status: online')
+        this.update(userId, { id: userId, status: UserStatus.Online })
+    }
+
+    async changeStatusPlaying(userId: number) {
+        console.log('user.status: playing')
+        this.update(userId, { id: userId, status: UserStatus.Playing })
     }
 }

@@ -6,8 +6,13 @@ import { SessionSerializer } from './session.serializer'
 import { AuthService } from './auth.service'
 import { UserModule } from 'src/user/user.module'
 import { UserService } from 'src/user/user.service'
+import { FriendModule } from 'src/friend/friend.module'
 @Module({
-    imports: [PassportModule.register({ session: true }), UserModule],
+    imports: [
+        PassportModule.register({ session: true }),
+        UserModule,
+        FriendModule,
+    ],
     controllers: [AuthController],
     providers: [AuthService, Auth42Strategy, SessionSerializer, UserService],
 })
