@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsOptional } from 'class-validator'
-
+import { UserStatus } from 'src/typeorm/user.entity'
 export class CreateUserDto {
     @IsNotEmpty()
     nickname: string
@@ -24,4 +24,7 @@ export class CreateUserDto {
 
     @IsOptional()
     FT_id?: string
+
+    @IsOptional()
+    status: UserStatus
 }

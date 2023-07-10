@@ -10,6 +10,11 @@ import { Channel } from './channel.entity'
 import { Friend } from './friend.entity'
 import { Match } from './match.entity'
 
+export enum UserStatus {
+    Online = 'online',
+    Offline = 'offline',
+    Playing = 'playing',
+}
 @Entity()
 export class User {
     @PrimaryGeneratedColumn()
@@ -41,6 +46,13 @@ export class User {
 
     @Column({ default: '' })
     FT_id: string
+
+    @Column({
+        type: 'enum',
+        enum: UserStatus,
+        default: UserStatus.Online,
+    })
+    status: UserStatus
 
     @ManyToMany(() => Channel, (channel) => channel.users)
     @JoinTable()
