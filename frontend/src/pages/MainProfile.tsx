@@ -42,10 +42,7 @@ const MainProfile = () => {
                 throw new Error('Failed to fetch user ME')
             }
             const data = await response.json()
-            console.log(`MainProfile => DATA: ${data}`);
-            dispatch(userActions.update({ user: data, userPosition: data.userPosition }))
-            // console.log(`UserData after: ${userData?.nickname}`);
-
+            dispatch(userActions.update({ user: data }))
             setLoading(false)
         } catch (error) {
             console.log('Error:', error)
