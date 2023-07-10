@@ -2,7 +2,6 @@ import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { PassportStrategy } from '@nestjs/passport'
 import { Strategy } from 'passport-oauth2'
 import { UserService } from 'src/user/user.service'
-import * as crypto from 'crypto'
 import { AuthService } from '../auth.service'
 
 @Injectable()
