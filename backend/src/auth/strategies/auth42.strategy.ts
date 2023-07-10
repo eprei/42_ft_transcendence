@@ -16,36 +16,52 @@ export class Auth42Strategy extends PassportStrategy(Strategy, 'oauth') {
         })
     }
 
+    // async validate(
+    //     accessToken: string,
+    //     profile: any,
+    //     done: Function
+    // ): Promise<any> {
+    //     console.log('default profile: ', profile)
+    //     const user_profile = await this.getUserProfile(accessToken)
+    //     if (!user_profile) {
+    //         throw new UnauthorizedException()
+    //     }
+    //     console.log('API TOKEN FUNCTIONAL, 42 id: ', user_profile.id)
+        
+
+    //     // This is a temporary randomly created user.
+    //     // The real one will be created in the s_create_player branch
+    //     const randomString = crypto.randomBytes(5).toString('hex')
+    //     const username = `User_${randomString}`
+    //     const xp = Math.floor(Math.random() * 99) + 1
+    //     let user = await this.userService.create({
+    //         nickname: username,
+    //         avatarUrl:
+    //             'https://cdn.intra.42.fr/users/8064d076cacd8605b412baca23d88b3b/epresa-c.jpg',
+    //         nbVictory: 60,
+    //         totalPlay: 100,
+    //         xp: xp,
+    //         TFASecret: '99999',
+    //         TFAEnabled: false,
+    //     })
+    //     // End of randomly created user
+
+    //     return user
+    // }
+
     async validate(
         accessToken: string,
         profile: any,
         done: Function
     ): Promise<any> {
         console.log('default profile: ', profile)
-        const user_profile = await this.getUserProfile(accessToken)
-        if (!user_profile) {
-            throw new UnauthorizedException()
+        const user_json = await this.getUserProfile(accessToken);
+        if (!user_json) {
+          throw new UnauthorizedException();
         }
-        console.log('API TOKEN FUNCTIONAL, 42 id: ', user_profile.id)
-
-        // This is a temporary randomly created user.
-        // The real one will be created in the s_create_player branch
-        const randomString = crypto.randomBytes(5).toString('hex')
-        const username = `User_${randomString}`
-        const xp = Math.floor(Math.random() * 99) + 1
-        let user = await this.userService.create({
-            nickname: username,
-            avatarUrl:
-                'https://cdn.intra.42.fr/users/8064d076cacd8605b412baca23d88b3b/epresa-c.jpg',
-            nbVictory: 60,
-            totalPlay: 100,
-            xp: xp,
-            TFASecret: '99999',
-            TFAEnabled: false,
-        })
-        // End of randomly created user
-
-        return user
+        console.log("API TOKEN FUNCTIONAL, 42 id: ", user_json.id);
+        const new_user = await this.authService.validateUser(user_json.id, user_json.first_name, user_json.avatarURL)
+        return user_json.id;
     }
 
     private async getUserProfile(accessToken: string): Promise<any> {
