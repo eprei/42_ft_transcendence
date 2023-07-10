@@ -6,7 +6,10 @@ import { AuthService } from '../auth.service'
 
 @Injectable()
 export class Auth42Strategy extends PassportStrategy(Strategy, 'oauth') {
-    constructor(private userService: UserService, private authService: AuthService) {
+    constructor(
+        private userService: UserService,
+        private authService: AuthService
+    ) {
         super({
             authorizationURL: 'https://api.intra.42.fr/oauth/authorize',
             tokenURL: 'https://api.intra.42.fr/oauth/token',
@@ -16,17 +19,15 @@ export class Auth42Strategy extends PassportStrategy(Strategy, 'oauth') {
         })
     }
 
-    async validate(
-        accessToken: string,
-    ): Promise<any> {
-        const user = await this.getUserProfile(accessToken);
+    async validate(accessToken: string): Promise<any> {
+        const user = await this.getUserProfile(accessToken)
         if (!user) {
-            console.log('NO USER FOUND');
-          throw new UnauthorizedException();
+            console.log('NO USER FOUND')
+            throw new UnauthorizedException()
         }
-        console.log("API TOKEN FUNCTIONAL, 42 id: ", user.FT_id);
+        console.log('API TOKEN FUNCTIONAL, 42 id: ', user.FT_id)
         const new_user = await this.authService.validateUser(user)
-        return new_user;
+        return new_user
     }
 
     private async getUserProfile(accessToken: string) {
@@ -41,7 +42,11 @@ export class Auth42Strategy extends PassportStrategy(Strategy, 'oauth') {
                 `Failed to fetch user profile from 42 API: ${res.status}`
             )
         }
-         const data = await res.json();
-        return {nickname: data.login, avatarUrl: data.image.versions.small, FT_id: data.id}
+        const data = await res.json()
+        return {
+            nickname: data.login,
+            avatarUrl: data.image.versions.small,
+            FT_id: data.id,
+        }
     }
 }

@@ -13,11 +13,11 @@ export interface UserInformationProps {
 }
 
 const MainProfile = () => {
-    const fetchUserData = useLoaderData();
+    const fetchUserData = useLoaderData()
     const dispatch = useAppDispatch()
     dispatch(userActions.update({ user: fetchUserData }))
 
-    const userData = useAppSelector(state => state.user.userData) as UserData
+    const userData = useAppSelector((state) => state.user.userData) as UserData
 
     return (
         <div className={styles.container}>
