@@ -8,14 +8,13 @@ import {
     Post,
     Body,
     Request,
-    NotFoundException,
 } from '@nestjs/common'
 import { OauthGuard } from './guards/oauth.guard'
 import { ApiTags } from '@nestjs/swagger'
 import { AuthService } from './auth.service'
 import { UserService } from 'src/user/user.service'
-import { AuthGuard } from '@nestjs/passport'
 import { AuthenticatedGuard } from './guards/authenticated.guard'
+import { TotpGuard } from './guards/totp.guard'
 
 @ApiTags('auth')
 @Controller('auth')
@@ -49,25 +48,25 @@ export class AuthController {
     }
 
     @Post('2fa/turn-on')
-    // @UseGuards(OauthGuard)
+    @UseGuards(AuthenticatedGuard)
     async activate2fa(@Request() req: any, @Body() body) {
         return await this.authService.activate2fa(req, body)
     }
 
     @Post('2fa/turn-off')
-    // @UseGuards(OauthGuard)
+    @UseGuards(AuthenticatedGuard)
     async deactivate2fa(@Request() req: any) {
         return await this.authService.deactivate2fa(req)
     }
 
     @Post('2fa/authenticate')
-    // @UseGuards(AuthenticatedGuard)
+    @UseGuards(TotpGuard)
     async authenticateTOTP(@Request() req: any, @Body() body) {
         return await this.authService.authenticateTOTP(req, body)
     }
 
     @Get('2fa/generate')
-    // @UseGuards(OauthGuard)
+    @UseGuards(AuthenticatedGuard)
     async generateQR(@Request() req: any) {
         return await this.authService.generateQR(req)
     }

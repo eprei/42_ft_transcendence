@@ -50,6 +50,13 @@ const TwoFactorVerificationBox = ({ url }: TwoFactorVerificationBoxProps) => {
             ) {
                 setErrorMessage('Wrong code')
                 console.log('Wrong code')
+            } else if (
+                data.message === 'Forbidden resource' &&
+                data.error === 'Forbidden'
+            ) {
+                console.log(
+                    'Forbidden resource: you should not be trying this. You will be reported.'
+                )
             } else {
                 setErrorMessage('')
                 console.log('Valid code')

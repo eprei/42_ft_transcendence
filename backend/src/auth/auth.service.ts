@@ -97,8 +97,6 @@ export class AuthService {
         }
 
         this.userService.turnOffTwoFactorAuthentication(user.id)
-        const user2 = await this.userService.findOne(req.user.id)
-        console.log('user2 = ', user2)
         return true
     }
 
