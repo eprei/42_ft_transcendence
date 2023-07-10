@@ -6,19 +6,7 @@ import UserInformation from '../components/profile/UserInformation'
 import { useEffect, useState } from 'react'
 import { userActions } from '../store/user'
 import { useAppDispatch, useAppSelector } from '../store/types'
-
-
-export interface UserData {
-    user: {
-        nickname: string
-        avatarUrl: string
-        nbVictory: number
-        totalPlay: number
-        xp: number
-        TFAEnabled: boolean
-    }
-    userPosition: number
-}
+import { UserData } from '../types/UserData'
 
 export interface UserInformationProps {
     userData: UserData
@@ -26,7 +14,7 @@ export interface UserInformationProps {
 
 const MainProfile = () => {
     const dispatch = useAppDispatch()
-    const userData = useAppSelector(state => state.user.userData);
+    const userData = useAppSelector(state => state.user.userData) as UserData
     const [loading, setLoading] = useState(true)
     useEffect(() => {
         getCurrentUser()
