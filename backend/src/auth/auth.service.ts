@@ -17,7 +17,7 @@ export class AuthService {
     async generateTwoFactorAuthenticationSecret(user: User) {
         const secret : string = authenticator.generateSecret()
 
-        const otpauthUrl = authenticator.keyuri(
+        const otpauthUrl: string = authenticator.keyuri(
             user.nickname,
             'COSMIC_PONG',
             secret
