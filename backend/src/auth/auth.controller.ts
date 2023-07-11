@@ -17,9 +17,7 @@ import { TotpGuard } from './guards/totp.guard'
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-    constructor(
-        private readonly authService: AuthService,
-    ) {}
+    constructor(private readonly authService: AuthService) {}
 
     @Get('42')
     @UseGuards(OauthGuard)

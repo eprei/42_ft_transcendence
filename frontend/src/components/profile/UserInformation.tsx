@@ -58,9 +58,7 @@ const UserInformation = ({ userData }: UserInformationProps) => {
                     <li>Level {Math.floor(userData.user.nbVictory / 5) + 1}</li>
                     <li>
                         2fa is
-                        {TFAEnabled
-                            ? ' activated '
-                            : ' deactivated'}
+                        {TFAEnabled ? ' activated ' : ' deactivated'}
                         <label className={switchButtonStyles.switch}>
                             <input type="checkbox" checked={TFAEnabled} />
                             <span

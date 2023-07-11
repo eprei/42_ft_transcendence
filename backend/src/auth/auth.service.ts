@@ -110,11 +110,7 @@ export class AuthService {
             user
         )
 
-        const qrCode = await this.generateQrCodeDataURL(
-            (
-                await secretAndUrl
-            ).otpauthUrl
-        )
+        const qrCode = await this.generateQrCodeDataURL(secretAndUrl.otpauthUrl)
         return qrCode
     }
 }
