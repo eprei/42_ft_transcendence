@@ -38,17 +38,17 @@ const MainProfile = () => {
 export default MainProfile
 
 export async function loader() {
-    try {
-        const response = await fetch(`http://localhost:8080/api/user/me`, {
-            method: 'GET',
-            credentials: 'include',
-        })
-        if (!response.ok) {
-            throw new Error('Failed to fetch user ME')
-        }
-        const data = await response.json()
-        return data
-    } catch (error) {
-        console.log('Error:', error)
+    const response = await fetch(`http://localhost:8080/api/user/me2`, {
+        method: 'GET',
+        credentials: 'include',
+    })
+    
+    if (response.status !== 200) {
+        throw new Response(
+            JSON.stringify({ message: 'Error fetching user data' })
+        )
     }
+
+    const data = await response.json()
+    return data
 }
