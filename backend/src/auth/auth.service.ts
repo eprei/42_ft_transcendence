@@ -43,7 +43,7 @@ export class AuthService {
     isTwoFactorAuthenticationCodeValid(
         twoFactorAuthenticationCode: string,
         User: User
-    ) {
+    ): boolean {
         return authenticator.verify({
             token: twoFactorAuthenticationCode,
             secret: User.TFASecret,
