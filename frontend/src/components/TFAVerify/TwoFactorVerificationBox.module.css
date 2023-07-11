@@ -7,7 +7,7 @@
     --af-white: #f3f3f3;
     --ch-white: #e1e1e1;
     --tomato: #fa5656;
-    font-family: Helvetica, sans-serif;
+    /* font-family: Helvetica, sans-serif; */
     padding: 25px;
     display: flex;
     max-width: 420px;

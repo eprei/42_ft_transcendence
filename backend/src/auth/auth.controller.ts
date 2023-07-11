@@ -1,7 +1,6 @@
 import {
     UseGuards,
     Controller,
-    UnauthorizedException,
     Req,
     Res,
     Get,
@@ -12,7 +11,6 @@ import {
 import { OauthGuard } from './guards/oauth.guard'
 import { ApiTags } from '@nestjs/swagger'
 import { AuthService } from './auth.service'
-import { UserService } from 'src/user/user.service'
 import { AuthenticatedGuard } from './guards/authenticated.guard'
 import { TotpGuard } from './guards/totp.guard'
 
@@ -21,7 +19,6 @@ import { TotpGuard } from './guards/totp.guard'
 export class AuthController {
     constructor(
         private readonly authService: AuthService,
-        private readonly userService: UserService
     ) {}
 
     @Get('42')
