@@ -86,6 +86,8 @@ export class AuthService {
 
         this.userService.turnOnTwoFactorAuthentication(user.id)
 
+        req.user.TFAEnabled = true
+
         return true
     }
 
@@ -97,6 +99,9 @@ export class AuthService {
         }
 
         this.userService.turnOffTwoFactorAuthentication(user.id)
+
+        req.user.TFAEnabled = false
+
         return true
     }
 

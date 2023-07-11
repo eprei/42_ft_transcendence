@@ -13,6 +13,7 @@ import { ApiTags } from '@nestjs/swagger'
 import { AuthService } from './auth.service'
 import { AuthenticatedGuard } from './guards/authenticated.guard'
 import { TotpGuard } from './guards/totp.guard'
+import { Activate2faGuard } from './guards/activate2fa.guard'
 
 @ApiTags('auth')
 @Controller('auth')
@@ -43,7 +44,7 @@ export class AuthController {
     }
 
     @Post('2fa/turn-on')
-    @UseGuards(AuthenticatedGuard)
+    @UseGuards(Activate2faGuard)
     async activate2fa(@Request() req: any, @Body() body) {
         return await this.authService.activate2fa(req, body)
     }
