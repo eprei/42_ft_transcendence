@@ -26,7 +26,7 @@ const Statistics = ({ userData }: UserInformationProps) => {
                     <StatisticElement
                         icon={IconRanking}
                         text="Ranking"
-                        number={userData.userPosition}
+                        number={userData.user.userPosition}
                     />
                 </div>
             </div>
