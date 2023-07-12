@@ -116,4 +116,9 @@ export class UserController {
         )
         return { ...rest, userPosition }
     }
+
+    @Get('nickname/:nickname')
+    async getLambda(@Param('nickname') nickname: string) {
+        return await this.userService.getLambdaInfo(nickname)
+    }
 }
