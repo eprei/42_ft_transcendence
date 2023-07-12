@@ -1,37 +1,9 @@
 [
     {
-        "id": 1,
-        "name": "rburri",
-        "picture": "src/assets/img/rburri.jpg",
-        "isOnline": true,
-        "isPlaying": true
-    },
-    {
-        "id": 2,
-        "name": "sbars",
-        "picture": "src/assets/img/sbars.jpg",
-        "isOnline": true,
-        "isPlaying": false
-    },
-    {
-        "id": 5,
-        "name": "epresa-c",
-        "picture": "src/assets/img/epresa-c.jpg",
-        "isOnline": true,
-        "isPlaying": true
-    },
-    {
-        "id": 3,
-        "name": "mpons",
-        "picture": "src/assets/img/mpons.jpg",
-        "isOnline": false,
-        "isPlaying": false
-    },
-    {
-        "id": 4,
-        "name": "tgrivel",
-        "picture": "src/assets/img/tgrivel.jpg",
-        "isOnline": false,
-        "isPlaying": false
+        "id": "1",
+        "name": "whatever",
+        "picture": "doesn't exist",
+        "isOnline": "true",
+        "isPlaying": "true"
     }
 ]
