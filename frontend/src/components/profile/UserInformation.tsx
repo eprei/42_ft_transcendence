@@ -6,8 +6,6 @@ import { useState } from 'react'
 import { useAppSelector } from '../../store/types'
 import { UserData } from '../../types/UserData'
 
-
-
 const UserInformation = () => {
     const userData = useAppSelector((state) => state.user.userData) as UserData
     const [TFAEnabled, setTFAEnabled] = useState(userData.user.TFAEnabled)
@@ -43,7 +41,10 @@ const UserInformation = () => {
         <div className={styles.container}>
             <div
                 className={styles.profilePicture}
-                style={{ backgroundImage: `url(${userData.user.avatarUrl})`, backgroundSize: 'cover' }}
+                style={{
+                    backgroundImage: `url(${userData.user.avatarUrl})`,
+                    backgroundSize: 'cover',
+                }}
             ></div>
             <div>
                 <ul className={styles.verticalList}>
