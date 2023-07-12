@@ -6,6 +6,7 @@ import ChannelList from './ChannelList'
 
 function ChannelBox() {
     const channels: Channel[] = useLoaderData() as Channel[]
+    console.log('Received channels: ', channels);
 
     const handleCreation = (channel: Channel) => {
         console.log('Received values of form: ', channel)

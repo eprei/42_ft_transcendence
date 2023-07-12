@@ -16,3 +16,16 @@ const Chat = () => {
 }
 
 export default Chat
+
+
+export const loader = async () => {
+    const response = await fetch(
+        'http://localhost:8080/api/channel/user-channels/2'
+    )
+    if (!response.ok) {
+        throw new Error(response.statusText)
+    }
+    const channelsData = await response.json()
+    console.log('channelsData: ', channelsData)
+    return channelsData
+}
