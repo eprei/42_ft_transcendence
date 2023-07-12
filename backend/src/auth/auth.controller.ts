@@ -34,7 +34,6 @@ export class AuthController {
     @UseGuards(OauthGuard)
     loginRedirect(@Req() req, @Res() res) {
         res.redirect(`${process.env.URL_FRONTEND}/profile`)
-
         return req.user
     }
 

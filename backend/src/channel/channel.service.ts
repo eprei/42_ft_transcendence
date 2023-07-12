@@ -42,7 +42,7 @@ export class ChannelService {
     async getUserChannels(userId: number) {
         const user = await this.userRepository.findOneBy({id: userId});
 
-        console.log(user);
+        console.log(`User: ${user}`);
   
         if (!user) {
           throw new NotFoundException('User not found');
@@ -53,7 +53,7 @@ export class ChannelService {
           .leftJoinAndSelect('channel.users', 'user')
           .where('user.id = :userId', { userId })
           .getMany();
-        console.log(channels);
+        console.log(`Channels: ${channels}`);
         return channels;
     }
 }
