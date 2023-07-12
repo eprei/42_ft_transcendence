@@ -40,20 +40,20 @@ export class ChannelService {
     }
 
     async getUserChannels(userId: number) {
-        const user = await this.userRepository.findOneBy({id: userId});
+        const user = await this.userRepository.findOneBy({ id: userId })
 
-        console.log(`User: ${user}`);
-  
+        console.log(`User: ${user}`)
+
         if (!user) {
-          throw new NotFoundException('User not found');
+            throw new NotFoundException('User not found')
         }
-      
+
         const channels = await this.channelRepository
-          .createQueryBuilder('channel')
-          .leftJoinAndSelect('channel.users', 'user')
-          .where('user.id = :userId', { userId })
-          .getMany();
-        console.log(`Channels: ${channels}`);
-        return channels;
+            .createQueryBuilder('channel')
+            .leftJoinAndSelect('channel.users', 'user')
+            .where('user.id = :userId', { userId })
+            .getMany()
+        console.log(`Channels: ${channels}`)
+        return channels
     }
 }

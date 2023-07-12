@@ -1,5 +1,5 @@
 import { Channel } from '../../../types/Channel'
-import  ChannelTypes  from '../../../types/Channeltypes'
+import ChannelTypes from '../../../types/Channeltypes'
 
 import ChannelsDisplay from './ChannelsDisplay'
 import styles from './ChannelList.module.css'

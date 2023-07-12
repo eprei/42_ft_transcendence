@@ -1,7 +1,6 @@
 import Msg from './Msg'
 import styles from './ChatFeed.module.css'
 
-
 function ChatFeed() {
     return (
         <div className={styles.container}>
