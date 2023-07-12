@@ -15,7 +15,7 @@ export class AuthService {
     constructor(private userService: UserService) {}
 
     async generateTwoFactorAuthenticationSecret(user: User) {
-        const secret : string = authenticator.generateSecret()
+        const secret: string = authenticator.generateSecret()
 
         const otpauthUrl: string = authenticator.keyuri(
             user.nickname,
