@@ -1,7 +1,7 @@
 import styles from './UserInformation.module.css'
 import ClickableIcon from './ClickableIcon'
 import IconEditProfile from '../../assets/icon/edit_profile.svg'
-import { UserInformationProps } from './MainProfile'
+import { UserInformationProps } from '../../pages/MainProfile'
 import switchButtonStyles from './SwitchButton.module.css'
 import { useState } from 'react'
 
