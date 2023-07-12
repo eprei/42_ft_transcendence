@@ -64,7 +64,6 @@ const router = createBrowserRouter([
                         <Chat />
                     </ProtectedRoute>
                 ),
-                loader: ChatLoader,
             },
             {
                 path: 'TFATurnOn',

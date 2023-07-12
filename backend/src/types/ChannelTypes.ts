@@ -1,7 +1,7 @@
-enum ChannelTypes {
+enum ChannelType {
     Private = 'private',
     Public = 'public',
     Direct = 'direct',
 }
 
-export default ChannelTypes
+export default ChannelType
