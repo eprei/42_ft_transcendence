@@ -2,7 +2,7 @@ import { Channel } from '../../../types/Channel'
 import ChannelLi from './ChannelLi'
 
 interface ChannelsDisplayProps {
-    channels: Channel[]
+    channels: Channel[] | []
     title: string
 }
 

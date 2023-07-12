@@ -1,13 +1,15 @@
-import { useLoaderData } from 'react-router-dom'
 import styles from './ChannelBox.module.css'
 import { Channel } from '../../../types/Channel'
 import CreateNewCh from './CreateNewCh'
 import ChannelList from './ChannelList'
 
-function ChannelBox() {
-    const channels: Channel[] = useLoaderData() as Channel[]
-    console.log('Received channels: ', channels);
+interface ChannelListProps {
+    discoverChan: Channel[] | []
+    joinedChan: Channel[] | []
+    myDms: Channel[] | []
+}
 
+const ChannelBox = (props: ChannelListProps) => {
     const handleCreation = (channel: Channel) => {
         console.log('Received values of form: ', channel)
     }
@@ -15,7 +17,11 @@ function ChannelBox() {
     return (
         <div className={styles.channelbox}>
             <CreateNewCh handleCreation={handleCreation} />
-            <ChannelList channels={channels}></ChannelList>
+            <ChannelList
+                discoverChan={props.discoverChan}
+                joinedChan={props.joinedChan}
+                myDms={props.myDms}
+            ></ChannelList>
         </div>
     )
 }
