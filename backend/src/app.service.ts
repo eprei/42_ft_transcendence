@@ -21,7 +21,7 @@ export class AppService {
         //  create Users
         const user1 = this.userRepo.create({
             nickname: 'user1',
-			xp: 12,
+            xp: 12,
             avatarUrl: 'http://localhost:8080/api/user/picture/user1.webp',
         })
         await this.userRepo.save(user1)
