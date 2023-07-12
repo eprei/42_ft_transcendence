@@ -2,7 +2,7 @@ import styles from './ChannelLi.module.css'
 import { Channel } from '../../../types/Channel'
 import IconLeaveChannel from '../../../assets/icon/block_user.svg'
 import IconPrivate from '../../../assets/icon/lock.svg'
-import ChannelTypes from '../../../types/Channeltypes'
+import ChannelTypes from '../../../types/ChannelType'
 
 interface ChannelLiProps {
     channel: Channel

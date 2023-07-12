@@ -1,35 +1,45 @@
 import { Channel } from '../../../types/Channel'
+import ChannelType from '../../../types/ChannelType'
 import ChannelsDisplay from './ChannelsDisplay'
 import styles from './ChannelList.module.css'
 
 interface ChannelListProps {
-    discoverChan: Channel[] | []
-    joinedChan: Channel[] | []
-    myDms: Channel[] | []
+    allChan: Channel[] | []
+    allUserChan: Channel[] | []
 }
 
 const ChannelList = (props: ChannelListProps) => {
+    const myDms = props.allUserChan.filter(
+        (channel) => channel.type === ChannelType.Direct
+    )
+    const joinedButNotDms = props.allUserChan.filter(
+        (channel) => channel.type !== ChannelType.Direct
+    )
+    const notJoinedChan = props.allChan.filter(
+        (chan) => !joinedButNotDms.some((joinchan) => chan.id === joinchan.id)
+    )
+
     return (
         <div className={styles.listsContainer}>
             <div className={styles.list}>
                 <h2> Joined Channels </h2>
                 <ChannelsDisplay
                     title={'Join a Channel to start chating!'}
-                    channels={props.joinedChan}
+                    channels={joinedButNotDms}
                 ></ChannelsDisplay>
             </div>
             <div className={styles.list}>
                 <h2> Discover </h2>
                 <ChannelsDisplay
                     title={'No channels to discover!'}
-                    channels={props.joinedChan}
+                    channels={notJoinedChan}
                 ></ChannelsDisplay>
             </div>
             <div className={styles.list}>
                 <h2> DM </h2>
                 <ChannelsDisplay
                     title={'No dm for now'}
-                    channels={props.joinedChan}
+                    channels={myDms}
                 ></ChannelsDisplay>
             </div>
         </div>

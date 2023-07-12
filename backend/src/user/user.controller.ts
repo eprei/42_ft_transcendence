@@ -11,6 +11,7 @@ import {
     UseInterceptors,
     UploadedFile,
     BadRequestException,
+    NotFoundException,
     Res,
     Request,
 } from '@nestjs/common'
@@ -122,6 +123,17 @@ export class UserController {
     @Get('getallnonfriendusers')
     async getOtherUsers(@Request() req: any) {
         return await this.userService.getAllUsersWithNoFriendship(req)
+    }
+    async getUser(@Request() req: any) {
+        const user = await this.userService.findOne(req.user.id)
+        if (!user) {
+            throw new NotFoundException('User not found')
+        }
+        const { TFASecret, FT_id, ...rest } = user
+        const userPosition = await this.userService.getUserRankingPosition(
+            req.user.id
+        )
+        return { ...rest, userPosition }
     }
 
     @Get('nickname/:nickname')
