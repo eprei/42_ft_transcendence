@@ -30,3 +30,7 @@ li {
     background-color: red;
     cursor: pointer;
 }
+
+.iconsContainer {
+    display: flex;
+}

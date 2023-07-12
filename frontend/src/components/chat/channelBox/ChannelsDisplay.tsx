@@ -4,13 +4,18 @@ import ChannelLi from './ChannelLi'
 interface ChannelsDisplayProps {
     channels: Channel[] | []
     title: string
+    type: string
 }
 
 const ChannelsDisplay = (props: ChannelsDisplayProps) => {
     let content: JSX.Element[] | JSX.Element = <p>{props.title}</p>
     if (props.channels !== undefined && props.channels.length > 0) {
         content = props.channels.map((channel: Channel) => (
-            <ChannelLi key={channel.id} channel={channel}></ChannelLi>
+            <ChannelLi
+                key={channel.id}
+                channel={channel}
+                type={props.type}
+            ></ChannelLi>
         ))
     }
 

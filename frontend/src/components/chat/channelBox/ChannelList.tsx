@@ -26,6 +26,7 @@ const ChannelList = (props: ChannelListProps) => {
                 <ChannelsDisplay
                     title={'Join a Channel to start chating!'}
                     channels={joinedButNotDms}
+                    type="join"
                 ></ChannelsDisplay>
             </div>
             <div className={styles.list}>
@@ -33,6 +34,7 @@ const ChannelList = (props: ChannelListProps) => {
                 <ChannelsDisplay
                     title={'No channels to discover!'}
                     channels={notJoinedChan}
+                    type="discover"
                 ></ChannelsDisplay>
             </div>
             <div className={styles.list}>
@@ -40,6 +42,7 @@ const ChannelList = (props: ChannelListProps) => {
                 <ChannelsDisplay
                     title={'No dm for now'}
                     channels={myDms}
+                    type="dm"
                 ></ChannelsDisplay>
             </div>
         </div>
