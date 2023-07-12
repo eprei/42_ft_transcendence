@@ -48,7 +48,42 @@ export class UserService {
             .createQueryBuilder('user')
             .where('user.xp >= :userXp', { userXp: user.xp })
             .getCount()
-        console.log('USER position: ', userPosition)
         return userPosition
+    }
+
+    async setTwoFactorAuthenticationSecret(secret: string, userID: number) {
+        const user = await this.userRepository.findOne({
+            where: { id: userID },
+        })
+
+        if (user) {
+            user.TFASecret = secret
+            return this.userRepository.save(user)
+        }
+        throw new Error(`User with id ${userID} not found`)
+    }
+
+    async turnOnTwoFactorAuthentication(userID: number) {
+        const user = await this.userRepository.findOne({
+            where: { id: userID },
+        })
+
+        if (user) {
+            user.TFAEnabled = true
+            return this.userRepository.save(user)
+        }
+        throw new Error(`User with id ${userID} not found`)
+    }
+
+    async turnOffTwoFactorAuthentication(userID: number) {
+        const user = await this.userRepository.findOne({
+            where: { id: userID },
+        })
+
+        if (user) {
+            user.TFAEnabled = false
+            return this.userRepository.save(user)
+        }
+        throw new Error(`User with id ${userID} not found`)
     }
 }

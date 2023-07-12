@@ -9,7 +9,8 @@ export class OauthGuard extends AuthGuard('oauth') {
         const result = (await super.canActivate(context)) as boolean
         const request = context.switchToHttp().getRequest() // 3
         await super.logIn(request) // 4
-        // if (request.user.auth) request.session.totpRequire = true	// 5
+
+        request.session.needTFA = request.user.TFAEnabled ? true : false // 5
 
         return result // 6
     }
@@ -47,9 +48,9 @@ export class OauthGuard extends AuthGuard('oauth') {
 	Passport. This sets the authenticated user in the request.
 	___________________________________________________________________________________
 
-	5. Checks if the authenticated user has the auth property defined in its object.
-	If so, request.session.totpRequire is set to true. This implies that two-factor
-	authentication (e.g., via OTP) is required for the user.
+	5. The value of the user variable 'TFAEnabled' is copied to a session variable
+	named 'needTFA'. Later 'needTFA' will change its value from 'true' to 'false' if
+	the 2fa authentication is successful.
 	___________________________________________________________________________________
 
 	6. The result of the initial validation performed in step 4 is returned true, the
