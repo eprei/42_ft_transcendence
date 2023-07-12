@@ -12,11 +12,6 @@ const UserInformation = () => {
     const userData = useAppSelector((state) => state.user.userData) as UserData
     const [TFAEnabled, setTFAEnabled] = useState(userData.user.TFAEnabled)
 
-    const profilePictureStyle = {
-        backgroundImage: `url(${userData.user.avatarUrl})`,
-        backgroundSize: 'cover',
-    }
-
     const editProfile = () => {
         // TODO implement this functionality in both the frontend and the backend
         console.log('Edit Profile')
@@ -48,7 +43,7 @@ const UserInformation = () => {
         <div className={styles.container}>
             <div
                 className={styles.profilePicture}
-                style={profilePictureStyle}
+                style={{ backgroundImage: `url(${userData.user.avatarUrl})`, backgroundSize: 'cover' }}
             ></div>
             <div>
                 <ul className={styles.verticalList}>
