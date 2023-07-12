@@ -3,9 +3,12 @@ import StatisticElement from './StatisticElement'
 import IconVictoire from '../../assets/icon/victoires.svg'
 import IconDefeat from '../../assets/icon/defeats.svg'
 import IconRanking from '../../assets/icon/ranking.svg'
-import { UserInformationProps } from '../../pages/MainProfile'
+import { useAppSelector } from '../../store/types'
+import { UserData } from '../../types/UserData'
 
-const Statistics = ({ userData }: UserInformationProps) => {
+const Statistics = () => {
+    const userData = useAppSelector((state) => state.user.userData) as UserData
+
     return (
         <div>
             <div className={styles.container}>
@@ -35,3 +38,4 @@ const Statistics = ({ userData }: UserInformationProps) => {
 }
 
 export default Statistics
+
