@@ -22,17 +22,18 @@ env:
 format:
 	docker run \
 	--rm \
-	--volume $(shell pwd):/app tgrivel/prettier \
+	--volume $(shell pwd):/app \
+	tgrivel/prettier \
 	--write backend \
 	--write frontend \
 	--config .prettierrc \
 	--ignore-path .prettierignore
 
 cmd-back:
-	docker exec -it our-backend sh
+	docker exec -it $(CONTAINER_BACK) sh
 
 cmd-front:
-	docker exec -it our-frontend sh
+	docker exec -it $(CONTAINER_FRONT) sh
 
 doc:
 	@printf "$(YELLOW)Generating documentations..$(DEFAULT)\n"
@@ -40,25 +41,29 @@ doc:
 
 docdocker:
 	@printf "$(YELLOW)launch the asciidoctor/docker-asciidoctor docker image..$(DEFAULT)\n"
-	@docker run --rm -v $(shell pwd):/documents/ asciidoctor/docker-asciidoctor make doc
+	@docker run \
+	--rm \
+	--volume $(shell pwd):/documents/ \
+	asciidoctor/docker-asciidoctor \
+	make doc
 
 clean-container: clean-postgresql clean-front clean-back
 
 clean-image:
-	docker image rm our-frontend-image
-	docker image rm our-backend-image
+	@docker image rm our-frontend-image || true
+	@docker image rm our-backend-image || true
 
 clean-database: clean-postgresql
-	@if docker volume inspect $(VOLUME_DATA) 1>/dev/null 2>/dev/null ; then docker volume rm $(VOLUME_DATA); fi
+	@docker volume rm $(VOLUME_DATA) || true
 
 clean-postgresql:
-	@if docker container inspect $(CONTAINER_POST) 1>/dev/null 2>/dev/null ; then docker container rm $(CONTAINER_POST); fi
+	@docker container rm $(CONTAINER_POST) || true
 
 clean-front:
-	@if docker container inspect $(CONTAINER_FRONT) 1>/dev/null 2>/dev/null ; then docker container rm $(CONTAINER_FRONT); fi
+	@docker container rm $(CONTAINER_FRONT) || true
 
 clean-back:
-	@if docker container inspect $(CONTAINER_BACK) 1>/dev/null 2>/dev/null ; then docker container rm $(CONTAINER_BACK); fi
+	@docker container rm $(CONTAINER_BACK) || true
 
 kill-your-work:
 	docker container prune -f
