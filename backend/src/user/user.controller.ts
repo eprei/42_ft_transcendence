@@ -19,12 +19,15 @@ import { UserService } from './user.service'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateChannelDto } from 'src/channel/dto/update-channel.dto'
 import { Express } from 'express'
+import { ApiTags } from '@nestjs/swagger'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { diskStorage } from 'multer'
-import { ApiTags } from '@nestjs/swagger'
 import { UpdateNicknameDto } from './dto/update-nickname.dto'
 import { UseGuards } from '@nestjs/common'
 import { AuthenticatedGuard } from 'src/auth/guards/authenticated.guard'
+import { v4 as uuidv4 } from 'uuid'
+import { extname } from 'path'
+import { Response } from 'express'
 
 @ApiTags('user')
 @Controller('user')
@@ -140,5 +143,39 @@ export class UserController {
         await req.session.destroy()
         res.clearCookie('sessionID')
         res.status(200).json({ message: 'Logout successful' })
+    }
+
+    @Post('upload-profile-picture')
+    @UseInterceptors(
+        FileInterceptor('profilePicture', {
+            storage: diskStorage({
+                destination: './uploads/tmp-profil-pictures-storage', // Path where profile pictures will be temporary saved
+                filename: (req, file, cb) => {
+                    const uniqueSuffix = uuidv4()
+                    const fileExt = extname(file.originalname)
+                    cb(null, `${Date.now()}-${uniqueSuffix}${fileExt}`)
+                },
+            }),
+        })
+    )
+    async uploadProfilePicture(
+        @Request() req: any,
+        @UploadedFile() file: Express.Multer.File
+    ) {
+        if (!file) {
+            throw new BadRequestException('No image was provided')
+        }
+
+        const photoUrl = await this.userService.uploadProfilePicture(req, file)
+
+        return { message: 'Profile image saved correctly', photoUrl }
+    }
+
+    @Get('profile-images/:filename')
+    async serveProfileImage(
+        @Param('filename') filename: string,
+        @Res() res: Response
+    ) {
+        res.sendFile(filename, { root: '/app/profile-images' })
     }
 }
