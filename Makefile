@@ -40,7 +40,10 @@ doc:
 
 docdocker:
 	@printf "$(YELLOW)launch the asciidoctor/docker-asciidoctor docker image..$(DEFAULT)\n"
-	@docker run --rm -v $(shell pwd):/documents/ asciidoctor/docker-asciidoctor make doc
+	@docker run \
+	--rm \
+	--volume $(shell pwd):/documents/ \
+	asciidoctor/docker-asciidoctor make doc
 
 clean-container: clean-postgresql clean-front clean-back
 
