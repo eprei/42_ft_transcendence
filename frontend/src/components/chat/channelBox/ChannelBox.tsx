@@ -7,8 +7,12 @@ import { useEffect, useState } from 'react'
 import { useAppSelector } from '../../../store/types'
 import { UserData } from '../../../types/UserData'
 
-async function createNewChannel(data: CreateChannel) {
-    try {
+const ChannelBox = () => {
+    const userData = useAppSelector((state) => state.user.userData) as UserData
+    const [allChan, setAllChan] = useState<Channel[]>([])
+    const [allUserChan, setAllUserChan] = useState<Channel[]>([])
+
+    async function createNewChannel(data: CreateChannel) {
         const response = await fetch('http://localhost:8080/api/channel', {
             method: 'POST',
             headers: {
@@ -21,14 +25,9 @@ async function createNewChannel(data: CreateChannel) {
             throw new Error('Failed to make POST request')
         }
 
-        const responseData = await response.json()
-        return responseData
-    } catch (error) {
-        console.error(error)
+        const responseData = await response.json() as Channel
+        setAllChan(prevState => [...prevState, responseData])
     }
-}
-const ChannelBox = () => {
-    const userData = useAppSelector((state) => state.user.userData) as UserData
 
     async function getAllChannels() {
         const response = await fetch('http://localhost:8080/api/channel')
@@ -50,9 +49,6 @@ const ChannelBox = () => {
         return allUserChannels
     }
 
-    const [allChan, setAllChan] = useState<Channel[]>([])
-    const [allUserChan, setAllUserChan] = useState<Channel[]>([])
-
     useEffect(() => {
         const fetchAllChannels = async () => {
             try {
@@ -73,7 +69,7 @@ const ChannelBox = () => {
 
         fetchAllChannels()
         fetchAllUserChannels()
-    }, [])
+    }, [allChan, allUserChan])
     const handleCreation = (channel: CreateChannel) => {
         console.log('Received values of form: ', channel)
         createNewChannel(channel);
