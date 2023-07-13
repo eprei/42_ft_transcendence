@@ -54,4 +54,22 @@ export class ChannelService {
             .getMany()
         return channels
     }
+
+    async removeUserFromChannel(channelId: number, userId: number): Promise<void> {
+        const channel = await this.channelRepository.findOne(channelId, { relations: ['users'] });
+        
+        if (!channel) {
+          throw new NotFoundException('Channel not found');
+        }
+      
+        const userToRemove = channel.users.find((user) => user.id === userId);
+      
+        if (!userToRemove) {
+          throw new NotFoundException('User not found in channel');
+        }
+      
+        channel.users = channel.users.filter((user) => user.id !== userId);
+      
+        await this.channelRepository.save(channel);
+      }
 }

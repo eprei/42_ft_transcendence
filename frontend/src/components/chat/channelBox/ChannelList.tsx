@@ -7,7 +7,6 @@ import { User, UserData } from '../../../types/UserData'
 
 interface ChannelListProps {
     allChan: Channel[] | []
-    // allUserChan: Channel[] | []
 }
 
 const ChannelList = (props: ChannelListProps) => {

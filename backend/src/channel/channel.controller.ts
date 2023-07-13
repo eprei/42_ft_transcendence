@@ -71,4 +71,18 @@ export class ChannelController {
         const channel = await this.channelService.remove(+id)
         return channel
     }
+
+
+    @Delete(':channelId/users/:userId')
+    async removeUserFromChannel(
+      @Param('channelId') channelId: number,
+      @Param('userId') userId: number,
+    ) {
+      try {
+        await this.channelService.removeUserFromChannel(channelId, userId);
+        return { message: 'User removed from channel successfully' };
+      } catch (error) {
+        throw new Error('Failed to remove user from channel');
+      }
+    }
 }

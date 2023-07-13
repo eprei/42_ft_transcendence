@@ -1,16 +1,13 @@
 import styles from './ChannelBox.module.css'
 import { Channel } from '../../../types/Channel'
-import { CreateChannel } from '../../../types/createChannel'
 import CreateNewCh from './CreateNewCh'
 import ChannelList from './ChannelList'
 import { useEffect, useState } from 'react'
-// import { useAppSelector } from '../../../store/types'
-// import { UserData } from '../../../types/UserData'
+import { CreateChannel } from '../../../types/CreateChannel'
+
 
 const ChannelBox = () => {
-    // const userData = useAppSelector((state) => state.user.userData) as UserData
     const [allChan, setAllChan] = useState<Channel[]>([])
-    // const [allUserChan, setAllUserChan] = useState<Channel[]>([])
 
     async function createNewChannel(data: CreateChannel) {
         const response = await fetch('http://localhost:8080/api/channel', {
@@ -24,7 +21,7 @@ const ChannelBox = () => {
         if (!response.ok) {
             throw new Error('Failed to make POST request')
         }
-        // getAllUserChannels()
+        getAllChannels()
     }
 
     async function getAllChannels() {
@@ -36,17 +33,6 @@ const ChannelBox = () => {
         return allChannels
     }
 
-    // async function getAllUserChannels() {
-    //     const response = await fetch(
-    //         `http://localhost:8080/api/channel/user-channels/${userData.user.id}`
-    //     )
-    //     if (!response.ok) {
-    //         throw new Error(response.statusText)
-    //     }
-    //     const allUserChannels = await response.json()
-    //     return allUserChannels
-    // }
-
     useEffect(() => {
         const fetchAllChannels = async () => {
             try {
@@ -56,17 +42,9 @@ const ChannelBox = () => {
                 console.error('Error fetching channels:', error)
             }
         }
-        // const fetchAllUserChannels = async () => {
-        //     try {
-        //         const allChannels = await getAllUserChannels()
-        //         setAllUserChan(allChannels)
-        //     } catch (error) {
-        //         console.error('Error fetching channels:', error)
-        //     }
-        // }
+
 
         fetchAllChannels()
-        // fetchAllUserChannels()
     }, [])
     const handleCreation = (channel: CreateChannel) => {
         console.log('Received values of form: ', channel)
@@ -78,7 +56,6 @@ const ChannelBox = () => {
             <CreateNewCh handleCreation={handleCreation} />
             <ChannelList
                 allChan={allChan}
-                // allUserChan={allUserChan}
             ></ChannelList>
         </div>
     )
