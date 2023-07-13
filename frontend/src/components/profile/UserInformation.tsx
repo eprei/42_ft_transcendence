@@ -1,5 +1,5 @@
 import styles from './UserInformation.module.css'
-import ClickableIcon from './ClickableIcon'
+import ClickableIcon, { ClickableIconProps } from './ClickableIcon'
 import IconEditProfile from '../../assets/icon/edit_profile.svg'
 import switchButtonStyles from './SwitchButton.module.css'
 import { useState } from 'react'
@@ -9,10 +9,30 @@ import { UserData } from '../../types/UserData'
 const UserInformation = () => {
     const userData = useAppSelector((state) => state.user.userData) as UserData
     const [TFAEnabled, setTFAEnabled] = useState(userData.user.TFAEnabled)
+    const [newNickname, setNewNickname] = useState('')
 
-    const editProfile = () => {
-        // TODO implement this functionality in both the frontend and the backend
-        console.log('Edit Profile')
+    const editProfile = async () => {
+        try {
+            const response = await fetch(
+                'http://localhost:8080/api/user/updatenickname',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ nickname: newNickname }),
+                }
+            )
+
+            if (response.ok) {
+                console.log('Nickname updated successfully')
+                // TODO update nickname in the front
+            } else {
+                console.error('Failed to update nickname')
+            }
+        } catch (error) {
+            console.error('Error updating nickname:', error)
+        }
     }
 
     const handleToggleSwitch = async () => {
@@ -53,7 +73,13 @@ const UserInformation = () => {
                         <ClickableIcon
                             icon={IconEditProfile}
                             onClick={editProfile}
-                        />
+                        >
+                            <input
+                                type="text"
+                                value={newNickname}
+                                onChange={(e) => setNewNickname(e.target.value)}
+                            />
+                        </ClickableIcon>
                     </li>
                     <li>Level {Math.floor(userData.user.nbVictory / 5) + 1}</li>
                     <li>
