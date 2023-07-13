@@ -1,17 +1,14 @@
 import styles from './UserInformation.module.css'
 import ClickableIcon from './ClickableIcon'
 import IconEditProfile from '../../assets/icon/edit_profile.svg'
-import { UserInformationProps } from '../../pages/MainProfile'
 import switchButtonStyles from './SwitchButton.module.css'
 import { useState } from 'react'
+import { useAppSelector } from '../../store/types'
+import { UserData } from '../../types/UserData'
 
-const UserInformation = ({ userData }: UserInformationProps) => {
+const UserInformation = () => {
+    const userData = useAppSelector((state) => state.user.userData) as UserData
     const [TFAEnabled, setTFAEnabled] = useState(userData.user.TFAEnabled)
-
-    const profilePictureStyle = {
-        backgroundImage: `url(${userData.user.avatarUrl})`,
-        backgroundSize: 'cover',
-    }
 
     const editProfile = () => {
         // TODO implement this functionality in both the frontend and the backend
@@ -44,7 +41,10 @@ const UserInformation = ({ userData }: UserInformationProps) => {
         <div className={styles.container}>
             <div
                 className={styles.profilePicture}
-                style={profilePictureStyle}
+                style={{
+                    backgroundImage: `url(${userData.user.avatarUrl})`,
+                    backgroundSize: 'cover',
+                }}
             ></div>
             <div>
                 <ul className={styles.verticalList}>

@@ -4,27 +4,22 @@ import FriendList from '../components/profile/FriendList'
 import Statistics from '../components/profile/Statistics'
 import UserInformation from '../components/profile/UserInformation'
 import { userActions } from '../store/user'
-import { useAppDispatch, useAppSelector } from '../store/types'
+import { useAppDispatch } from '../store/types'
 import { UserData } from '../types/UserData'
 import { useLoaderData } from 'react-router-dom'
-
-export interface UserInformationProps {
-    userData: UserData
-}
 
 const MainProfile = () => {
     const fetchUserData = useLoaderData() as UserData
     const dispatch = useAppDispatch()
     dispatch(userActions.update({ user: fetchUserData }))
 
-    const userData = useAppSelector((state) => state.user.userData) as UserData
     return (
         <div className={styles.container}>
             <h1>Profile</h1>
             <div className={styles.body}>
                 <div className={styles.bodyLeftSide}>
-                    <UserInformation userData={userData} />
-                    <Statistics userData={userData} />
+                    <UserInformation />
+                    <Statistics />
                     <SeeMatchHistoryBtn />
                 </div>
                 <div className={styles.bodyRightSide}>
