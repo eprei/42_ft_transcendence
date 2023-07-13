@@ -19,7 +19,7 @@ export class CreateChannelDto {
 
     @IsOptional()
     admin: User
-
+    
     @IsOptional()
     users: User[]
 }
