@@ -60,7 +60,11 @@ const UserInformation = () => {
                         2fa is
                         {TFAEnabled ? ' activated ' : ' deactivated'}
                         <label className={switchButtonStyles.switch}>
-                            <input type="checkbox" checked={TFAEnabled} readOnly/>
+                            <input
+                                type="checkbox"
+                                checked={TFAEnabled}
+                                readOnly
+                            />
                             <span
                                 className={switchButtonStyles.slider}
                                 onClick={handleToggleSwitch}
