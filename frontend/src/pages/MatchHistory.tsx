@@ -1,8 +1,24 @@
-import { useAppSelector } from "../store/types"
+import { useLoaderData } from "react-router-dom"
+import { MatchData } from "../types/MatchData"
+import { useAppDispatch, useAppSelector } from "../store/types"
+import { matchActions } from "../store/match"
 import { UserData } from "../types/UserData"
 import styles from "./MatchHistory.module.css"
 
 const MatchHistory = () => {
+    const fetchMatchHistory = useLoaderData() as MatchData
+    const dispatch = useAppDispatch()
+    dispatch(matchActions.update({ matchHistory: fetchMatchHistory }))
+
+    // const matchHistory = this.
+
+    // const matchHistoryList = matchHistory.map(match => 
+    //     <li key={match.id}>
+    //         {match.winner} beat {match.loser}
+    //     </li>
+    // );
+
+    // const MatchData = useAppSelector((state) => state.match.matchData) as MatchData
     const userData = useAppSelector((state) => state.user.userData) as UserData
 
     return (
