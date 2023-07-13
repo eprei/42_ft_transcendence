@@ -7,6 +7,26 @@ import { useEffect, useState } from 'react'
 import { useAppSelector } from '../../../store/types'
 import { UserData } from '../../../types/UserData'
 
+async function createNewChannel(data: CreateChannel) {
+    try {
+        const response = await fetch('http://localhost:8080/api/channel', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+
+        if (!response.ok) {
+            throw new Error('Failed to make POST request')
+        }
+
+        const responseData = await response.json()
+        return responseData
+    } catch (error) {
+        console.error(error)
+    }
+}
 const ChannelBox = () => {
     const userData = useAppSelector((state) => state.user.userData) as UserData
 
@@ -56,6 +76,7 @@ const ChannelBox = () => {
     }, [])
     const handleCreation = (channel: CreateChannel) => {
         console.log('Received values of form: ', channel)
+        createNewChannel(channel);
     }
 
     return (
