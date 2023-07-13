@@ -22,7 +22,8 @@ env:
 format:
 	docker run \
 	--rm \
-	--volume $(shell pwd):/app tgrivel/prettier \
+	--volume $(shell pwd):/app \
+	tgrivel/prettier \
 	--write backend \
 	--write frontend \
 	--config .prettierrc \
@@ -43,7 +44,8 @@ docdocker:
 	@docker run \
 	--rm \
 	--volume $(shell pwd):/documents/ \
-	asciidoctor/docker-asciidoctor make doc
+	asciidoctor/docker-asciidoctor \
+	make doc
 
 clean-container: clean-postgresql clean-front clean-back
 
