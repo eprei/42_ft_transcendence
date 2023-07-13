@@ -13,6 +13,7 @@ import { useEffect } from 'react'
 import { useAppDispatch } from './store/types'
 import TFAVerify from './pages/TFAAuthenticate'
 import TFATurnOn from './pages/TFATurnOn'
+import UserLambda from './pages/UserLambda'
 
 const router = createBrowserRouter([
     {
@@ -67,6 +68,14 @@ const router = createBrowserRouter([
                 element: (
                     <ProtectedRoute>
                         <TFATurnOn />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: 'user/:nickname',
+                element: (
+                    <ProtectedRoute>
+                        <UserLambda />
                     </ProtectedRoute>
                 ),
             },

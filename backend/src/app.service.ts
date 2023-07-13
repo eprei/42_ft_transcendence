@@ -21,31 +21,37 @@ export class AppService {
         //  create Users
         const user1 = this.userRepo.create({
             nickname: 'user1',
+            xp: 12,
             avatarUrl: 'http://localhost:8080/api/user/picture/user1.webp',
         })
         await this.userRepo.save(user1)
         const user2 = this.userRepo.create({
             nickname: 'user2',
+            xp: 23,
             avatarUrl: 'http://localhost:8080/api/user/picture/user2.webp',
         })
         await this.userRepo.save(user2)
         const user3 = this.userRepo.create({
             nickname: 'user3',
+            xp: 34,
             avatarUrl: 'http://localhost:8080/api/user/picture/user3.webp',
         })
         await this.userRepo.save(user3)
         const user4 = this.userRepo.create({
             nickname: 'user4',
+            xp: 45,
             avatarUrl: 'http://localhost:8080/api/user/picture/user4.webp',
         })
         await this.userRepo.save(user4)
         const user5 = this.userRepo.create({
             nickname: 'user5',
+            xp: 56,
             avatarUrl: 'http://localhost:8080/api/user/picture/user5.webp',
         })
         await this.userRepo.save(user5)
         const user6 = this.userRepo.create({
             nickname: 'user6',
+            xp: 67,
             avatarUrl: 'http://localhost:8080/api/user/picture/user6.webp',
         })
         await this.userRepo.save(user6)

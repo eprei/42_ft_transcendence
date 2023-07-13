@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { Injectable, NotFoundException, Request, Param } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { User } from 'src/typeorm/user.entity'
 import { CreateUserDto } from './dto/create-user.dto'
@@ -36,6 +36,10 @@ export class UserService {
 
     findByFT_id(FT_id: string) {
         return this.userRepository.findOneBy({ FT_id: FT_id })
+    }
+
+    findByNickname(nickname: string) {
+        return this.userRepository.findOneBy({ nickname: nickname })
     }
 
     async getUserRankingPosition(userId: number): Promise<number> {
@@ -85,5 +89,18 @@ export class UserService {
             return this.userRepository.save(user)
         }
         throw new Error(`User with id ${userID} not found`)
+    }
+
+    async getLambdaInfo(@Param('nickname') nickname: string) {
+        const user = await this.findByNickname(nickname)
+
+        if (!user) {
+            throw new NotFoundException('User not found')
+        }
+
+        const { id, TFASecret, FT_id, ...rest } = user
+        const userPosition = await this.getUserRankingPosition(user.id)
+
+        return { ...rest, userPosition }
     }
 }
