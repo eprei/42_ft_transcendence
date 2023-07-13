@@ -2,16 +2,16 @@ import { useState } from 'react'
 import IconAddChannel from '../../../assets/icon/add_friend.svg'
 import styles from './CreateNewCh.module.css'
 import ChannelCreateForm from './ChannelCreateForm'
-import { Channel } from '../../../types/Channel'
+import { CreateChannel } from '../../../types/createChannel'
 
 interface CreateNewChProps {
-    handleCreation: (channel: Channel) => void
+    handleCreation: (channel: CreateChannel) => void
 }
 
 const CreateNewCh = ({ handleCreation }: CreateNewChProps) => {
     const [open, setOpen] = useState(false)
 
-    const onCreate = (values: Channel) => {
+    const onCreate = (values: CreateChannel) => {
         console.log('Received values of form: ', values)
         setOpen(false)
         handleCreation(values)

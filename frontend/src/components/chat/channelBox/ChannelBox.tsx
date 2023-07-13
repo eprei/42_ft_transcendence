@@ -1,5 +1,6 @@
 import styles from './ChannelBox.module.css'
 import { Channel } from '../../../types/Channel'
+import { CreateChannel } from '../../../types/createChannel'
 import CreateNewCh from './CreateNewCh'
 import ChannelList from './ChannelList'
 import { useEffect, useState } from 'react'
@@ -53,7 +54,7 @@ const ChannelBox = () => {
         fetchAllChannels()
         fetchAllUserChannels()
     }, [])
-    const handleCreation = (channel: Channel) => {
+    const handleCreation = (channel: CreateChannel) => {
         console.log('Received values of form: ', channel)
     }
 
