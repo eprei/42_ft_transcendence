@@ -18,6 +18,9 @@ const ChannelList = (props: ChannelListProps) => {
     const notJoinedChan = props.allChan.filter(
         (chan) => !joinedButNotDms.some((joinchan) => chan.id === joinchan.id)
     )
+    const notJoinedAndNotDms = notJoinedChan.filter(
+        (channel) => channel.type !== ChannelType.Direct
+    )
 
     return (
         <div className={styles.listsContainer}>
@@ -33,7 +36,7 @@ const ChannelList = (props: ChannelListProps) => {
                 <h2> Discover </h2>
                 <ChannelsDisplay
                     title={'No channels to discover!'}
-                    channels={notJoinedChan}
+                    channels={notJoinedAndNotDms}
                     type="discover"
                 ></ChannelsDisplay>
             </div>
