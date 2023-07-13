@@ -21,7 +21,7 @@ export class ChannelService {
     }
 
     findAll() {
-        return this.channelRepository.find()
+        return this.channelRepository.find({ relations: ['users', 'admin', 'messages'] })
     }
 
     findOne(id: number) {
