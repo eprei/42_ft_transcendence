@@ -29,10 +29,10 @@ format:
 	--ignore-path .prettierignore
 
 cmd-back:
-	docker exec -it our-backend sh
+	docker exec -it $(CONTAINER_BACK) sh
 
 cmd-front:
-	docker exec -it our-frontend sh
+	docker exec -it $(CONTAINER_FRONT) sh
 
 doc:
 	@printf "$(YELLOW)Generating documentations..$(DEFAULT)\n"
