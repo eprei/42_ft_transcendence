@@ -45,8 +45,8 @@ docdocker:
 clean-container: clean-postgresql clean-front clean-back
 
 clean-image:
-	docker image rm our-frontend-image
-	docker image rm our-backend-image
+	@docker image rm our-frontend-image || true
+	@docker image rm our-backend-image || true
 
 clean-database: clean-postgresql
 	@docker volume rm $(VOLUME_DATA) || true
