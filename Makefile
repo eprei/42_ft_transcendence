@@ -49,16 +49,16 @@ clean-image:
 	docker image rm our-backend-image
 
 clean-database: clean-postgresql
-	@if docker volume inspect $(VOLUME_DATA) 1>/dev/null 2>/dev/null ; then docker volume rm $(VOLUME_DATA); fi
+	@docker volume rm $(VOLUME_DATA) || true
 
 clean-postgresql:
-	@if docker container inspect $(CONTAINER_POST) 1>/dev/null 2>/dev/null ; then docker container rm $(CONTAINER_POST); fi
+	@docker container rm $(CONTAINER_POST) || true
 
 clean-front:
-	@if docker container inspect $(CONTAINER_FRONT) 1>/dev/null 2>/dev/null ; then docker container rm $(CONTAINER_FRONT); fi
+	@docker container rm $(CONTAINER_FRONT) || true
 
 clean-back:
-	@if docker container inspect $(CONTAINER_BACK) 1>/dev/null 2>/dev/null ; then docker container rm $(CONTAINER_BACK); fi
+	@docker container rm $(CONTAINER_BACK) || true
 
 kill-your-work:
 	docker container prune -f
