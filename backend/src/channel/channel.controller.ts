@@ -9,7 +9,7 @@ import {
     UsePipes,
     ValidationPipe,
 } from '@nestjs/common'
-import {InjectRepository} from '@nestjs/typeorm'
+import { InjectRepository } from '@nestjs/typeorm'
 import { User } from 'src/typeorm/user.entity'
 import { Repository } from 'typeorm'
 import { ChannelService } from './channel.service'
@@ -20,14 +20,18 @@ import { ApiTags } from '@nestjs/swagger'
 @ApiTags('channel')
 @Controller('channel')
 export class ChannelController {
-    constructor(private readonly channelService: ChannelService,
+    constructor(
+        private readonly channelService: ChannelService,
         @InjectRepository(User)
-        private readonly userRepository: Repository<User>) {}
+        private readonly userRepository: Repository<User>
+    ) {}
 
     @Post()
     @UsePipes(ValidationPipe)
     async create(@Body() createChannelDto: CreateChannelDto) {
-        const user = await this.userRepository.findOneBy({id: createChannelDto.ownerId})
+        const user = await this.userRepository.findOneBy({
+            id: createChannelDto.ownerId,
+        })
         createChannelDto.owner = user
         createChannelDto.admin = user
         createChannelDto.users = [user]

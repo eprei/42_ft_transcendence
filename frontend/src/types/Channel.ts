@@ -1,4 +1,4 @@
-import { User } from "./UserData"
+import { User } from './UserData'
 
 export interface Channel {
     id: number

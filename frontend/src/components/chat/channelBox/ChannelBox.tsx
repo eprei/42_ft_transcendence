@@ -70,7 +70,7 @@ const ChannelBox = () => {
     }, [])
     const handleCreation = (channel: CreateChannel) => {
         console.log('Received values of form: ', channel)
-        createNewChannel(channel);
+        createNewChannel(channel)
     }
 
     return (

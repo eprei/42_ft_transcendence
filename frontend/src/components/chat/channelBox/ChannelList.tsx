@@ -12,24 +12,35 @@ interface ChannelListProps {
 
 const ChannelList = (props: ChannelListProps) => {
     const userData = useAppSelector((state) => state.user.userData) as UserData
+    let allUserChan: Channel[] | [] = []
+    let myDms: Channel[] | [] = []
+    let joinedButNotDms: Channel[] | [] = []
+    let notJoinedChan: Channel[] | [] = []
+    let notJoinedAndNotDms: Channel[] | [] = []
 
-   console.log(props.allChan);
-    const allUserChan = props.allChan.filter((chan: Channel) =>
-  chan.users.some((user: User) => user.id === userData.user.id)
-);
+    console.log(props.allChan)
 
-    const myDms = allUserChan.filter(
-        (channel) => channel.type === ChannelType.Direct
-    )
-    const joinedButNotDms = allUserChan.filter(
-        (channel) => channel.type !== ChannelType.Direct
-    )
-    const notJoinedChan = props.allChan.filter(
-        (chan) => !joinedButNotDms.some((joinchan) => chan.id === joinchan.id)
-    )
-    const notJoinedAndNotDms = notJoinedChan.filter(
-        (channel) => channel.type !== ChannelType.Direct
-    )
+    if (props.allChan.length !== 0) {
+        allUserChan = props.allChan.filter((chan: Channel) =>
+            chan.users.some((user: User) => user.id === userData.user.id)
+        )
+
+        notJoinedChan = props.allChan.filter((chan) =>
+            chan.users.every((user: User) => user.id !== userData.user.id)
+        )
+        console.log(notJoinedChan)
+
+        myDms = allUserChan.filter(
+            (channel) => channel.type === ChannelType.Direct
+        )
+        joinedButNotDms = allUserChan.filter(
+            (channel) => channel.type !== ChannelType.Direct
+        )
+
+        notJoinedAndNotDms = notJoinedChan.filter(
+            (channel) => channel.type !== ChannelType.Direct
+        )
+    }
 
     return (
         <div className={styles.listsContainer}>
