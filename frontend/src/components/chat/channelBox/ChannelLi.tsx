@@ -47,7 +47,8 @@ const ChannelLi = (props: ChannelLiProps) => {
       }
 
     return (
-		<li className={styles.li} onClick={handleClick}>
+		// <li className={styles.li} onClick={handleClick}>
+		<li className={`${styles.li} ${props.channel.id === chatId ? styles.active : ''}`} onClick={handleClick} >
             <div className={styles.text}>{props.channel.name}</div>
             <div className={styles.iconsContainer}>
                 {props.type !== 'discover' && (

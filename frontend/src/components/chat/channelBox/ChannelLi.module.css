@@ -12,6 +12,10 @@ li {
     border-radius: 44px;
 }
 
+.active {
+	background-color: var(--color-mid-green);
+}
+
 .text {
     cursor: pointer;
 }
