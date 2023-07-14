@@ -43,6 +43,28 @@ export class MessageController {
         return await this.messageService.create(createMessageDto)
     }
 
+	// async create(@Param('id') id: string, @Body() newMsg: DeepPartial<Message> ) {
+	@Post('channelId/:id')
+    @UsePipes(ValidationPipe)
+		async create(@Param('id') id: string, @Body() creator: number, @Body() content: string) {
+		// const message = await this.messageService.create(+id, creator, content)
+		// const user = await this.userRepository.findOneBy({ id: newMsg.creator })
+		// newMsg.creator = +newMsg.creator
+		const chan = await this.channelRepository.findOneBy({ id: +id })
+
+		const message : DeepPartial<Message>= {
+			creator: +creator,
+			content: content,
+			creationDate: new Date(),
+			channelId: chan
+		}
+		this.messageRepository.save(message)
+	}
+	// creator,
+	// content,
+	// creationDate: new Date(),
+	// channelId: +id,
+
     @Get()
     async findAll() {
         const msg = await this.messageService.findAll()
