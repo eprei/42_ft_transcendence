@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import styles from './MainProfile.module.css'
-import Statistics from '../components/profile/Statistics'
+import StatisticsLambda from '../components/profile/StatisticsLambda'
 import UserLambdaInformation from '../components/UserLambda/UserLambdaInformation'
 import { UserData } from '../types/UserData'
 
@@ -43,7 +43,7 @@ const UserLambda = () => {
             <div className={styles.body}>
                 <div className={styles.bodyLeftSide}>
                     <UserLambdaInformation userData={userData} />
-                    <Statistics userData={userData} />
+                    <StatisticsLambda userData={userData} />
                 </div>
             </div>
         </div>
