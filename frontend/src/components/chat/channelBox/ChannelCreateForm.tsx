@@ -1,7 +1,7 @@
 // import { Form, Input, Modal, Radio } from 'antd'
 import { useState } from 'react'
 import { Form, Input, Modal, Radio } from 'antd'
-import { CreateChannel } from '../../../types/createChannel'
+import { CreateChannel } from '../../../types/CreateChannel'
 import channelType from '../../../types/ChannelType'
 import { useAppSelector } from '../../../store/types'
 import { UserData } from '../../../types/UserData'

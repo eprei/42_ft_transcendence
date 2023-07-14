@@ -2,7 +2,7 @@ import { useState } from 'react'
 import IconAddChannel from '../../../assets/icon/add_friend.svg'
 import styles from './CreateNewCh.module.css'
 import ChannelCreateForm from './ChannelCreateForm'
-import { CreateChannel } from '../../../types/createChannel'
+import { CreateChannel } from '../../../types/CreateChannel'
 
 interface CreateNewChProps {
     handleCreation: (channel: CreateChannel) => void
