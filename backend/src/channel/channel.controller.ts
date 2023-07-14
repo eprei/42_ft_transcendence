@@ -16,6 +16,8 @@ import { ChannelService } from './channel.service'
 import { CreateChannelDto } from './dto/create-channel.dto'
 import { UpdateChannelDto } from './dto/update-channel.dto'
 import { ApiTags } from '@nestjs/swagger'
+// import { Message } from 'src/typeorm/message.entity'
+// import { CreateMessageDto } from 'src/message/dto/create-message.dto'
 
 @ApiTags('channel')
 @Controller('channel')
@@ -24,6 +26,8 @@ export class ChannelController {
         private readonly channelService: ChannelService,
         @InjectRepository(User)
         private readonly userRepository: Repository<User>
+		// @InjectRepository(Message)
+		// private readonly messageRepository: Repository<Message>
     ) {}
 
     @Post()

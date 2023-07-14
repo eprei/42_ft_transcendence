@@ -9,4 +9,7 @@ export class CreateMessageDto {
 
     @IsOptional()
     creationDate: Date
+
+	// @IsNotEmpty()
+	// channelId: number
 }

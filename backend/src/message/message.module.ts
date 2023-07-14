@@ -3,9 +3,10 @@ import { MessageService } from './message.service'
 import { MessageController } from './message.controller'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { Message } from 'src/typeorm/message.entity'
+import { Channel } from 'src/typeorm/channel.entity'
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Message])],
+    imports: [TypeOrmModule.forFeature([Message, Channel])],
     controllers: [MessageController],
     providers: [MessageService],
 })

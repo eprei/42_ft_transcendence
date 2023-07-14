@@ -10,5 +10,6 @@ import { User } from 'src/typeorm/user.entity'
     imports: [TypeOrmModule.forFeature([Channel, User])],
     controllers: [ChannelController],
     providers: [ChannelService],
+    exports: [ChannelService, TypeOrmModule],
 })
 export class ChannelModule {}

@@ -15,7 +15,7 @@ const SendForm = () => {
   const userData = useAppSelector((state) => state.user.userData) as UserData
 
 async function sendNewMsg(data: NewMsg) {
-	const response = await fetch(`http://localhost:8080/api/channel/${chatId}/msg`, {
+	const response = await fetch(`http://localhost:8080/api/message/channelId/${chatId}`, {
 		method: 'POST',
 					headers: {
 							'Content-Type': 'application/json',
