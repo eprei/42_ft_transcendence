@@ -4,6 +4,34 @@ import IconRemoveFriend from '../../assets/icon/remove_friend.svg'
 import IconGenericPicture from '../../assets/icon/generic_picture.svg'
 import ClickableIcon from './ClickableIcon'
 
+import {
+    Routes,
+    Route,
+    Outlet,
+    Link,
+    useMatch,
+    useResolvedPath,
+} from 'react-router-dom'
+import type { LinkProps } from 'react-router-dom'
+
+function CustomLink({ children, to, ...props }: LinkProps) {
+    let resolved = useResolvedPath(to)
+    let match = useMatch({ path: resolved.pathname, end: true })
+
+    return (
+        <div>
+            <Link
+                style={{ textDecoration: match ? 'underline' : 'none' }}
+                to={to}
+                {...props}
+            >
+                {children}
+            </Link>
+            {match && ' (active)'}
+        </div>
+    )
+}
+
 export interface FriendProps {
     id: number
     name: string
@@ -76,7 +104,9 @@ const Friend = ({ name, picture, status, isFriend }: FriendProps) => {
                 style={profilePictureStyle}
             ></div>
             <div className={styles.nameAndStatus}>
-                <h3>{name}</h3>
+                <CustomLink to={`/user/${name}`}>
+                    <h3>{name}</h3>
+                </CustomLink>
                 <p className={`${styles.status} ${statusColorClass}`}>
                     {status}
                 </p>
