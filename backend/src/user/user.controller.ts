@@ -22,6 +22,7 @@ import { Express } from 'express'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { diskStorage } from 'multer'
 import { ApiTags } from '@nestjs/swagger'
+import { UpdateNicknameDto } from './dto/update-nickname.dto'
 
 @ApiTags('user')
 @Controller('user')
@@ -120,5 +121,13 @@ export class UserController {
     @Get('nickname/:nickname')
     async getLambda(@Param('nickname') nickname: string) {
         return await this.userService.getLambdaInfo(nickname)
+    }
+
+    @Post('updatenickname')
+    async updateNickname(
+        @Request() req: any,
+        @Body() updateNicknameDto: UpdateNicknameDto
+    ) {
+        return await this.userService.updateNickname(req, updateNicknameDto)
     }
 }

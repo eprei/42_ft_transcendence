@@ -1,5 +1,5 @@
 import styles from './UserInformation.module.css'
-import ClickableIcon, { ClickableIconProps } from './ClickableIcon'
+import ClickableIcon from './ClickableIcon'
 import IconEditProfile from '../../assets/icon/edit_profile.svg'
 import switchButtonStyles from './SwitchButton.module.css'
 import { useState } from 'react'
@@ -21,13 +21,14 @@ const UserInformation = () => {
                     headers: {
                         'Content-Type': 'application/json',
                     },
+                    credentials: 'include',
                     body: JSON.stringify({ nickname: newNickname }),
                 }
             )
 
             if (response.ok) {
                 console.log('Nickname updated successfully')
-                // TODO update nickname in the front
+                window.location.reload()
             } else {
                 console.error('Failed to update nickname')
             }
