@@ -10,6 +10,7 @@ const UserInformation = () => {
     const userData = useAppSelector((state) => state.user.userData) as UserData
     const [TFAEnabled, setTFAEnabled] = useState(userData.user.TFAEnabled)
     const [newNickname, setNewNickname] = useState('')
+    const [isEditingNickname, setIsEditingNickname] = useState(false)
 
     const editProfile = async () => {
         try {
@@ -30,6 +31,8 @@ const UserInformation = () => {
             } else {
                 console.error('Failed to update nickname')
             }
+            setIsEditingNickname(false)
+            setNewNickname('')
         } catch (error) {
             console.error('Error updating nickname:', error)
         }
@@ -57,6 +60,22 @@ const UserInformation = () => {
         }
     }
 
+    const handleNicknameClick = () => {
+        setIsEditingNickname(true)
+    }
+
+    const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setNewNickname(e.target.value)
+    }
+
+    const handleNicknameKeyPress = (
+        e: React.KeyboardEvent<HTMLInputElement>
+    ) => {
+        if (e.key === 'Enter') {
+            editProfile()
+        }
+    }
+
     return (
         <div className={styles.container}>
             <div
@@ -69,17 +88,22 @@ const UserInformation = () => {
             <div>
                 <ul className={styles.verticalList}>
                     <li>
-                        {userData.user.nickname}
-                        <ClickableIcon
-                            icon={IconEditProfile}
-                            onClick={editProfile}
-                        >
+                        {isEditingNickname ? (
                             <input
                                 type="text"
                                 value={newNickname}
-                                onChange={(e) => setNewNickname(e.target.value)}
+                                onChange={handleNicknameChange}
+                                onKeyPress={handleNicknameKeyPress}
                             />
-                        </ClickableIcon>
+                        ) : (
+                            <>
+                                {userData.user.nickname}
+                                <ClickableIcon
+                                    icon={IconEditProfile}
+                                    onClick={handleNicknameClick}
+                                />
+                            </>
+                        )}
                     </li>
                     <li>Level {Math.floor(userData.user.nbVictory / 5) + 1}</li>
                     <li>
