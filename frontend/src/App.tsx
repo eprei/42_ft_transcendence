@@ -14,6 +14,7 @@ import { useAppDispatch } from './store/types'
 import TFAVerify from './pages/TFAAuthenticate'
 import TFATurnOn from './pages/TFATurnOn'
 import UserLambda from './pages/UserLambda'
+import ProtectedSignIn from './ProtectedSignIn'
 
 const router = createBrowserRouter([
     {
@@ -21,7 +22,15 @@ const router = createBrowserRouter([
         element: <RootLayout />,
         errorElement: <ErrorPage />,
         children: [
-            { index: true, element: <SignIn /> },
+            // { index: true, element: <SignIn /> },
+            {
+                index: true,
+                element: (
+                    <ProtectedSignIn>
+                        <SignIn />
+                    </ProtectedSignIn>
+                ),
+            },
             {
                 path: 'profile',
                 loader: ProfileLoader,
@@ -66,9 +75,9 @@ const router = createBrowserRouter([
             {
                 path: 'TFATurnOn',
                 element: (
-                    <ProtectedRoute>
-                        <TFATurnOn />
-                    </ProtectedRoute>
+                    // <ProtectedRoute>
+                    <TFATurnOn />
+                    // </ProtectedRoute>
                 ),
             },
             {
@@ -84,9 +93,9 @@ const router = createBrowserRouter([
     {
         path: 'TFAVerify',
         element: (
-            <ProtectedRoute>
-                <TFAVerify />
-            </ProtectedRoute>
+            // <ProtectedRoute>
+            <TFAVerify />
+            // </ProtectedRoute>
         ),
     },
 ])
@@ -98,14 +107,19 @@ function App() {
         async function getAuthStatus() {
             try {
                 const response = await fetch(
-                    'http://localhost:8080/api/auth/status',
+                    'http://localhost:8080/api/auth/loginStatus',
                     { credentials: 'include' }
                 )
                 const data = await response.json()
                 console.log('data received: ', data)
-                if (data.status === 'success') {
+                if (data.status === 'isLogged') {
+                    console.log('app.tsx: is logged')
                     dispatch(authActions.login())
+                } else if (data.status === 'need2fa') {
+                    console.log('app.tsx: is need2fa')
+                    dispatch(authActions.setNeed2fa())
                 } else {
+                    console.log('app.tsx: not logged')
                     dispatch(authActions.logout())
                 }
             } catch (error) {

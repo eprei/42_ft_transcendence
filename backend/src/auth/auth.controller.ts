@@ -14,11 +14,15 @@ import { AuthService } from './auth.service'
 import { AuthenticatedGuard } from './guards/authenticated.guard'
 import { TotpGuard } from './guards/totp.guard'
 import { Activate2faGuard } from './guards/activate2fa.guard'
+import { UserService } from 'src/user/user.service'
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-    constructor(private readonly authService: AuthService) {}
+    constructor(
+        private readonly authService: AuthService,
+        private readonly userService: UserService
+    ) {}
 
     @Get('42')
     @UseGuards(OauthGuard)
@@ -34,13 +38,9 @@ export class AuthController {
         return req.user
     }
 
-    @Get('status')
+    @Get('loginStatus')
     getStatus(@Req() req) {
-        if (req.user) {
-            return { status: 'success' }
-        } else {
-            return { status: 'error', message: 'Not authenticated' }
-        }
+        return this.userService.logStatus(req)
     }
 
     @Post('2fa/turn-on')

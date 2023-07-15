@@ -4,6 +4,7 @@ import {
     Request,
     Param,
     UnauthorizedException,
+    Req,
 } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { User } from 'src/typeorm/user.entity'
@@ -153,6 +154,23 @@ export class UserService {
             return { message: 'Nickname updated successfully' }
         } catch (error) {
             return { error: 'Failed to update nickname' }
+        }
+    }
+
+    logStatus(@Req() req) {
+        console.log(
+            'user.service: req.session.needTFA  = ',
+            req.session.needTFA
+        )
+        if (req.user && req.session.needTFA === false) {
+            console.log('user.service: is logged')
+            return { status: 'isLogged' }
+        } else if (req.user && req.session.needTFA === true) {
+            console.log('user.service: need2fa')
+            return { status: 'need2fa' }
+        } else {
+            console.log('user.service: not autenticated')
+            return { status: 'error', message: 'Not authenticated' }
         }
     }
 }

@@ -1,15 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const authInitialState = { isLoggedIn: true }
+interface AuthState {
+    logStatus: 'isLogged' | 'isNotLogged' | 'need2fa'
+}
+
+const authInitialState: AuthState = { logStatus: 'isNotLogged' }
+
 const authSlice = createSlice({
     name: 'auth',
     initialState: authInitialState,
     reducers: {
         login(state) {
-            state.isLoggedIn = true
+            state.logStatus = 'isLogged'
         },
         logout(state) {
-            state.isLoggedIn = false
+            state.logStatus = 'isNotLogged'
+        },
+        setNeed2fa(state) {
+            state.logStatus = 'need2fa'
         },
     },
 })

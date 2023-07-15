@@ -5,11 +5,11 @@ interface ProtectedRouteProps {
     children: JSX.Element
 }
 
-const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
+const ProtectedSignIn = ({ children }: ProtectedRouteProps) => {
     const logStatus = useAppSelector((state) => state.auth.logStatus)
 
-    if (logStatus === 'isNotLogged') {
-        return <Navigate to="/" replace />
+    if (logStatus === 'isLogged') {
+        return <Navigate to="/profile" replace />
     }
     if (logStatus === 'need2fa') {
         return <Navigate to="/TFAVerify" replace />
@@ -18,4 +18,4 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     return children
 }
 
-export default ProtectedRoute
+export default ProtectedSignIn

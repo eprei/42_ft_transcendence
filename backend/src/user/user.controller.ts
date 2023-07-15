@@ -13,6 +13,7 @@ import {
     BadRequestException,
     Res,
     Request,
+    Req,
     NotFoundException,
 } from '@nestjs/common'
 import { UserService } from './user.service'
@@ -129,5 +130,13 @@ export class UserController {
         @Body() updateNicknameDto: UpdateNicknameDto
     ) {
         return await this.userService.updateNickname(req, updateNicknameDto)
+    }
+
+    @Post('logout')
+    async logout(@Request() req: any, @Res() res: any) {
+        console.log('user.controller: logout')
+        await req.session.destroy()
+        res.clearCookie('sessionID')
+        res.status(200).json({ message: 'Logout successful' })
     }
 }
