@@ -4,6 +4,9 @@ import { useAtom } from 'jotai'
 import { chatIdAtom } from '../channelBox/ChannelLi'
 import { useAppSelector } from '../../../store/types'
 import { UserData } from '../../../types/UserData'
+import { io } from 'socket.io-client'
+
+const socket = io('http://localhost:8080')
 
 export interface NewMsg {
     creator: number
