@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import styles from './LogoutButton.module.css'
+import styles from './LogOutButton.module.css'
 
 const LogoutButton = () => {
     const [isLoading, setIsLoading] = useState(false)
