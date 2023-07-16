@@ -3,49 +3,39 @@ import { useAtom } from 'jotai'
 import Msg from './Msg'
 import styles from './ChatFeed.module.css'
 import { chatIdAtom } from '../channelBox/ChannelLi'
+import { io } from 'socket.io-client'
+
+const socket = io('http://localhost:8080')
 
 function ChatFeed() {
 
 	const [chatId] = useAtom(chatIdAtom)
 
-    async function getChMsgs() {
-        try {
-            const response = await fetch(
-                `http://localhost:8080/api/message/${chatId}/msg`,
-                {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                }
-            )
+	socket.on('incomingMessage', (newMessage) => {
+		const msgCpy = [...msgs]
+		msgCpy.push(newMessage)
+		setMsgs(msgCpy);
+		// setMsgs((msgs) => [...msgs, newMessage])
 
-            if (!response.ok) {
-                throw new Error('Failed to fetch current channel msg')
-            }
-
-            const messages = await response.json()
-            return messages
-        } catch (error) {
-            console.error(error)
-        }
-    }
-
+	})
+    
     const [msgs, setMsgs] = useState<any[]>([])
 
     useEffect(() => {
         if (chatId)
-			getChMsgHandler()
+			// getChMsgHandler()
+			getAllMsgSocket()
         else
 			setMsgs([])
     }, [chatId])
 
-    const getChMsgHandler = () => {
-        getChMsgs().then((msgs) => {
-            setMsgs(msgs)
-        })
-    }
-
+	const getAllMsgSocket = () => {
+		socket.emit('findAllMsgByChannel', chatId, (response: any) => {
+			console.log(response)
+			setMsgs(response)
+		})
+	}
+	
     return (
         <div className={styles.container}>
             {msgs.map((msg) => (

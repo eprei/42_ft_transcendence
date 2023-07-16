@@ -36,7 +36,7 @@ export class MessageController {
 		async create(@Param('id') id: string, @Body() createMessageDto: CreateMessageDto) {
 			const chan = await this.channelRepository.findOneBy({ id: +id })
 			createMessageDto.creationDate = new Date(),
-			createMessageDto.channelId = chan
+			createMessageDto.channel = chan
 			return await this.messageService.create(createMessageDto)
 	}
 

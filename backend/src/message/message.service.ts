@@ -31,5 +31,4 @@ export class MessageService {
 
   		return messages;	
 	}
-
 }

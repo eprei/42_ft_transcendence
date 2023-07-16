@@ -12,5 +12,8 @@ export class CreateMessageDto {
     creationDate: Date
 
 	@IsOptional()
-	channelId: Channel
+	chanId: number
+
+	@IsOptional()
+	channel: Channel
 }
