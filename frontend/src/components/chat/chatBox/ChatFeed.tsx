@@ -3,11 +3,16 @@ import { useAtom } from 'jotai'
 import Msg from './Msg'
 import styles from './ChatFeed.module.css'
 import { chatIdAtom } from '../channelBox/ChannelLi'
-import { io } from 'socket.io-client'
+// import { io } from 'socket.io-client'
 
-const socket = io('http://localhost:8080')
+// const socket = io('http://localhost:8080')
 
-function ChatFeed() {
+interface ChatFeedProps {
+    socket: any
+}
+
+const ChatFeed = ({ socket }: ChatFeedProps ) => {
+
 
 	const [chatId] = useAtom(chatIdAtom)
 

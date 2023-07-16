@@ -14,9 +14,13 @@ export interface NewMsg {
 	channelId: number
 }
 
-const SendForm = () => {
+interface ChatFeedProps {
+    socket: any
+}
 
-  const userData = useAppSelector((state) => state.user.userData) as UserData
+const SendForm = ({ socket }: ChatFeedProps ) => {
+	
+	const userData = useAppSelector((state) => state.user.userData) as UserData
 
 // async function sendNewMsg(data: NewMsg) {
 // 	const response = await fetch(`http://localhost:8080/api/message/channelId/${chatId}`, {
