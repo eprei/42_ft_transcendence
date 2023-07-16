@@ -4,32 +4,39 @@ import {
     MessageBody,
 } from '@nestjs/websockets'
 import { ChatService } from './chat.service'
+import { MessageService } from 'src/message/message.service'
 
 @WebSocketGateway()
 export class ChatGateway {
-    constructor(private readonly chatService: ChatService) {}
+    constructor(
+		private readonly chatService: ChatService,
+		private readonly msgService: MessageService) {}
 
-    // @SubscribeMessage('createChat')
-    // create(@MessageBody() createChatDto: CreateChatDto) {
-    //   return this.chatService.create(createChatDto);
-    // }
+// 	@SubscribeMessage('sendMsg')
+// 		return this.msgService.create(createMessageDto)
+// 	}
 
-    @SubscribeMessage('findAllChat')
-    findAll() {
-        return this.chatService.findAll()
-    }
+//     // @SubscribeMessage('createChat')
+//     // create(@MessageBody() createChatDto: CreateChatDto) {
+//     //   return this.chatService.create(createChatDto);
+//     // }
 
-    @SubscribeMessage('findOneChat')
-    findOne(@MessageBody() id: number) {
-        return this.chatService.findOne(id)
-    }
+//     @SubscribeMessage('findAllChat')
+//     findAll() {
+//         return this.chatService.findAll()
+//     }
 
-    @SubscribeMessage('updateChat')
-    // update(@MessageBody() updateChatDto: UpdateChatDto) {
-    //   return this.chatService.update(updateChatDto.id, updateChatDto);
-    // }
-    @SubscribeMessage('removeChat')
-    remove(@MessageBody() id: number) {
-        return this.chatService.remove(id)
-    }
+//     @SubscribeMessage('findOneChat')
+//     findOne(@MessageBody() id: number) {
+//         return this.chatService.findOne(id)
+//     }
+
+//     @SubscribeMessage('updateChat')
+//     // update(@MessageBody() updateChatDto: UpdateChatDto) {
+//     //   return this.chatService.update(updateChatDto.id, updateChatDto);
+//     // }
+//     @SubscribeMessage('removeChat')
+//     remove(@MessageBody() id: number) {
+//         return this.chatService.remove(id)
+//     }
 }

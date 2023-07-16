@@ -12,12 +12,7 @@ export class MessageService {
     ) {}
 
     async create(createMessageDto: CreateMessageDto): Promise<Message> {
-		// const message = this.messageRepository.create({
-		// 	creator: creator,
-		// 	content: content,
-		// 	channelId: +id,
-		// 	creationDate: new Date(),
-		// })
+		console.log(createMessageDto)
         const newMessage = this.messageRepository.create(createMessageDto)
         return this.messageRepository.save(newMessage)
     }

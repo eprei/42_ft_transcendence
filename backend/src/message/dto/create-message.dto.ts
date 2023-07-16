@@ -1,4 +1,5 @@
 import { IsNotEmpty, IsOptional } from 'class-validator'
+import { Channel } from 'src/typeorm/channel.entity'
 
 export class CreateMessageDto {
     @IsNotEmpty()
@@ -10,6 +11,6 @@ export class CreateMessageDto {
     @IsOptional()
     creationDate: Date
 
-	// @IsNotEmpty()
-	// channelId: number
+	@IsOptional()
+	channelId: Channel
 }
