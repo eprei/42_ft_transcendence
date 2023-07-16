@@ -21,26 +21,20 @@ async function sendNewMsg(data: NewMsg) {
 							'Content-Type': 'application/json',
 						},
 				 		body: JSON.stringify(data),
-				// body: body,
-				// credentials: 'include',
 	})
 
 	if (!response.ok) {
 		throw new Error('Failed to make POST request')
 	}
-	// getAllMsg()
 }
 
 	const [chatId] = useAtom(chatIdAtom)
 	const [inputText, setInputText] = useState('')
 
 	const handleCreation = (text: string) => {
-	  // Tu lógica de manejo de la creación aquí
 	  console.log('Received values of form: ', text)
 	  const newMsg = {creator : userData.user.id, content : text}
-	//   const newMsg = {creator : 1, content : text}
 	  sendNewMsg(newMsg)
-	  // Restablecer el campo de entrada después de enviar el mensaje
 	  setInputText('')
 	}
   

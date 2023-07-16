@@ -38,27 +38,21 @@ export class MessageController {
         return newMsg
     }
 
-	// async create(@Param('id') id: string, @Body() newMsg: DeepPartial<Message> ) {
 	@Post('channelId/:id')
     @UsePipes(ValidationPipe)
-		async create(@Param('id') id: string, @Body() creator: number, @Body() content: string) {
+		async create(@Param('id') id: string, @Body() newMsg: DeepPartial<Message>) {
 		// const message = await this.messageService.create(+id, creator, content)
 		// const user = await this.userRepository.findOneBy({ id: newMsg.creator })
-		// newMsg.creator = +newMsg.creator
 		const chan = await this.channelRepository.findOneBy({ id: +id })
 
 		const message : DeepPartial<Message>= {
-			creator: +creator,
-			content: content,
+			creator: newMsg.creator,
+			content: newMsg.content,
 			creationDate: new Date(),
 			channelId: chan
 		}
 		this.messageRepository.save(message)
 	}
-	// creator,
-	// content,
-	// creationDate: new Date(),
-	// channelId: +id,
 
     @Get()
     async findAll() {
