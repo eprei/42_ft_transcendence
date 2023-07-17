@@ -16,7 +16,7 @@ const Statistics = () => {
                 <div className={styles.horizontalList}>
                     <StatisticElement
                         icon={IconVictoire}
-                        text="Victorires"
+                        text="Victories"
                         number={userData.user.nbVictory}
                     />
                     <StatisticElement

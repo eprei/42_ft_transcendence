@@ -1,11 +1,16 @@
 import styles from './TwoFactorVerificationBox.module.css'
 import { useState } from 'react'
+import LogoutButton from '../navigation/LogOutButton'
 
 interface TwoFactorVerificationBoxProps {
     url: string
+    logOutButton: boolean
 }
 
-const TwoFactorVerificationBox = ({ url }: TwoFactorVerificationBoxProps) => {
+const TwoFactorVerificationBox = ({
+    url,
+    logOutButton,
+}: TwoFactorVerificationBoxProps) => {
     const [verificationCode, setVerificationCode] = useState([
         '',
         '',
@@ -76,8 +81,6 @@ const TwoFactorVerificationBox = ({ url }: TwoFactorVerificationBoxProps) => {
 
     return (
         <form className={styles.form} onSubmit={handleSubmit}>
-            <span className={styles.close}>X</span>
-
             <div className={styles.info}>
                 <span className={styles.title}>Two-Factor Verification</span>
                 <p className={styles.description}>
@@ -144,6 +147,7 @@ const TwoFactorVerificationBox = ({ url }: TwoFactorVerificationBoxProps) => {
                 <a href="#" className={styles.clear} onClick={handleClear}>
                     Clear
                 </a>
+                {logOutButton === true && <LogoutButton></LogoutButton>}
             </div>
         </form>
     )

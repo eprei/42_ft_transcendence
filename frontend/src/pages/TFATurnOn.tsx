@@ -8,7 +8,7 @@ const TFATurnOn = () => {
     return (
         <div className={styles.container}>
             <CodeQR />
-            <TwoFactorVerificationBox url={url} />
+            <TwoFactorVerificationBox url={url} logOutButton={false} />
         </div>
     )
 }

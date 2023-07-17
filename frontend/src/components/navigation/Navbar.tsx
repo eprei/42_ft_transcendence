@@ -2,15 +2,16 @@ import styles from './Navbar.module.css'
 import { NavLink } from 'react-router-dom'
 import Logo from '../../assets/icon/42.svg'
 import { useAppSelector } from '../../store/types'
+import LogoutButton from './LogOutButton'
 
 const Navbar = () => {
-    const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn)
+    const isLoggedIn = useAppSelector((state) => state.auth.logStatus)
     return (
         <header>
             <nav className={styles.nav}>
                 <div className={styles.container}>
                     <div className={styles.leftcontainer}>
-                        {isLoggedIn && (
+                        {isLoggedIn === 'isLogged' && (
                             <NavLink
                                 to="/profile"
                                 className={({ isActive }) =>
@@ -20,7 +21,7 @@ const Navbar = () => {
                                 Profile
                             </NavLink>
                         )}
-                        {isLoggedIn && (
+                        {isLoggedIn === 'isLogged' && (
                             <NavLink
                                 to="/history"
                                 className={({ isActive }) =>
@@ -30,7 +31,7 @@ const Navbar = () => {
                                 Match history
                             </NavLink>
                         )}
-                        {isLoggedIn && (
+                        {isLoggedIn === 'isLogged' && (
                             <NavLink
                                 to="/chat"
                                 className={({ isActive }) =>
@@ -40,7 +41,7 @@ const Navbar = () => {
                                 Chat
                             </NavLink>
                         )}
-                        {isLoggedIn && (
+                        {isLoggedIn === 'isLogged' && (
                             <NavLink
                                 to="/game"
                                 className={({ isActive }) =>
@@ -49,6 +50,9 @@ const Navbar = () => {
                             >
                                 Game
                             </NavLink>
+                        )}
+                        {isLoggedIn === 'isLogged' && (
+                            <LogoutButton></LogoutButton>
                         )}
                     </div>
                     <div className={styles.rightContainer}>

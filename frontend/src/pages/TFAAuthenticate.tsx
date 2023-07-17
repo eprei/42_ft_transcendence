@@ -6,7 +6,7 @@ const TFAAuthenticate = () => {
 
     return (
         <div className={styles.container}>
-            <TwoFactorVerificationBox url={url} />
+            <TwoFactorVerificationBox url={url} logOutButton={true} />
         </div>
     )
 }
