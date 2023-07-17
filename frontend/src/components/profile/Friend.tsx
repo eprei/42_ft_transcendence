@@ -4,14 +4,7 @@ import IconRemoveFriend from '../../assets/icon/remove_friend.svg'
 import IconGenericPicture from '../../assets/icon/generic_picture.svg'
 import ClickableIcon from './ClickableIcon'
 
-import {
-    Routes,
-    Route,
-    Outlet,
-    Link,
-    useMatch,
-    useResolvedPath,
-} from 'react-router-dom'
+import { Link, useMatch, useResolvedPath } from 'react-router-dom'
 import type { LinkProps } from 'react-router-dom'
 
 function CustomLink({ children, to, ...props }: LinkProps) {
