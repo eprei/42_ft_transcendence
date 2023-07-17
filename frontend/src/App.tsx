@@ -73,9 +73,7 @@ const router = createBrowserRouter([
             },
             {
                 path: 'TFATurnOn',
-                element: (
-                    <TFATurnOn />
-                ),
+                element: <TFATurnOn />,
             },
             {
                 path: 'user/:nickname',
@@ -89,9 +87,7 @@ const router = createBrowserRouter([
     },
     {
         path: 'TFAVerify',
-        element: (
-            <TFAVerify />
-        ),
+        element: <TFAVerify />,
     },
 ])
 
