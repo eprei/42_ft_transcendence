@@ -74,9 +74,7 @@ const router = createBrowserRouter([
             {
                 path: 'TFATurnOn',
                 element: (
-                    // <ProtectedRoute>
                     <TFATurnOn />
-                    // </ProtectedRoute>
                 ),
             },
             {
