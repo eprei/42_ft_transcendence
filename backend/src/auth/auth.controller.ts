@@ -62,7 +62,7 @@ export class AuthController {
     }
 
     @Get('2fa/generate')
-    @UseGuards(AuthenticatedGuard)
+    @UseGuards(Activate2faGuard)
     async generateQR(@Request() req: any) {
         return await this.authService.generateQR(req)
     }
