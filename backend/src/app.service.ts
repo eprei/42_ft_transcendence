@@ -18,6 +18,7 @@ export class AppService {
     ) {}
 
     async seed() {
+
         //  create Users
         const user1 = this.userRepo.create({
             nickname: 'user1',
@@ -192,5 +193,8 @@ export class AppService {
 
             await this.matchRepo.save(match)
         }
+
+
+        // const userData = useAppSelector((state) => state.user.userData) as UserData
     }
 }
