@@ -90,9 +90,7 @@ const router = createBrowserRouter([
     {
         path: 'TFAVerify',
         element: (
-            // <ProtectedRoute>
             <TFAVerify />
-            // </ProtectedRoute>
         ),
     },
 ])
