@@ -22,7 +22,6 @@ const router = createBrowserRouter([
         element: <RootLayout />,
         errorElement: <ErrorPage />,
         children: [
-            // { index: true, element: <SignIn /> },
             {
                 index: true,
                 element: (
