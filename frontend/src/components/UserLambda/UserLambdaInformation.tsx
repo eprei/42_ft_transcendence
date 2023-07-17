@@ -1,7 +1,11 @@
 import styles from './UserLambdaInformation.module.css'
-import { UserInformationProps } from '../../pages/MainProfile'
+import { UserData } from '../../types/UserData'
 
-const UserLambdaInformation = ({ userData }: UserInformationProps) => {
+export interface UserLambdaInformationProps {
+    userData: UserData
+}
+
+const UserLambdaInformation = ({ userData }: UserLambdaInformationProps) => {
     const profilePictureStyle = {
         backgroundImage: `url(${userData.user.avatarUrl})`,
         backgroundSize: 'cover',
