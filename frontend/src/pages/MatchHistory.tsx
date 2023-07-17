@@ -6,9 +6,9 @@ import { UserData } from "../types/UserData"
 import styles from "./MatchHistory.module.css"
 
 const MatchHistory = () => {
-    const fetchMatchHistory = useLoaderData() as MatchData
-    const dispatch = useAppDispatch()
-    dispatch(matchActions.update({ matchHistory: fetchMatchHistory }))
+    // const fetchMatchHistory = useLoaderData() as MatchData
+    // const dispatch = useAppDispatch()
+    // dispatch(matchActions.update({ matchHistory: fetchMatchHistory }))
 
     // const matchHistory = this.
 
