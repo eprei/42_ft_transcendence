@@ -17,7 +17,7 @@ export class AppService {
         @InjectRepository(Match) private matchRepo: Repository<Match>
     ) {}
 
-    async seed() {
+    async seed(id: number) {
 
         //  create Users
         const user1 = this.userRepo.create({
@@ -194,7 +194,16 @@ export class AppService {
             await this.matchRepo.save(match)
         }
 
+        const loggedUser = await this.userRepo.findOne({ where: { id}});
 
-        // const userData = useAppSelector((state) => state.user.userData) as UserData
+        const loggedMatch = this.matchRepo.create({
+            winner: loggedUser,
+            looser: user1,
+            scoreWinner: 7,
+            scoreLooser: 5,
+            dateGame: new Date(),
+        })
+
+        await this.matchRepo.save(loggedMatch);
     }
 }
