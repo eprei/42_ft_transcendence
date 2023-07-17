@@ -32,7 +32,7 @@
 }
 /* text */
 .text {
-    position: absolute;
+    position: right;
     right: 0%;
     width: 0%;
     opacity: 0;
