@@ -1,17 +1,22 @@
+import { useEffect, useState } from "react"
 import { useAppSelector } from "../store/types"
 import { UserData } from "../types/UserData"
 import styles from "./MatchHistory.module.css"
 
-const MatchHistory = () => {
-    const matchHistory = await fetch('http://localhost:3000/api/match-history')
-
-    // const matchHistoryList = matchHistory.map(match => 
-    //     <li key={match.id}>
-    //         {match.winner} beat {match.loser}
-    //     </li>
-    // );
-    
+const MatchHistory = async () => {
     const userData = useAppSelector((state) => state.user.userData) as UserData
+
+    const res = await fetch(`http://localhost:8080/api/match/user/${userData.user.id}`);
+    const matchHistory = await res.json();
+
+    console.log(matchHistory);
+
+    const matchHistoryList = matchHistory.map((match : any) => (
+        <li key={match.id}>
+            {match.winner.nickname} beat {match.loser.nickname}
+        </li>
+    ));
+    
 
     return (
         <div>
@@ -19,10 +24,7 @@ const MatchHistory = () => {
             <p>logged user: {userData.user.nickname}</p>
             <img src={userData.user.avatarUrl}></img>
             <ul>
-                <li>Match 1</li>
-                <li>Match 2</li>
-                <li>Match 3</li>
-                <li>Match 4</li>
+                {matchHistoryList}    
             </ul>
             <div className={styles.card}>
                 {/* <img src="img_avatar.png" alt="Avatar" style="width:100%"> */}
