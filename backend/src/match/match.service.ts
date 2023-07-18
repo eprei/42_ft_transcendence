@@ -4,12 +4,15 @@ import { UpdateMatchDto } from './dto/update-match.dto'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { Match } from '../typeorm/match.entity'
+import { User } from '../typeorm/user.entity'
 
 @Injectable()
 export class MatchService {
     constructor(
         @InjectRepository(Match)
-        private readonly matchRepository: Repository<Match>
+        private readonly matchRepository: Repository<Match>,
+        @InjectRepository(User)
+        private readonly userRepository: Repository<User>
     ) {}
 
     create(createMatchDto: CreateMatchDto) {
@@ -23,6 +26,14 @@ export class MatchService {
 
     findOne(id: number) {
         return this.matchRepository.findOne({ where: { id } })
+    }
+
+    async findByUserId(userId: number) {
+        const user = await this.userRepository.findOne({ where: { id: userId } })
+        return this.matchRepository.find({ where: [
+            { winner: user },
+            { looser: user }
+        ]})
     }
 
     async update(id: number, updateMatchDto: UpdateMatchDto) {

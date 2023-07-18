@@ -35,6 +35,12 @@ export class MatchController {
         return match
     }
 
+    @Get('user/:id')
+    async findByUserId(@Param('id') id: string) {
+        const matches = await this.matchService.findByUserId(+id)
+        return matches
+    }
+
     @Patch(':id')
     async update(
         @Param('id') id: string,
