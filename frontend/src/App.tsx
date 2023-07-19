@@ -77,11 +77,7 @@ const router = createBrowserRouter([
             },
             {
                 path: 'user/:nickname',
-                element: (
-                    <ProtectedRoute>
-                        <UserLambda />
-                    </ProtectedRoute>
-                ),
+                element: <UserLambda />,
             },
         ],
     },

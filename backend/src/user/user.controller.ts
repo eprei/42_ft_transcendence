@@ -13,7 +13,6 @@ import {
     BadRequestException,
     Res,
     Request,
-    Req,
     NotFoundException,
 } from '@nestjs/common'
 import { UserService } from './user.service'
@@ -24,6 +23,8 @@ import { FileInterceptor } from '@nestjs/platform-express'
 import { diskStorage } from 'multer'
 import { ApiTags } from '@nestjs/swagger'
 import { UpdateNicknameDto } from './dto/update-nickname.dto'
+import { UseGuards } from '@nestjs/common'
+import { AuthenticatedGuard } from 'src/auth/guards/authenticated.guard'
 
 @ApiTags('user')
 @Controller('user')
@@ -120,6 +121,7 @@ export class UserController {
     }
 
     @Get('nickname/:nickname')
+    @UseGuards(AuthenticatedGuard)
     async getLambda(@Param('nickname') nickname: string) {
         return await this.userService.getLambdaInfo(nickname)
     }

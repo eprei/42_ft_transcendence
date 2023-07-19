@@ -1,5 +1,3 @@
-import styles from './CodeQR.module.css'
-
 import { useEffect, useState } from 'react'
 
 const CodeQR = () => {
