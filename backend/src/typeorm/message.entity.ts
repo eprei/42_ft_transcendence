@@ -24,7 +24,7 @@ export class Message {
     @Column({ type: 'text' })
     content: string
 
-    @ManyToOne(() => Channel, (channel) => channel.messages)
+    @ManyToOne(() => Channel, (channel) => channel.messages, { cascade: true })
     @JoinColumn({ name: 'channelId' })
     channelId: Channel
 

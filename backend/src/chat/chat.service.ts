@@ -88,7 +88,7 @@ export class ChatService {
 		})
 		//if not banned
 		channel.users.push(user)
-		console.log('JOIN channel executed')
+		// console.log('JOIN channel executed')
 		// console.log('channel', channel)
 		return await this.channelRepository.save(channel)
 	}
@@ -103,9 +103,13 @@ export class ChatService {
 		const user = await this.userRepository.findOne({
 			where: { id: userId },
 		})
-		console.log('ch users before', channel.users)
+		// console.log('ch users before', channel.users)
 		channel.users = channel.users.filter((u) => u.id !== user.id)
-		console.log('ch users after', channel.users)
-		return await this.channelRepository.save(channel)
+		// console.log('ch users after', channel.users)
+		if (channel.users.length === 0) {
+			return await this.channelRepository.remove(channel)
+		}
+		else 
+			return await this.channelRepository.save(channel)
 	}
 }
