@@ -4,6 +4,11 @@ import ChannelsDisplay from './ChannelsDisplay'
 import styles from './ChannelList.module.css'
 import { useAppSelector } from '../../../store/types'
 import { User, UserData } from '../../../types/UserData'
+import { useAtom } from 'jotai'
+import { chatIdAtom } from './ChannelLi'
+
+
+
 
 interface ChannelListProps {
     allChan: Channel[] | []
@@ -41,10 +46,16 @@ const ChannelList = (props: ChannelListProps) => {
         )
     }
 
+	const [chatId, setChatId] = useAtom(chatIdAtom);
+	const resetChatId = () => {
+		if (chatId != 0)
+		setChatId(0)
+	}
+
     return (
         <div className={styles.listsContainer}>
             <div className={styles.list}>
-                <h2> Joined Channels </h2>
+                <h2 onClick={resetChatId}> Joined Channels </h2>
                 <ChannelsDisplay
                     title={'Join a Channel to start chating!'}
                     channels={joinedButNotDms}
