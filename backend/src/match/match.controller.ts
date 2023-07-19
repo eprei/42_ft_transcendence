@@ -6,11 +6,13 @@ import {
     Patch,
     Param,
     Delete,
+    Request,
 } from '@nestjs/common'
 import { MatchService } from './match.service'
 import { CreateMatchDto } from './dto/create-match.dto'
 import { UpdateMatchDto } from './dto/update-match.dto'
 import { ApiTags } from '@nestjs/swagger'
+import { Match } from 'src/typeorm/match.entity'
 
 @ApiTags('match')
 @Controller('match')
@@ -29,16 +31,16 @@ export class MatchController {
         return matches
     }
 
+    @Get('user')
+    async findByUserId(@Request() req : any) : Promise<Match[]> {
+        const matches = await this.matchService.findByUserId(req.user.id)
+        return matches
+    }
+    
     @Get(':id')
     async findOne(@Param('id') id: string) {
         const match = await this.matchService.findOne(+id)
         return match
-    }
-
-    @Get('user/:id')
-    async findByUserId(@Param('id') id: string) {
-        const matches = await this.matchService.findByUserId(+id)
-        return matches
     }
 
     @Patch(':id')

@@ -30,10 +30,18 @@ export class MatchService {
 
     async findByUserId(userId: number) {
         const user = await this.userRepository.findOne({ where: { id: userId } })
-        return this.matchRepository.find({ where: [
-            { winner: user },
-            { looser: user }
-        ]})
+        const matches = await this.matchRepository.find({
+            where: [{ winner: user }, { looser: user }],
+            relations: ['winner', 'looser']
+        });
+
+        const matchObjects = matches.map((match) => ({
+            ...match,
+            winner: { ...match.winner },
+            loser: { ...match.looser },
+        }))
+
+        return matchObjects;
     }
 
     async update(id: number, updateMatchDto: UpdateMatchDto) {
