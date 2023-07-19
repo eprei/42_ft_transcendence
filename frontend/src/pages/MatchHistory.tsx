@@ -5,7 +5,6 @@ import styles from "./MatchHistory.module.css"
 
 const MatchHistory = () => {
     const [matchHistory, setMatchHistory] = useState([]);
-    // const [loading, setLoading] = useState(true);
     const userData = useAppSelector((state) => state.user.userData) as UserData
 
     useEffect(() => {
@@ -17,11 +16,9 @@ const MatchHistory = () => {
                 );
                 const resjson = await res.json();
                 setMatchHistory(resjson);
-                // setLoading(false);
                 console.log(resjson);
 
             } catch (error) {
-                // setLoading(false);
                 console.log(error);
             };
         };
@@ -34,10 +31,6 @@ const MatchHistory = () => {
         </li>
     ));
 
-    // if (loading) {
-    //     return <div>Loading...</div>;
-    // }
-    
     return (
         <div>
             <h1>Match History</h1>
