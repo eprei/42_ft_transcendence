@@ -60,10 +60,10 @@ npm_install () {
 		exit
 	fi
 
-	if [ "${2}" == "normal" ]
+	if [ "${2}" = "normal" ]
 	then
 		flag_save="--save"
-	elif [ "${2}" == "dev" ]
+	elif [ "${2}" = "dev" ]
 	then
 		flag_save="--save-dev"
 	else
@@ -92,10 +92,10 @@ npm_install () {
 
 # $1 : option
 main () {
-	if [ "${1}" == "nestcli" ]
+	if [ "${1}" = "nestcli" ]
 	then
 		nestcli "${@}"
-	elif [ "${1}" == "npm" ]
+	elif [ "${1}" = "npm" ]
 	then
 		npm_install "${@}"
 	else
