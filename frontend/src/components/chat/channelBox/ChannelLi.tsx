@@ -16,18 +16,23 @@ interface ChannelLiProps {
 }
 
 export const chatIdAtom = atom(0)
+export const joinedChannelAtom = atom(0)
 
 const ChannelLi = (props: ChannelLiProps) => {
 	
 	const socket = io('http://localhost:8080')
-	const [chatId, setChatId] = useAtom(chatIdAtom);
+	const [chatId, setChatId] = useAtom(chatIdAtom)
+	const [joinedChannel, setJoinedChannel] = useAtom(joinedChannelAtom)
     const userData = useAppSelector((state) => state.user.userData) as UserData
 	const myId = userData.user.id
 	
 	const joinChannel = () => {
 		socket.emit('joinChannel', props.channel.id, myId, (response: any) => {
-			console.log(response)
-			setChatId(props.channel.id)
+			setJoinedChannel(joinedChannel + 1)
+			// props.channel.type = 'joined'
+			if (joinedChannel != 0) 
+				console.log(response)
+		setChatId(props.channel.id)
 		})
 	}
 
@@ -39,24 +44,15 @@ const ChannelLi = (props: ChannelLiProps) => {
 		}
 	}
 
-	async function LeaveChannel(event: React.MouseEvent<HTMLImageElement>) {
+	// async function const LeaveChannel = (event: React.MouseEvent<HTMLImageElement>) => {
+	const LeaveChannel = (event: React.MouseEvent<HTMLImageElement>) => {
         event.stopPropagation();
-      
-        try {
-          const response = await fetch(`http://localhost:8080/api/channel/${props.channel.id}/users/${userData.user.id}`, {
-            method: 'DELETE',
-          });
-      
-          if (!response.ok) {
-            throw new Error('Failed to make DELETE request');
-          }
-      
-          // Handle success response here
-        } catch (error) {
-          // Handle error here
-          console.error(error);
-        }
-      }
+		socket.emit('leaveChannel', props.channel.id, myId, (response: any) => {
+			setJoinedChannel(joinedChannel + 1)
+			console.log(response)
+			setChatId(0)
+		})
+	}
 
     return (
 		<li className={`${styles.li} ${props.channel.id === chatId ? styles.active : ''}`} onClick={handleClick} >

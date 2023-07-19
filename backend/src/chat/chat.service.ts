@@ -77,8 +77,8 @@ export class ChatService {
     }
 
 	async joinChannel(channelId: number, userId: number) {
-		console.log('channelId', channelId)
-		console.log('userId', userId)
+		// console.log('channelId', channelId)
+		// console.log('userId', userId)
 		const channel = await this.channelRepository.findOne({
 			relations: ['users'],
 			where: { id: channelId },
@@ -88,7 +88,24 @@ export class ChatService {
 		})
 		//if not banned
 		channel.users.push(user)
-		console.log('channel', channel)
+		console.log('JOIN channel executed')
+		// console.log('channel', channel)
+		return await this.channelRepository.save(channel)
+	}
+
+	async leaveChannel(channelId: number, userId: number) {
+		
+		// this.channelRepository.remove(//userid, channelid)
+		const channel = await this.channelRepository.findOne({
+			relations: ['users'],
+			where: { id: channelId },
+		})
+		const user = await this.userRepository.findOne({
+			where: { id: userId },
+		})
+		console.log('ch users before', channel.users)
+		channel.users = channel.users.filter((u) => u.id !== user.id)
+		console.log('ch users after', channel.users)
 		return await this.channelRepository.save(channel)
 	}
 }

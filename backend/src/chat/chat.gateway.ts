@@ -107,4 +107,10 @@ export class ChatGateway {
 			return channel
 		}
 
+		@SubscribeMessage('leaveChannel')
+		async leaveChannel(@MessageBody() data : any ) {
+			console.log('data leave', data)
+			const channel = await this.chatService.leaveChannel(data[0], data[1])
+			return channel
+		}
 }
