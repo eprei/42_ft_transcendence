@@ -3,59 +3,60 @@ import { useAtom } from 'jotai'
 import styles from './UserBox.module.css'
 import User from './User'
 import { chatIdAtom } from '../channelBox/ChannelLi'
+import { io } from 'socket.io-client'
+import { useAppSelector } from '../../../store/types'
+import { UserData } from '../../../types/UserData'
 
 
 function UserList() {
 
-	const [chatId] = useAtom(chatIdAtom)
-
-	async function getChUsers() {
-		try {
-			const response = await fetch(
-				`http://localhost:8080/api/channel/${chatId}/users`,
-				{
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    }
-                }
-				)
-
-			if (!response.ok) {
-				throw new Error('Failed to fetch current channel users')
-			}
+	const socket = io('http://localhost:8080')
 	
-			const channel = await response.json()
-			return channel.users;
-		} catch (error) {
-			console.error(error)
+	const [chatId] = useAtom(chatIdAtom)
+	const userData = useAppSelector((state) => state.user.userData) as UserData;
+	const myId = userData.user.id
+
+	const getChUsers = () => {
+		socket.emit('findUsersByChannel', chatId, (response: any) => {
+			console.log(response);
+			setUsers(response.users);
+			// alert(JSON.stringify(response, null, 2))
+			(response.owner.id === myId) ? setOwner(true) : setOwner(false);
+			// alert(owner);
+			(response.admin.includes(myId))? setAdmin(true) :setAdmin(false);
+			setAllInfo(response);
+		})
+	}
+
+	const [allInfo, setAllInfo] = useState<any[]>([])
+	const [users, setUsers] = useState<any[]>([])
+	const [admin, setAdmin] = useState<boolean>(false)
+	const [owner, setOwner] = useState<boolean>(false)
+
+	const work = () => {
+		if (allInfo) {
+			alert(JSON.stringify(allInfo, null, 2))
 		}
 	}
 
-	const [users, setUsers] = useState<any[]>([])
-
 	useEffect(() => {
-		if (chatId)
-			getChUserHandler()
-		else
+		if (chatId) {
+			getChUsers()
+		}	else
 			setUsers([])
 	}, [chatId]) 
 
-	const getChUserHandler = () => {
-        getChUsers().then((users) => {
-            setUsers(users)
-        })
-    }
-
-    return (
+	    return (
         <div className={`${styles.usersBox}`}>
-            <h2> online  </h2>
+            <h2 onClick={work}> online  </h2>
 			{users.map((user) => (
 				<User 
 				  key={user.id}
 				  id={user.id}
     			  nickname={user.nickname}
     			  avatarUrl={user.avatarUrl}
+				  isOwner={owner} 
+				  isAdmin={admin}
 				/>
 			  ))}
             {/* <h2> online  </h2>

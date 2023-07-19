@@ -2,13 +2,16 @@ import { Injectable } from '@nestjs/common'
 import { CreateMessageDto } from '../message/dto/create-message.dto'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Message } from 'src/typeorm/message.entity'
+import { Channel } from 'src/typeorm/channel.entity'
 import { Repository } from 'typeorm'
 
 @Injectable()
 export class ChatService {
 	constructor(
         @InjectRepository(Message)
-        private readonly messageRepository: Repository<Message>
+        private readonly messageRepository: Repository<Message>,
+		@InjectRepository(Channel)
+        private readonly channelRepository: Repository<Channel>,
     ) {}
 
     async newMsg(createMessageDto: CreateMessageDto): Promise<Message> {
@@ -47,23 +50,16 @@ export class ChatService {
 
   		return messages;	
 	}
-//     // create(createChatDto: CreateChatDto) {
-//     //   return 'This action adds a new chat';
-//     // }
 
-//     findAll() {
-//         return `This action returns all chat`
-//     }
+    async findUsersByChannel(id: number) {
+        return await this.channelRepository.findOne({
+            relations: {
+				users: true,
+				owner: true,
+				admin: true
+            },
+            where: { id: id },
+        })
+    }
 
-//     findOne(id: number) {
-//         return `This action returns a #${id} chat`
-//     }
-
-//     // update(id: number, updateChatDto: UpdateChatDto) {
-//     //   return `This action updates a #${id} chat`;
-//     // }
-
-//     remove(id: number) {
-//         return `This action removes a #${id} chat`
-//     }
 }

@@ -4,7 +4,7 @@ import {
     MessageBody,
 } from '@nestjs/websockets'
 import { ChatService } from './chat.service'
-import { Server } from 'socket.io'
+import { Server, Socket } from 'socket.io'
 import { CreateMessageDto } from 'src/message/dto/create-message.dto'
 import { UsePipes, ValidationPipe, Post, Body, Param, Inject } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
@@ -60,27 +60,13 @@ export class ChatGateway {
 			return chanMsg
 		}
 
-	    // @SubscribeMessage('createChat')
-//     // create(@MessageBody() createChatDto: CreateChatDto) {
-//     //   return this.chatService.create(createChatDto);
-//     // }
+		@SubscribeMessage('findUsersByChannel')
+		async findAllUsersByChannel(@MessageBody() channelId: number) {
+			const chanUsers = await this.chatService.findUsersByChannel(channelId)
+			return chanUsers
+		}
 
-//     @SubscribeMessage('findAllChat')
-//     findAll() {
-//         return this.chatService.findAll()
-//     }
+		
 
-//     @SubscribeMessage('findOneChat')
-//     findOne(@MessageBody() id: number) {
-//         return this.chatService.findOne(id)
-//     }
 
-//     @SubscribeMessage('updateChat')
-//     // update(@MessageBody() updateChatDto: UpdateChatDto) {
-//     //   return this.chatService.update(updateChatDto.id, updateChatDto);
-//     // }
-//     @SubscribeMessage('removeChat')
-//     remove(@MessageBody() id: number) {
-//         return this.chatService.remove(id)
-//     }
 }
