@@ -17,6 +17,7 @@
     background: transparent;
     border: none;
     margin: 0 auto;
+	color: var(--color-mid-green);
 }
 
 .textInput::placeholder {
