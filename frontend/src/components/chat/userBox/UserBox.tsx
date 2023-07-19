@@ -22,8 +22,8 @@ function UserList() {
 			setUsers(response.users);
 			// alert(JSON.stringify(response, null, 2))
 			(response.owner.id === myId) ? setOwner(true) : setOwner(false);
-			// alert(owner);
-			(response.admin.includes(myId))? setAdmin(true) :setAdmin(false);
+			(response.admin.id === myId) ? setAdmin(true) : setAdmin(false);
+			console.log(admin, owner);
 			setAllInfo(response);
 		})
 	}

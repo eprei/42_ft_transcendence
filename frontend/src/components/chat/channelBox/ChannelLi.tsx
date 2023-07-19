@@ -7,6 +7,8 @@ import { useAppSelector } from '../../../store/types'
 import { UserData } from '../../../types/UserData'
 import { atom } from 'jotai'
 import { useAtom } from 'jotai'
+import { io } from 'socket.io-client'
+
 
 interface ChannelLiProps {
     channel: Channel
@@ -16,17 +18,27 @@ interface ChannelLiProps {
 export const chatIdAtom = atom(0)
 
 const ChannelLi = (props: ChannelLiProps) => {
-
-	const [chatId, setChatId] = useAtom(chatIdAtom);
 	
+	const socket = io('http://localhost:8080')
+	const [chatId, setChatId] = useAtom(chatIdAtom);
+    const userData = useAppSelector((state) => state.user.userData) as UserData
+	const myId = userData.user.id
+	
+	const joinChannel = () => {
+		socket.emit('joinChannel', props.channel.id, myId, (response: any) => {
+			console.log(response)
+			setChatId(props.channel.id)
+		})
+	}
+
 	const handleClick = () => {
-		if (props.channel.id != chatId) {
+		if (props.type === "discover") {
+			joinChannel()
+		}	else if (props.channel.id != chatId) {
 			setChatId(props.channel.id)
 		}
 	}
 
-    const userData = useAppSelector((state) => state.user.userData) as UserData
- 
 	async function LeaveChannel(event: React.MouseEvent<HTMLImageElement>) {
         event.stopPropagation();
       

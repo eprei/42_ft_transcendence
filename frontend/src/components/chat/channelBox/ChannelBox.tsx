@@ -4,50 +4,39 @@ import CreateNewCh from './CreateNewCh'
 import ChannelList from './ChannelList'
 import { useEffect, useState } from 'react'
 import { CreateChannel } from '../../../types/CreateChannel'
-
+import { io } from 'socket.io-client'
 
 const ChannelBox = () => {
+	
+	const socket = io('http://localhost:8080')
     const [allChan, setAllChan] = useState<Channel[]>([])
-
-    async function createNewChannel(data: CreateChannel) {
-        const response = await fetch('http://localhost:8080/api/channel', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        })
-
-        if (!response.ok) {
-            throw new Error('Failed to make POST request')
-        }
+	
+	useEffect(() => {
         getAllChannels()
-    }
-
-    async function getAllChannels() {
-        const response = await fetch('http://localhost:8080/api/channel')
-        if (!response.ok) {
-            throw new Error(response.statusText)
-        }
-        const allChannels = await response.json()
-        return allChannels
-    }
-
-    useEffect(() => {
-        const fetchAllChannels = async () => {
-            try {
-                const allChannels = await getAllChannels()
-                setAllChan(allChannels)
-            } catch (error) {
-                console.error('Error fetching channels:', error)
-            }
-        }
-
-
-        fetchAllChannels()
     }, [])
-    const handleCreation = (channel: CreateChannel) => {
-        console.log('Received values of form: ', channel)
+
+	const createNewChannel = (channel: CreateChannel) => {
+		socket.emit('createNewChannel', channel, (response: any) => {
+			console.log(response)
+			alert('Channel created')
+			})
+		}
+    
+	socket.on('newChannel', (newChannel: Channel) => {
+			const chanCpy = [...allChan]
+			chanCpy.push(newChannel)
+			setAllChan(chanCpy)
+		})
+
+	const getAllChannels = () => {
+		socket.emit('getAllChannels', (response: any) => {
+			console.log(response)
+			const allChannels = response
+			setAllChan(allChannels)
+		})
+	}
+ 
+	const handleCreation = (channel: CreateChannel) => {
         createNewChannel(channel)
     }
 

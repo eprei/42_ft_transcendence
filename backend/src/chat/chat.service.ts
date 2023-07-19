@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common'
 import { CreateMessageDto } from '../message/dto/create-message.dto'
+import { CreateChannelDto } from '../channel/dto/create-channel.dto'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Message } from 'src/typeorm/message.entity'
 import { Channel } from 'src/typeorm/channel.entity'
+import { User } from 'src/typeorm/user.entity'
 import { Repository } from 'typeorm'
 
 @Injectable()
@@ -12,8 +14,11 @@ export class ChatService {
         private readonly messageRepository: Repository<Message>,
 		@InjectRepository(Channel)
         private readonly channelRepository: Repository<Channel>,
+		@InjectRepository(User)
+		private readonly userRepository: Repository<User>
     ) {}
 
+	//ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox
     async newMsg(createMessageDto: CreateMessageDto): Promise<Message> {
         const newMessage = this.messageRepository.create(createMessageDto)
         const isSaved = await this.messageRepository.save(newMessage)
@@ -23,10 +28,6 @@ export class ChatService {
 			return diplay
 		}	
 		return null
-    }
-
-    findAll() {
-        return this.messageRepository.find()
     }
 
 	async findOneToDisplay(id: number) {
@@ -50,7 +51,8 @@ export class ChatService {
 
   		return messages;	
 	}
-
+	
+	//UserBox UserBox UserBox UserBox UserBox UserBox UserBox UserBox UserBox UserBox
     async findUsersByChannel(id: number) {
         return await this.channelRepository.findOne({
             relations: {
@@ -62,4 +64,31 @@ export class ChatService {
         })
     }
 
+	//ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox
+	createChannel(createChannelDto: CreateChannelDto) {
+        const newChannel = this.channelRepository.create(createChannelDto)
+        return this.channelRepository.save(newChannel)
+    }
+	
+	async getAllChannels() {
+        return await this.channelRepository.find({
+            relations: ['users', 'admin', 'messages'],
+        })
+    }
+
+	async joinChannel(channelId: number, userId: number) {
+		console.log('channelId', channelId)
+		console.log('userId', userId)
+		const channel = await this.channelRepository.findOne({
+			relations: ['users'],
+			where: { id: channelId },
+		})
+		const user = await this.userRepository.findOne({
+			where: { id: userId },
+		})
+		//if not banned
+		channel.users.push(user)
+		console.log('channel', channel)
+		return await this.channelRepository.save(channel)
+	}
 }
