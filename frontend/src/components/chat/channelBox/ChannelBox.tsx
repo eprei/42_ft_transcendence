@@ -10,6 +10,8 @@ import { joinedChannelAtom } from './ChannelLi'
 const socket = io('http://localhost:8080')
 
 const ChannelBox = () => {
+	
+	const socket = io('http://localhost:8080')
     const [allChan, setAllChan] = useState<Channel[]>([])
     const [joinedChannel] = useAtom(joinedChannelAtom)
 
