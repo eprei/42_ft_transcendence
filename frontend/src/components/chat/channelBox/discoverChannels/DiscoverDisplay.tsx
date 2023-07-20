@@ -1,21 +1,18 @@
-import { Channel } from '../../../types/Channel'
-import ChannelLi from './ChannelLi'
+import { Channel } from '../../../../types/Channel'
+import DiscoverItem from './DiscoverItem'
 
 interface ChannelsDisplayProps {
     channels: Channel[] | []
-    title: string
-    type: string
 }
 
-const DmDisplay = (props: ChannelsDisplayProps) => {
-    let content: JSX.Element[] | JSX.Element = <p>{props.title}</p>
+const DiscoverDisplay = (props: ChannelsDisplayProps) => {
+    let content: JSX.Element[] | JSX.Element = <p>No channels to discover!</p>
     if (props.channels !== undefined && props.channels.length > 0) {
         content = props.channels.map((channel: Channel) => (
-            <ChannelLi
+            <DiscoverItem
                 key={channel.id}
                 channel={channel}
-                type={props.type}
-            ></ChannelLi>
+            ></DiscoverItem>
         ))
     }
 
@@ -26,4 +23,4 @@ const DmDisplay = (props: ChannelsDisplayProps) => {
     )
 }
 
-export default DmDisplay
+export default DiscoverDisplay

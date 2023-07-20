@@ -5,7 +5,7 @@ import ChannelList from './ChannelList'
 import { useEffect, useState } from 'react'
 import { io } from 'socket.io-client'
 import { useAtom } from 'jotai'
-import { joinedChannelAtom } from './ChannelLi'
+import { joinedChannelAtom } from './dmChannels/DmItem'
 
 const socket = io('http://localhost:8080')
 

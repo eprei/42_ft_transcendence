@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react'
-import { useAtom } from 'jotai'
 import styles from './UserBox.module.css'
 import User from './User'
-import { chatIdAtom } from '../channelBox/ChannelLi'
 import { io } from 'socket.io-client'
 import { useAppSelector } from '../../../store/types'
 import { UserData } from '../../../types/UserData'
@@ -15,10 +13,12 @@ function UserList() {
         (state: RootState) => state.user.userData
     ) as UserData
 
-    const [chatId] = useAtom(chatIdAtom)
+    const currentChatSelected = useAppSelector(
+        (state) => state.chat.currentChatSelected
+    ) as number
 
     const getChUsers = () => {
-        socket.emit('findUsersByChannel', chatId, (response: any) => {
+        socket.emit('findUsersByChannel', currentChatSelected, (response: any) => {
             console.log(response)
             setUsers(response.users)
             response.owner.id === userData.user.id
@@ -44,10 +44,10 @@ function UserList() {
     }
 
     useEffect(() => {
-        if (chatId) {
+        if (currentChatSelected) {
             getChUsers()
         } else setUsers([])
-    }, [chatId])
+    }, [currentChatSelected])
 
     return (
         <div className={`${styles.usersBox}`}>

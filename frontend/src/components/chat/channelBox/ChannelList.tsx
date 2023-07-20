@@ -1,13 +1,11 @@
 import { Channel } from '../../../types/Channel'
 import ChannelType from '../../../types/ChannelType'
-import DmDisplay from './DmDisplay'
-import DiscoverDisplay from './DiscoverDisplay'
-import JoinedDisplay from './JoinedDisplay'
+import DmDisplay from './dmChannels/DmDisplay'
+import DiscoverDisplay from './discoverChannels/DiscoverDisplay'
+import JoinedDisplay from './joinedChannels/JoinedDisplay'
 import styles from './ChannelList.module.css'
 import { useAppSelector } from '../../../store/types'
 import { User, UserData } from '../../../types/UserData'
-import { useAtom } from 'jotai'
-import { chatIdAtom } from './ChannelLi'
 
 interface ChannelListProps {
     allChan: Channel[] | []
@@ -62,36 +60,22 @@ const ChannelList = (props: ChannelListProps) => {
         )
     }
 
-    const [chatId, setChatId] = useAtom(chatIdAtom)
-    const resetChatId = () => {
-        if (chatId != 0) setChatId(0)
-    }
 
     return (
         <div className={styles.listsContainer}>
             <div className={styles.list}>
-                <h2 onClick={resetChatId}> Joined Channels </h2>
-                <JoinedDisplay
-                    title={'Join a Channel to start chating!'}
-                    channels={joinedButNotDms}
-                    type="join"
-                ></JoinedDisplay>
+                <h2> Joined Channels </h2>
+                <JoinedDisplay channels={joinedButNotDms}></JoinedDisplay>
             </div>
             <div className={styles.list}>
                 <h2> Discover </h2>
                 <DiscoverDisplay
-                    title={'No channels to discover!'}
                     channels={notJoinedAndNotDms}
-                    type="discover"
                 ></DiscoverDisplay>
             </div>
             <div className={styles.list}>
                 <h2> DM </h2>
-                <DmDisplay
-                    title={'No dm for now'}
-                    channels={myDms}
-                    type="dm"
-                ></DmDisplay>
+                <DmDisplay channels={myDms}></DmDisplay>
             </div>
         </div>
     )

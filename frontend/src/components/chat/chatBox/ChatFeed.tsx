@@ -1,8 +1,9 @@
 import { useEffect, useState, useRef } from 'react'
-import { useAtom } from 'jotai'
 import Msg from './Msg'
 import styles from './ChatFeed.module.css'
-import { chatIdAtom } from '../channelBox/ChannelLi'
+import {  useAppSelector } from '../../../store/types'
+
+
 
 interface ChatFeedProps {
     socket: any
@@ -10,7 +11,9 @@ interface ChatFeedProps {
 
 const ChatFeed = ({ socket }: ChatFeedProps) => {
     const isFeedFull = useRef<HTMLDivElement>(null)
-    const [chatId] = useAtom(chatIdAtom)
+    const currentChatSelected = useAppSelector(
+        (state) => state.chat.currentChatSelected
+    ) as number
 
     socket.on('incomingMessage', (newMessage: any) => {
         const msgCpy = [...msgs]
@@ -21,16 +24,16 @@ const ChatFeed = ({ socket }: ChatFeedProps) => {
     const [msgs, setMsgs] = useState<any[]>([])
 
     useEffect(() => {
-        if (chatId) getAllMsgSocket()
+        if (currentChatSelected) getAllMsgSocket()
         else setMsgs([])
-    }, [chatId])
+    }, [currentChatSelected])
 
     useEffect(() => {
         isFeedFull.current?.scrollIntoView()
     }, [msgs])
 
     const getAllMsgSocket = () => {
-        socket.emit('findAllMsgByChannel', chatId, (response: any) => {
+        socket.emit('findAllMsgByChannel', currentChatSelected, (response: any) => {
             console.log(response)
             setMsgs(response)
         })

@@ -1,21 +1,18 @@
-import { Channel } from '../../../types/Channel'
-import ChannelLi from './ChannelLi'
+import { Channel } from '../../../../types/Channel'
+import JoinedItem from './JoinedItem'
 
 interface ChannelsDisplayProps {
     channels: Channel[] | []
-    title: string
-    type: string
 }
 
-const DiscoverDisplay = (props: ChannelsDisplayProps) => {
-    let content: JSX.Element[] | JSX.Element = <p>{props.title}</p>
+const JoinedDisplay = (props: ChannelsDisplayProps) => {
+    let content: JSX.Element[] | JSX.Element = <p>Join a Channel to start chating!</p>
     if (props.channels !== undefined && props.channels.length > 0) {
         content = props.channels.map((channel: Channel) => (
-            <ChannelLi
+            <JoinedItem
                 key={channel.id}
                 channel={channel}
-                type={props.type}
-            ></ChannelLi>
+            ></JoinedItem>
         ))
     }
 
@@ -26,4 +23,4 @@ const DiscoverDisplay = (props: ChannelsDisplayProps) => {
     )
 }
 
-export default DiscoverDisplay
+export default JoinedDisplay

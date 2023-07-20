@@ -1,9 +1,8 @@
 import styles from './SendForm.module.css'
 import { useState, ChangeEvent, KeyboardEvent } from 'react'
-import { useAtom } from 'jotai'
-import { chatIdAtom } from '../channelBox/ChannelLi'
 import { useAppSelector } from '../../../store/types'
 import { UserData } from '../../../types/UserData'
+
 
 export interface NewMsg {
     creator: number
@@ -17,8 +16,10 @@ interface ChatFeedProps {
 
 const SendForm = ({ socket }: ChatFeedProps) => {
     const userData = useAppSelector((state) => state.user.userData) as UserData
+    const currentChatSelected = useAppSelector(
+        (state) => state.chat.currentChatSelected
+    ) as number
 
-    const [chatId] = useAtom(chatIdAtom)
     const [inputText, setInputText] = useState('')
 
     const handleCreation = (text: string) => {
@@ -26,7 +27,7 @@ const SendForm = ({ socket }: ChatFeedProps) => {
         const newMsg = {
             creator: userData.user.id,
             content: text,
-            channelId: chatId,
+            channelId: currentChatSelected,
         }
         socket.emit('postMsg', newMsg, (response: any) => {
             console.log(response.content)
