@@ -15,30 +15,36 @@ interface ChannelLiProps {
     type: string
 }
 
+const socket = io('http://localhost:8080')
+
 export const chatIdAtom = atom(0)
 export const joinedChannelAtom = atom(0)
 
 const ChannelLi = (props: ChannelLiProps) => {
 	
-	const socket = io('http://localhost:8080')
 	const [chatId, setChatId] = useAtom(chatIdAtom)
 	const [joinedChannel, setJoinedChannel] = useAtom(joinedChannelAtom)
     const userData = useAppSelector((state) => state.user.userData) as UserData
 	const myId = userData.user.id
 	
-	const joinChannel = () => {
-		socket.emit('joinChannel', props.channel.id, myId, (response: any) => {
+	const joinChannel = (pass : string) => {
+		socket.emit('joinChannel', props.channel.id, myId, pass, (response: any) => {
 			setJoinedChannel(joinedChannel + 1)
 			// props.channel.type = 'joined'
 			if (joinedChannel != 0) 
 				console.log(response)
-		setChatId(props.channel.id)
+			setChatId(props.channel.id)
 		})
 	}
 
 	const handleClick = () => {
 		if (props.type === "discover") {
-			joinChannel()
+			// showModal()
+		//modal Do you want to join this channel?
+		joinChannel("")	
+ 		// if (props.channel.type === ChannelType.Private) {
+			//modal enter password
+			// joinChannel(password)
 		}	else if (props.channel.id != chatId) {
 			setChatId(props.channel.id)
 		}

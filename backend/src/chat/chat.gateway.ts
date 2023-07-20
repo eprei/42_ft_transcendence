@@ -103,7 +103,7 @@ export class ChatGateway {
 		@SubscribeMessage('joinChannel')
 		async joinChannel(@MessageBody() data : any ) {
 			console.log('data', data)
-			const channel = await this.chatService.joinChannel(data[0], data[1])
+			const channel = await this.chatService.joinChannel(data[0], data[1], data[2])
 			return channel
 		}
 

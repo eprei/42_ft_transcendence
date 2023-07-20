@@ -76,13 +76,18 @@ export class ChatService {
         })
     }
 
-	async joinChannel(channelId: number, userId: number) {
-		// console.log('channelId', channelId)
-		// console.log('userId', userId)
+	async joinChannel(channelId: number, userId: number, password: string) {
+		console.log('channelId', channelId)
+		console.log('userId', userId)
+		console.log('password', password)
 		const channel = await this.channelRepository.findOne({
 			relations: ['users'],
 			where: { id: channelId },
 		})
+
+		if (channel.password && channel.password !== password) {
+			return null
+		}
 		const user = await this.userRepository.findOne({
 			where: { id: userId },
 		})
