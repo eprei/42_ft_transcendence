@@ -17,6 +17,11 @@ export interface UserProps {
 const socket = io('http://localhost:8080')
 
 const User = ({ id, nickname, avatarUrl, isOwner, isAdmin }: UserProps) => {
+    const [showContextMenu, setShowContextMenu] = useState(false)
+    const [contextMenuPosition, setContextMenuPosition] = useState({
+        x: 0,
+        y: 0,
+    })
 
 
     const userData = useAppSelector((state) => state.user.userData) as UserData
