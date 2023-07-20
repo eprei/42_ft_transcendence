@@ -30,3 +30,6 @@ lerna-debug.log*
 
 # Profile pictures
 backend/uploads
+
+# SQLTools
+CP.session.sql

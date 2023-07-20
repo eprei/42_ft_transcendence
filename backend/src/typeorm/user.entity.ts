@@ -64,7 +64,7 @@ export class User {
     @OneToMany(() => Friend, (friend) => friend.friend)
     friendOf: Friend[]
 
-    @OneToMany(() => Match, (match) => match.looser)
+    @OneToMany(() => Match, (match) => match.loser)
     matchLost: Match[]
 
     @OneToMany(() => Match, (match) => match.winner)

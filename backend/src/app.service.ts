@@ -289,16 +289,16 @@ export class AppService {
             const isUserAWinner = Math.random() >= 0.5 // 50% chance for userA to win
 
             const winner = isUserAWinner ? userA : userB
-            const looser = isUserAWinner ? userB : userA
+            const loser = isUserAWinner ? userB : userA
             const scoreWinner = Math.floor(Math.random() * 6)
-            const scoreLooser = Math.floor(Math.random() * 6)
+            const scoreLoser = Math.floor(Math.random() * 6)
             const dateGame = new Date()
 
             const match = this.matchRepo.create({
                 winner,
-                looser,
+                loser: loser,
                 scoreWinner,
-                scoreLooser,
+                scoreLoser,
                 dateGame,
             })
 
@@ -309,9 +309,9 @@ export class AppService {
 
         const loggedMatch = this.matchRepo.create({
             winner: loggedUser,
-            looser: user1,
+            loser: user1,
             scoreWinner: 7,
-            scoreLooser: 5,
+            scoreLoser: 5,
             dateGame: new Date(),
         })
 

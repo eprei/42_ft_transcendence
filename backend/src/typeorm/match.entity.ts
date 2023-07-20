@@ -18,14 +18,14 @@ export class Match {
     winner: User
 
     @ManyToOne(() => User, (user) => user.matchLost)
-    @JoinColumn({ name: 'looser' })
-    looser: User
+    @JoinColumn({ name: 'loser' })
+    loser: User
 
     @Column({ type: 'int' })
     scoreWinner: number
 
     @Column({ type: 'int' })
-    scoreLooser: number
+    scoreLoser: number
 
     @CreateDateColumn()
     dateGame: Date

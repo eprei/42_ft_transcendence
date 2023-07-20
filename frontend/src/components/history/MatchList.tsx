@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { MatchItem } from "./MatchItem";
 import { useAppSelector } from "../../store/types";
 import { UserData } from "../../types/UserData"
+import { MatchData } from "../../types/MatchData";
 
 
 const MatchList = () => {
@@ -26,8 +27,8 @@ const MatchList = () => {
         fetchMatches();
     }, [userData.user.id]);
 
-    const matchHistoryList = matchHistory.map((match : any) => (
-        <MatchItem match={match} />
+    const matchHistoryList = matchHistory.map((match : MatchData) => (
+        <MatchItem key={match.id} data={match}/>
     ));
 
     return (
@@ -37,4 +38,4 @@ const MatchList = () => {
     );
 };
 
-export { MatchList };
+export { MatchList, MatchItem };

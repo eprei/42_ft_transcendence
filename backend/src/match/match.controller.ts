@@ -32,7 +32,7 @@ export class MatchController {
     }
 
     @Get('user')
-    async findByUserId(@Request() req : any) : Promise<Match[]> {
+    async findByUserId(@Request() req : any) {
         const matches = await this.matchService.findByUserId(req.user.id)
         return matches
     }
