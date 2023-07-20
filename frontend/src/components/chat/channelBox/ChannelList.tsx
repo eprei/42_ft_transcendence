@@ -7,9 +7,6 @@ import { User, UserData } from '../../../types/UserData'
 import { useAtom } from 'jotai'
 import { chatIdAtom } from './ChannelLi'
 
-
-
-
 interface ChannelListProps {
     allChan: Channel[] | []
 }
@@ -46,11 +43,10 @@ const ChannelList = (props: ChannelListProps) => {
         )
     }
 
-	const [chatId, setChatId] = useAtom(chatIdAtom);
-	const resetChatId = () => {
-		if (chatId != 0)
-		setChatId(0)
-	}
+    const [chatId, setChatId] = useAtom(chatIdAtom)
+    const resetChatId = () => {
+        if (chatId != 0) setChatId(0)
+    }
 
     return (
         <div className={styles.listsContainer}>

@@ -9,68 +9,78 @@ import { Repository } from 'typeorm'
 
 @Injectable()
 export class ChatService {
-	constructor(
+    constructor(
         @InjectRepository(Message)
         private readonly messageRepository: Repository<Message>,
-		@InjectRepository(Channel)
+        @InjectRepository(Channel)
         private readonly channelRepository: Repository<Channel>,
-		@InjectRepository(User)
-		private readonly userRepository: Repository<User>
+        @InjectRepository(User)
+        private readonly userRepository: Repository<User>
     ) {}
 
-	//ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox
+    //ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox
     async newMsg(createMessageDto: CreateMessageDto): Promise<Message> {
         const newMessage = this.messageRepository.create(createMessageDto)
         const isSaved = await this.messageRepository.save(newMessage)
-		if (isSaved) {
-			const diplay = await this.findOneToDisplay(isSaved.id)
-			console.log("display" ,diplay)
-			return diplay
-		}	
-		return null
+        if (isSaved) {
+            const diplay = await this.findOneToDisplay(isSaved.id)
+            console.log('display', diplay)
+            return diplay
+        }
+        return null
     }
 
-	async findOneToDisplay(id: number) {
-	const message = await this.messageRepository
-	.createQueryBuilder('message')
-		.select(['message.id', 'message.content', 'user.nickname', 'user.avatarUrl'])
-		.leftJoin('message.creatorUser', 'user')
-		.where('message.id = :id', { id })
-		.getOne();
-		return message;	
-	}
+    async findOneToDisplay(id: number) {
+        const message = await this.messageRepository
+            .createQueryBuilder('message')
+            .select([
+                'message.id',
+                'message.content',
+                'user.nickname',
+                'user.avatarUrl',
+            ])
+            .leftJoin('message.creatorUser', 'user')
+            .where('message.id = :id', { id })
+            .getOne()
+        return message
+    }
 
-	async findAllMsgByChannel(channelId: number): Promise<Message[]> {
-		const messages = await this.messageRepository
-			.createQueryBuilder('message')
-			.select(['message.id', 'message.content', 'user.nickname', 'user.avatarUrl'])
-			.leftJoin('message.creatorUser', 'user')
-			.where('message.channelId = :channelId', { channelId })
-			.orderBy('message.creationDate', 'ASC')
-			.getMany();
+    async findAllMsgByChannel(channelId: number): Promise<Message[]> {
+        const messages = await this.messageRepository
+            .createQueryBuilder('message')
+            .select([
+                'message.id',
+                'message.content',
+                'user.nickname',
+                'user.avatarUrl',
+            ])
+            .leftJoin('message.creatorUser', 'user')
+            .where('message.channelId = :channelId', { channelId })
+            .orderBy('message.creationDate', 'ASC')
+            .getMany()
 
-  		return messages;	
-	}
-	
-	//UserBox UserBox UserBox UserBox UserBox UserBox UserBox UserBox UserBox UserBox
+        return messages
+    }
+
+    //UserBox UserBox UserBox UserBox UserBox UserBox UserBox UserBox UserBox UserBox
     async findUsersByChannel(id: number) {
         return await this.channelRepository.findOne({
             relations: {
-				users: true,
-				owner: true,
-				admin: true
+                users: true,
+                owner: true,
+                admin: true,
             },
             where: { id: id },
         })
     }
 
-	//ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox
-	createChannel(createChannelDto: CreateChannelDto) {
+    //ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox
+    createChannel(createChannelDto: CreateChannelDto) {
         const newChannel = this.channelRepository.create(createChannelDto)
         return this.channelRepository.save(newChannel)
     }
-	
-	async getAllChannels() {
+
+    async getAllChannels() {
         return await this.channelRepository.find({
             relations: ['users', 'admin', 'messages'],
         })
@@ -98,23 +108,20 @@ export class ChatService {
 		return await this.channelRepository.save(channel)
 	}
 
-	async leaveChannel(channelId: number, userId: number) {
-		
-		// this.channelRepository.remove(//userid, channelid)
-		const channel = await this.channelRepository.findOne({
-			relations: ['users'],
-			where: { id: channelId },
-		})
-		const user = await this.userRepository.findOne({
-			where: { id: userId },
-		})
-		// console.log('ch users before', channel.users)
-		channel.users = channel.users.filter((u) => u.id !== user.id)
-		// console.log('ch users after', channel.users)
-		if (channel.users.length === 0) {
-			return await this.channelRepository.remove(channel)
-		}
-		else 
-			return await this.channelRepository.save(channel)
-	}
+    async leaveChannel(channelId: number, userId: number) {
+        // this.channelRepository.remove(//userid, channelid)
+        const channel = await this.channelRepository.findOne({
+            relations: ['users'],
+            where: { id: channelId },
+        })
+        const user = await this.userRepository.findOne({
+            where: { id: userId },
+        })
+        // console.log('ch users before', channel.users)
+        channel.users = channel.users.filter((u) => u.id !== user.id)
+        // console.log('ch users after', channel.users)
+        if (channel.users.length === 0) {
+            return await this.channelRepository.remove(channel)
+        } else return await this.channelRepository.save(channel)
+    }
 }

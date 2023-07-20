@@ -12,7 +12,7 @@ export class MessageService {
     ) {}
 
     async create(createMessageDto: CreateMessageDto): Promise<Message> {
-		console.log(createMessageDto)
+        console.log(createMessageDto)
         const newMessage = this.messageRepository.create(createMessageDto)
         return this.messageRepository.save(newMessage)
     }
@@ -21,14 +21,19 @@ export class MessageService {
         return this.messageRepository.find()
     }
 
-	async findAllByChannel(channelId: number) {
-		const messages = await this.messageRepository
-			.createQueryBuilder('message')
-			.select(['message.id', 'message.content', 'user.nickname', 'user.avatarUrl'])
-			.leftJoin('message.creatorUser', 'user')
-			.where('message.channelId = :channelId', { channelId })
-			.getMany();
+    async findAllByChannel(channelId: number) {
+        const messages = await this.messageRepository
+            .createQueryBuilder('message')
+            .select([
+                'message.id',
+                'message.content',
+                'user.nickname',
+                'user.avatarUrl',
+            ])
+            .leftJoin('message.creatorUser', 'user')
+            .where('message.channelId = :channelId', { channelId })
+            .getMany()
 
-  		return messages;	
-	}
+        return messages
+    }
 }

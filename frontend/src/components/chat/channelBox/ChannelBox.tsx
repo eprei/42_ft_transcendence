@@ -9,46 +9,43 @@ import { useAtom } from 'jotai'
 import { joinedChannelAtom } from './ChannelLi'
 
 const ChannelBox = () => {
-	
-	const socket = io('http://localhost:8080')
+    const socket = io('http://localhost:8080')
     const [allChan, setAllChan] = useState<Channel[]>([])
-	const [joinedChannel] = useAtom(joinedChannelAtom)
-	
-	useEffect(() => {
+    const [joinedChannel] = useAtom(joinedChannelAtom)
+
+    useEffect(() => {
         getAllChannels()
     }, [joinedChannel])
 
-	const createNewChannel = (channel: CreateChannel) => {
-		socket.emit('createNewChannel', channel, (response: any) => {
-			console.log(response)
-			alert('Channel created')
-			})
-		}
-    
-	socket.on('newChannel', (newChannel: Channel) => {
-			const chanCpy = [...allChan]
-			chanCpy.push(newChannel)
-			setAllChan(chanCpy)
-		})
+    const createNewChannel = (channel: CreateChannel) => {
+        socket.emit('createNewChannel', channel, (response: any) => {
+            console.log(response)
+            alert('Channel created')
+        })
+    }
 
-	const getAllChannels = () => {
-		socket.emit('getAllChannels', (response: any) => {
-			console.log(response)
-			const allChannels = response
-			setAllChan(allChannels)
-		})
-	}
- 
-	const handleCreation = (channel: CreateChannel) => {
+    socket.on('newChannel', (newChannel: Channel) => {
+        const chanCpy = [...allChan]
+        chanCpy.push(newChannel)
+        setAllChan(chanCpy)
+    })
+
+    const getAllChannels = () => {
+        socket.emit('getAllChannels', (response: any) => {
+            console.log(response)
+            const allChannels = response
+            setAllChan(allChannels)
+        })
+    }
+
+    const handleCreation = (channel: CreateChannel) => {
         createNewChannel(channel)
     }
 
     return (
         <div className={styles.channelbox}>
             <CreateNewCh handleCreation={handleCreation} />
-            <ChannelList
-                allChan={allChan}
-            ></ChannelList>
+            <ChannelList allChan={allChan}></ChannelList>
         </div>
     )
 }

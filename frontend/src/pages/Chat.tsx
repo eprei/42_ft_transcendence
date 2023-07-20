@@ -5,15 +5,12 @@ import UserList from '../components/chat/userBox/UserBox.tsx'
 // import { useAtom } from 'jotai'
 // import { chatIdAtom } from '../components/chat/channelBox/ChannelLi.tsx'
 
-
-
 const Chat = () => {
-
-	// const [chatId, setChatId] = useAtom(chatIdAtom);
-	// const resetChatId = () => {
-	// 	if (chatId != 0)
-	// 	setChatId(0)
-	// }
+    // const [chatId, setChatId] = useAtom(chatIdAtom);
+    // const resetChatId = () => {
+    // 	if (chatId != 0)
+    // 	setChatId(0)
+    // }
 
     return (
         <>

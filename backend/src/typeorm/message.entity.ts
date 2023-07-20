@@ -17,9 +17,9 @@ export class Message {
     @Column({ type: 'int' })
     creator: number
 
-	@ManyToOne(() => User, (user) => user.id)
+    @ManyToOne(() => User, (user) => user.id)
     @JoinColumn({ name: 'creator', referencedColumnName: 'id' })
-    creatorUser: User;
+    creatorUser: User
 
     @Column({ type: 'text' })
     content: string

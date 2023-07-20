@@ -74,6 +74,7 @@ export class User {
 
     @OneToMany(() => Friend, (friend) => friend.createdBy)
     createdFriends: Friend[]
-	// @Column('simple-array', { default: [] })
+    
+    // @Column('simple-array', { default: [] })
     // blockedUsers: number[]
 }

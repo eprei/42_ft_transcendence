@@ -9,7 +9,6 @@ import { atom } from 'jotai'
 import { useAtom } from 'jotai'
 import { io } from 'socket.io-client'
 
-
 interface ChannelLiProps {
     channel: Channel
     type: string
@@ -50,18 +49,23 @@ const ChannelLi = (props: ChannelLiProps) => {
 		}
 	}
 
-	// async function const LeaveChannel = (event: React.MouseEvent<HTMLImageElement>) => {
-	const LeaveChannel = (event: React.MouseEvent<HTMLImageElement>) => {
-        event.stopPropagation();
-		socket.emit('leaveChannel', props.channel.id, myId, (response: any) => {
-			setJoinedChannel(joinedChannel + 1)
-			console.log(response)
-			setChatId(0)
-		})
-	}
+    // async function const LeaveChannel = (event: React.MouseEvent<HTMLImageElement>) => {
+    const LeaveChannel = (event: React.MouseEvent<HTMLImageElement>) => {
+        event.stopPropagation()
+        socket.emit('leaveChannel', props.channel.id, myId, (response: any) => {
+            setJoinedChannel(joinedChannel + 1)
+            console.log(response)
+            setChatId(0)
+        })
+    }
 
     return (
-		<li className={`${styles.li} ${props.channel.id === chatId ? styles.active : ''}`} onClick={handleClick} >
+        <li
+            className={`${styles.li} ${
+                props.channel.id === chatId ? styles.active : ''
+            }`}
+            onClick={handleClick}
+        >
             <div className={styles.text}>{props.channel.name}</div>
             <div className={styles.iconsContainer}>
                 {props.type !== 'discover' && (

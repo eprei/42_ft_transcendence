@@ -26,9 +26,9 @@ export class ChannelController {
         private readonly channelService: ChannelService,
         @InjectRepository(User)
         private readonly userRepository: Repository<User>
-		// @InjectRepository(Message)
-		// private readonly messageRepository: Repository<Message>
-    ) {}
+    ) // @InjectRepository(Message)
+    // private readonly messageRepository: Repository<Message>
+    {}
 
     @Post()
     @UsePipes(ValidationPipe)
@@ -76,26 +76,25 @@ export class ChannelController {
         return channel
     }
 
-
     @Delete(':channelId/users/:userId')
     async removeUserFromChannel(
-      @Param('channelId') channelId: number,
-      @Param('userId') userId: number,
+        @Param('channelId') channelId: number,
+        @Param('userId') userId: number
     ) {
-      try {
-        await this.channelService.removeUserFromChannel(channelId, userId);
-        return { message: 'User removed from channel successfully' };
-      } catch (error) {
-        throw new Error('Failed to remove user from channel');
-      }
-	}
-	
+        try {
+            await this.channelService.removeUserFromChannel(channelId, userId)
+            return { message: 'User removed from channel successfully' }
+        } catch (error) {
+            throw new Error('Failed to remove user from channel')
+        }
+    }
+
     @Get(':id/users')
     async getChannelUsers(@Param('id') id: string) {
         return await this.channelService.getChannelUsers(+id)
     }
 
-	@Get(':id/msg')
+    @Get(':id/msg')
     async getChannelMsg(@Param('id') id: string) {
         return await this.channelService.getChannelMsg(+id)
     }

@@ -7,11 +7,11 @@ import { useAppSelector } from '../../../store/types'
 import { UserData } from '../../../types/UserData'
 
 export interface UserProps {
-	id: number
-	nickname: string
-	avatarUrl: string
-	isOwner: boolean
-	isAdmin: boolean
+    id: number
+    nickname: string
+    avatarUrl: string
+    isOwner: boolean
+    isAdmin: boolean
 }
 
 
@@ -47,33 +47,41 @@ const User = ({ id, nickname, avatarUrl, isOwner, isAdmin }: UserProps) => {
                     src={avatarUrl}
                     alt="Avatar"
                     className={styles.profilePicture}
-					onClick={() => window.location.href = `http://localhost:4040/user/${nickname}`}
-					onContextMenu={handleContextMenu}
+                    onClick={() =>
+                        (window.location.href = `http://localhost:4040/user/${nickname}`)
+                    }
+                    onContextMenu={handleContextMenu}
                 />
 
-				{showContextMenu && (
-				<div
-					className={styles.contextMenu}
-					style={{ top: contextMenuPosition.y, left: contextMenuPosition.x }}
-					onClick={handleContextMenuClose}
-				>
-					<ul>
-					<li>Block</li>
-					<li>Silent</li>
-					{isOwner? <div>
-								<li>Set admin</li>
-								<li>Remove admin</li>
-								<li>Kick</li>
-								<li>Ban</li>
-							</div>: null}
-					{(isAdmin && !isOwner)? <div>
-								<li>Kick</li>
-								<li>Ban</li>
-						</div> 
-						: null}
-					</ul>
-				</div>
-      			)}
+                {showContextMenu && (
+                    <div
+                        className={styles.contextMenu}
+                        style={{
+                            top: contextMenuPosition.y,
+                            left: contextMenuPosition.x,
+                        }}
+                        onClick={handleContextMenuClose}
+                    >
+                        <ul>
+                            <li>Block</li>
+                            <li>Silent</li>
+                            {isOwner ? (
+                                <div>
+                                    <li>Set admin</li>
+                                    <li>Remove admin</li>
+                                    <li>Kick</li>
+                                    <li>Ban</li>
+                                </div>
+                            ) : null}
+                            {isAdmin && !isOwner ? (
+                                <div>
+                                    <li>Kick</li>
+                                    <li>Ban</li>
+                                </div>
+                            ) : null}
+                        </ul>
+                    </div>
+                )}
 
                 <div>
                     <h5>{nickname}</h5>

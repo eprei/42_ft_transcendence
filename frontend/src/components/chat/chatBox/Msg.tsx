@@ -4,19 +4,17 @@ import { UserData } from '../../../types/UserData'
 
 export interface MsgProps {
     id: number
-    content: string 
+    content: string
     creatorUser: {
-		nickname: string 
-		avatarUrl: string 
-	}
+        nickname: string
+        avatarUrl: string
+    }
 }
 
 const Msg = ({ msg }: { msg: MsgProps }) => {
-
-	const { nickname, avatarUrl } = msg.creatorUser;
-	const userData = useAppSelector((state) => state.user.userData) as UserData
-	const myNickname = userData.user.nickname
-	
+    const { nickname, avatarUrl } = msg.creatorUser
+    const userData = useAppSelector((state) => state.user.userData) as UserData
+    const myNickname = userData.user.nickname
 
     return (
         <>

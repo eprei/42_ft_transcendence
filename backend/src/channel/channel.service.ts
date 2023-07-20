@@ -40,14 +40,14 @@ export class ChannelService {
     }
 
     async getChannelMsg(id: number) {
-	   return this.channelRepository.findOne({
+        return this.channelRepository.findOne({
             relations: {
-                messages: true
+                messages: true,
             },
             where: { id: id },
-    	})
-	}
-    
+        })
+    }
+
     async update(id: number, updateChannelDto: UpdateChannelDto) {
         const channel = await this.findOne(id)
 
@@ -73,27 +73,30 @@ export class ChannelService {
         return channels
     }
 
-    async removeUserFromChannel(channelId: number, userId: number): Promise<void> {
+    async removeUserFromChannel(
+        channelId: number,
+        userId: number
+    ): Promise<void> {
         // const channel = await this.channelRepository.findOne(channelId), { relations: ['users'] });
-		const channel = await this.channelRepository.findOne({
+        const channel = await this.channelRepository.findOne({
             relations: {
-                users: true
+                users: true,
             },
             where: { id: channelId },
-    	})
-        
+        })
+
         if (!channel) {
-          throw new NotFoundException('Channel not found');
+            throw new NotFoundException('Channel not found')
         }
-      
-        const userToRemove = channel.users.find((user) => user.id === userId);
-      
+
+        const userToRemove = channel.users.find((user) => user.id === userId)
+
         if (!userToRemove) {
-          throw new NotFoundException('User not found in channel');
+            throw new NotFoundException('User not found in channel')
         }
-      
-        channel.users = channel.users.filter((user) => user.id !== userId);
-      
-        await this.channelRepository.save(channel);
-      }
+
+        channel.users = channel.users.filter((user) => user.id !== userId)
+
+        await this.channelRepository.save(channel)
+    }
 }

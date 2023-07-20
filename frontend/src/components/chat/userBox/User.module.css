@@ -34,22 +34,22 @@
 }
 
 .contextMenu {
-  position: absolute;
-  background-color: var(--color-black);
-  border: 1px solid var(--color-black-transparent);
-  padding: 8px;
-  border-radius: 4px;
-  width: 80px;
-  font-size: 14px;
-  font-weight: 800;
-  text-align: left;
-  z-index: 1;
+    position: absolute;
+    background-color: var(--color-black);
+    border: 1px solid var(--color-black-transparent);
+    padding: 8px;
+    border-radius: 4px;
+    width: 80px;
+    font-size: 14px;
+    font-weight: 800;
+    text-align: left;
+    z-index: 1;
 }
 
 .contextMenu li {
-border-bottom: 1px solid var(--color-black-transparent);
-padding-top: 8px; 
-padding-bottom: 8px; /* Space beetween elements */
+    border-bottom: 1px solid var(--color-black-transparent);
+    padding-top: 8px;
+    padding-bottom: 8px; /* Space beetween elements */
 }
 /* --color-black: #1b2223;
 --color-dark-green: #027368;
