@@ -15,7 +15,7 @@ import { Repository } from 'typeorm'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { UpdateNicknameDto } from './dto/update-nickname.dto'
 import { v4 as uuidv4 } from 'uuid'
-import { extname } from 'path'
+import { extname, basename } from 'path'
 import * as fs from 'fs'
 
 @Injectable()
@@ -191,7 +191,15 @@ export class UserService {
         const destinationPath = '/app/profile-images'
 
         // Generate a unique name for the file in the volume 'profile-images'
-        const uniqueFilename = `${uuidv4()}${extname(file.originalname)}`
+
+        const uniqueSuffix = uuidv4()
+        const fileExt = extname(file.originalname)
+        const fileNameWithoutExtAndSpaces = basename(
+            file.originalname,
+            fileExt
+        ).replace(/\s+/g, '_')
+        const uniqueFilename = `${fileNameWithoutExtAndSpaces}${uniqueSuffix}${fileExt}`
+        console.log('uniqueFilename = ', uniqueFilename)
 
         try {
             // Read temporary file

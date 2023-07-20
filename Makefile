@@ -6,6 +6,7 @@ CONTAINER_POST	=	our-postgresql
 CONTAINER_BACK	=	our-backend
 CONTAINER_FRONT	=	our-frontend
 VOLUME_DATA		=	our-volume
+VOLUME_IMAGES	= 	our-images
 
 start: env
 	docker compose up
@@ -73,6 +74,9 @@ clean-image:
 
 clean-database: clean-postgresql
 	@docker volume rm $(VOLUME_DATA) || true
+
+clean-profil-images: clean-back
+	@docker volume rm $(VOLUME_IMAGES) || true
 
 clean-postgresql:
 	@docker container rm $(CONTAINER_POST) || true
