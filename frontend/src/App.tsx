@@ -5,7 +5,7 @@ import MatchHistory from './pages/MatchHistory'
 import GameLauncher from './pages/GameLauncher'
 import Game from './pages/Game'
 import Chat from './pages/Chat'
-import RootLayout from './RootLayout'
+import RootLayout, { loader as RootLoader } from './RootLayout'
 import ErrorPage from './components/error/Error'
 import ProtectedRoute from './ProtectedRoute'
 import TFAVerify from './pages/TFAAuthenticate'
@@ -18,6 +18,7 @@ const router = createBrowserRouter([
         path: '/',
         element: <RootLayout />,
         errorElement: <ErrorPage />,
+        loader: RootLoader,
         children: [
             {
                 index: true,
