@@ -7,7 +7,7 @@ interface ChannelsDisplayProps {
     type: string
 }
 
-const ChannelsDisplay = (props: ChannelsDisplayProps) => {
+const DiscoverDisplay = (props: ChannelsDisplayProps) => {
     let content: JSX.Element[] | JSX.Element = <p>{props.title}</p>
     if (props.channels !== undefined && props.channels.length > 0) {
         content = props.channels.map((channel: Channel) => (
@@ -26,4 +26,4 @@ const ChannelsDisplay = (props: ChannelsDisplayProps) => {
     )
 }
 
-export default ChannelsDisplay
+export default DiscoverDisplay

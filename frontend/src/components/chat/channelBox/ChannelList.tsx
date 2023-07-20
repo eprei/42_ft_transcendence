@@ -1,6 +1,8 @@
 import { Channel } from '../../../types/Channel'
 import ChannelType from '../../../types/ChannelType'
-import ChannelsDisplay from './ChannelsDisplay'
+import DmDisplay from './DmDisplay'
+import DiscoverDisplay from './DiscoverDisplay'
+import JoinedDisplay from './JoinedDisplay'
 import styles from './ChannelList.module.css'
 import { useAppSelector } from '../../../store/types'
 import { User, UserData } from '../../../types/UserData'
@@ -69,27 +71,27 @@ const ChannelList = (props: ChannelListProps) => {
         <div className={styles.listsContainer}>
             <div className={styles.list}>
                 <h2 onClick={resetChatId}> Joined Channels </h2>
-                <ChannelsDisplay
+                <JoinedDisplay
                     title={'Join a Channel to start chating!'}
                     channels={joinedButNotDms}
                     type="join"
-                ></ChannelsDisplay>
+                ></JoinedDisplay>
             </div>
             <div className={styles.list}>
                 <h2> Discover </h2>
-                <ChannelsDisplay
+                <DiscoverDisplay
                     title={'No channels to discover!'}
                     channels={notJoinedAndNotDms}
                     type="discover"
-                ></ChannelsDisplay>
+                ></DiscoverDisplay>
             </div>
             <div className={styles.list}>
                 <h2> DM </h2>
-                <ChannelsDisplay
+                <DmDisplay
                     title={'No dm for now'}
                     channels={myDms}
                     type="dm"
-                ></ChannelsDisplay>
+                ></DmDisplay>
             </div>
         </div>
     )
