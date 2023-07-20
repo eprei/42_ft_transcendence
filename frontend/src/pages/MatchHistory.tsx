@@ -1,42 +1,12 @@
-import { useEffect, useState } from "react"
-import { useAppSelector } from "../store/types"
-import { UserData } from "../types/UserData"
-import styles from "./MatchHistory.module.css"
+import { MatchList } from "../components/history/MatchList"
 
 const MatchHistory = () => {
-    const [matchHistory, setMatchHistory] = useState([]);
-    const userData = useAppSelector((state) => state.user.userData) as UserData
 
-    useEffect(() => {
-        const fetchMatches = async () => {
-            try {
-                const res = await fetch(
-                    `http://localhost:8080/api/match/user/`,
-                    { credentials: "include" }
-                );
-                const resjson = await res.json();
-                setMatchHistory(resjson);
-                console.log(resjson);
-
-            } catch (error) {
-                console.log(error);
-            };
-        };
-        fetchMatches();
-    }, [userData.user.id]);
-    
-    const matchHistoryList = matchHistory.map((match : any) => (
-        <li key={match.id} className={styles.container}>
-            {match.winner?.nickname} beat {match.loser?.nickname}
-        </li>
-    ));
 
     return (
         <div>
             <h1>Match History</h1>
-            <ul className={styles.card}>
-                {matchHistoryList}
-            </ul>
+            <MatchList />
         </div>
     )
 }
