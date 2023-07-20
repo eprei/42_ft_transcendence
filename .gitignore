@@ -27,3 +27,6 @@ lerna-debug.log*
 
 # Documentations
 .asciidoctor
+
+# Profile pictures
+backend/uploads

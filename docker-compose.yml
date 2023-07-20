@@ -9,6 +9,7 @@ services:
             - '8080:3000'
         volumes:
             - ./backend/:/app
+            - images:/app/profile-images
         depends_on:
             - postgres
         env_file:
@@ -43,6 +44,8 @@ services:
 volumes:
     data:
       name: our-volume
+    images:
+      name: our-images
 
 networks:
     appnet:

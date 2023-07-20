@@ -5,6 +5,7 @@ import switchButtonStyles from './SwitchButton.module.css'
 import { useState } from 'react'
 import { useAppSelector } from '../../store/types'
 import { UserData } from '../../types/UserData'
+import axios from 'axios'
 
 const UserInformation = () => {
     const userData = useAppSelector((state) => state.user.userData) as UserData
@@ -77,15 +78,54 @@ const UserInformation = () => {
         }
     }
 
+    const handleFileChange = async (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        const file = event.target.files?.[0]
+        if (file) {
+            try {
+                const formData = new FormData()
+                formData.append('profilePicture', file)
+
+                const response = await axios.post(
+                    'http://localhost:8080/api/user/upload-profile-picture',
+                    formData,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
+                        withCredentials: true,
+                    }
+                )
+
+                if (response.status === 201) {
+                    console.log('Profile image updated correctly')
+                    window.location.reload()
+                }
+            } catch (error) {
+                console.error('Error loading profile image:', error)
+            }
+        }
+    }
+
     return (
         <div className={styles.container}>
-            <div
+            <label
+                htmlFor="profile-picture"
                 className={styles.profilePicture}
                 style={{
                     backgroundImage: `url(${userData.user.avatarUrl})`,
                     backgroundSize: 'cover',
                 }}
-            ></div>
+            >
+                <input
+                    id="profile-picture"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    style={{ display: 'none' }}
+                />
+            </label>
             <div>
                 <ul className={styles.verticalList}>
                     <li>
