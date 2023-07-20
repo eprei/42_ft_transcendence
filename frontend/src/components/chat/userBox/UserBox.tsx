@@ -18,18 +18,22 @@ function UserList() {
     ) as number
 
     const getChUsers = () => {
-        socket.emit('findUsersByChannel', currentChatSelected, (response: any) => {
-            console.log(response)
-            setUsers(response.users)
-            response.owner.id === userData.user.id
-                ? setOwner(true)
-                : setOwner(false)
-            response.admin.id === userData.user.id
-                ? setAdmin(true)
-                : setAdmin(false)
-            console.log(admin, owner)
-            setAllInfo(response)
-        })
+        socket.emit(
+            'findUsersByChannel',
+            currentChatSelected,
+            (response: any) => {
+                console.log(response)
+                setUsers(response.users)
+                response.owner.id === userData.user.id
+                    ? setOwner(true)
+                    : setOwner(false)
+                response.admin.id === userData.user.id
+                    ? setAdmin(true)
+                    : setAdmin(false)
+                console.log(admin, owner)
+                setAllInfo(response)
+            }
+        )
     }
 
     const [allInfo, setAllInfo] = useState<any[]>([])

@@ -4,7 +4,6 @@ import SendForm from './SendForm.tsx'
 import { io } from 'socket.io-client'
 import { useAppSelector } from '../../../store/types'
 
-
 const socket = io('http://localhost:8080')
 
 function ChatBox() {

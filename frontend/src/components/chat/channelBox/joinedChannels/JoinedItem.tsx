@@ -5,26 +5,21 @@ import IconPrivate from '../../../../assets/icon/lock.svg'
 import ChannelType from '../../../../types/ChannelType'
 import { useAppDispatch, useAppSelector } from '../../../../store/types'
 import { UserData } from '../../../../types/UserData'
-import { atom } from 'jotai'
-import { useAtom } from 'jotai'
 import { io } from 'socket.io-client'
 import { chatActions } from '../../../../store/chat'
 
 interface JoinedItemProps {
     channel: Channel
+    getAllChannels: () => void
 }
-
-export const joinedChannelAtom = atom(0)
 
 const JoinedItem = (props: JoinedItemProps) => {
     const socket = io('http://localhost:8080')
-    const [joinedChannel, setJoinedChannel] = useAtom(joinedChannelAtom)
     const userData = useAppSelector((state) => state.user.userData) as UserData
     const currentChatSelected = useAppSelector(
         (state) => state.chat.currentChatSelected
     ) as number
     const dispatch = useAppDispatch()
-    const myId = userData.user.id
 
     const handleClick = () => {
         dispatch(chatActions.selectChat(props.channel.id))
@@ -32,10 +27,9 @@ const JoinedItem = (props: JoinedItemProps) => {
 
     const LeaveChannel = (event: React.MouseEvent<HTMLImageElement>) => {
         event.stopPropagation()
-        socket.emit('leaveChannel', props.channel.id, myId, (response: any) => {
-            setJoinedChannel(joinedChannel + 1)
-            console.log(response)
+        socket.emit('leaveChannel', props.channel.id, userData.user.id, () => {
             dispatch(chatActions.selectChat(0))
+            props.getAllChannels()
         })
     }
 

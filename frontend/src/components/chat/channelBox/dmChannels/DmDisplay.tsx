@@ -3,6 +3,7 @@ import DmItem from './DmItem'
 
 interface ChannelsDisplayProps {
     channels: Channel[] | []
+    getAllChannels: () => void
 }
 
 const DmDisplay = (props: ChannelsDisplayProps) => {
@@ -12,6 +13,7 @@ const DmDisplay = (props: ChannelsDisplayProps) => {
             <DmItem
                 key={channel.id}
                 channel={channel}
+                getAllChannels={props.getAllChannels}
             ></DmItem>
         ))
     }

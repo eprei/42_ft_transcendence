@@ -9,6 +9,7 @@ import { User, UserData } from '../../../types/UserData'
 
 interface ChannelListProps {
     allChan: Channel[] | []
+    getAllChannels: () => void
 }
 
 const ChannelList = (props: ChannelListProps) => {
@@ -19,8 +20,6 @@ const ChannelList = (props: ChannelListProps) => {
     let notJoinedChan: Channel[] | [] = []
     let notJoinedAndNotDms: Channel[] | [] = []
 
-    console.log(props.allChan)
-
     if (props.allChan.length !== 0) {
         allUserChan = props.allChan.filter((chan: Channel) =>
             chan.users.some((user: User) => user.id === userData.user.id)
@@ -29,7 +28,6 @@ const ChannelList = (props: ChannelListProps) => {
         notJoinedChan = props.allChan.filter((chan) =>
             chan.users.every((user: User) => user.id !== userData.user.id)
         )
-        console.log(notJoinedChan)
 
 		const myNickname = userData.user.nickname
 
@@ -60,22 +58,28 @@ const ChannelList = (props: ChannelListProps) => {
         )
     }
 
-
     return (
         <div className={styles.listsContainer}>
             <div className={styles.list}>
                 <h2> Joined Channels </h2>
-                <JoinedDisplay channels={joinedButNotDms}></JoinedDisplay>
+                <JoinedDisplay
+                    channels={joinedButNotDms}
+                    getAllChannels={props.getAllChannels}
+                ></JoinedDisplay>
             </div>
             <div className={styles.list}>
                 <h2> Discover </h2>
                 <DiscoverDisplay
                     channels={notJoinedAndNotDms}
+                    getAllChannels={props.getAllChannels}
                 ></DiscoverDisplay>
             </div>
             <div className={styles.list}>
                 <h2> DM </h2>
-                <DmDisplay channels={myDms}></DmDisplay>
+                <DmDisplay
+                    channels={myDms}
+                    getAllChannels={props.getAllChannels}
+                ></DmDisplay>
             </div>
         </div>
     )

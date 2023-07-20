@@ -4,7 +4,11 @@ import userSlice from './user'
 import chatSlice from './chat'
 
 const store = configureStore({
-    reducer: { auth: authSlice.reducer, user: userSlice.reducer, chat: chatSlice.reducer },
+    reducer: {
+        auth: authSlice.reducer,
+        user: userSlice.reducer,
+        chat: chatSlice.reducer,
+    },
 })
 
 export default store

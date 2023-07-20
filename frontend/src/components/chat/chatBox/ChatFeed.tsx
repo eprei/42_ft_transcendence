@@ -1,9 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
 import Msg from './Msg'
 import styles from './ChatFeed.module.css'
-import {  useAppSelector } from '../../../store/types'
-
-
+import { useAppSelector } from '../../../store/types'
 
 interface ChatFeedProps {
     socket: any
@@ -33,10 +31,14 @@ const ChatFeed = ({ socket }: ChatFeedProps) => {
     }, [msgs])
 
     const getAllMsgSocket = () => {
-        socket.emit('findAllMsgByChannel', currentChatSelected, (response: any) => {
-            console.log(response)
-            setMsgs(response)
-        })
+        socket.emit(
+            'findAllMsgByChannel',
+            currentChatSelected,
+            (response: any) => {
+                console.log(response)
+                setMsgs(response)
+            }
+        )
     }
 
     return (

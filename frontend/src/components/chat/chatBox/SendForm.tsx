@@ -3,7 +3,6 @@ import { useState, ChangeEvent, KeyboardEvent } from 'react'
 import { useAppSelector } from '../../../store/types'
 import { UserData } from '../../../types/UserData'
 
-
 export interface NewMsg {
     creator: number
     content: string
