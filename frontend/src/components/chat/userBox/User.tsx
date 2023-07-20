@@ -2,7 +2,7 @@
 import styles from './User.module.css'
 import IconMsg from '../../../assets/icon/message.svg'
 import { useState } from 'react'
-// import { io } from 'socket.io-client'
+import { io } from 'socket.io-client'
 import { useAppSelector } from '../../../store/types'
 import { UserData } from '../../../types/UserData'
 
@@ -14,15 +14,21 @@ export interface UserProps {
     isAdmin: boolean
 }
 
+const socket = io('http://localhost:8080')
+
 const User = ({ id, nickname, avatarUrl, isOwner, isAdmin }: UserProps) => {
-    // const socket = io('http://localhost:8080')
-    // const createDM = () => {
-    // 	socket.emit('createDM', myId, id, (response: any) => {
-    // 	alert('createDM')
-    // }
+
 
     const userData = useAppSelector((state) => state.user.userData) as UserData
     const myId = userData.user.id
+
+    const createDM = () => {
+    	socket.emit('createDM', myId, id, (response: any) => {
+    	if (response)
+			alert('createDM')
+   		})
+	}
+
     const [showContextMenu, setShowContextMenu] = useState(false)
     const [contextMenuPosition, setContextMenuPosition] = useState({
         x: 0,
@@ -90,8 +96,8 @@ const User = ({ id, nickname, avatarUrl, isOwner, isAdmin }: UserProps) => {
             {id != myId ? (
                 <div className={styles.right}>
                     <div>
-                        {/* <img src={IconMsg} onClick={createDM} alt="Message Icon" /> */}
-                        <img src={IconMsg} alt="Message Icon" />
+                        <img src={IconMsg} onClick={createDM} alt="Message Icon" />
+                        {/* <img src={IconMsg} alt="Message Icon" /> */}
                     </div>
                 </div>
             ) : null}

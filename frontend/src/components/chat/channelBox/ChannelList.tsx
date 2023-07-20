@@ -31,9 +31,26 @@ const ChannelList = (props: ChannelListProps) => {
         )
         console.log(notJoinedChan)
 
-        myDms = allUserChan.filter(
-            (channel) => channel.type === ChannelType.Direct
-        )
+		const myNickname = userData.user.nickname
+
+		const changeName = (channel: Channel) => {
+			const name = channel.name
+			const nameArray = name.split(' & ')
+			console.log(nameArray)
+			const index = nameArray.indexOf(myNickname)
+			if (index === 0) 
+				channel.name = nameArray[1]
+			else
+				channel.name = nameArray[0]
+		}
+
+        myDms = allUserChan
+			.filter((channel) => channel.type === ChannelType.Direct)
+			.map((channel) => {
+				changeName(channel)
+				return channel
+			})
+
         joinedButNotDms = allUserChan.filter(
             (channel) => channel.type !== ChannelType.Direct
         )

@@ -19,7 +19,7 @@ export class Channel {
     @ManyToOne(() => User, (channel) => channel.owner)
     owner: User
 
-    @Column({ type: 'varchar', length: 500 })
+    @Column({ type: 'varchar', length: 500, unique: true})
     name: string
 
     @Column()

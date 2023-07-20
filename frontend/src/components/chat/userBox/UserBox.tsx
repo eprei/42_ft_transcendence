@@ -8,8 +8,9 @@ import { useAppSelector } from '../../../store/types'
 import { UserData } from '../../../types/UserData'
 import { RootState } from '../../../store'
 
+const socket = io('http://localhost:8080')
+
 function UserList() {
-    const socket = io('http://localhost:8080')
     const userData = useAppSelector(
         (state: RootState) => state.user.userData
     ) as UserData

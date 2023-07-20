@@ -99,6 +99,35 @@ export class ChatGateway {
         }
     }
 
+	@SubscribeMessage('createDM')
+    @UsePipes(ValidationPipe)
+    async createDirectChannel(@MessageBody() body: any) {
+        const createChannelDto = new CreateChannelDto()
+		const user = await this.userRepository.findOneBy({
+            id: body[0],
+        })
+
+		const user2 = await this.userRepository.findOneBy({
+            id: body[1],
+        })
+        createChannelDto.owner = user
+        createChannelDto.admin = user
+        createChannelDto.users = [user, user2]
+		createChannelDto.type = 'direct'
+		createChannelDto.name = user.nickname + ' & ' + user2.nickname
+		createChannelDto.password = ''
+
+        const channelCreated = await this.chatService.createChannel(
+            createChannelDto
+        )
+        if (channelCreated) {
+            this.server.emit('newChannel', channelCreated)
+            return channelCreated
+        } else {
+            return null
+        }
+    }
+
     @SubscribeMessage('getAllChannels')
     @UsePipes(ValidationPipe)
     async getAllChannels() {
