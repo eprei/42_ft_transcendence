@@ -8,9 +8,6 @@ import Chat from './pages/Chat'
 import RootLayout from './RootLayout'
 import ErrorPage from './components/error/Error'
 import ProtectedRoute from './ProtectedRoute'
-import { authActions } from './store/auth'
-import { useEffect } from 'react'
-import { useAppDispatch } from './store/types'
 import TFAVerify from './pages/TFAAuthenticate'
 import TFATurnOn from './pages/TFATurnOn'
 import UserLambda from './pages/UserLambda'
@@ -88,34 +85,6 @@ const router = createBrowserRouter([
 ])
 
 function App() {
-    const dispatch = useAppDispatch()
-
-    useEffect(() => {
-        async function getAuthStatus() {
-            try {
-                const response = await fetch(
-                    'http://localhost:8080/api/auth/loginStatus',
-                    { credentials: 'include' }
-                )
-                const data = await response.json()
-                console.log('data received: ', data)
-                if (data.status === 'isLogged') {
-                    console.log('app.tsx: is logged')
-                    dispatch(authActions.login())
-                } else if (data.status === 'need2fa') {
-                    console.log('app.tsx: is need2fa')
-                    dispatch(authActions.setNeed2fa())
-                } else {
-                    console.log('app.tsx: not logged')
-                    dispatch(authActions.logout())
-                }
-            } catch (error) {
-                console.error('Error fetching data: ', error)
-            }
-        }
-        getAuthStatus()
-    }, [dispatch])
-
     return <RouterProvider router={router} />
 }
 
