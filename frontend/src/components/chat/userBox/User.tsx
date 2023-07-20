@@ -14,31 +14,30 @@ export interface UserProps {
     isAdmin: boolean
 }
 
-
 const User = ({ id, nickname, avatarUrl, isOwner, isAdmin }: UserProps) => {
-	
-	// const socket = io('http://localhost:8080')
-	// const createDM = () => {
-	// 	socket.emit('createDM', myId, id, (response: any) => {
-	// 	alert('createDM')
-	// }
+    // const socket = io('http://localhost:8080')
+    // const createDM = () => {
+    // 	socket.emit('createDM', myId, id, (response: any) => {
+    // 	alert('createDM')
+    // }
 
-	const userData = useAppSelector((state) => state.user.userData) as UserData;
-	const myId = userData.user.id
-	const [showContextMenu, setShowContextMenu] = useState(false);
-	const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 })
-  
-	const handleContextMenu = (event: React.MouseEvent<HTMLImageElement>) => {
-	  event.preventDefault()
-	  setShowContextMenu(true)
-	  setContextMenuPosition({ x: event.clientX, y: event.clientY })
-	}
-  
-	const handleContextMenuClose = () => {
-	  setShowContextMenu(false)
-	}
+    const userData = useAppSelector((state) => state.user.userData) as UserData
+    const myId = userData.user.id
+    const [showContextMenu, setShowContextMenu] = useState(false)
+    const [contextMenuPosition, setContextMenuPosition] = useState({
+        x: 0,
+        y: 0,
+    })
 
-	
+    const handleContextMenu = (event: React.MouseEvent<HTMLImageElement>) => {
+        event.preventDefault()
+        setShowContextMenu(true)
+        setContextMenuPosition({ x: event.clientX, y: event.clientY })
+    }
+
+    const handleContextMenuClose = () => {
+        setShowContextMenu(false)
+    }
 
     return (
         <div className={styles.container}>
@@ -88,13 +87,14 @@ const User = ({ id, nickname, avatarUrl, isOwner, isAdmin }: UserProps) => {
                 </div>
             </div>
 
-            {(id != myId)? <div className={styles.right}>
-                <div>
-                    {/* <img src={IconMsg} onClick={createDM} alt="Message Icon" /> */}
-                    <img src={IconMsg} alt="Message Icon" />
+            {id != myId ? (
+                <div className={styles.right}>
+                    <div>
+                        {/* <img src={IconMsg} onClick={createDM} alt="Message Icon" /> */}
+                        <img src={IconMsg} alt="Message Icon" />
+                    </div>
                 </div>
-            </div> : null
-			}
+            ) : null}
         </div>
     )
 }

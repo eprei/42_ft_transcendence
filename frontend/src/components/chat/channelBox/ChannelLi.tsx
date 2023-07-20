@@ -20,34 +20,38 @@ export const chatIdAtom = atom(0)
 export const joinedChannelAtom = atom(0)
 
 const ChannelLi = (props: ChannelLiProps) => {
-	
-	const [chatId, setChatId] = useAtom(chatIdAtom)
-	const [joinedChannel, setJoinedChannel] = useAtom(joinedChannelAtom)
+    const [chatId, setChatId] = useAtom(chatIdAtom)
+    const [joinedChannel, setJoinedChannel] = useAtom(joinedChannelAtom)
     const userData = useAppSelector((state) => state.user.userData) as UserData
-	const myId = userData.user.id
-	
-	const joinChannel = (pass : string) => {
-		socket.emit('joinChannel', props.channel.id, myId, pass, (response: any) => {
-			setJoinedChannel(joinedChannel + 1)
-			// props.channel.type = 'joined'
-			if (joinedChannel != 0) 
-				console.log(response)
-			setChatId(props.channel.id)
-		})
-	}
+    const myId = userData.user.id
 
-	const handleClick = () => {
-		if (props.type === "discover") {
-			// showModal()
-		//modal Do you want to join this channel?
-		joinChannel("")	
- 		// if (props.channel.type === ChannelType.Private) {
-			//modal enter password
-			// joinChannel(password)
-		}	else if (props.channel.id != chatId) {
-			setChatId(props.channel.id)
-		}
-	}
+    const joinChannel = (pass: string) => {
+        socket.emit(
+            'joinChannel',
+            props.channel.id,
+            myId,
+            pass,
+            (response: any) => {
+                setJoinedChannel(joinedChannel + 1)
+                // props.channel.type = 'joined'
+                if (joinedChannel != 0) console.log(response)
+                setChatId(props.channel.id)
+            }
+        )
+    }
+
+    const handleClick = () => {
+        if (props.type === 'discover') {
+            // showModal()
+            //modal Do you want to join this channel?
+            joinChannel('')
+            // if (props.channel.type === ChannelType.Private) {
+            //modal enter password
+            // joinChannel(password)
+        } else if (props.channel.id != chatId) {
+            setChatId(props.channel.id)
+        }
+    }
 
     // async function const LeaveChannel = (event: React.MouseEvent<HTMLImageElement>) => {
     const LeaveChannel = (event: React.MouseEvent<HTMLImageElement>) => {

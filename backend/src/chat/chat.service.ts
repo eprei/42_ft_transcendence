@@ -86,27 +86,27 @@ export class ChatService {
         })
     }
 
-	async joinChannel(channelId: number, userId: number, password: string) {
-		console.log('channelId', channelId)
-		console.log('userId', userId)
-		console.log('password', password)
-		const channel = await this.channelRepository.findOne({
-			relations: ['users'],
-			where: { id: channelId },
-		})
+    async joinChannel(channelId: number, userId: number, password: string) {
+        console.log('channelId', channelId)
+        console.log('userId', userId)
+        console.log('password', password)
+        const channel = await this.channelRepository.findOne({
+            relations: ['users'],
+            where: { id: channelId },
+        })
 
-		if (channel.password && channel.password !== password) {
-			return null
-		}
-		const user = await this.userRepository.findOne({
-			where: { id: userId },
-		})
-		//if not banned
-		channel.users.push(user)
-		// console.log('JOIN channel executed')
-		// console.log('channel', channel)
-		return await this.channelRepository.save(channel)
-	}
+        if (channel.password && channel.password !== password) {
+            return null
+        }
+        const user = await this.userRepository.findOne({
+            where: { id: userId },
+        })
+        //if not banned
+        channel.users.push(user)
+        // console.log('JOIN channel executed')
+        // console.log('channel', channel)
+        return await this.channelRepository.save(channel)
+    }
 
     async leaveChannel(channelId: number, userId: number) {
         // this.channelRepository.remove(//userid, channelid)
