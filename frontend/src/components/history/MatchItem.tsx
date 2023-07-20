@@ -1,5 +1,18 @@
-const MatchItem = ({ match }) => {
-    const { winner, loser, scoreWinner, scoreLoser } = match;
+interface Match {
+    winner: {
+        nickname: string,
+        avatarUrl: string
+    },
+    loser: {
+        nickname: string,
+        avatarUrl: string
+    },
+    scoreWinner: number,
+    scoreLoser: number
+}
+
+const MatchItem = (props) => {
+    const { winner, loser, scoreWinner, scoreLoser } = { props.match};
 
     return (
         <li>
