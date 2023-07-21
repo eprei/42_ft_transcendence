@@ -99,30 +99,36 @@ export class ChatGateway {
         }
     }
 
-	@SubscribeMessage('createDM')
+    @SubscribeMessage('createDM')
     @UsePipes(ValidationPipe)
     async createDirectChannel(@MessageBody() body: any) {
-		const createChannelDto = new CreateChannelDto()
-		const user = await this.userRepository.findOneBy({
-			id: body[0],
+        const createChannelDto = new CreateChannelDto()
+        const user = await this.userRepository.findOneBy({
+            id: body[0],
         })
-		
-		const user2 = await this.userRepository.findOneBy({
-			id: body[1],
+
+        const user2 = await this.userRepository.findOneBy({
+            id: body[1],
         })
-		const channel = await this.chatService.findChanDM(user.nickname, user2.nickname)
-		if (channel) {
-			const joinChannel = await this.chatService.joinChannel(channel.id, +body[0], "") 
-			if (joinChannel)
-            	this.server.emit('newChannel', joinChannel)
-			return (joinChannel.id)
-		}
+        const channel = await this.chatService.findChanDM(
+            user.nickname,
+            user2.nickname
+        )
+        if (channel) {
+            const joinChannel = await this.chatService.joinChannel(
+                channel.id,
+                +body[0],
+                ''
+            )
+            if (joinChannel) this.server.emit('newChannel', joinChannel)
+            return joinChannel.id
+        }
         createChannelDto.owner = user
         createChannelDto.admin = user
         createChannelDto.users = [user, user2]
-		createChannelDto.type = 'direct'
-		createChannelDto.name = user.nickname + ' & ' + user2.nickname
-		createChannelDto.password = ''
+        createChannelDto.type = 'direct'
+        createChannelDto.name = user.nickname + ' & ' + user2.nickname
+        createChannelDto.password = ''
 
         const channelCreated = await this.chatService.createChannel(
             createChannelDto
@@ -155,14 +161,16 @@ export class ChatGateway {
 
     @SubscribeMessage('leaveChannel')
     async leaveChannel(@MessageBody() data: any) {
-		try {
-			console.log('data leave', data)
-			const channel = await this.chatService.leaveChannel(data[0], data[1])
-			// return { message: 'User removed from channel successfully' }
-			return channel
-			} catch (error) {
-				throw new Error('Failed to remove user from channel')
-			}
+        try {
+            console.log('data leave', data)
+            const channel = await this.chatService.leaveChannel(
+                data[0],
+                data[1]
+            )
+            // return { message: 'User removed from channel successfully' }
+            return channel
+        } catch (error) {
+            throw new Error('Failed to remove user from channel')
+        }
     }
 }
-

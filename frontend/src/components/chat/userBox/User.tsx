@@ -17,24 +17,17 @@ export interface UserProps {
 const socket = io('http://localhost:8080')
 
 const User = ({ id, nickname, avatarUrl, isOwner, isAdmin }: UserProps) => {
-    const [showContextMenu, setShowContextMenu] = useState(false)
-    const [contextMenuPosition, setContextMenuPosition] = useState({
-        x: 0,
-        y: 0,
-    })
-
-
     const userData = useAppSelector((state) => state.user.userData) as UserData
     const myId = userData.user.id
 
     const createDM = () => {
-    	socket.emit('createDM', myId, id, (response: any) => {
-    	if (response) {
-			// setChatId(response)
-			// alert(response)
-		}
-		})
-	}
+        socket.emit('createDM', myId, id, (response: any) => {
+            if (response) {
+                // setChatId(response)
+                // alert(response)
+            }
+        })
+    }
 
     const [showContextMenu, setShowContextMenu] = useState(false)
     const [contextMenuPosition, setContextMenuPosition] = useState({
@@ -103,7 +96,11 @@ const User = ({ id, nickname, avatarUrl, isOwner, isAdmin }: UserProps) => {
             {id != myId ? (
                 <div className={styles.right}>
                     <div>
-                        <img src={IconMsg} onClick={createDM} alt="Message Icon" />
+                        <img
+                            src={IconMsg}
+                            onClick={createDM}
+                            alt="Message Icon"
+                        />
                     </div>
                 </div>
             ) : null}

@@ -102,15 +102,15 @@ export class ChatService {
             where: { id: userId },
         })
         //TO DO: if not banned
-		if (channel.type === 'direct') {
-			if (channel.users.length === 1) {
-        		channel.users.push(user)
-			}	else {//if (channel.users.length === 2 && channel.users[0].id !== user.id && channel.users[1].id !== user.id){
-				console.log("channel is full")
-				return null
-			}
-		}	else 
-			channel.users.push(user)
+        if (channel.type === 'direct') {
+            if (channel.users.length === 1) {
+                channel.users.push(user)
+            } else {
+                //if (channel.users.length === 2 && channel.users[0].id !== user.id && channel.users[1].id !== user.id){
+                console.log('channel is full')
+                return null
+            }
+        } else channel.users.push(user)
         // console.log('JOIN channel executed')
         // console.log('channel', channel)
         return await this.channelRepository.save(channel)
@@ -130,33 +130,30 @@ export class ChatService {
         } else return await this.channelRepository.save(channel)
     }
 
-	findChanDM(nick1: string, nick2: string): Promise<Channel | undefined> {
-		return new Promise((resolve, reject) => {
-			try {
-				let chName = nick1 + ' & ' + nick2
-				let channel = this.channelRepository.findOneBy({
-					name: chName,
-				})
-				if (channel)
-					resolve(channel)
-				else {
-					chName = nick2 + ' & ' + nick1
-					channel = this.channelRepository.findOneBy({
-						name: chName,
-					})
-					if (channel)
-						resolve(channel)
-					else
-						resolve(undefined)
-				}
-			} catch (error) {
-				console.error('Error when searching for the channel: ', error)
-				reject(error)
-			}
-		})
-	}
+    findChanDM(nick1: string, nick2: string): Promise<Channel | undefined> {
+        return new Promise((resolve, reject) => {
+            try {
+                let chName = nick1 + ' & ' + nick2
+                let channel = this.channelRepository.findOneBy({
+                    name: chName,
+                })
+                if (channel) resolve(channel)
+                else {
+                    chName = nick2 + ' & ' + nick1
+                    channel = this.channelRepository.findOneBy({
+                        name: chName,
+                    })
+                    if (channel) resolve(channel)
+                    else resolve(undefined)
+                }
+            } catch (error) {
+                console.error('Error when searching for the channel: ', error)
+                reject(error)
+            }
+        })
+    }
 
-		// async findOneChByUserId(userId: number) {
-        // return await this.channelRepository.findOneBy({ id: userId , type: 'direct' })
+    // async findOneChByUserId(userId: number) {
+    // return await this.channelRepository.findOneBy({ id: userId , type: 'direct' })
     // }
 }
