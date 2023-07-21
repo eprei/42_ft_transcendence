@@ -25,9 +25,8 @@ export class ChannelController {
     constructor(
         private readonly channelService: ChannelService,
         @InjectRepository(User)
-        private readonly userRepository: Repository<User> // @InjectRepository(Message)
-    ) // private readonly messageRepository: Repository<Message>
-    {}
+        private readonly userRepository: Repository<User> // @InjectRepository(Message) // private readonly messageRepository: Repository<Message>
+    ) {}
 
     @Post()
     @UsePipes(ValidationPipe)
