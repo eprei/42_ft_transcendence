@@ -3,6 +3,7 @@ import { MatchItem } from "./MatchItem";
 import { useAppSelector } from "../../store/types";
 import { UserData } from "../../types/UserData"
 import { MatchData } from "../../types/MatchData";
+import styles from "./MatchList.module.css"
 
 
 const MatchList = () => {
@@ -32,7 +33,7 @@ const MatchList = () => {
     ));
 
     return (
-        <ul>
+        <ul className={styles.match_list}>
             {matchHistoryList}
         </ul>
     );
