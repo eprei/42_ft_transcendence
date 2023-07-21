@@ -39,7 +39,9 @@ export async function loader() {
         credentials: 'include',
     })
     if (response.status !== 200) {
-        throw new Response(JSON.stringify({ message: 'Error fetching data' }))
+        throw new Response(JSON.stringify({ message: 'Error fetching data' }), {
+            status: 400,
+        })
     }
     const data = await response.json()
     return data

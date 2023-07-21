@@ -40,7 +40,8 @@ export async function loader() {
 
     if (response.status !== 200) {
         throw new Response(
-            JSON.stringify({ message: 'Error fetching user data' })
+            JSON.stringify({ message: 'Error fetching user data' }),
+            { status: 400 }
         )
     }
 
