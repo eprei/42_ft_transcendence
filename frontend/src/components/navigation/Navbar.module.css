@@ -21,7 +21,8 @@
     align-items: center;
 }
 
-.rightContainer, .centerContainer {
+.rightContainer,
+.centerContainer {
     display: flex;
     flex-direction: row;
     justify-content: end;
