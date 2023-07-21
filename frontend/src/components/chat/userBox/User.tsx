@@ -24,9 +24,11 @@ const User = ({ id, nickname, avatarUrl, isOwner, isAdmin }: UserProps) => {
 
     const createDM = () => {
     	socket.emit('createDM', myId, id, (response: any) => {
-    	if (response)
-			alert('createDM')
-   		})
+    	if (response) {
+			// setChatId(response)
+			// alert(response)
+		}
+		})
 	}
 
     const [showContextMenu, setShowContextMenu] = useState(false)
@@ -97,7 +99,6 @@ const User = ({ id, nickname, avatarUrl, isOwner, isAdmin }: UserProps) => {
                 <div className={styles.right}>
                     <div>
                         <img src={IconMsg} onClick={createDM} alt="Message Icon" />
-                        {/* <img src={IconMsg} alt="Message Icon" /> */}
                     </div>
                 </div>
             ) : null}
