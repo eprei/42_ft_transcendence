@@ -51,10 +51,11 @@ const Navbar = () => {
                                 Game
                             </NavLink>
                         )}
-                        {isLoggedIn === 'isLogged' && (
-                            <LogoutButton></LogoutButton>
-                        )}
+                       
                     </div>
+                    <div className={styles.centerContainer}> {isLoggedIn === 'isLogged' && (
+                            <LogoutButton></LogoutButton>
+                        )}</div>
                     <div className={styles.rightContainer}>
                         <div className={styles.imgContainer}>
                             <a href="https://42lausanne.ch/" target="_blank">
