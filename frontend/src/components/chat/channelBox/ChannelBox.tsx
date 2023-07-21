@@ -23,9 +23,8 @@ const ChannelBox = () => {
     }
 
     socket.on('newChannel', (newChannel: Channel) => {
-        setAllChan((previousState) => {
-            return [...previousState, newChannel]
-        })
+        console.log(newChannel)
+        getAllChannels()
     })
 
     const getAllChannels = () => {
