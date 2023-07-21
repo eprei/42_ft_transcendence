@@ -15,8 +15,9 @@ const ErrorPage = () => {
     let text = "This page doesn't exist."
 
     const error = useRouteError() as Error
-    if (error) {
+    if (error.status === 400) {
         text = JSON.parse(error.data).message
+        title = '400'
     }
     return (
         <>
