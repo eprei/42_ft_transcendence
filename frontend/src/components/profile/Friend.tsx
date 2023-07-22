@@ -2,6 +2,7 @@ import styles from './Friend.module.css'
 import IconAddFriend from '../../assets/icon/add_friend.svg'
 import IconRemoveFriend from '../../assets/icon/remove_friend.svg'
 import ClickableIcon from './ClickableIcon'
+import IconAcceptFriend from '../../assets/icon/accept_friend.svg'
 
 import { Link, useMatch, useResolvedPath } from 'react-router-dom'
 import type { LinkProps } from 'react-router-dom'
@@ -38,7 +39,7 @@ export interface FriendREALprops {
     avatarUrl: string
     status: 'online' | 'offline' | 'playing'
     isPending: boolean
-    createdBy: number
+    createdByMe: boolean
 }
 
 const Friend = ({
@@ -46,7 +47,7 @@ const Friend = ({
     avatarUrl,
     status,
     isPending,
-    createdBy,
+    createdByMe,
 }: FriendREALprops) => {
     const getBorderColor = () => {
         switch (status) {
@@ -95,12 +96,29 @@ const Friend = ({
         console.log('Friend removed')
     }
 
+    const acceptFriend = () => {
+        // TODO addFriend backend side
+        console.log('Friend accepted')
+    }
+
     return (
         <div className={styles.container}>
             <div>
                 <ClickableIcon
-                    icon={isPending ? IconRemoveFriend : IconAddFriend}
-                    onClick={isPending ? removeFriend : addFriend}
+                    icon={
+                        isPending
+                            ? createdByMe
+                                ? IconRemoveFriend
+                                : IconAcceptFriend
+                            : IconRemoveFriend
+                    }
+                    onClick={
+                        isPending
+                            ? createdByMe
+                                ? removeFriend
+                                : acceptFriend
+                            : removeFriend
+                    }
                 />
             </div>
             <div
