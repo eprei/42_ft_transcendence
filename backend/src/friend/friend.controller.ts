@@ -35,18 +35,18 @@ export class FriendController {
         return friend
     }
 
-    @Patch(':id')
-    async update(
+    @Patch('accept/:id')
+    async accept(
         @Param('id') id: string,
         @Body() updateFriendDto: UpdateFriendDto
     ) {
-        const friend = await this.friendService.update(+id, updateFriendDto)
-        return friend
+        const friend = await this.friendService.accept(+id, updateFriendDto)
+        return { 'Friendship successfully accepted': 'true' }
     }
 
-    @Delete(':id')
+    @Delete('delete/:id')
     async remove(@Param('id') id: string) {
         const friend = await this.friendService.remove(+id)
-        return friend
+        return { 'Friendship successfully removed': 'true' }
     }
 }

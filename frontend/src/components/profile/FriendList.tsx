@@ -23,7 +23,6 @@ const FriendList = ({ friendList }) => {
                     )
                 })}
             </div>
-            <h3>My ID: {friendList.myId}</h3>
             <h3>Pending acceptance</h3>
             <div className={styles.list}>
                 {friendList.listOfPendings.map((FriendshipRequests) => {

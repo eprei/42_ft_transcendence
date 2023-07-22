@@ -3,6 +3,7 @@ import IconAddFriend from '../../assets/icon/add_friend.svg'
 import IconRemoveFriend from '../../assets/icon/remove_friend.svg'
 import ClickableIcon from './ClickableIcon'
 import IconAcceptFriend from '../../assets/icon/accept_friend.svg'
+import { useState } from 'react'
 
 import { Link, useMatch, useResolvedPath } from 'react-router-dom'
 import type { LinkProps } from 'react-router-dom'
@@ -25,13 +26,13 @@ function CustomLink({ children, to, ...props }: LinkProps) {
     )
 }
 
-export interface FriendProps {
-    id: number
-    nickname: string
-    avatarUrl: string
-    status: 'online' | 'offline' | 'playing'
-    isPending: boolean
-}
+// export interface FriendProps {
+//     id: number
+//     nickname: string
+//     avatarUrl: string
+//     status: 'online' | 'offline' | 'playing'
+//     isPending: boolean
+// }
 
 export interface FriendREALprops {
     id: number
@@ -43,6 +44,7 @@ export interface FriendREALprops {
 }
 
 const Friend = ({
+    id,
     nickname,
     avatarUrl,
     status,
@@ -86,54 +88,101 @@ const Friend = ({
         statusColorClass = styles.playing
     }
 
-    const addFriend = () => {
-        // TODO addFriend backend side
-        console.log('Friend added')
+    const [successfullyDone, setSuccessfullyDone] = useState(false)
+
+    const removeFriendship = async (id: number) => {
+        try {
+            const response = await fetch(
+                `http://localhost:8080/api/friend/delete/${id}`,
+                {
+                    method: 'DELETE',
+                    credentials: 'include',
+                }
+            )
+
+            if (!response.ok) {
+                throw new Error('Error deleting friendhip')
+            }
+            setSuccessfullyDone(true)
+        } catch (error) {
+            console.error(error)
+        }
+        console.log('Friendship removed sucsefully')
     }
 
-    const removeFriend = () => {
-        // TODO removeFriend backend side
-        console.log('Friend removed')
-    }
+    const acceptFriendship = async (id: number) => {
+        try {
+            const updateFriendDto = {
+                isPending: false,
+            }
 
-    const acceptFriend = () => {
-        // TODO addFriend backend side
-        console.log('Friend accepted')
+            const response = await fetch(
+                `http://localhost:8080/api/friend/accept/${id}`,
+                {
+                    method: 'PATCH',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(updateFriendDto),
+                }
+            )
+
+            if (!response.ok) {
+                throw new Error('Error accepting friendhip')
+            }
+            setSuccessfullyDone(true)
+        } catch (error) {
+            console.error(error)
+        }
+        console.log('Friend sucsefully accepted')
     }
 
     return (
-        <div className={styles.container}>
-            <div>
-                <ClickableIcon
-                    icon={
-                        isPending
-                            ? createdByMe
-                                ? IconRemoveFriend
-                                : IconAcceptFriend
-                            : IconRemoveFriend
-                    }
-                    onClick={
-                        isPending
-                            ? createdByMe
-                                ? removeFriend
-                                : acceptFriend
-                            : removeFriend
-                    }
-                />
+        !successfullyDone && (
+            <div className={styles.container}>
+                <div>
+                    <span
+                        title={
+                            isPending
+                                ? createdByMe
+                                    ? 'Remove friendship request'
+                                    : 'Accept friendship request'
+                                : 'Remove friendship'
+                        }
+                    >
+                        <ClickableIcon
+                            icon={
+                                isPending
+                                    ? createdByMe
+                                        ? IconRemoveFriend
+                                        : IconAcceptFriend
+                                    : IconRemoveFriend
+                            }
+                            onClick={
+                                isPending
+                                    ? createdByMe
+                                        ? () => removeFriendship(id)
+                                        : () => acceptFriendship(id)
+                                    : () => removeFriendship(id)
+                            }
+                        ></ClickableIcon>
+                    </span>
+                </div>
+                <div
+                    className={styles.profilePicture}
+                    style={profilePictureStyle}
+                ></div>
+                <div className={styles.nameAndStatus}>
+                    <CustomLink to={`/user/${nickname}`}>
+                        <h3>{nickname}</h3>
+                    </CustomLink>
+                    <p className={`${styles.status} ${statusColorClass}`}>
+                        {status}
+                    </p>
+                </div>
             </div>
-            <div
-                className={styles.profilePicture}
-                style={profilePictureStyle}
-            ></div>
-            <div className={styles.nameAndStatus}>
-                <CustomLink to={`/user/${nickname}`}>
-                    <h3>{nickname}</h3>
-                </CustomLink>
-                <p className={`${styles.status} ${statusColorClass}`}>
-                    {status}
-                </p>
-            </div>
-        </div>
+        )
     )
 }
 
