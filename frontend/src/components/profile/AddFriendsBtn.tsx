@@ -19,37 +19,30 @@ const AddFriendsBtn = ({ otherUsers }) => {
     }
 
     return (
-        (
-            <>
-                <Button
-                    className={styles.btn}
-                    type="primary"
-                    onClick={showModal}
-                >
-                    Add new friends
-                </Button>
-                <Modal
-                    title="Users who are not yet your friends"
-                    open={isModalOpen}
-                    onOk={handleOk}
-                    onCancel={handleCancel}
-                >
-                    <div className={styles.list}>
-                        {otherUsers.usersWithNoFriendship.map((otherUsers) => {
-                            // const user = otherUsers.user || otherUsers.friend
-                            return (
-                                <OtherUser
-                                    key={otherUsers.id}
-                                    id={otherUsers.id}
-                                    nickname={otherUsers.nickname}
-                                    avatarUrl={otherUsers.avatarUrl}
-                                />
-                            )
-                        })}
-                    </div>
-                </Modal>
-            </>
-        )
+        <>
+            <Button className={styles.btn} type="primary" onClick={showModal}>
+                Add new friends
+            </Button>
+            <Modal
+                title="Users who are not yet your friends"
+                open={isModalOpen}
+                onOk={handleOk}
+                onCancel={handleCancel}
+            >
+                <div className={styles.list}>
+                    {otherUsers.usersWithNoFriendship.map((otherUsers) => {
+                        return (
+                            <OtherUser
+                                key={otherUsers.id}
+                                id={otherUsers.id}
+                                nickname={otherUsers.nickname}
+                                avatarUrl={otherUsers.avatarUrl}
+                            />
+                        )
+                    })}
+                </div>
+            </Modal>
+        </>
     )
 }
 
