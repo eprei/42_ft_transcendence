@@ -51,6 +51,9 @@ const Navbar = () => {
                                 Game
                             </NavLink>
                         )}
+                    </div>
+                    <div className={styles.centerContainer}>
+                        {' '}
                         {isLoggedIn === 'isLogged' && (
                             <LogoutButton></LogoutButton>
                         )}
