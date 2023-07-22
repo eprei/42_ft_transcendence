@@ -16,11 +16,14 @@ const FriendList = ({ friendList }) => {
                             avatarUrl={user?.avatarUrl}
                             status={user?.status}
                             isPending={friend.isPending}
-                            createdBy={friend.createdBy?.id}
+                            createdByMe={
+                                friend.createdBy?.id === friendList.myId
+                            }
                         />
                     )
                 })}
             </div>
+            <h3>My ID: {friendList.myId}</h3>
             <h3>Pending acceptance</h3>
             <div className={styles.list}>
                 {friendList.listOfPendings.map((FriendshipRequests) => {
@@ -34,7 +37,10 @@ const FriendList = ({ friendList }) => {
                             avatarUrl={user?.avatarUrl}
                             status={user?.status}
                             isPending={FriendshipRequests.isPending}
-                            createdBy={FriendshipRequests.createdBy?.id}
+                            createdByMe={
+                                FriendshipRequests.createdBy?.id ===
+                                friendList.myId
+                            }
                         />
                     )
                 })}
