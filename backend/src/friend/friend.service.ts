@@ -38,22 +38,22 @@ export class FriendService {
             .getOne()
     }
 
-    async update(id: number, updateFriendDto: UpdateFriendDto) {
-        const friend = await this.findOne(id)
-        if (!friend) {
-            throw new NotFoundException('Friend not found')
+    async accept(id: number, updateFriendDto: UpdateFriendDto) {
+        const friendship = await this.findOne(id)
+        if (!friendship) {
+            throw new NotFoundException('Friendship not found')
         }
 
-        return this.friendRepository.save({ ...friend, ...updateFriendDto })
+        return this.friendRepository.save({ ...friendship, ...updateFriendDto })
     }
 
     async remove(id: number) {
-        const friend = await this.findOne(id)
-        if (!friend) {
-            throw new NotFoundException('Friend not found')
+        const friendship = await this.findOne(id)
+        if (!friendship) {
+            throw new NotFoundException('Friendship not found')
         }
 
-        return this.friendRepository.remove(friend)
+        return this.friendRepository.remove(friendship)
     }
 
     async getAllFriendsByUserId(userId: number) {
