@@ -1,3 +1,5 @@
+import styles from './Input.module.css'
+
 interface InputProps {
     placeholder: string
     value: string
@@ -7,7 +9,7 @@ interface InputProps {
 const Input = (props: InputProps) => {
     const { placeholder, value, onChange } = props
 
-    return <input placeholder={placeholder} value={value} onChange={onChange} />
+    return <input placeholder={placeholder} value={value} onChange={onChange} className={styles.input}/>
 }
 
 export default Input
