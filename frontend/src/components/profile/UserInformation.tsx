@@ -5,7 +5,6 @@ import switchButtonStyles from './SwitchButton.module.css'
 import { useState } from 'react'
 import { useAppSelector } from '../../store/types'
 import { UserData } from '../../types/UserData'
-import axios from 'axios'
 
 const UserInformation = () => {
     const userData = useAppSelector((state) => state.user.userData) as UserData
@@ -87,20 +86,23 @@ const UserInformation = () => {
                 const formData = new FormData()
                 formData.append('profilePicture', file)
 
-                const response = await axios.post(
+                const response = await fetch(
                     'http://localhost:8080/api/user/upload-profile-picture',
-                    formData,
                     {
-                        headers: {
-                            'Content-Type': 'multipart/form-data',
-                        },
-                        withCredentials: true,
+                        method: 'POST',
+                        body: formData,
+                        credentials: 'include',
                     }
                 )
 
                 if (response.status === 201) {
                     console.log('Profile image updated correctly')
                     window.location.reload()
+                } else {
+                    console.error(
+                        'Error loading profile image:',
+                        response.statusText
+                    )
                 }
             } catch (error) {
                 console.error('Error loading profile image:', error)
