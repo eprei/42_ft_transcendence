@@ -1,4 +1,3 @@
-// import IconInviteToPlay from '../../../assets/icon/invite_to_play.svg'
 import styles from './User.module.css'
 import IconMsg from '../../../assets/icon/message.svg'
 import { useState } from 'react'
