@@ -4,8 +4,7 @@ import CreateNewCh from './CreateNewCh'
 import ChannelList from './ChannelList'
 import { useEffect, useState } from 'react'
 import { io } from 'socket.io-client'
-
-const socket = io('http://localhost:8080')
+import { CreateChannel } from '../../../types/CreateChannel'
 
 const ChannelBox = () => {
     const socket = io('http://localhost:8080')
