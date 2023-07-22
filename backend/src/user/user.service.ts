@@ -256,24 +256,36 @@ export class UserService {
         return { ...rest, userPosition }
     }
 
-    async getMyFriends(@Request() req: any) {
+    async getFriendsAndRequests(@Request() req: any) {
         const user = await this.findOne(req.user.id)
 
         if (!user) {
             throw new NotFoundException('User not found')
         }
 
-        return this.friendService.getAllFriendsByUserId(user.id)
+        return this.friendService.getFiendsAndRequests(user.id)
     }
 
-    async getAllNonFriendsUsers(@Request() req: any) {
+    async getAllUsersWithNoFriendship(@Request() req: any) {
         const user = await this.findOne(req.user.id)
 
         if (!user) {
             throw new NotFoundException('User not found')
         }
 
-        return this.friendService.getAllNonFriendUsers(user.id)
+        const usersWithNoFriendship = await this.userRepository
+            .createQueryBuilder('user')
+            .select('user.id', 'id')
+            .addSelect('user.nickname', 'nickname')
+            .addSelect('user.avatarUrl', 'avatarUrl')
+            .leftJoin('user.friends', 'friend', 'friend.friendId = :userId', {
+                userId: user.id,
+            })
+            .where('friend.friendId IS NULL')
+            .andWhere('user.id != :userId', { userId: user.id })
+            .getRawMany()
+
+        return { usersWithNoFriendship }
     }
 
     async logout(@Request() req: any, @Res() res: any) {

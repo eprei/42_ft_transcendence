@@ -1,5 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
-import { CreateFriendDto } from './dto/create-friend.dto'
+import { Injectable, NotFoundException, Request, Param } from '@nestjs/common'
 import { UpdateFriendDto } from './dto/update-friend.dto'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository, createQueryBuilder } from 'typeorm'
@@ -15,15 +14,17 @@ export class FriendService {
         private readonly userRepository: Repository<User>
     ) {}
 
-    async create(createFriendDto: CreateFriendDto) {
-        const { friendId, isPending } = createFriendDto
+    async create(@Request() req: any, @Param('id') id: number) {
+        const userMe = await this.userRepository.findOneBy({ id: req.user.id })
+        const userFriend = await this.userRepository.findOneBy({ id: id })
 
-        const friend = new Friend()
-        friend.friend = await this.userRepository.findOneBy({ id: friendId })
+        const friendship = new Friend()
+        friendship.isPending = true
+        friendship.user = userMe
+        friendship.friend = userFriend
+        friendship.createdBy = userMe
 
-        friend.isPending = isPending
-
-        return this.friendRepository.save(friend)
+        return this.friendRepository.save(friendship)
     }
 
     findAll() {
@@ -56,7 +57,7 @@ export class FriendService {
         return this.friendRepository.remove(friendship)
     }
 
-    async getAllFriendsByUserId(userId: number) {
+    async getFiendsAndRequests(userId: number) {
         const meAsCreator = await this.friendRepository
             .createQueryBuilder('friend')
             .leftJoin('friend.friend', 'user')
@@ -89,58 +90,8 @@ export class FriendService {
 
         const listOfPendings = allFriends.filter((friend) => friend.isPending)
         const listOfFriends = allFriends.filter((friend) => !friend.isPending)
-
         const myId = userId
 
         return { myId, listOfFriends, listOfPendings }
     }
-
-    async getAllNonFriendUsers(userId: number) {
-        const myNonFriends = await this.friendRepository
-            .createQueryBuilder('friend')
-            .innerJoin('friend.friend', 'user')
-            .where('friend.userId != :userId', { userId })
-            .andWhere('friend.friendId != :userId', { userId })
-            .addSelect([
-                'user.id',
-                'user.nickname',
-                'user.avatarUrl',
-                'user.status',
-            ])
-            .getMany()
-
-        const filteredNonFriends = myNonFriends.map((friend) => {
-            const { id, nickname, avatarUrl, status } = friend.friend
-            const isPending = friend.isPending
-            return { id, nickname, avatarUrl, status, isPending }
-        })
-
-        return filteredNonFriends
-    }
-
-    // async getAllNonFriendUsers(userId: number) {
-    // 	const friendIds = await this.friendRepository
-    // 	  .createQueryBuilder('friend')
-    // 	  .where('friend.userId = :userId', { userId })
-    // 	  .select('friend.friendId')
-    // 	  .getMany();
-
-    // 	const pendingFriendIds = await this.friendRepository
-    // 	  .createQueryBuilder('friend')
-    // 	  .where('friend.friendId = :userId', { userId })
-    // 	  .andWhere('friend.isPending = true')
-    // 	  .select('friend.userId')
-    // 	  .getMany();
-
-    // 	const excludedUserIds = [...friendIds.map((friend) => friend.friend), ...pendingFriendIds.map((friend) => friend.user)];
-
-    // 	const nonFriendUsers = await this.userRepository
-    // 	  .createQueryBuilder('user')
-    // 	  .where('user.id != :userId', { userId })
-    // 	  .andWhere('user.id NOT IN (:...excludedUserIds)', { excludedUserIds })
-    // 	  .select(['user.id', 'user.nickname', 'user.avatarUrl', 'user.status'])
-    // 	  .getMany();
-
-    // 	return nonFriendUsers;
-    //   }
 }

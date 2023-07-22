@@ -6,9 +6,9 @@ import {
     Patch,
     Param,
     Delete,
+    Request,
 } from '@nestjs/common'
 import { FriendService } from './friend.service'
-import { CreateFriendDto } from './dto/create-friend.dto'
 import { UpdateFriendDto } from './dto/update-friend.dto'
 import { ApiTags } from '@nestjs/swagger'
 
@@ -17,10 +17,10 @@ import { ApiTags } from '@nestjs/swagger'
 export class FriendController {
     constructor(private readonly friendService: FriendService) {}
 
-    @Post()
-    async create(@Body() createFriendDto: CreateFriendDto) {
-        const friend = await this.friendService.create(createFriendDto)
-        return friend
+    @Post('create/:id')
+    async create(@Request() req: any, @Param('id') id: string) {
+        const friend = await this.friendService.create(req, +id)
+        return { 'Friendship request successfully submitted': 'true' }
     }
 
     @Get()
