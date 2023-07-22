@@ -1,14 +1,9 @@
 import styles from './AddFriendsBtn.module.css'
 import { useState } from 'react'
 import { Button, Modal } from 'antd'
-import { FriendProps } from './Friend'
-import Friend from './Friend'
-import { getMyFriendsProps } from '../../pages/MainProfile'
-interface FriendListProps {
-    otherUsers: FriendProps[]
-}
+import OtherUser from './OtherUsers'
 
-const AddFriendsBtn = ({ otherUsers }: getMyFriendsProps) => {
+const AddFriendsBtn = ({ otherUsers }) => {
     const [isModalOpen, setIsModalOpen] = useState(false)
 
     const showModal = () => {
@@ -24,30 +19,37 @@ const AddFriendsBtn = ({ otherUsers }: getMyFriendsProps) => {
     }
 
     return (
-        <>
-            <Button className={styles.btn} type="primary" onClick={showModal}>
-                Add new friends
-            </Button>
-            <Modal
-                title="Users who are not yet your friends"
-                open={isModalOpen}
-                onOk={handleOk}
-                onCancel={handleCancel}
-            >
-                <div className={styles.list}>
-                    {otherUsers.map((friend) => (
-                        <Friend
-                            key={friend.id}
-                            id={friend.id}
-                            nickname={friend.nickname}
-                            avatarUrl={friend.avatarUrl}
-                            status={friend.status}
-                            isPending={!friend.isPending}
-                        />
-                    ))}
-                </div>
-            </Modal>
-        </>
+        (
+            <>
+                <Button
+                    className={styles.btn}
+                    type="primary"
+                    onClick={showModal}
+                >
+                    Add new friends
+                </Button>
+                <Modal
+                    title="Users who are not yet your friends"
+                    open={isModalOpen}
+                    onOk={handleOk}
+                    onCancel={handleCancel}
+                >
+                    <div className={styles.list}>
+                        {otherUsers.usersWithNoFriendship.map((otherUsers) => {
+                            // const user = otherUsers.user || otherUsers.friend
+                            return (
+                                <OtherUser
+                                    key={otherUsers.id}
+                                    id={otherUsers.id}
+                                    nickname={otherUsers.nickname}
+                                    avatarUrl={otherUsers.avatarUrl}
+                                />
+                            )
+                        })}
+                    </div>
+                </Modal>
+            </>
+        )
     )
 }
 

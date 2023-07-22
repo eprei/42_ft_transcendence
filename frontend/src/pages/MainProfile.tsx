@@ -32,12 +32,15 @@ export interface friendList {
         }[]
     }
 }
-
 const MainProfile = () => {
     const [friendList, setFriendList] = useState({
         myId: 0,
         listOfFriends: [],
         listOfPendings: [],
+    })
+
+    const [otherUsers, setOtherUsers] = useState({
+        usersWithNoFriendship: [],
     })
 
     const refreshTime: number = 3000
@@ -51,7 +54,7 @@ const MainProfile = () => {
         const fetchFriends = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:8080/api/user/getmyfriends`,
+                    `http://localhost:8080/api/user/getFriendsAndRequests`,
                     {
                         method: 'GET',
                         credentials: 'include',
@@ -70,7 +73,6 @@ const MainProfile = () => {
                     listOfFriends,
                     listOfPendings,
                 })
-
                 setIsLoading(false)
             } catch (error) {
                 console.error(error)
@@ -78,7 +80,6 @@ const MainProfile = () => {
             }
         }
 
-        // Call fetchFriends immediately and then every 3 seconds
         fetchFriends() // Initial call
         const intervalId = setInterval(fetchFriends, refreshTime) //Periodic call every 3 seconds
 
@@ -86,35 +87,38 @@ const MainProfile = () => {
         return () => clearInterval(intervalId)
     }, [])
 
-    // useEffect(() => {
-    //     const fetchOtherUsers = async () => {
-    //         try {
-    //             const response = await fetch(
-    //                 `http://localhost:8080/api/user/getallnonfriendusers`,
-    //                 {
-    //                     method: 'GET',
-    //                     credentials: 'include',
-    //                 }
-    //             )
+    useEffect(() => {
+        const fetchOtherUsers = async () => {
+            try {
+                const response = await fetch(
+                    `http://localhost:8080/api/user/getallnonfriendusers`,
+                    {
+                        method: 'GET',
+                        credentials: 'include',
+                    }
+                )
 
-    //             if (!response.ok) {
-    //                 throw new Error('Error fetching other users')
-    //             }
+                if (!response.ok) {
+                    throw new Error('Error fetching other users')
+                }
 
-    //             const otherUsersData: getMyFriendsProps = await response.json()
-    //             setOtherUsers(otherUsersData)
-    //             setIsLoading(false)
-    //         } catch (error) {
-    //             console.error(error)
-    //             setIsLoading(false)
-    //         }
-    //     }
+                const data = await response.json()
+                const { usersWithNoFriendship } = data
+                setOtherUsers({
+                    usersWithNoFriendship,
+                })
+                setIsLoading(false)
+            } catch (error) {
+                console.error(error)
+                setIsLoading(false)
+            }
+        }
 
-    //     fetchOtherUsers()
-    //     const intervalId = setInterval(fetchOtherUsers, refreshTime)
+        fetchOtherUsers()
+        const intervalId = setInterval(fetchOtherUsers, refreshTime)
 
-    //     return () => clearInterval(intervalId)
-    // }, [])
+        return () => clearInterval(intervalId)
+    }, [])
 
     if (isLoading) {
         return <div>Loading...</div>
@@ -127,7 +131,7 @@ const MainProfile = () => {
                 <div className={styles.bodyLeftSide}>
                     <UserInformation />
                     <Statistics />
-                    {/* <AddFriendsBtn otherUsers={otherUsers}/> */}
+                    <AddFriendsBtn otherUsers={otherUsers} />
                 </div>
                 <div className={styles.bodyRightSide}>
                     <FriendList friendList={friendList} />

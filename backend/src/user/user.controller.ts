@@ -114,14 +114,14 @@ export class UserController {
         return await this.userService.getMyInfo(req)
     }
 
-    @Get('getmyfriends')
-    async getMyFriends(@Request() req: any) {
-        return await this.userService.getMyFriends(req)
+    @Get('getFriendsAndRequests')
+    async getFriendsAndRequests(@Request() req: any) {
+        return await this.userService.getFriendsAndRequests(req)
     }
 
     @Get('getallnonfriendusers')
     async getOtherUsers(@Request() req: any) {
-        return await this.userService.getAllNonFriendsUsers(req)
+        return await this.userService.getAllUsersWithNoFriendship(req)
     }
 
     @Get('nickname/:nickname')

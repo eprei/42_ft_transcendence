@@ -13,7 +13,7 @@ import { Friend } from 'src/typeorm/friend.entity'
         forwardRef(() => FriendModule),
     ],
     controllers: [UserController],
-    providers: [UserService],
+    providers: [UserService, FriendService],
     exports: [UserService, TypeOrmModule],
 })
 export class UserModule {}
