@@ -76,10 +76,20 @@ const BoardGame = () => {
     }, [frame])
 
     useEffect(() => {
+        function onSendFrames(frame: Frame) {
+            console.log('sendFrames: ', JSON.stringify(frame))
+        }
+
         socket.emit('getFrame', {}, (response: Frame) => {
             console.log('getFrame: ', JSON.stringify(frame))
             setFrame(response)
         })
+
+        socket.on('sendFrames', onSendFrames)
+
+        return () => {
+            socket.off('sendFrames', onSendFrames)
+        }
     }, [])
 
     return <canvas id="boardGame" className={styles.boarGame}></canvas>
