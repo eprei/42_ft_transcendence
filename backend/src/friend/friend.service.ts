@@ -59,56 +59,48 @@ export class FriendService {
     async getAllFriendsByUserId(userId: number) {
         const meAsCreator = await this.friendRepository
             .createQueryBuilder('friend')
-            .innerJoin('friend.friend', 'user')
+            .leftJoin('friend.friend', 'user')
+            .leftJoin('friend.createdBy', 'createdBy')
             .where('friend.userId = :userId', { userId })
             .addSelect([
                 'user.id',
                 'user.nickname',
                 'user.avatarUrl',
                 'user.status',
+                'createdBy.id',
             ])
             .getMany()
 
-        const filteredMeAsCreator = meAsCreator.map((friend) => {
-            const { id, nickname, avatarUrl, status } = friend.friend
-            const isPending = friend.isPending
-            return { id, nickname, avatarUrl, status, isPending }
-        })
-
         const otherAsCreator = await this.friendRepository
-        .createQueryBuilder('friend')
-        .innerJoin('friend.user', 'user')
-        .where('friend.friendId = :userId', { userId })
-        .addSelect([
-            'user.id',
-            'user.nickname',
-            'user.avatarUrl',
-            'user.status',
-        ])
-        .getMany()
+            .createQueryBuilder('friend')
+            .leftJoin('friend.user', 'user')
+            .leftJoin('friend.createdBy', 'createdBy')
+            .where('friend.friendId = :userId', { userId })
+            .addSelect([
+                'user.id',
+                'user.nickname',
+                'user.avatarUrl',
+                'user.status',
+                'createdBy.id',
+            ])
+            .getMany()
 
-    const filteredOtherAsCreator = otherAsCreator.map((pending) => {
-        const { id, nickname, avatarUrl, status } = pending.user
-        const isPending = pending.isPending
-        return { id, nickname, avatarUrl, status, isPending }
-    })
+        const allFriends = meAsCreator.concat(otherAsCreator)
 
-    const allFriends = filteredMeAsCreator.concat(filteredOtherAsCreator)
+        const listOfPendings = allFriends.filter((friend) => friend.isPending)
+        const listOfFriends = allFriends.filter((friend) => !friend.isPending)
 
-    const isPendingFriends = allFriends.filter((friend) => friend.isPending)
-    const isFriendFriends = allFriends.filter((friend) => !friend.isPending)
+        const myId = userId
 
-    const myId = userId
-    
-    return { myId, isFriendFriends , isPendingFriends}
+        return { myId, listOfFriends, listOfPendings }
     }
 
-	async getAllNonFriendUsers(userId: number) {
+    async getAllNonFriendUsers(userId: number) {
         const myNonFriends = await this.friendRepository
             .createQueryBuilder('friend')
             .innerJoin('friend.friend', 'user')
             .where('friend.userId != :userId', { userId })
-			.andWhere('friend.friendId != :userId', { userId })
+            .andWhere('friend.friendId != :userId', { userId })
             .addSelect([
                 'user.id',
                 'user.nickname',
@@ -126,30 +118,29 @@ export class FriendService {
         return filteredNonFriends
     }
 
-	// async getAllNonFriendUsers(userId: number) {
-	// 	const friendIds = await this.friendRepository
-	// 	  .createQueryBuilder('friend')
-	// 	  .where('friend.userId = :userId', { userId })
-	// 	  .select('friend.friendId')
-	// 	  .getMany();
+    // async getAllNonFriendUsers(userId: number) {
+    // 	const friendIds = await this.friendRepository
+    // 	  .createQueryBuilder('friend')
+    // 	  .where('friend.userId = :userId', { userId })
+    // 	  .select('friend.friendId')
+    // 	  .getMany();
 
-	// 	const pendingFriendIds = await this.friendRepository
-	// 	  .createQueryBuilder('friend')
-	// 	  .where('friend.friendId = :userId', { userId })
-	// 	  .andWhere('friend.isPending = true')
-	// 	  .select('friend.userId')
-	// 	  .getMany();
+    // 	const pendingFriendIds = await this.friendRepository
+    // 	  .createQueryBuilder('friend')
+    // 	  .where('friend.friendId = :userId', { userId })
+    // 	  .andWhere('friend.isPending = true')
+    // 	  .select('friend.userId')
+    // 	  .getMany();
 
-	// 	const excludedUserIds = [...friendIds.map((friend) => friend.friend), ...pendingFriendIds.map((friend) => friend.user)];
+    // 	const excludedUserIds = [...friendIds.map((friend) => friend.friend), ...pendingFriendIds.map((friend) => friend.user)];
 
-	// 	const nonFriendUsers = await this.userRepository
-	// 	  .createQueryBuilder('user')
-	// 	  .where('user.id != :userId', { userId })
-	// 	  .andWhere('user.id NOT IN (:...excludedUserIds)', { excludedUserIds })
-	// 	  .select(['user.id', 'user.nickname', 'user.avatarUrl', 'user.status'])
-	// 	  .getMany();
+    // 	const nonFriendUsers = await this.userRepository
+    // 	  .createQueryBuilder('user')
+    // 	  .where('user.id != :userId', { userId })
+    // 	  .andWhere('user.id NOT IN (:...excludedUserIds)', { excludedUserIds })
+    // 	  .select(['user.id', 'user.nickname', 'user.avatarUrl', 'user.status'])
+    // 	  .getMany();
 
-	// 	return nonFriendUsers;
-	//   }
+    // 	return nonFriendUsers;
+    //   }
 }
-

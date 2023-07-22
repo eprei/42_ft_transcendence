@@ -7,18 +7,44 @@ import { useAppDispatch } from '../store/types'
 import { UserData } from '../types/UserData'
 import { useLoaderData } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { FriendProps } from '../components/profile/Friend'
 import AddFriendsBtn from '../components/profile/AddFriendsBtn'
 
+export interface friendList {
+    myId: number
+    listOfFriends: {
+        id: number
+        isPending: boolean
+        user: {
+            id: number
+            nickname: string
+            avatarUrl: string
+            status: 'online' | 'offline' | 'playing'
+        }[]
+    }
+    listOfPendings: {
+        id: number
+        isPending: boolean
+        user: {
+            id: number
+            nickname: string
+            avatarUrl: string
+            status: 'online' | 'offline' | 'playing'
+        }[]
+    }
+}
+
 const MainProfile = () => {
-	const refreshTime :number = 3000
+    const [friendList, setFriendList] = useState({
+        myId: 0,
+        listOfFriends: [],
+        listOfPendings: [],
+    })
+
+    const refreshTime: number = 3000
     const fetchUserData = useLoaderData() as UserData
     const dispatch = useAppDispatch()
     dispatch(userActions.update({ user: fetchUserData }))
 
-    const [friendsRecoveredFromBackend, setFriendsRecoveredFromBackend] =
-        useState<FriendProps[]>([])
-	const [otherUsers, setOtherUsers] =	useState<FriendProps[]>([])
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
@@ -36,8 +62,15 @@ const MainProfile = () => {
                     throw new Error('Error fetching friends')
                 }
 
-                const friendsData: FriendProps[] = await response.json()
-                setFriendsRecoveredFromBackend(friendsData)
+                const data = await response.json()
+                const { myId, listOfFriends, listOfPendings } = data
+
+                setFriendList({
+                    myId,
+                    listOfFriends,
+                    listOfPendings,
+                })
+
                 setIsLoading(false)
             } catch (error) {
                 console.error(error)
@@ -53,35 +86,35 @@ const MainProfile = () => {
         return () => clearInterval(intervalId)
     }, [])
 
-	useEffect(() => {
-        const fetchOtherUsers = async () => {
-            try {
-                const response = await fetch(
-                    `http://localhost:8080/api/user/getallnonfriendusers`,
-                    {
-                        method: 'GET',
-                        credentials: 'include',
-                    }
-                )
+    // useEffect(() => {
+    //     const fetchOtherUsers = async () => {
+    //         try {
+    //             const response = await fetch(
+    //                 `http://localhost:8080/api/user/getallnonfriendusers`,
+    //                 {
+    //                     method: 'GET',
+    //                     credentials: 'include',
+    //                 }
+    //             )
 
-                if (!response.ok) {
-                    throw new Error('Error fetching other users')
-                }
+    //             if (!response.ok) {
+    //                 throw new Error('Error fetching other users')
+    //             }
 
-                const otherUsersData: FriendProps[] = await response.json()
-                setOtherUsers(otherUsersData)
-                setIsLoading(false)
-            } catch (error) {
-                console.error(error)
-                setIsLoading(false)
-            }
-        }
+    //             const otherUsersData: getMyFriendsProps = await response.json()
+    //             setOtherUsers(otherUsersData)
+    //             setIsLoading(false)
+    //         } catch (error) {
+    //             console.error(error)
+    //             setIsLoading(false)
+    //         }
+    //     }
 
-        fetchOtherUsers()
-        const intervalId = setInterval(fetchOtherUsers, refreshTime)
+    //     fetchOtherUsers()
+    //     const intervalId = setInterval(fetchOtherUsers, refreshTime)
 
-        return () => clearInterval(intervalId)
-    }, [])
+    //     return () => clearInterval(intervalId)
+    // }, [])
 
     if (isLoading) {
         return <div>Loading...</div>
@@ -94,14 +127,10 @@ const MainProfile = () => {
                 <div className={styles.bodyLeftSide}>
                     <UserInformation />
                     <Statistics />
-                    <AddFriendsBtn otherUsers={otherUsers}/>
+                    {/* <AddFriendsBtn otherUsers={otherUsers}/> */}
                 </div>
                 <div className={styles.bodyRightSide}>
-                    <FriendList
-                        friendsRecoveredFromBackend={
-                            friendsRecoveredFromBackend
-                        }
-                    />
+                    <FriendList friendList={friendList} />
                 </div>
             </div>
         </div>

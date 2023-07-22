@@ -32,7 +32,22 @@ export interface FriendProps {
     isPending: boolean
 }
 
-const Friend = ({ nickname, avatarUrl, status, isPending }: FriendProps) => {
+export interface FriendREALprops {
+    id: number
+    nickname: string
+    avatarUrl: string
+    status: 'online' | 'offline' | 'playing'
+    isPending: boolean
+    createdBy: number
+}
+
+const Friend = ({
+    nickname,
+    avatarUrl,
+    status,
+    isPending,
+    createdBy,
+}: FriendREALprops) => {
     const getBorderColor = () => {
         switch (status) {
             case 'online':

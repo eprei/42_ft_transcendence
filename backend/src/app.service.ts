@@ -182,11 +182,12 @@ export class AppService {
         //         await this.friendRepo.save(friendship)
         //     }
         // }
-       
+
         const friendship1 = this.friendRepo.create({
             user: userMe,
             friend: user1,
             isPending: false,
+            createdBy: userMe,
         })
         await this.friendRepo.save(friendship1)
 
@@ -194,6 +195,7 @@ export class AppService {
             user: userMe,
             friend: user3,
             isPending: true,
+            createdBy: userMe,
         })
         await this.friendRepo.save(friendship2)
 
@@ -201,6 +203,7 @@ export class AppService {
             user: user4,
             friend: userMe,
             isPending: true,
+            createdBy: user4,
         })
         await this.friendRepo.save(friendship3)
 
@@ -208,8 +211,25 @@ export class AppService {
             user: user5,
             friend: userMe,
             isPending: false,
+            createdBy: user5,
         })
         await this.friendRepo.save(friendship4)
+
+        const friendship5 = this.friendRepo.create({
+            user: user2,
+            friend: user4,
+            isPending: false,
+            createdBy: user2,
+        })
+        await this.friendRepo.save(friendship5)
+
+        const friendship6 = this.friendRepo.create({
+            user: userMe,
+            friend: user6,
+            isPending: false,
+            createdBy: user6,
+        })
+        await this.friendRepo.save(friendship6)
 
         // Create messages
         const channels = await this.channelRepo.find()

@@ -241,7 +241,7 @@ export class UserService {
             )
         }
     }
-    
+
     async getMyInfo(@Request() req: any) {
         const user = await this.findOne(req.user.id)
 
@@ -266,7 +266,7 @@ export class UserService {
         return this.friendService.getAllFriendsByUserId(user.id)
     }
 
-	async getAllNonFriendsUsers(@Request() req: any) {
+    async getAllNonFriendsUsers(@Request() req: any) {
         const user = await this.findOne(req.user.id)
 
         if (!user) {
