@@ -69,4 +69,7 @@ export class User {
 
     @OneToMany(() => Match, (match) => match.winner)
     matchWon: Match[]
+
+    @OneToMany(() => Friend, (friend) => friend.createdBy)
+    createdFriends: Friend[]
 }

@@ -1,47 +1,43 @@
 import styles from './FriendList.module.css'
 import Friend from './Friend'
-import { FriendProps } from './Friend'
 
-interface FriendListProps {
-    friendsRecoveredFromBackend: FriendProps[]
-}
-
-const FriendList = ({ friendsRecoveredFromBackend }: FriendListProps) => {
-    const filteredFriends = friendsRecoveredFromBackend.filter(
-        (friend) => !friend.isPending
-    )
-
-    const filteredFriendshipRequests = friendsRecoveredFromBackend.filter(
-        (friend) => friend.isPending
-    )
-
+const FriendList = ({ friendList }) => {
     return (
         <div className={styles.container}>
             <h3>Friend list</h3>
             <div className={styles.list}>
-                {filteredFriends.map((friend) => (
-                    <Friend
-                        key={friend.id}
-                        id={friend.id}
-                        nickname={friend.nickname}
-                        avatarUrl={friend.avatarUrl}
-                        status={friend.status}
-                        isPending={!friend.isPending}
-                    />
-                ))}
+                {friendList.listOfFriends.map((friend) => {
+                    const user = friend.user || friend.friend
+                    return (
+                        <Friend
+                            key={friend.id}
+                            id={friend.id}
+                            nickname={user?.nickname}
+                            avatarUrl={user?.avatarUrl}
+                            status={user?.status}
+                            isPending={friend.isPending}
+                            createdBy={friend.createdBy?.id}
+                        />
+                    )
+                })}
             </div>
             <h3>Pending acceptance</h3>
             <div className={styles.list}>
-                {filteredFriendshipRequests.map((FriendshipRequests) => (
-                    <Friend
-                        key={FriendshipRequests.id}
-                        id={FriendshipRequests.id}
-                        nickname={FriendshipRequests.nickname}
-                        avatarUrl={FriendshipRequests.avatarUrl}
-                        status={FriendshipRequests.status}
-                        isPending={!FriendshipRequests.isPending}
-                    />
-                ))}
+                {friendList.listOfPendings.map((FriendshipRequests) => {
+                    const user =
+                        FriendshipRequests.user || FriendshipRequests.friend
+                    return (
+                        <Friend
+                            key={FriendshipRequests.id}
+                            id={FriendshipRequests.id}
+                            nickname={user?.nickname}
+                            avatarUrl={user?.avatarUrl}
+                            status={user?.status}
+                            isPending={FriendshipRequests.isPending}
+                            createdBy={FriendshipRequests.createdBy?.id}
+                        />
+                    )
+                })}
             </div>
         </div>
     )

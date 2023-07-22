@@ -119,7 +119,7 @@ export class UserController {
         return await this.userService.getMyFriends(req)
     }
 
-	@Get('getallnonfriendusers')
+    @Get('getallnonfriendusers')
     async getOtherUsers(@Request() req: any) {
         return await this.userService.getAllNonFriendsUsers(req)
     }
