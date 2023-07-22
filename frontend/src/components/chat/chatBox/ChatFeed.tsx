@@ -18,7 +18,7 @@ const ChatFeed = ({ socket }: ChatFeedProps) => {
         msgCpy.push(newMessage)
         setMsgs(msgCpy)
     })
-    
+
     const [msgs, setMsgs] = useState<any[]>([])
 
     useEffect(() => {
