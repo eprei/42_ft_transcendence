@@ -26,15 +26,7 @@ function CustomLink({ children, to, ...props }: LinkProps) {
     )
 }
 
-// export interface FriendProps {
-//     id: number
-//     nickname: string
-//     avatarUrl: string
-//     status: 'online' | 'offline' | 'playing'
-//     isPending: boolean
-// }
-
-export interface FriendREALprops {
+export interface FriendProps {
     id: number
     nickname: string
     avatarUrl: string
@@ -50,7 +42,7 @@ const Friend = ({
     status,
     isPending,
     createdByMe,
-}: FriendREALprops) => {
+}: FriendProps) => {
     const getBorderColor = () => {
         switch (status) {
             case 'online':
@@ -142,13 +134,22 @@ const Friend = ({
         !successfullyDone && (
             <div className={styles.container}>
                 <div>
+                    {isPending && !createdByMe && (
+                        <span title="reject friend request">
+                            {' '}
+                            <ClickableIcon
+                                icon={IconRemoveFriend}
+                                onClick={() => removeFriendship(id)}
+                            ></ClickableIcon>{' '}
+                        </span>
+                    )}
                     <span
                         title={
                             isPending
                                 ? createdByMe
-                                    ? 'Remove friendship request'
-                                    : 'Accept friendship request'
-                                : 'Remove friendship'
+                                    ? 'remove friendship request'
+                                    : 'accept friendship request'
+                                : 'remove friendship'
                         }
                     >
                         <ClickableIcon
