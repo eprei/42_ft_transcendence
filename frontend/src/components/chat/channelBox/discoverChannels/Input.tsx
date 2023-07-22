@@ -9,7 +9,14 @@ interface InputProps {
 const Input = (props: InputProps) => {
     const { placeholder, value, onChange } = props
 
-    return <input placeholder={placeholder} value={value} onChange={onChange} className={styles.input}/>
+    return (
+        <input
+            placeholder={placeholder}
+            value={value}
+            onChange={onChange}
+            className={styles.input}
+        />
+    )
 }
 
 export default Input

@@ -7,4 +7,5 @@ export interface Channel {
     password?: string
     creationDate?: Date
     users: User[]
+    owner: User
 }

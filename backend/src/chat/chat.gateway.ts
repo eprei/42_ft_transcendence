@@ -173,4 +173,16 @@ export class ChatGateway {
             throw new Error('Failed to remove user from channel')
         }
     }
+    @SubscribeMessage('deleteChannel')
+    async deleteChannel(@MessageBody() data: any) {
+        try {
+            const channel = await this.chatService.deleteChannel(
+                data[0],
+                data[1]
+            )
+            return channel
+        } catch (error) {
+            throw new Error('Failed to remove user from channel')
+        }
+    }
 }

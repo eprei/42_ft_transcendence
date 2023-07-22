@@ -6,6 +6,7 @@ import { Message } from 'src/typeorm/message.entity'
 import { Channel } from 'src/typeorm/channel.entity'
 import { User } from 'src/typeorm/user.entity'
 import { Repository } from 'typeorm'
+import { NotFoundException, UnauthorizedException } from '@nestjs/common'
 
 @Injectable()
 export class ChatService {
@@ -82,7 +83,7 @@ export class ChatService {
 
     async getAllChannels() {
         return await this.channelRepository.find({
-            relations: ['users', 'admin', 'messages'],
+            relations: ['users', 'admin', 'messages', 'owner'],
         })
     }
 
@@ -125,9 +126,7 @@ export class ChatService {
             where: { id: userId },
         })
         channel.users = channel.users.filter((u) => u.id !== user.id)
-        if (channel.users.length === 0) {
-            return await this.channelRepository.remove(channel)
-        } else return await this.channelRepository.save(channel)
+        return await this.channelRepository.save(channel)
     }
 
     findChanDM(nick1: string, nick2: string): Promise<Channel | undefined> {
@@ -151,6 +150,25 @@ export class ChatService {
                 reject(error)
             }
         })
+    }
+
+    async deleteChannel(channelId: number, userId: number) {
+        const channel = await this.channelRepository.findOne({
+            relations: ['owner'],
+            where: { id: channelId },
+        })
+
+        if (!channel) {
+            throw new NotFoundException('Channel not found')
+        }
+
+        if (channel.owner.id !== userId) {
+            throw new UnauthorizedException(
+                'You are not the owner of this channel'
+            )
+        }
+
+        return await this.channelRepository.remove(channel)
     }
 
     // async findOneChByUserId(userId: number) {

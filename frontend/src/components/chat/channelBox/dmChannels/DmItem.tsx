@@ -22,6 +22,7 @@ const DmItem = (props: DmItemProps) => {
     const dispatch = useAppDispatch()
     const [open, setOpen] = useState(false)
     const [confirmLoading, setConfirmLoading] = useState(false)
+    const [isOwner, setIsOwner] = useState(false)
 
     const handleClick = () => {
         dispatch(chatActions.selectChat(props.channel.id))
@@ -33,12 +34,24 @@ const DmItem = (props: DmItemProps) => {
             props.getAllChannels()
         })
     }
+
+    const deleteChannel = () => {
+        socket.emit('deleteChannel', props.channel.id, userData.user.id, () => {
+            dispatch(chatActions.selectChat(0))
+            props.getAllChannels()
+        })
+    }
     const handleOk = () => {
         setConfirmLoading(true)
         setTimeout(() => {
-            LeaveChannel()
+            if (isOwner) {
+                deleteChannel()
+            } else {
+                LeaveChannel()
+            }
             setOpen(false)
             setConfirmLoading(false)
+            setIsOwner(false)
         }, 1000)
     }
 
@@ -47,6 +60,9 @@ const DmItem = (props: DmItemProps) => {
     }
 
     const showModal = () => {
+        if (props.channel.owner.id === userData.user.id) {
+            setIsOwner(true)
+        }
         setOpen(true)
     }
 
@@ -78,7 +94,16 @@ const DmItem = (props: DmItemProps) => {
                 confirmLoading={confirmLoading}
                 onCancel={handleCancel}
             >
-                <p>{`Are you sure you want to leave the DM with ${props.channel.name}?`}</p>
+                {!isOwner && (
+                    <p>{`Are you sure you want to leave ${props.channel.name}?`}</p>
+                )}
+                {isOwner && (
+                    <div>
+                        <p>You are the owner of this channel.</p>
+                        <p>If you leave, the channel will be deleted.</p>
+                        <p>Continue?</p>
+                    </div>
+                )}
             </Modal>
         </>
     )
