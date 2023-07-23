@@ -72,11 +72,12 @@ const BoardGame = () => {
         drawRectangle(ctx, frame.paddleRight)
         drawRectangle(ctx, frame.ball)
 
-        console.log(JSON.stringify(frame))
+        console.log('actual frame render: ', JSON.stringify(frame))
     }, [frame])
 
     useEffect(() => {
         socket.emit('getFrame', {}, (response: Frame) => {
+            console.log('getFrame: ', JSON.stringify(frame))
             setFrame(response)
         })
     }, [])
