@@ -111,44 +111,32 @@ const Friend = ({
 
     return (
         <div className={styles.container}>
-            {!successfullyDone ? (
+              {!successfullyDone && (
                 <>
                     <div>
                         {isPending && !createdByMe && (
-                            <span title="reject friend request">
-                                {' '}
-                                <ClickableIcon
-                                    icon={IconRemoveFriend}
-                                    onClick={() => removeFriendship(id)}
-                                ></ClickableIcon>{' '}
-                            </span>
+                            <ClickableIcon
+                                icon={IconRemoveFriend}
+                                onClick={() => removeFriendship(id)}
+                            ></ClickableIcon>
                         )}
-                        <span
-                            title={
+
+                        <ClickableIcon
+                            icon={
                                 isPending
                                     ? createdByMe
-                                        ? 'remove friendship request'
-                                        : 'accept friendship request'
-                                    : 'remove friendship'
+                                        ? IconRemoveFriend
+                                        : IconAcceptFriend
+                                    : IconRemoveFriend
                             }
-                        >
-                            <ClickableIcon
-                                icon={
-                                    isPending
-                                        ? createdByMe
-                                            ? IconRemoveFriend
-                                            : IconAcceptFriend
-                                        : IconRemoveFriend
-                                }
-                                onClick={
-                                    isPending
-                                        ? createdByMe
-                                            ? () => removeFriendship(id)
-                                            : () => acceptFriendship(id)
-                                        : () => removeFriendship(id)
-                                }
-                            ></ClickableIcon>
-                        </span>
+                            onClick={
+                                isPending
+                                    ? createdByMe
+                                        ? () => removeFriendship(id)
+                                        : () => acceptFriendship(id)
+                                    : () => removeFriendship(id)
+                            }
+                        ></ClickableIcon>
                     </div>
                     <div
                         className={styles.profilePicture}
@@ -163,8 +151,6 @@ const Friend = ({
                         </p>
                     </div>
                 </>
-            ) : (
-                <div></div>
             )}
         </div>
     )
