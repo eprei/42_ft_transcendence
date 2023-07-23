@@ -278,23 +278,21 @@ export class UserService {
 
         const userId: number = user.id
 
-        const friendshipsCreatedByMe = await this.friendRepository
+        const friendsAddedByMe = await this.friendRepository
             .createQueryBuilder('friend')
             .select('friend.friendId', 'friendId')
             .where('friend.userId = :userId', { userId })
             .getRawMany()
 
-        const friendshipsCreatedByOthers = await this.friendRepository
+        const friendsWhoAddedMe = await this.friendRepository
             .createQueryBuilder('follower')
             .select('follower.userId', 'userId')
             .where('follower.friendId = :userId', { userId })
             .getRawMany()
 
-        const friendsByMeIds = friendshipsCreatedByMe.map(
-            (friend) => friend.friendId
-        )
+        const friendsByMeIds = friendsAddedByMe.map((friend) => friend.friendId)
 
-        const friendsByOthersIds = friendshipsCreatedByOthers.map(
+        const friendsByOthersIds = friendsWhoAddedMe.map(
             (follower) => follower.userId
         )
 
