@@ -111,7 +111,7 @@ const Friend = ({
 
     return (
         <div className={styles.container}>
-              {!successfullyDone && (
+            {!successfullyDone && (
                 <>
                     <div>
                         {isPending && !createdByMe && (

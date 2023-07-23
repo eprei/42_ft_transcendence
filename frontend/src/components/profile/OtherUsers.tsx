@@ -40,7 +40,7 @@ const OtherUser = ({ id, nickname, avatarUrl }: OtherUserProps) => {
 
     return (
         <div className={styles.container}>
-                   {!successfullyDone && (
+            {!successfullyDone && (
                 <>
                     <div>
                         <ClickableIcon
