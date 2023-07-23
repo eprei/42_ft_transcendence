@@ -101,6 +101,20 @@ export class AppService {
                     : UserStatus.Playing,
         })
         await this.userRepo.save(user6)
+        j++
+		const user7 = this.userRepo.create({
+            nickname: 'NOT MY FRIEND',
+            xp: 54,
+            avatarUrl: 'http://localhost:8080/api/user/picture/user1.webp',
+            status:
+                j % 3 === 0
+                    ? UserStatus.Online
+                    : j % 3 === 1
+                    ? UserStatus.Offline
+                    : UserStatus.Playing,
+        })
+        await this.userRepo.save(user7)
+        j++
 
         const userMe = await this.userService.findOne(1)
 
