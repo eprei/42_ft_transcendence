@@ -17,6 +17,7 @@ import { AuthModule } from './auth/auth.module'
 import { PongModule } from './pong/pong.module'
 import { AuthenticatedGuard } from './auth/guards/authenticated.guard'
 import { APP_GUARD } from '@nestjs/core'
+import { RoomModule } from './room/room.module'
 
 @Module({
     imports: [
@@ -36,6 +37,7 @@ import { APP_GUARD } from '@nestjs/core'
         MatchModule,
         AuthModule,
         PongModule,
+        RoomModule,
     ],
     controllers: [AppController],
     providers: [

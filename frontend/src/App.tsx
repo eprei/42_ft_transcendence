@@ -12,6 +12,7 @@ import TFAVerify from './pages/TFAAuthenticate'
 import TFATurnOn from './pages/TFATurnOn'
 import UserLambda from './pages/UserLambda'
 import ProtectedSignIn from './ProtectedSignIn'
+import Play from './pages/Play'
 
 const router = createBrowserRouter([
     {
@@ -80,6 +81,14 @@ const router = createBrowserRouter([
             {
                 path: 'user/:nickname',
                 element: <UserLambda />,
+            },
+            {
+                path: 'play',
+                element: (
+                    <ProtectedRoute>
+                        <Play />
+                    </ProtectedRoute>
+                ),
             },
         ],
     },

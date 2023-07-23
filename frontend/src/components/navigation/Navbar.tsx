@@ -51,6 +51,16 @@ const Navbar = () => {
                                 Game
                             </NavLink>
                         )}
+                        {isLoggedIn === 'isLogged' && (
+                            <NavLink
+                                to="/play"
+                                className={({ isActive }) =>
+                                    isActive ? styles.active : undefined
+                                }
+                            >
+                                Play
+                            </NavLink>
+                        )}
                     </div>
                     <div className={styles.centerContainer}>
                         {' '}
