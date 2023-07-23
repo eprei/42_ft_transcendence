@@ -14,6 +14,8 @@ import { Match } from './typeorm/match.entity'
 import { FriendModule } from './friend/friend.module'
 import { MatchModule } from './match/match.module'
 import { AuthModule } from './auth/auth.module'
+import { AuthenticatedGuard } from './auth/guards/authenticated.guard'
+import { APP_GUARD } from '@nestjs/core'
 
 @Module({
     imports: [
@@ -34,6 +36,12 @@ import { AuthModule } from './auth/auth.module'
         AuthModule,
     ],
     controllers: [AppController],
-    providers: [AppService],
+    providers: [
+        AppService,
+        {
+            provide: APP_GUARD,
+            useClass: AuthenticatedGuard,
+        },
+    ],
 })
 export class AppModule {}
