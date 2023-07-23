@@ -40,15 +40,13 @@ const OtherUser = ({ id, nickname, avatarUrl }: OtherUserProps) => {
 
     return (
         <div className={styles.container}>
-            {!successfullyDone ? (
+                   {!successfullyDone && (
                 <>
                     <div>
-                        <span title={'Send friend request'}>
-                            <ClickableIcon
-                                icon={IconAddFriend}
-                                onClick={() => sendFriendRequest(id)}
-                            ></ClickableIcon>
-                        </span>
+                        <ClickableIcon
+                            icon={IconAddFriend}
+                            onClick={() => sendFriendRequest(id)}
+                        ></ClickableIcon>
                     </div>
                     <div
                         className={styles.profilePicture}
@@ -60,8 +58,6 @@ const OtherUser = ({ id, nickname, avatarUrl }: OtherUserProps) => {
                         </CustomLink>
                     </div>
                 </>
-            ) : (
-                <div></div>
             )}
         </div>
     )
