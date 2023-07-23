@@ -40,7 +40,7 @@ const MainProfile = () => {
     })
 
     const [otherUsers, setOtherUsers] = useState({
-        usersWithNoFriendship: [],
+        usersNotFriends: [],
     })
 
     const refreshTime: number = 3000
@@ -103,9 +103,10 @@ const MainProfile = () => {
                 }
 
                 const data = await response.json()
-                const { usersWithNoFriendship } = data
+                const { usersNotFriends } = data
+
                 setOtherUsers({
-                    usersWithNoFriendship,
+                    usersNotFriends,
                 })
                 setIsLoading(false)
             } catch (error) {

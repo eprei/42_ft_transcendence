@@ -30,7 +30,7 @@ const AddFriendsBtn = ({ otherUsers }) => {
                 onCancel={handleCancel}
             >
                 <div className={styles.list}>
-                    {otherUsers.usersWithNoFriendship.map((otherUsers) => {
+                    {otherUsers.usersNotFriends.map((otherUsers) => {
                         return (
                             <OtherUser
                                 key={otherUsers.id}
