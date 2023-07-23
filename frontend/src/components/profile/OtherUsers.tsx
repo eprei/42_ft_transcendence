@@ -2,27 +2,7 @@ import styles from './OtherUsers.module.css'
 import IconAddFriend from '../../assets/icon/add_friend.svg'
 import ClickableIcon from './ClickableIcon'
 import { useState } from 'react'
-
-import { Link, useMatch, useResolvedPath } from 'react-router-dom'
-import type { LinkProps } from 'react-router-dom'
-
-function CustomLink({ children, to, ...props }: LinkProps) {
-    let resolved = useResolvedPath(to)
-    let match = useMatch({ path: resolved.pathname, end: true })
-
-    return (
-        <div>
-            <Link
-                style={{ textDecoration: match ? 'underline' : 'none' }}
-                to={to}
-                {...props}
-            >
-                {children}
-            </Link>
-            {match && ' (active)'}
-        </div>
-    )
-}
+import CustomLink from './CustomLink'
 
 export interface OtherUserProps {
     id: number
