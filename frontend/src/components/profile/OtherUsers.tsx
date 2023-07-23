@@ -59,27 +59,31 @@ const OtherUser = ({ id, nickname, avatarUrl }: OtherUserProps) => {
     }
 
     return (
-        !successfullyDone && (
-            <div className={styles.container}>
-                <div>
-                    <span title={'Send friend request'}>
-                        <ClickableIcon
-                            icon={IconAddFriend}
-                            onClick={() => sendFriendRequest(id)}
-                        ></ClickableIcon>
-                    </span>
-                </div>
-                <div
-                    className={styles.profilePicture}
-                    style={profilePictureStyle}
-                ></div>
-                <div className={styles.nameAndStatus}>
-                    <CustomLink to={`/user/${nickname}`}>
-                        <h3>{nickname}</h3>
-                    </CustomLink>
-                </div>
-            </div>
-        )
+        <div className={styles.container}>
+            {!successfullyDone ? (
+                <>
+                    <div>
+                        <span title={'Send friend request'}>
+                            <ClickableIcon
+                                icon={IconAddFriend}
+                                onClick={() => sendFriendRequest(id)}
+                            ></ClickableIcon>
+                        </span>
+                    </div>
+                    <div
+                        className={styles.profilePicture}
+                        style={profilePictureStyle}
+                    ></div>
+                    <div className={styles.nameAndStatus}>
+                        <CustomLink to={`/user/${nickname}`}>
+                            <h3>{nickname}</h3>
+                        </CustomLink>
+                    </div>
+                </>
+            ) : (
+                <div></div>
+            )}
+        </div>
     )
 }
 
