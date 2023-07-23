@@ -130,59 +130,63 @@ const Friend = ({
     }
 
     return (
-        !successfullyDone && (
-            <div className={styles.container}>
-                <div>
-                    {isPending && !createdByMe && (
-                        <span title="reject friend request">
-                            {' '}
+        <div className={styles.container}>
+            {!successfullyDone ? (
+                <>
+                    <div>
+                        {isPending && !createdByMe && (
+                            <span title="reject friend request">
+                                {' '}
+                                <ClickableIcon
+                                    icon={IconRemoveFriend}
+                                    onClick={() => removeFriendship(id)}
+                                ></ClickableIcon>{' '}
+                            </span>
+                        )}
+                        <span
+                            title={
+                                isPending
+                                    ? createdByMe
+                                        ? 'remove friendship request'
+                                        : 'accept friendship request'
+                                    : 'remove friendship'
+                            }
+                        >
                             <ClickableIcon
-                                icon={IconRemoveFriend}
-                                onClick={() => removeFriendship(id)}
-                            ></ClickableIcon>{' '}
+                                icon={
+                                    isPending
+                                        ? createdByMe
+                                            ? IconRemoveFriend
+                                            : IconAcceptFriend
+                                        : IconRemoveFriend
+                                }
+                                onClick={
+                                    isPending
+                                        ? createdByMe
+                                            ? () => removeFriendship(id)
+                                            : () => acceptFriendship(id)
+                                        : () => removeFriendship(id)
+                                }
+                            ></ClickableIcon>
                         </span>
-                    )}
-                    <span
-                        title={
-                            isPending
-                                ? createdByMe
-                                    ? 'remove friendship request'
-                                    : 'accept friendship request'
-                                : 'remove friendship'
-                        }
-                    >
-                        <ClickableIcon
-                            icon={
-                                isPending
-                                    ? createdByMe
-                                        ? IconRemoveFriend
-                                        : IconAcceptFriend
-                                    : IconRemoveFriend
-                            }
-                            onClick={
-                                isPending
-                                    ? createdByMe
-                                        ? () => removeFriendship(id)
-                                        : () => acceptFriendship(id)
-                                    : () => removeFriendship(id)
-                            }
-                        ></ClickableIcon>
-                    </span>
-                </div>
-                <div
-                    className={styles.profilePicture}
-                    style={profilePictureStyle}
-                ></div>
-                <div className={styles.nameAndStatus}>
-                    <CustomLink to={`/user/${nickname}`}>
-                        <h3>{nickname}</h3>
-                    </CustomLink>
-                    <p className={`${styles.status} ${statusColorClass}`}>
-                        {status}
-                    </p>
-                </div>
-            </div>
-        )
+                    </div>
+                    <div
+                        className={styles.profilePicture}
+                        style={profilePictureStyle}
+                    ></div>
+                    <div className={styles.nameAndStatus}>
+                        <CustomLink to={`/user/${nickname}`}>
+                            <h3>{nickname}</h3>
+                        </CustomLink>
+                        <p className={`${styles.status} ${statusColorClass}`}>
+                            {status}
+                        </p>
+                    </div>
+                </>
+            ) : (
+                <div></div>
+            )}
+        </div>
     )
 }
 

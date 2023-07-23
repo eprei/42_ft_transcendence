@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Button, Modal } from 'antd'
 import OtherUser from './OtherUsers'
 
-const AddFriendsBtn = ({ otherUsers }) => {
+const AddFriendsBtn = ({ otherUsers }: any) => {
     const [isModalOpen, setIsModalOpen] = useState(false)
 
     const showModal = () => {
@@ -30,7 +30,7 @@ const AddFriendsBtn = ({ otherUsers }) => {
                 onCancel={handleCancel}
             >
                 <div className={styles.list}>
-                    {otherUsers.usersNotFriends.map((otherUsers) => {
+                    {otherUsers.usersNotFriends.map((otherUsers: any) => {
                         return (
                             <OtherUser
                                 key={otherUsers.id}
