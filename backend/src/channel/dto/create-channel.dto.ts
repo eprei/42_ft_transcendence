@@ -18,7 +18,8 @@ export class CreateChannelDto {
     password: string
 
     @IsOptional()
-    admin: User
+    admin: User[]
+    // admin: User
 
     @IsOptional()
     users: User[]

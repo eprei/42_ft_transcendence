@@ -43,7 +43,7 @@ export class User {
 
     @Column({ default: false })
     TFAEnabled: boolean
-
+	
     @Column({ default: '' })
     FT_id: string
 
@@ -56,9 +56,15 @@ export class User {
     @OneToMany(() => Channel, (channel) => channel.admin)
     owner: Channel[]
 
-    @ManyToMany(() => Channel, (channel) => channel.users)
+    @OneToMany(() => Channel, (channel) => channel.owner)
+    ownedChannels: Channel[]
+	
+	@ManyToMany(() => Channel, (channel) => channel.users)
     @JoinTable()
     joinedChannel: Channel[]
+
+	@ManyToMany(() => Channel, (channel) => channel.admin)
+    admin: Channel[]
 
     @OneToMany(() => Friend, (friend) => friend.user)
     friends: Friend[]
@@ -75,6 +81,11 @@ export class User {
     @OneToMany(() => Friend, (friend) => friend.createdBy)
     createdFriends: Friend[]
 
-    // @Column('simple-array', { default: [] })
-    // blockedUsers: number[]
+	@ManyToMany(() => User, (user) => user.blockedBy)
+    @JoinTable()
+    blockedUsers: User[];
+
+    @ManyToMany(() => User, (user) => user.blockedUsers)
+    blockedBy: User[];
 }
+ 

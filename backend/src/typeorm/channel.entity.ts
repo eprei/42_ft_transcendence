@@ -16,10 +16,11 @@ export class Channel {
     @PrimaryGeneratedColumn()
     id: number
 
-    @ManyToOne(() => User, (channel) => channel.owner)
+    @ManyToOne(() => User, (user) => user.ownedChannels)
+	@JoinColumn({ name: 'ownedChannels' })
     owner: User
 
-    @Column({ type: 'varchar', length: 500, unique: true })
+    @Column({ type: 'varchar', length: 500})
     name: string
 
     @Column()
@@ -33,13 +34,13 @@ export class Channel {
     @CreateDateColumn()
     creationDate: Date
 
-    @ManyToOne(() => User, (user) => user.owner)
-    @JoinColumn({ name: 'admin' })
-    admin: User
-
-    @ManyToMany(() => User, (user) => user.joinedChannel)
+   	@ManyToMany(() => User, (user) => user.joinedChannel)
     users: User[]
 
+	@ManyToMany(() => User, (user) => user.admin)
+    admin: User[]
+    // admin: User
+  
     @OneToMany(() => Message, (message) => message.channelId)
     @JoinColumn({ name: 'messages' })
     messages: Message[]
