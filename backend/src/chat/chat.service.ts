@@ -109,6 +109,7 @@ export class ChatService {
 
     //ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox
     createChannel(createChannelDto: CreateChannelDto) {
+        console.log('createChannelDto', createChannelDto)
         const newChannel = this.channelRepository.create(createChannelDto)
         return this.channelRepository.save(newChannel)
     }

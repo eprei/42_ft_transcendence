@@ -53,8 +53,6 @@ export class User {
         default: UserStatus.Online,
     })
     status: UserStatus
-    @OneToMany(() => Channel, (channel) => channel.admin)
-    owner: Channel[]
 
     @OneToMany(() => Channel, (channel) => channel.owner)
     ownedChannels: Channel[]
@@ -64,6 +62,7 @@ export class User {
     joinedChannel: Channel[]
 
 	@ManyToMany(() => Channel, (channel) => channel.admin)
+    @JoinTable()
     admin: Channel[]
 
     @OneToMany(() => Friend, (friend) => friend.user)

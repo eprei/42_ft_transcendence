@@ -20,6 +20,7 @@ const ChannelCreateForm = ({
     const [form] = Form.useForm()
     const userData = useAppSelector((state) => state.user.userData) as UserData
     const [isPrivate, setIsPrivate] = useState<boolean>(false)
+    console.log(userData.user.id)
 
     let showPassword: JSX.Element | null = null
 
