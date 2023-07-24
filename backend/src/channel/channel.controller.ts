@@ -35,7 +35,7 @@ export class ChannelController {
             id: createChannelDto.ownerId,
         })
         createChannelDto.owner = user
-        createChannelDto.admin = user
+        createChannelDto.admin = [user]
         createChannelDto.users = [user]
         const channel = await this.channelService.create(createChannelDto)
         return channel

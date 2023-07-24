@@ -39,7 +39,6 @@ export class Channel {
 
 	@ManyToMany(() => User, (user) => user.admin)
     admin: User[]
-    // admin: User
   
     @OneToMany(() => Message, (message) => message.channelId)
     @JoinColumn({ name: 'messages' })

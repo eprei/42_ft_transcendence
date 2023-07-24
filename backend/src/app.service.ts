@@ -124,7 +124,7 @@ export class AppService {
             name: 'chan 1',
             type: 'public',
             password: null,
-            admin: user1,
+            admin: [user1],
             users: [user1, user2, user5],
         })
         await this.channelRepo.save(chan1)
@@ -134,7 +134,7 @@ export class AppService {
             name: 'chan 2',
             type: 'public',
             password: null,
-            admin: user1,
+            admin: [user1],
             users: [user1, user4],
         })
         await this.channelRepo.save(chan2)
@@ -144,7 +144,7 @@ export class AppService {
             name: 'chan 3',
             type: 'private',
             password: '1234',
-            admin: user1,
+            admin: [user1],
             users: [user1, user3],
         })
         await this.channelRepo.save(chan3)
@@ -154,7 +154,7 @@ export class AppService {
             name: 'chan 4',
             type: 'private',
             password: '1234',
-            admin: user2,
+            admin: [user2],
             users: [user2, user4],
         })
         await this.channelRepo.save(chan4)
@@ -164,7 +164,7 @@ export class AppService {
             name: 'chan 5',
             type: 'direct',
             password: null,
-            admin: user2,
+            admin: [user2],
             users: [user2, user5],
         })
         await this.channelRepo.save(chan5)
@@ -174,7 +174,7 @@ export class AppService {
             name: 'chan 6',
             type: 'direct',
             password: null,
-            admin: user3,
+            admin: [user3],
         })
         chan6.users = [user3, user4]
         await this.channelRepo.save(chan6)
