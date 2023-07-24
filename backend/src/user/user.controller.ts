@@ -23,11 +23,10 @@ import { ApiTags } from '@nestjs/swagger'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { diskStorage } from 'multer'
 import { UpdateNicknameDto } from './dto/update-nickname.dto'
-import { UseGuards } from '@nestjs/common'
-import { AuthenticatedGuard } from 'src/auth/guards/authenticated.guard'
 import { v4 as uuidv4 } from 'uuid'
 import { extname } from 'path'
 import { Response } from 'express'
+import { Public } from 'src/decorators/public.decorator'
 
 @ApiTags('user')
 @Controller('user')
@@ -110,6 +109,7 @@ export class UserController {
         res.sendFile(filename, { root: './uploads' })
     }
 
+    @Public()
     @Get('me')
     async getUser(@Request() req: any) {
         const user = await this.userService.findOne(req.user.id)
@@ -124,7 +124,6 @@ export class UserController {
     }
 
     @Get('nickname/:nickname')
-    @UseGuards(AuthenticatedGuard)
     async getLambda(@Param('nickname') nickname: string) {
         return await this.userService.getLambdaInfo(nickname)
     }
