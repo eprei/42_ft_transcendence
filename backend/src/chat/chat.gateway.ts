@@ -86,7 +86,7 @@ export class ChatGateway {
             id: createChannelDto.ownerId,
         })
         createChannelDto.owner = user
-        createChannelDto.admin = user
+        createChannelDto.admin = [user]
         createChannelDto.users = [user]
         const channelCreated = await this.chatService.createChannel(
             createChannelDto
@@ -124,7 +124,7 @@ export class ChatGateway {
             return joinChannel.id
         }
         createChannelDto.owner = user
-        createChannelDto.admin = user
+        createChannelDto.admin = [user]
         createChannelDto.users = [user, user2]
         createChannelDto.type = 'direct'
         createChannelDto.name = user.nickname + ' & ' + user2.nickname
