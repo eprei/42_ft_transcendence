@@ -6,6 +6,8 @@ import { Channel } from './typeorm/channel.entity'
 import { Friend } from './typeorm/friend.entity'
 import { Message } from './typeorm/message.entity'
 import { Match } from './typeorm/match.entity'
+import { UserService } from './user/user.service'
+import { UserStatus } from './typeorm/user.entity'
 
 @Injectable()
 export class AppService {
@@ -14,47 +16,107 @@ export class AppService {
         @InjectRepository(Channel) private channelRepo: Repository<Channel>,
         @InjectRepository(Friend) private friendRepo: Repository<Friend>,
         @InjectRepository(Message) private messageRepo: Repository<Message>,
-        @InjectRepository(Match) private matchRepo: Repository<Match>
+        @InjectRepository(Match) private matchRepo: Repository<Match>,
+        private readonly userService: UserService
     ) {}
 
     async seed() {
         //  create Users
+        let j: number = 0
+
         const user1 = this.userRepo.create({
             nickname: 'user1',
             xp: 12,
             avatarUrl: 'http://localhost:8080/api/user/picture/user1.webp',
+            status:
+                j % 3 === 0
+                    ? UserStatus.Online
+                    : j % 3 === 1
+                    ? UserStatus.Offline
+                    : UserStatus.Playing,
         })
+        j++
         await this.userRepo.save(user1)
         const user2 = this.userRepo.create({
             nickname: 'user2',
             xp: 23,
             avatarUrl: 'http://localhost:8080/api/user/picture/user2.webp',
+            status:
+                j % 3 === 0
+                    ? UserStatus.Online
+                    : j % 3 === 1
+                    ? UserStatus.Offline
+                    : UserStatus.Playing,
         })
+        j++
         await this.userRepo.save(user2)
         const user3 = this.userRepo.create({
             nickname: 'user3',
             xp: 34,
             avatarUrl: 'http://localhost:8080/api/user/picture/user3.webp',
+            status:
+                j % 3 === 0
+                    ? UserStatus.Online
+                    : j % 3 === 1
+                    ? UserStatus.Offline
+                    : UserStatus.Playing,
         })
+        j++
         await this.userRepo.save(user3)
         const user4 = this.userRepo.create({
             nickname: 'user4',
             xp: 45,
             avatarUrl: 'http://localhost:8080/api/user/picture/user4.webp',
+            status:
+                j % 3 === 0
+                    ? UserStatus.Online
+                    : j % 3 === 1
+                    ? UserStatus.Offline
+                    : UserStatus.Playing,
         })
+        j++
         await this.userRepo.save(user4)
         const user5 = this.userRepo.create({
             nickname: 'user5',
             xp: 56,
             avatarUrl: 'http://localhost:8080/api/user/picture/user5.webp',
+            status:
+                j % 3 === 0
+                    ? UserStatus.Online
+                    : j % 3 === 1
+                    ? UserStatus.Offline
+                    : UserStatus.Playing,
         })
+        j++
         await this.userRepo.save(user5)
         const user6 = this.userRepo.create({
             nickname: 'user6',
             xp: 67,
             avatarUrl: 'http://localhost:8080/api/user/picture/user6.webp',
+            status:
+                j % 3 === 0
+                    ? UserStatus.Online
+                    : j % 3 === 1
+                    ? UserStatus.Offline
+                    : UserStatus.Playing,
         })
         await this.userRepo.save(user6)
+        j++
+        const user7 = this.userRepo.create({
+            nickname: 'NOT MY FRIEND',
+            xp: 54,
+            avatarUrl: 'http://localhost:8080/api/user/picture/user1.webp',
+            status:
+                j % 3 === 0
+                    ? UserStatus.Online
+                    : j % 3 === 1
+                    ? UserStatus.Offline
+                    : UserStatus.Playing,
+        })
+        await this.userRepo.save(user7)
+        j++
+
+        const userMe = await this.userService.findOne(1)
 
         //   create Channels
         const chan1 = this.channelRepo.create({
@@ -118,21 +180,70 @@ export class AppService {
         await this.channelRepo.save(chan6)
 
         // Create friendships
-        const users = [user1, user2, user3, user4, user5, user6]
+        const users = [userMe, user1, user2, user3, user4, user5, user6]
 
-        for (const user of users) {
-            const friends = users.filter((p) => p.id !== user.id).slice(0, 3)
+        // for (const user of users) {
+        //     const friends = users.filter((p) => p.id !== user.id).slice(0, 3)
+        //     let j: number = 0
 
-            for (const friend of friends) {
-                const friendship = this.friendRepo.create({
-                    user: user,
-                    friend: friend,
-                    isPending: false,
-                })
+        //     for (const friend of friends) {
+        //         const friendship = this.friendRepo.create({
+        //             user: user,
+        //             friend: friend,
+        //             isPending: j % 2 === 0 ? true : false,
+        //         })
+        //         j++
+        //         await this.friendRepo.save(friendship)
+        //     }
+        // }
 
-                await this.friendRepo.save(friendship)
-            }
-        }
+        const friendship1 = this.friendRepo.create({
+            user: userMe,
+            friend: user1,
+            isPending: false,
+            createdBy: userMe,
+        })
+        await this.friendRepo.save(friendship1)
+
+        const friendship2 = this.friendRepo.create({
+            user: userMe,
+            friend: user3,
+            isPending: true,
+            createdBy: userMe,
+        })
+        await this.friendRepo.save(friendship2)
+
+        const friendship3 = this.friendRepo.create({
+            user: user4,
+            friend: userMe,
+            isPending: true,
+            createdBy: user4,
+        })
+        await this.friendRepo.save(friendship3)
+
+        const friendship4 = this.friendRepo.create({
+            user: user5,
+            friend: userMe,
+            isPending: false,
+            createdBy: user5,
+        })
+        await this.friendRepo.save(friendship4)
+
+        const friendship5 = this.friendRepo.create({
+            user: user2,
+            friend: user4,
+            isPending: false,
+            createdBy: user2,
+        })
+        await this.friendRepo.save(friendship5)
+
+        const friendship6 = this.friendRepo.create({
+            user: userMe,
+            friend: user6,
+            isPending: false,
+            createdBy: user6,
+        })
+        await this.friendRepo.save(friendship6)
 
         // Create messages
         const channels = await this.channelRepo.find()

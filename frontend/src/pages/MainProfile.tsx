@@ -1,5 +1,4 @@
 import styles from './MainProfile.module.css'
-import SeeMatchHistoryBtn from '../components/profile/SeeMatchHistoryBtn'
 import FriendList from '../components/profile/FriendList'
 import Statistics from '../components/profile/Statistics'
 import UserInformation from '../components/profile/UserInformation'
@@ -7,11 +6,124 @@ import { userActions } from '../store/user'
 import { useAppDispatch } from '../store/types'
 import { UserData } from '../types/UserData'
 import { useLoaderData } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import AddFriendsBtn from '../components/profile/AddFriendsBtn'
 
+export interface friendList {
+    myId: number
+    listOfFriends: {
+        id: number
+        isPending: boolean
+        user: {
+            id: number
+            nickname: string
+            avatarUrl: string
+            status: 'online' | 'offline' | 'playing'
+        }[]
+    }
+    listOfPendings: {
+        id: number
+        isPending: boolean
+        user: {
+            id: number
+            nickname: string
+            avatarUrl: string
+            status: 'online' | 'offline' | 'playing'
+        }[]
+    }
+}
 const MainProfile = () => {
+    const [friendList, setFriendList] = useState({
+        myId: 0,
+        listOfFriends: [],
+        listOfPendings: [],
+    })
+
+    const [otherUsers, setOtherUsers] = useState({
+        usersNotFriends: [],
+    })
+
+    const refreshTime: number = 3000
     const fetchUserData = useLoaderData() as UserData
     const dispatch = useAppDispatch()
     dispatch(userActions.update({ user: fetchUserData }))
+
+    const [isLoading, setIsLoading] = useState(true)
+
+    useEffect(() => {
+        const fetchFriends = async () => {
+            try {
+                const response = await fetch(
+                    `http://localhost:8080/api/user/getFriendsAndRequests`,
+                    {
+                        method: 'GET',
+                        credentials: 'include',
+                    }
+                )
+
+                if (!response.ok) {
+                    throw new Error('Error fetching friends')
+                }
+
+                const data = await response.json()
+                const { myId, listOfFriends, listOfPendings } = data
+
+                setFriendList({
+                    myId,
+                    listOfFriends,
+                    listOfPendings,
+                })
+                setIsLoading(false)
+            } catch (error) {
+                console.error(error)
+                setIsLoading(false)
+            }
+        }
+
+        fetchFriends() // Initial call
+        const intervalId = setInterval(fetchFriends, refreshTime) //Periodic call every 3 seconds
+
+        // Cleaning the interval when the component is disassembled
+        return () => clearInterval(intervalId)
+    }, [])
+
+    useEffect(() => {
+        const fetchOtherUsers = async () => {
+            try {
+                const response = await fetch(
+                    `http://localhost:8080/api/user/getallnonfriendusers`,
+                    {
+                        method: 'GET',
+                        credentials: 'include',
+                    }
+                )
+
+                if (!response.ok) {
+                    throw new Error('Error fetching other users')
+                }
+
+                const data = await response.json()
+                const { usersNotFriends } = data
+
+                setOtherUsers({
+                    usersNotFriends,
+                })
+                setIsLoading(false)
+            } catch (error) {
+                console.error(error)
+                setIsLoading(false)
+            }
+        }
+
+        fetchOtherUsers()
+        const intervalId = setInterval(fetchOtherUsers, refreshTime)
+
+        return () => clearInterval(intervalId)
+    }, [])
+
+    if (isLoading) {
+        return <div>Loading...</div>
+    }
 
     return (
         <div className={styles.container}>
@@ -20,10 +132,10 @@ const MainProfile = () => {
                 <div className={styles.bodyLeftSide}>
                     <UserInformation />
                     <Statistics />
-                    <SeeMatchHistoryBtn />
+                    <AddFriendsBtn otherUsers={otherUsers} />
                 </div>
                 <div className={styles.bodyRightSide}>
-                    <FriendList />
+                    <FriendList friendList={friendList} />
                 </div>
             </div>
         </div>

@@ -1,88 +1,48 @@
 import styles from './FriendList.module.css'
 import Friend from './Friend'
-import PicturePlaceHolder from '../../assets/img/profil-picture-placeholder.png'
-import { FriendProps } from './Friend'
 
-const friendsRecoveredFromBackend: FriendProps[] = [
-    {
-        id: 1,
-        name: 'rburri',
-        picture: PicturePlaceHolder,
-        status: 'playing',
-        isFriend: true,
-    },
-    {
-        id: 2,
-        name: 'sbars',
-        picture: PicturePlaceHolder,
-        status: 'online',
-        isFriend: true,
-    },
-    {
-        id: 3,
-        name: 'mpons',
-        picture: PicturePlaceHolder,
-        status: 'offline',
-        isFriend: true,
-    },
-    {
-        id: 4,
-        name: 'tgrivel',
-        picture: PicturePlaceHolder,
-        status: 'offline',
-        isFriend: true,
-    },
-]
-
-const otherUsersRecoveredFromBackend: FriendProps[] = [
-    {
-        id: 5,
-        name: 'epresa-c',
-        picture: PicturePlaceHolder,
-        status: 'offline',
-        isFriend: false,
-    },
-    {
-        id: 6,
-        name: 'mdavis',
-        picture: PicturePlaceHolder,
-        status: 'online',
-        isFriend: false,
-    },
-]
-
-const FriendList = () => {
+const FriendList = ({ friendList }: any) => {
     return (
         <div className={styles.container}>
             <h3>Friend list</h3>
             <div className={styles.list}>
-                {friendsRecoveredFromBackend.map(
-                    (friendsRecoveredFromBackend) => (
+                {friendList.listOfFriends.map((friend: any) => {
+                    const user = friend.user || friend.friend
+                    return (
                         <Friend
-                            key={friendsRecoveredFromBackend.id}
-                            id={friendsRecoveredFromBackend.id}
-                            name={friendsRecoveredFromBackend.name}
-                            picture={friendsRecoveredFromBackend.picture}
-                            status={friendsRecoveredFromBackend.status}
-                            isFriend={friendsRecoveredFromBackend.isFriend}
+                            key={friend.id}
+                            id={friend.id}
+                            nickname={user?.nickname}
+                            avatarUrl={user?.avatarUrl}
+                            status={user?.status}
+                            isPending={friend.isPending}
+                            createdByMe={
+                                friend.createdBy?.id === friendList.myId
+                            }
                         />
                     )
-                )}
+                })}
             </div>
-            <h3>Other users</h3>
+            <h3>Pending acceptance</h3>
             <div className={styles.list}>
-                {otherUsersRecoveredFromBackend.map(
-                    (otherUsersRecoveredFromBackend) => (
+                {friendList.listOfPendings.map((FriendshipRequests: any) => {
+                    const user =
+                        FriendshipRequests.user || FriendshipRequests.friend
+                    return (
                         <Friend
-                            key={otherUsersRecoveredFromBackend.id}
-                            id={otherUsersRecoveredFromBackend.id}
-                            name={otherUsersRecoveredFromBackend.name}
-                            picture={otherUsersRecoveredFromBackend.picture}
-                            status={otherUsersRecoveredFromBackend.status}
-                            isFriend={otherUsersRecoveredFromBackend.isFriend}
+                            key={FriendshipRequests.id}
+                            id={FriendshipRequests.id}
+                            nickname={user?.nickname}
+                            avatarUrl={user?.avatarUrl}
+                            status={user?.status}
+                            isPending={FriendshipRequests.isPending}
+                            createdByMe={
+                                FriendshipRequests.createdBy?.id ===
+                                friendList.myId
+                            }
                         />
                     )
-                )}
+                })}
             </div>
         </div>
     )

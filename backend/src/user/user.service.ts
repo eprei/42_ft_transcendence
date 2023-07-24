@@ -7,22 +7,29 @@ import {
     Req,
     BadRequestException,
     InternalServerErrorException,
+    Res,
 } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { User } from 'src/typeorm/user.entity'
 import { CreateUserDto } from './dto/create-user.dto'
-import { Repository } from 'typeorm'
+import { Repository, Not, In } from 'typeorm'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { UpdateNicknameDto } from './dto/update-nickname.dto'
 import { v4 as uuidv4 } from 'uuid'
 import { extname, basename } from 'path'
 import * as fs from 'fs'
+import { FriendService } from 'src/friend/friend.service'
+import { UserStatus } from 'src/typeorm/user.entity'
+import { Friend } from 'src/typeorm/friend.entity'
 
 @Injectable()
 export class UserService {
     constructor(
         @InjectRepository(User)
-        private readonly userRepository: Repository<User>
+        private readonly userRepository: Repository<User>,
+        private readonly friendService: FriendService,
+        @InjectRepository(Friend)
+        private readonly friendRepository: Repository<Friend>
     ) {}
     create(createUserDto: CreateUserDto) {
         const user = this.userRepository.create(createUserDto)
@@ -236,5 +243,90 @@ export class UserService {
                 'An error occurred when saving the profile image'
             )
         }
+    }
+
+    async getMyInfo(@Request() req: any) {
+        const user = await this.findOne(req.user.id)
+
+        if (!user) {
+            throw new NotFoundException('User not found')
+        }
+
+        const { id, TFASecret, FT_id, ...rest } = user
+
+        const userPosition = await this.getUserRankingPosition(req.user.id)
+
+        return { ...rest, userPosition }
+    }
+
+    async getFriendsAndRequests(@Request() req: any) {
+        const user = await this.findOne(req.user.id)
+
+        if (!user) {
+            throw new NotFoundException('User not found')
+        }
+
+        return this.friendService.getFiendsAndRequests(user.id)
+    }
+
+    async getAllUsersWithNoFriendship(@Request() req: any) {
+        const user = await this.findOne(req.user.id)
+
+        if (!user) {
+            throw new NotFoundException('User not found')
+        }
+
+        const userId: number = user.id
+
+        const friendsAddedByMe = await this.friendRepository
+            .createQueryBuilder('friend')
+            .select('friend.friendId', 'friendId')
+            .where('friend.userId = :userId', { userId })
+            .getRawMany()
+
+        const friendsWhoAddedMe = await this.friendRepository
+            .createQueryBuilder('follower')
+            .select('follower.userId', 'userId')
+            .where('follower.friendId = :userId', { userId })
+            .getRawMany()
+
+        const friendsByMeIds = friendsAddedByMe.map((friend) => friend.friendId)
+
+        const friendsByOthersIds = friendsWhoAddedMe.map(
+            (follower) => follower.userId
+        )
+
+        const usersNotFriends = await this.userRepository.find({
+            where: {
+                id: Not(In([...friendsByMeIds, ...friendsByOthersIds, userId])),
+            },
+            select: ['id', 'nickname', 'avatarUrl'],
+        })
+
+        return { usersNotFriends }
+    }
+
+    async logout(@Request() req: any, @Res() res: any) {
+        const user = await this.findOne(req.user.id)
+
+        if (!user) {
+            throw new NotFoundException('User not found')
+        }
+        console.log('user.status: logout')
+        this.update(user.id, { id: user.id, status: UserStatus.Offline })
+
+        await req.session.destroy()
+        res.clearCookie('sessionID')
+        res.status(200).json({ message: 'Logout successful' })
+    }
+
+    async changeStatusOnLine(userId: number) {
+        console.log('user.status: online')
+        this.update(userId, { id: userId, status: UserStatus.Online })
+    }
+
+    async changeStatusPlaying(userId: number) {
+        console.log('user.status: playing')
+        this.update(userId, { id: userId, status: UserStatus.Playing })
     }
 }

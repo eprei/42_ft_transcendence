@@ -1,4 +1,7 @@
 .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-top: 0rem;
     padding: 16px 24px;
     border-radius: 20px;
@@ -14,4 +17,11 @@
 
 .btn:active {
     background-color: var(--color-purple);
+}
+
+.list {
+    scroll-behavior: auto contain;
+    overflow: auto;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
 }

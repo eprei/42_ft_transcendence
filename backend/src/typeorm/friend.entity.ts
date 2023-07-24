@@ -14,4 +14,7 @@ export class Friend {
 
     @Column()
     isPending: boolean
+
+    @ManyToOne(() => User, (user) => user.createdFriends)
+    createdBy: User
 }
