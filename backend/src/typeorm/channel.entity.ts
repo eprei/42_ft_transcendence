@@ -17,10 +17,10 @@ export class Channel {
     id: number
 
     @ManyToOne(() => User, (user) => user.ownedChannels)
-	@JoinColumn({ name: 'ownedChannels' })
+    @JoinColumn({ name: 'ownedChannels' })
     owner: User
 
-    @Column({ type: 'varchar', length: 500})
+    @Column({ type: 'varchar', length: 500 })
     name: string
 
     @Column()
@@ -34,12 +34,12 @@ export class Channel {
     @CreateDateColumn()
     creationDate: Date
 
-   	@ManyToMany(() => User, (user) => user.joinedChannel)
+    @ManyToMany(() => User, (user) => user.joinedChannel)
     users: User[]
 
-	@ManyToMany(() => User, (user) => user.admin)
+    @ManyToMany(() => User, (user) => user.admin)
     admin: User[]
-  
+
     @OneToMany(() => Message, (message) => message.channelId)
     @JoinColumn({ name: 'messages' })
     messages: Message[]

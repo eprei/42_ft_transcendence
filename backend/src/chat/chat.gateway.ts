@@ -189,15 +189,14 @@ export class ChatGateway {
             throw new Error('Failed to remove user from channel')
         }
     }
-	
-	@SubscribeMessage('blockUser')
-	async blockUser(@MessageBody() data: any) {
-		try {
-			this.chatService.blockUser(data[0], data[1])
-			return { message: 'User blocked successfully' }
-		} catch (error) {
-			throw new Error('Failed to block user')
-		}
-	}
-}
 
+    @SubscribeMessage('blockUser')
+    async blockUser(@MessageBody() data: any) {
+        try {
+            this.chatService.blockUser(data[0], data[1])
+            return { message: 'User blocked successfully' }
+        } catch (error) {
+            throw new Error('Failed to block user')
+        }
+    }
+}

@@ -75,37 +75,39 @@ export class ChatService {
         })
     }
 
-	async blockUser(myId: number, hisId: number) {
-		const user = await this.userRepository.findOne({
-			where: { id: myId },
-			relations: {
+    async blockUser(myId: number, hisId: number) {
+        const user = await this.userRepository.findOne({
+            where: { id: myId },
+            relations: {
                 blockedUsers: true,
             },
-		})
-		console.log('user', user)
-		const userToBlock = await this.userRepository.findOne({
-			where: { id: hisId },
-			relations: {
-				blockedBy: true,
-			},
-		})
-		console.log('userToBlock', userToBlock)
+        })
+        console.log('user', user)
+        const userToBlock = await this.userRepository.findOne({
+            where: { id: hisId },
+            relations: {
+                blockedBy: true,
+            },
+        })
+        console.log('userToBlock', userToBlock)
 
-		userToBlock.blockedBy.push(user)
-		await this.userRepository.save(userToBlock)
-		
-		user.blockedUsers.push(userToBlock)
-		await this.userRepository.save(user)
+        userToBlock.blockedBy.push(user)
+        await this.userRepository.save(userToBlock)
 
-		const direcChan = this.findChanDM(user.nickname, userToBlock.nickname).then((channel) => {
-			if (channel) {
-				return this.channelRepository.remove(channel)
-				// this.leaveChannel(channel.id, user.id)
-				// this.leaveChannel(channel.id, userToBlock.id)
-			}
-			})
-		}
+        user.blockedUsers.push(userToBlock)
+        await this.userRepository.save(user)
 
+        const direcChan = this.findChanDM(
+            user.nickname,
+            userToBlock.nickname
+        ).then((channel) => {
+            if (channel) {
+                return this.channelRepository.remove(channel)
+                // this.leaveChannel(channel.id, user.id)
+                // this.leaveChannel(channel.id, userToBlock.id)
+            }
+        })
+    }
 
     //ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox
     createChannel(createChannelDto: CreateChannelDto) {
@@ -204,7 +206,6 @@ export class ChatService {
         return await this.channelRepository.remove(channel)
     }
 
-	
     // async findOneChByUserId(userId: number) {
     // return await this.channelRepository.findOneBy({ id: userId , type: 'direct' })
     // }

@@ -44,19 +44,18 @@ const User = ({ id, nickname, avatarUrl, isOwner, isAdmin }: UserProps) => {
         setShowContextMenu(false)
     }
 
-	const blockUser = () => {
-		socket.emit('blockUser', myId, id, (response: any) => {
-			if (response) {
-				// setChatId(response)
-			}
-		})
-	}
+    const blockUser = () => {
+        socket.emit('blockUser', myId, id, (response: any) => {
+            if (response) {
+                // setChatId(response)
+            }
+        })
+    }
 
     return (
         <div className={styles.container}>
             <div className={styles.left}>
-                <img
-				  // {isBlocked ? (src={IconBlocked}) : (src={avatarUrl})}
+                <img // {isBlocked ? (src={IconBlocked}) : (src={avatarUrl})}
                     src={avatarUrl}
                     alt="Avatar"
                     className={styles.profilePicture}
@@ -83,14 +82,14 @@ const User = ({ id, nickname, avatarUrl, isOwner, isAdmin }: UserProps) => {
                                     <li>Remove admin</li>
                                     <li>Kick</li>
                                     <li>Ban</li>
-									<li>Silent</li>
+                                    <li>Silent</li>
                                 </div>
                             ) : null}
                             {isAdmin && !isOwner ? (
                                 <div>
                                     <li>Kick</li>
                                     <li>Ban</li>
-									<li>Silent</li>
+                                    <li>Silent</li>
                                 </div>
                             ) : null}
                         </ul>

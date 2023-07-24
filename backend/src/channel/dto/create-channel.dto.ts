@@ -2,7 +2,6 @@ import { IsNotEmpty, IsOptional } from 'class-validator'
 import { User } from 'src/typeorm/user.entity'
 import { Message } from '../../typeorm/message.entity'
 
-
 export class CreateChannelDto {
     @IsOptional()
     owner: User

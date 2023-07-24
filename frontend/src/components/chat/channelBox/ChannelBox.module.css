@@ -1,7 +1,7 @@
 .channelbox {
     flex: 0 0 18rem;
     margin-right: 1rem;
-    height: 40rem;
+    height: inherit;
     border-radius: 10px;
     border: 1px solid #3a3a42;
     background: var(--color-black-transparent);

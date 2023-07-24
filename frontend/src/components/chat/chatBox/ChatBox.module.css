@@ -1,6 +1,6 @@
 .chatBox {
     flex: 1;
-    height: 40rem;
+    height: inherit;
     border-radius: 10px;
     border: 1px solid #3a3a42;
     background: var(--color-black-transparent);
