@@ -1,52 +1,32 @@
-import { MatchData } from "../../types/MatchData";
-import styles from "./MatchItem.module.css"
+import { MatchData } from '../../types/MatchData'
+import styles from './MatchItem.module.css'
 
 interface MatchProps {
-    key: number,
+    key: number
     data: MatchData
 }
 
-const MatchItem = (props:MatchProps) => {
-    const { 
+const MatchItem = (props: MatchProps) => {
+    const {
         winnerPfp,
         winnerNick,
         loserPfp,
         loserNick,
         scoreWinner,
-        scoreLoser
-    } = props.data;
-
-    const {
-        match,
-        winner,
-        loser,
-    } = styles;
+        scoreLoser,
+    } = props.data
 
     return (
-        <li>
-            <div className={match}>
-                <div className={winner}>
-                    <div>
-                        <img src={winnerPfp} alt="winner avatar" />
-                        <div>
-                            <span>{winnerNick} </span>
-                            <span>Score {scoreWinner}</span>
-                        </div>
-                    </div>
-                </div>
-                <div/>
-                <div className={loser}>
-                    <div>
-                        <div>
-                            <span>{loserNick}</span>
-                            <span>Score: {scoreLoser}</span>
-                        </div>
-                        <img src={loserPfp} alt="loser avatar" />
-                    </div>
-                </div>
-            </div>
-        </li>
+        <div className={styles.container}>
+            <div>{winnerNick} </div>
+            <img className={styles.img} src={winnerPfp} alt="winner avatar" />
+            <div className={styles.score}>{scoreWinner}</div>
+            <div> - </div>
+            <div className={styles.score}>{scoreLoser}</div>
+            <img className={styles.img} src={loserPfp} alt="loser avatar" />
+            <div>{loserNick}</div>
+        </div>
     )
 }
 
-export { MatchItem };
+export { MatchItem }

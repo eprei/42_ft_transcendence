@@ -1,33 +1,40 @@
+.container {
+    /* Using the flexbox */
+    display: flex;
+    align-items: center;
+    /* Adding space between elements horizontally */
+    gap: 10px;
+}
+
+.score {
+    font-size: 1vw;
+    font-weight: bold;
+}
+
 .match {
     display: flex;
     flex-direction: row;
     width: 100%;
     border-bottom: 1px solid #ccc;
-  }
-  
-  .winner {
+}
+
+.winner {
     float: left;
-  }
-  
-  .winner img {
+}
+
+.img {
     width: 50px;
     margin-right: 10px;
-  }
-  
-  .winner span {
+}
+
+.winner span {
     font-size: 14px;
-  }
-  
-  .loser {
+}
+
+.loser {
     float: right;
-  }
-  
-  .loser img {
-    width: 50px;
-    margin-left: 10px;
-  }
-  
-  .loser span {
+}
+
+.loser span {
     font-size: 14px;
-  }
-  
+}
