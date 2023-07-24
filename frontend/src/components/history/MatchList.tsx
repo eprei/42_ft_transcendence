@@ -33,9 +33,10 @@ const MatchList = () => {
     ));
 
     return (
-        <ul className={styles.match_list}>
+        <div className={styles.match_list}>
+            <h2>Score</h2>
             {matchHistoryList}
-        </ul>
+        </div>
     );
 };
 

@@ -18,34 +18,23 @@ const MatchItem = (props:MatchProps) => {
 
     const {
         match,
-        winner,
-        loser,
+        player,
     } = styles;
 
     return (
-        <li>
-            <div className={match}>
-                <div className={winner}>
-                    <div>
-                        <img src={winnerPfp} alt="winner avatar" />
-                        <div>
-                            <span>{winnerNick} </span>
-                            <span>Score {scoreWinner}</span>
-                        </div>
-                    </div>
-                </div>
-                <div/>
-                <div className={loser}>
-                    <div>
-                        <div>
-                            <span>{loserNick}</span>
-                            <span>Score: {scoreLoser}</span>
-                        </div>
-                        <img src={loserPfp} alt="loser avatar" />
-                    </div>
-                </div>
+        <div className={match}>
+            <div className={player}>
+                <span>{winnerNick} </span>
+                <img src={winnerPfp} alt="winner avatar" />
+                <span>Score {scoreWinner}</span>
             </div>
-        </li>
+            <span className={styles.center_item}><strong>-</strong></span>
+            <div className={player}>
+                <span>Score: {scoreLoser}</span>
+                <img src={loserPfp} alt="loser avatar" />
+                <span>{loserNick}</span>
+            </div>
+        </div>
     )
 }
 
