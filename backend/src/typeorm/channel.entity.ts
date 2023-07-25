@@ -40,7 +40,7 @@ export class Channel {
     @ManyToMany(() => User, (user) => user.admin)
     admin: User[]
 
-    @OneToMany(() => Message, (message) => message.channelId, { cascade: true })
+    @OneToMany(() => Message, (message) => message.channelId)
     @JoinColumn({ name: 'messages' })
     messages: Message[]
 }

@@ -11,10 +11,6 @@ import {
     UsePipes,
     ValidationPipe,
     Request,
-    Post,
-    Body,
-    Param,
-    Inject,
 } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Channel } from 'src/typeorm/channel.entity'
@@ -64,7 +60,6 @@ export class ChatGateway {
         const chanAllMsgs = await this.chatService.findAllMsgByChannel(
             channelId
         )
-        console.log(`chanAllMsgs: ${JSON.stringify(chanAllMsgs)}`)
         return chanAllMsgs
     }
 
@@ -82,7 +77,8 @@ export class ChatGateway {
         const user = await this.userRepository.findOneBy({
             id: createChannelDto.ownerId,
         })
-        console.log(`User found (nickname): ${user.nickname}`)
+        // Check if password is not empty
+        // if yes crypto the password
         createChannelDto.owner = user
         createChannelDto.admin = [user]
         createChannelDto.users = [user]
@@ -90,14 +86,8 @@ export class ChatGateway {
         const channelCreated = await this.chatService.createChannel(
             createChannelDto
         )
-        console.log(`Channel created: ${channelCreated}`)
-        if (channelCreated) {
-            this.server.emit('newChannel', channelCreated)
-            return channelCreated
-        } else {
-            console.log('Channel not created')
-            return null
-        }
+        this.server.emit('newChannel', channelCreated)
+        return channelCreated
     }
 
     @SubscribeMessage('createDM')

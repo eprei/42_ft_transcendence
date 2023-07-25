@@ -15,8 +15,6 @@ const ChannelBox = () => {
     }, [])
 
     const createNewChannel = (channel: CreateChannel) => {
-        console.log('before emit createNewChannel')
-        console.log(channel)
         socket.emit('createNewChannel', channel, (response: any) => {
             console.log(response)
         })
