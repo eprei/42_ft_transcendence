@@ -12,7 +12,6 @@ const CreateNewCh = ({ handleCreation }: CreateNewChProps) => {
     const [open, setOpen] = useState(false)
 
     const onCreate = (values: CreateChannel) => {
-        console.log('Received values of form: ', values)
         setOpen(false)
         handleCreation(values)
     }

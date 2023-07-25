@@ -8,12 +8,18 @@ export class CreateMessageDto {
     @IsNotEmpty()
     content: string
 
+    @IsNotEmpty()
+    channelId: number
+
     @IsOptional()
     creationDate: Date
 
     @IsOptional()
-    chanId: number
+    channel: Channel
 
     @IsOptional()
-    channel: Channel
+    userNickname: string
+
+    @IsOptional()
+    userAvatarUrl: string
 }

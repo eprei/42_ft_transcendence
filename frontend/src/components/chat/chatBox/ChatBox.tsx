@@ -14,10 +14,8 @@ export interface NewMsg {
 interface ReceivedMsd {
     id: number
     content: string
-    creatorUser: {
-        nickname: string
-        avatarUrl: string
-    }
+    userNickname: string
+    userAvatarUrl: string
 }
 
 function ChatBox() {
@@ -48,9 +46,7 @@ function ChatBox() {
     }, [currentChatSelected])
 
     const sendMessage = (newMsg: NewMsg) => {
-        socket.emit('postMsg', newMsg, (response: any) => {
-            console.log(response.content)
-        })
+        socket.emit('postMsg', newMsg, () => {})
     }
 
     return (

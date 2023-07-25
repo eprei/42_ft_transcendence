@@ -10,6 +10,7 @@ import { CreateChannelDto } from 'src/channel/dto/create-channel.dto'
 import {
     UsePipes,
     ValidationPipe,
+    Request,
     Post,
     Body,
     Param,
@@ -30,9 +31,6 @@ import { User } from 'src/typeorm/user.entity'
     // credentials: true,
 })
 export class ChatGateway {
-    @WebSocketServer()
-    server: Server
-
     constructor(
         private readonly chatService: ChatService,
         @InjectRepository(Channel)
@@ -41,34 +39,33 @@ export class ChatGateway {
         private readonly userRepository: Repository<User>
     ) {}
 
-    @SubscribeMessage('Hello')
-    hello() {
-        console.log('Hello my friend')
-        return 'Hello'
-    }
+    @WebSocketServer()
+    server: Server
 
-    //ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox
     @SubscribeMessage('postMsg')
     @UsePipes(ValidationPipe)
     async postMsg(@MessageBody() createMessageDto: CreateMessageDto) {
-        const chan = await this.channelRepository.findOneBy({
-            id: createMessageDto.chanId,
+        console.log(createMessageDto)
+        const user = await this.userRepository.findOneBy({
+            id: createMessageDto.creator,
         })
-        ;(createMessageDto.creationDate = new Date()),
-            (createMessageDto.channel = chan)
+        const { nickname, avatarUrl } = user
+        createMessageDto.userNickname = nickname
+        createMessageDto.userAvatarUrl = avatarUrl
         const msgSended = await this.chatService.newMsg(createMessageDto)
-        if (msgSended) {
-            this.server.emit('incomingMessage', msgSended)
-            return msgSended
-        } else {
-            return null
-        }
+        this.server.emit('incomingMessage', msgSended)
     }
 
     @SubscribeMessage('findAllMsgByChannel')
-    async findAllMsgByChannel(@MessageBody() channelId: number) {
-        const chanMsg = await this.chatService.findAllMsgByChannel(channelId)
-        return chanMsg
+    async findAllMsgByChannel(
+        @MessageBody() channelId: number,
+        @Request() req: any
+    ) {
+        const chanAllMsgs = await this.chatService.findAllMsgByChannel(
+            channelId
+        )
+        console.log(`chanAllMsgs: ${JSON.stringify(chanAllMsgs)}`)
+        return chanAllMsgs
     }
 
     //UserBox UserBox UserBox UserBox UserBox UserBox UserBox UserBox UserBox UserBox

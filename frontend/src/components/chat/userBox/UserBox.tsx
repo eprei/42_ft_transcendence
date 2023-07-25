@@ -22,7 +22,7 @@ function UserList() {
             'findUsersByChannel',
             currentChatSelected,
             (response: any) => {
-                console.log(response)
+                // console.log(response)
                 setUsers(response.users)
                 response.owner.id === userData.user.id
                     ? setOwner(true)
@@ -30,7 +30,7 @@ function UserList() {
                 response.admin.id === userData.user.id
                     ? setAdmin(true)
                     : setAdmin(false)
-                console.log(admin, owner)
+                // console.log(admin, owner)
                 setAllInfo(response)
             }
         )

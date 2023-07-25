@@ -19,7 +19,6 @@ const ChannelBox = () => {
         console.log(channel)
         socket.emit('createNewChannel', channel, (response: any) => {
             console.log(response)
-            alert('Channel created')
         })
     }
 

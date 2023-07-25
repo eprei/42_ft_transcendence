@@ -20,15 +20,10 @@ export class ChatService {
     ) {}
 
     //ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox
-    async newMsg(createMessageDto: CreateMessageDto): Promise<Message> {
+    async newMsg(createMessageDto: CreateMessageDto){
         const newMessage = this.messageRepository.create(createMessageDto)
-        const isSaved = await this.messageRepository.save(newMessage)
-        if (isSaved) {
-            const diplay = await this.findOneToDisplay(isSaved.id)
-            console.log('display', diplay)
-            return diplay
-        }
-        return null
+        const savedMessage = await this.messageRepository.save(newMessage)
+        return savedMessage;
     }
 
     async findOneToDisplay(id: number) {
@@ -40,7 +35,6 @@ export class ChatService {
                 'user.nickname',
                 'user.avatarUrl',
             ])
-            .leftJoin('message.creatorUser', 'user')
             .where('message.id = :id', { id })
             .getOne()
         return message
@@ -48,20 +42,12 @@ export class ChatService {
 
     async findAllMsgByChannel(channelId: number): Promise<Message[]> {
         const messages = await this.messageRepository
-            .createQueryBuilder('message')
-            .select([
-                'message.id',
-                'message.content',
-                'user.nickname',
-                'user.avatarUrl',
-            ])
-            .leftJoin('message.creatorUser', 'user')
-            .where('message.channelId = :channelId', { channelId })
-            .orderBy('message.creationDate', 'ASC')
-            .getMany()
-
-        return messages
-    }
+          .createQueryBuilder('message')
+          .where('message.channelId = :channelId', { channelId })
+          .getMany();
+    
+        return messages;
+      }
 
     //UserBox UserBox UserBox UserBox UserBox UserBox UserBox UserBox UserBox UserBox
     async findUsersByChannel(id: number) {
@@ -189,24 +175,14 @@ export class ChatService {
 
     async deleteChannel(channelId: number, userId: number) {
         const channel = await this.channelRepository.findOne({
-            relations: ['owner'],
             where: { id: channelId },
         })
-
         if (!channel) {
             throw new NotFoundException('Channel not found')
         }
 
-        if (channel.owner.id !== userId) {
-            throw new UnauthorizedException(
-                'You are not the owner of this channel'
-            )
-        }
-
-        return await this.channelRepository.remove(channel)
+        const deleteChannel = await this.channelRepository.remove(channel)
+        return channel
     }
 
-    // async findOneChByUserId(userId: number) {
-    // return await this.channelRepository.findOneBy({ id: userId , type: 'direct' })
-    // }
 }
