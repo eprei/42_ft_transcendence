@@ -11,18 +11,26 @@ export interface NewMsg {
     channelId: number
 }
 
+interface ReceivedMsd {
+    id: number
+    content: string
+    creatorUser: {
+        nickname: string
+        avatarUrl: string
+    }
+}
+
 function ChatBox() {
     const socket = io('http://localhost:8080')
     const currentChatSelected = useAppSelector(
         (state) => state.chat.currentChatSelected
     ) as number
-    const [messages, setMesssages] = useState<any[]>([])
+    const [messages, setMesssages] = useState<ReceivedMsd[]>([])
     const getAllMsgSocket = () => {
         socket.emit(
             'findAllMsgByChannel',
             currentChatSelected,
-            (response: any) => {
-                console.log(response)
+            (response: ReceivedMsd[]) => {
                 setMesssages(response)
             }
         )
@@ -44,8 +52,6 @@ function ChatBox() {
             console.log(response.content)
         })
     }
-
-
 
     return (
         <div className={styles.chatBox}>
