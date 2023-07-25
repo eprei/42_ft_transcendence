@@ -3,14 +3,9 @@ import ChannelBox from '../components/chat/channelBox/ChannelBox.tsx'
 import ChatBox from '../components/chat/chatBox/ChatBox'
 import UserList from '../components/chat/userBox/UserBox.tsx'
 import { userActions } from '../store/user'
-import { useAppDispatch } from '../store/types'
-import { UserData } from '../types/UserData'
-import { useLoaderData } from 'react-router-dom'
+import store from '../store'
 
 const Chat = () => {
-    const fetchUserData = useLoaderData() as UserData
-    const dispatch = useAppDispatch()
-    dispatch(userActions.update({ user: fetchUserData }))
     return (
         <div className={styles.chatContainer}>
             <ChannelBox />
@@ -35,5 +30,6 @@ export async function loader() {
     }
 
     const data = await response.json()
+    store.dispatch(userActions.update({ user: data }))
     return data
 }
