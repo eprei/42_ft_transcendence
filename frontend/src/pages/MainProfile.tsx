@@ -3,11 +3,9 @@ import FriendList from '../components/profile/FriendList'
 import Statistics from '../components/profile/Statistics'
 import UserInformation from '../components/profile/UserInformation'
 import { userActions } from '../store/user'
-import { useAppDispatch } from '../store/types'
-import { UserData } from '../types/UserData'
-import { useLoaderData } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import AddFriendsBtn from '../components/profile/AddFriendsBtn'
+import store from '../store'
 
 export interface friendList {
     myId: number
@@ -44,9 +42,6 @@ const MainProfile = () => {
     })
 
     const refreshTime: number = 3000
-    const fetchUserData = useLoaderData() as UserData
-    const dispatch = useAppDispatch()
-    dispatch(userActions.update({ user: fetchUserData }))
 
     const [isLoading, setIsLoading] = useState(true)
 
@@ -158,5 +153,6 @@ export async function loader() {
     }
 
     const data = await response.json()
+    store.dispatch(userActions.update({ user: data }))
     return data
 }
