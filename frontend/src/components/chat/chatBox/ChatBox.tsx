@@ -5,7 +5,11 @@ import { io } from 'socket.io-client'
 import { useAppSelector } from '../../../store/types'
 import { useEffect, useState } from 'react'
 
-
+export interface NewMsg {
+    creator: number
+    content: string
+    channelId: number
+}
 
 function ChatBox() {
     const socket = io('http://localhost:8080')
@@ -35,11 +39,18 @@ function ChatBox() {
         else setMesssages([])
     }, [currentChatSelected])
 
+    const sendMessage = (newMsg: NewMsg) => {
+        socket.emit('postMsg', newMsg, (response: any) => {
+            console.log(response.content)
+        })
+    }
+
+
 
     return (
         <div className={styles.chatBox}>
             <ChatFeed messages={messages} />
-            {currentChatSelected && <SendForm socket={socket} />}
+            {currentChatSelected && <SendForm sendMessage={sendMessage} />}
         </div>
     )
 }

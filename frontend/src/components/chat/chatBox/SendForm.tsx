@@ -2,35 +2,26 @@ import styles from './SendForm.module.css'
 import { useState, ChangeEvent, KeyboardEvent } from 'react'
 import { useAppSelector } from '../../../store/types'
 import { UserData } from '../../../types/UserData'
-
-export interface NewMsg {
-    creator: number
-    content: string
-    channelId: number
-}
+import { NewMsg } from './ChatBox'
 
 interface ChatFeedProps {
-    socket: any
+    sendMessage: (NewMsg: NewMsg) => void
 }
 
-const SendForm = ({ socket }: ChatFeedProps) => {
+const SendForm = ({ sendMessage }: ChatFeedProps) => {
     const userData = useAppSelector((state) => state.user.userData) as UserData
     const currentChatSelected = useAppSelector(
         (state) => state.chat.currentChatSelected
     ) as number
-
     const [inputText, setInputText] = useState('')
 
     const handleCreation = (text: string) => {
-        console.log('Received values of form: ', text)
         const newMsg = {
             creator: userData.user.id,
             content: text,
             channelId: currentChatSelected,
         }
-        socket.emit('postMsg', newMsg, (response: any) => {
-            console.log(response.content)
-        })
+        sendMessage(newMsg)
         setInputText('')
     }
 
