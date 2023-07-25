@@ -11,15 +11,10 @@ function ChatBox() {
         (state) => state.chat.currentChatSelected
     ) as number
 
-    let sendForm: JSX.Element | null = null
-    if (currentChatSelected) {
-        sendForm = <SendForm socket={socket} />
-    }
-
     return (
         <div className={styles.chatBox}>
             <ChatFeed socket={socket} />
-            {sendForm}
+            {currentChatSelected && <SendForm socket={socket} />}
         </div>
     )
 }
