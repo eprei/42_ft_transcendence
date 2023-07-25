@@ -6,12 +6,16 @@ export class OauthGuard extends AuthGuard('oauth') {
     // 1
     async canActivate(context: ExecutionContext) {
         // 2
-        const result = (await super.canActivate(context)) as boolean
-        const request = context.switchToHttp().getRequest() // 3
-        await super.logIn(request) // 4
+        let result: boolean = false
+        try {
+            result = (await super.canActivate(context)) as boolean
+            const request = context.switchToHttp().getRequest() // 3
+            await super.logIn(request) // 4
 
-        request.session.needTFA = request.user.TFAEnabled ? true : false // 5
-
+            request.session.needTFA = request.user.TFAEnabled ? true : false // 5
+        } catch (error) {
+            console.log('Error: is you API credentials are OK ?\n', error)
+        }
         return result // 6
     }
 }
