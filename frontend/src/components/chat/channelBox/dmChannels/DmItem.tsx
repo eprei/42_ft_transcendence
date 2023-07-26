@@ -34,7 +34,6 @@ const DmItem = (props: DmItemProps) => {
         props.deleteChannel(props.channel.id)
     }
 
-
     const handleOk = () => {
         setConfirmLoading(true)
         setTimeout(() => {

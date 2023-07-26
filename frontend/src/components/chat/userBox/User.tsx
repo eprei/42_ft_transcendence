@@ -1,7 +1,6 @@
 import styles from './User.module.css'
 import IconMsg from '../../../assets/icon/message.svg'
 import { useState } from 'react'
-import { io } from 'socket.io-client'
 import { useAppSelector } from '../../../store/types'
 import { UserData } from '../../../types/UserData'
 
@@ -11,21 +10,24 @@ export interface UserProps {
     avatarUrl: string
     isOwner: boolean
     isAdmin: boolean
+    createDM: (otherUserId: number) => void
+    blockUser: (otherUserId: number) => void
 }
 
-const socket = io('http://localhost:8080')
-
-const User = ({ id, nickname, avatarUrl, isOwner, isAdmin }: UserProps) => {
+const User = ({
+    id,
+    nickname,
+    avatarUrl,
+    isOwner,
+    isAdmin,
+    createDM,
+    blockUser,
+}: UserProps) => {
     const userData = useAppSelector((state) => state.user.userData) as UserData
     const myId = userData.user.id
 
-    const createDM = () => {
-        socket.emit('createDM', myId, id, (response: any) => {
-            if (response) {
-                // setChatId(response)
-                // alert(response)
-            }
-        })
+    const createDmHandler = () => {
+        createDM(id)
     }
 
     const [showContextMenu, setShowContextMenu] = useState(false)
@@ -44,12 +46,8 @@ const User = ({ id, nickname, avatarUrl, isOwner, isAdmin }: UserProps) => {
         setShowContextMenu(false)
     }
 
-    const blockUser = () => {
-        socket.emit('blockUser', myId, id, (response: any) => {
-            if (response) {
-                // setChatId(response)
-            }
-        })
+    const blockUserHandler = () => {
+        blockUser(id)
     }
 
     return (
@@ -75,7 +73,7 @@ const User = ({ id, nickname, avatarUrl, isOwner, isAdmin }: UserProps) => {
                         onClick={handleContextMenuClose}
                     >
                         <ul>
-                            <li onClick={blockUser}>Block</li>
+                            <li onClick={blockUserHandler}>Block</li>
                             {isOwner ? (
                                 <div>
                                     <li>Set admin</li>
@@ -106,7 +104,7 @@ const User = ({ id, nickname, avatarUrl, isOwner, isAdmin }: UserProps) => {
                     <div>
                         <img
                             src={IconMsg}
-                            onClick={createDM}
+                            onClick={createDmHandler}
                             alt="Message Icon"
                         />
                     </div>

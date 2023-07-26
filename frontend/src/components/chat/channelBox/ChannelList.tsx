@@ -9,7 +9,6 @@ import { User, UserData } from '../../../types/UserData'
 
 interface ChannelListProps {
     allChan: Channel[] | []
-    getAllChannels: () => void
     deleteChannel: (channelId: number) => void
     leaveChannel: (channelId: number) => void
     joinChannel: (channelId: number, password: string) => void

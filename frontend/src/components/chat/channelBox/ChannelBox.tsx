@@ -69,7 +69,6 @@ const ChannelBox = () => {
             <CreateNewCh handleCreation={handleCreation} />
             <ChannelList
                 allChan={allChan}
-                getAllChannels={getAllChannels}
                 deleteChannel={deleteChannel}
                 leaveChannel={LeaveChannel}
                 joinChannel={joinChannel}

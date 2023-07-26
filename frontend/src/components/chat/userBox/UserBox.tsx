@@ -36,6 +36,33 @@ function UserList() {
         )
     }
 
+    const createDM = (otherUserId: number) => {
+        socket.emit(
+            'createDM',
+            userData.user.id,
+            otherUserId,
+            (response: any) => {
+                if (response) {
+                    // setChatId(response)
+                    // alert(response)
+                }
+            }
+        )
+    }
+
+    const blockUser = (otherUserId: number) => {
+        socket.emit(
+            'blockUser',
+            userData.user.id,
+            otherUserId,
+            (response: any) => {
+                if (response) {
+                    // setChatId(response)
+                }
+            }
+        )
+    }
+
     const [allInfo, setAllInfo] = useState<any[]>([])
     const [users, setUsers] = useState<any[]>([])
     const [admin, setAdmin] = useState<boolean>(false)
@@ -64,6 +91,8 @@ function UserList() {
                     avatarUrl={user.avatarUrl}
                     isOwner={owner}
                     isAdmin={admin}
+                    createDM={createDM}
+                    blockUser={blockUser}
                 />
             ))}
             {/* <h2> online  </h2>
