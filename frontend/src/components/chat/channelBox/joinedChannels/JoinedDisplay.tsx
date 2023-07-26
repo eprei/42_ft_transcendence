@@ -5,6 +5,7 @@ interface ChannelsDisplayProps {
     channels: Channel[] | []
     deleteChannel: (channelId: number) => void
     leaveChannel: (channelId: number) => void
+    changePassword: (channelId: number, password: string) => void
 }
 
 const JoinedDisplay = (props: ChannelsDisplayProps) => {
@@ -18,6 +19,7 @@ const JoinedDisplay = (props: ChannelsDisplayProps) => {
                 channel={channel}
                 deleteChannel={props.deleteChannel}
                 leaveChannel={props.leaveChannel}
+                changePassword={props.changePassword}
             ></JoinedItem>
         ))
     }

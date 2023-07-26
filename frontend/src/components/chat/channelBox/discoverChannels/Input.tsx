@@ -15,6 +15,8 @@ const Input = (props: InputProps) => {
             value={value}
             onChange={onChange}
             className={styles.input}
+            type="text"
+            id="input"
         />
     )
 }

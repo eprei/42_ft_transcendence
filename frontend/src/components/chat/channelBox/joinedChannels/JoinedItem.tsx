@@ -8,11 +8,13 @@ import { useAppDispatch, useAppSelector } from '../../../../store/types'
 import { UserData } from '../../../../types/UserData'
 import { chatActions } from '../../../../store/chat'
 import { Modal } from 'antd'
+import Input from '../discoverChannels/Input'
 
 interface JoinedItemProps {
     channel: Channel
     deleteChannel: (channelId: number) => void
     leaveChannel: (channelId: number) => void
+    changePassword: (channelId: number, password: string) => void
 }
 
 const JoinedItem = (props: JoinedItemProps) => {
@@ -24,6 +26,8 @@ const JoinedItem = (props: JoinedItemProps) => {
     const [open, setOpen] = useState(false)
     const [confirmLoading, setConfirmLoading] = useState(false)
     const [isOwner, setIsOwner] = useState(false)
+    const [canChangePassword, setCanChangePassword] = useState(false)
+    const [inputValue, setInputValue] = useState('')
 
     const handleClick = () => {
         dispatch(chatActions.selectChat(props.channel.id))
@@ -38,26 +42,41 @@ const JoinedItem = (props: JoinedItemProps) => {
     const handleOk = () => {
         setConfirmLoading(true)
         setTimeout(() => {
-            if (isOwner) {
+            if (isOwner && !canChangePassword) {
                 deleteChannel()
-            } else {
+            } else if (!isOwner && !canChangePassword) {
                 LeaveChannel()
+            } else if (!isOwner && canChangePassword) {
+                props.changePassword(props.channel.id, inputValue)
             }
             setOpen(false)
             setConfirmLoading(false)
             setIsOwner(false)
+            setCanChangePassword(false)
         }, 1000)
     }
 
     const handleCancel = () => {
         setOpen(false)
+        setCanChangePassword(false)
+        setIsOwner(false)
     }
 
-    const showModal = () => {
+    const showConfirmModal = () => {
         if (props.channel.owner.id === userData.user.id) {
             setIsOwner(true)
         }
         setOpen(true)
+    }
+
+    const showChangePasswordModal = () => {
+        if (props.channel.owner.id === userData.user.id) {
+            setCanChangePassword(true)
+            setOpen(true)
+        }
+    }
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setInputValue(event.target.value)
     }
 
     return (
@@ -77,7 +96,7 @@ const JoinedItem = (props: JoinedItemProps) => {
                             src={IconLeaveChannel}
                             alt="LeaveChannel"
                             className={styles.addChannelIcon}
-                            onClick={showModal}
+                            onClick={showConfirmModal}
                         />
                     }
                     {props.channel.type === ChannelType.Private ? (
@@ -85,6 +104,7 @@ const JoinedItem = (props: JoinedItemProps) => {
                             src={IconPrivate}
                             alt="Private Channel"
                             className={styles.privateIcon}
+                            onClick={showChangePasswordModal}
                         />
                     ) : null}
                 </div>
@@ -95,14 +115,24 @@ const JoinedItem = (props: JoinedItemProps) => {
                 confirmLoading={confirmLoading}
                 onCancel={handleCancel}
             >
-                {!isOwner && (
+                {!canChangePassword && !isOwner && (
                     <p>{`Are you sure you want to leave ${props.channel.name}?`}</p>
                 )}
-                {isOwner && (
+                {!canChangePassword && isOwner && (
                     <div>
                         <p>You are the owner of this channel.</p>
                         <p>If you leave, the channel will be deleted.</p>
                         <p>Continue?</p>
+                    </div>
+                )}
+                {canChangePassword && !isOwner && (
+                    <div>
+                        <p>Enter channel new password</p>
+                        <Input
+                            placeholder="new password"
+                            value={inputValue}
+                            onChange={handleInputChange}
+                        />
                     </div>
                 )}
             </Modal>

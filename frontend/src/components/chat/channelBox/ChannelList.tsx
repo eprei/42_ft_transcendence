@@ -12,6 +12,7 @@ interface ChannelListProps {
     deleteChannel: (channelId: number) => void
     leaveChannel: (channelId: number) => void
     joinChannel: (channelId: number, password: string) => void
+    changePassword: (channelId: number, password: string) => void
 }
 
 const ChannelList = (props: ChannelListProps) => {
@@ -65,6 +66,7 @@ const ChannelList = (props: ChannelListProps) => {
                     channels={joinedButNotDms}
                     deleteChannel={props.deleteChannel}
                     leaveChannel={props.leaveChannel}
+                    changePassword={props.changePassword}
                 ></JoinedDisplay>
             </div>
             <div className={styles.list}>

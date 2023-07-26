@@ -182,6 +182,19 @@ export class ChatService {
         }
 
         const deleteChannel = await this.channelRepository.remove(channel)
-        return channel
+        return deleteChannel
+    }
+
+    async changePassword(channelId: number, password: string) {
+        try {
+            const chan = await this.channelRepository.findOne({
+                where: { id: channelId },
+            })
+            chan.password = password
+            await this.channelRepository.update(channelId, chan)
+            return true
+        } catch (error) {
+            return false
+        }
     }
 }

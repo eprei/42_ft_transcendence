@@ -10,6 +10,7 @@ interface ChannelBoxProps {
     deleteChannel: (channelId: number) => void
     leaveChannel: (channelId: number) => void
     joinChannel: (channelId: number, password: string) => void
+    changePassword: (channelId: number, password: string) => void
 }
 
 const ChannelBox = (props: ChannelBoxProps) => {
@@ -21,6 +22,7 @@ const ChannelBox = (props: ChannelBoxProps) => {
                 deleteChannel={props.deleteChannel}
                 leaveChannel={props.leaveChannel}
                 joinChannel={props.joinChannel}
+                changePassword={props.changePassword}
             ></ChannelList>
         </div>
     )

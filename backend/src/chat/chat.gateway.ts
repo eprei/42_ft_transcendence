@@ -182,4 +182,11 @@ export class ChatGateway {
             throw new Error('Failed to block user')
         }
     }
+
+    @SubscribeMessage('changePassword')
+    @UsePipes(ValidationPipe)
+    async changeChannelPassword(@MessageBody() data: any) {
+        const channel = await this.chatService.changePassword(data[0], data[1])
+        return channel
+    }
 }

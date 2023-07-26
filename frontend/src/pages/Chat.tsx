@@ -108,6 +108,11 @@ const Chat = () => {
             }
         )
     }
+    const changePassword = (channelId: number, password: string) => {
+        console.log('channelId: ', channelId)
+        socket.emit('changePassword', channelId, password, () => {})
+    }
+
     return (
         <div className={styles.chatContainer}>
             <ChannelBox
@@ -116,6 +121,7 @@ const Chat = () => {
                 deleteChannel={deleteChannel}
                 leaveChannel={leaveChannel}
                 joinChannel={joinChannel}
+                changePassword={changePassword}
             />
             <ChatBox
                 currentChatSelected={currentChatSelected}
