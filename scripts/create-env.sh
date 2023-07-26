@@ -15,7 +15,7 @@ generate_postgres_credentials () {
 }
 
 create_env_postgres () {
-	cat > env/postgres.env <<- eof
+	cat >> .env <<- eof
 	POSTGRES_USER=${POSTGRES_USER}
 	POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
 	POSTGRES_DB=${POSTGRES_NAME}
@@ -23,7 +23,7 @@ create_env_postgres () {
 }
 
 create_env_nest () {
-	cat > env/nest.env <<- eof
+	cat >> .env <<- eof
 	DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_NAME}
 	PORT=3000
 	eof
@@ -33,14 +33,13 @@ ask_api_42_credentials () {
 	printf "42 UID   : "; read -r FT_UUID
 	printf "42 SECRET: "; read -r FT_SECRET
 
-	cat >> env/nest.env <<- 42
+	cat >> .env <<- 42
 	FT_UUID=${FT_UUID}
 	FT_SECRET=${FT_SECRET}
 	42
 }
 
 main () {
-	mkdir -p env
 	generate_postgres_credentials
 	create_env_nest
 	create_env_postgres

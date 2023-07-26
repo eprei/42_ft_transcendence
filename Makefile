@@ -33,7 +33,7 @@ build-back:
 	npm run build
 
 env:
-	@if [ ! -d env ]; then \
+	@if [ ! -e .env ]; then \
 		printf "$(GREEN)Generate environment variables\n$(DEFAULT)"; \
 		sh scripts/create-env.sh; \
 	fi
