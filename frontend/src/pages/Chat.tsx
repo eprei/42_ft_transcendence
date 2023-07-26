@@ -109,8 +109,10 @@ const Chat = () => {
         )
     }
     const changePassword = (channelId: number, password: string) => {
-        console.log('channelId: ', channelId)
-        socket.emit('changePassword', channelId, password, () => {})
+        socket.emit('changePassword', channelId, password, (response: boolean) => {
+            if (!response)
+                alert('Could not change password, please try again')
+        })
     }
 
     return (
