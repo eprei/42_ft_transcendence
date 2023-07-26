@@ -129,11 +129,9 @@ const MatchSystemBtn = () => {
                 </>
             )}
 
-            {!fetching && !youAreAlreadyPlaying && (
-                <div className={styles.btn} onClick={() => joinRandomRoom()}>
-                    launch the matching system
-                </div>
-            )}
+            <div className={styles.btn} onClick={() => joinRandomRoom()}>
+                launch the matching system
+            </div>
         </div>
     )
 }

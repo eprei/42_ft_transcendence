@@ -5,7 +5,7 @@ import { UserData } from '../types/UserData'
 import { useLoaderData } from 'react-router-dom'
 import MatchSystemBtn from '../components/play/MatchSystemBtn'
 import { Checkbox } from 'antd'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import type { CheckboxChangeEvent } from 'antd/es/checkbox'
 
 const Play = () => {
@@ -14,6 +14,8 @@ const Play = () => {
     dispatch(userActions.update({ user: fetchUserData }))
 
     const [selectedTheme, setSelectedTheme] = useState<string | null>('Theme 1')
+    const [youAreAlreadyPlaying, setYouAreAlreadyPlaying] =
+        useState<boolean>(false)
 
     const onChange = (e: CheckboxChangeEvent) => {
         if (e.target.checked) {
@@ -22,6 +24,16 @@ const Play = () => {
             setSelectedTheme(null)
         }
     }
+
+    useEffect(() => {
+        if (youAreAlreadyPlaying) {
+            const messageTimer = setTimeout(() => {
+                setYouAreAlreadyPlaying(false)
+            }, 4000) // Hide the message after 4 seconds
+
+            return () => clearTimeout(messageTimer)
+        }
+    }, [youAreAlreadyPlaying])
 
     const createRoom = async () => {
         try {
@@ -35,10 +47,15 @@ const Play = () => {
             })
 
             if (!response.ok) {
-                throw new Error('Error creating room')
+                if (response.status === 409) {
+                    setYouAreAlreadyPlaying(true)
+                } else {
+                    throw new Error('Error creating room')
+                }
             }
 
             console.log('Room created successfully')
+            // TODO redirect to game page
         } catch (error) {
             console.error(error)
         }
@@ -83,6 +100,12 @@ const Play = () => {
                     <h1></h1>
                 </div>
             </div>
+            {youAreAlreadyPlaying && (
+                <div className={styles.overlay}>
+                    <h4>It looks like you are already playing</h4>
+                    <h4>in another window or tab</h4>
+                </div>
+            )}
         </div>
     )
 }

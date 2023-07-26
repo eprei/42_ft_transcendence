@@ -26,12 +26,23 @@ export class RoomService {
         )
     }
 
-    async createRoom(@Request() req: any, createRoomDto: CreateRoomDto) {
+    async createRoom(
+        @Request() req: any,
+        createRoomDto: CreateRoomDto
+    ): Promise<Room> {
         const userMe = await this.userRepository.findOneBy({ id: req.user.id })
 
         if (!userMe) {
             throw new NotFoundException('User not found')
         }
+
+        if (userMe.status === 'playing') {
+            throw new Error('You are already playing')
+        }
+
+        const myId = userMe.id
+
+        this.userService.changeStatusPlaying(myId)
 
         const room: Room = {
             player_one: userMe.id,
@@ -40,6 +51,9 @@ export class RoomService {
         }
 
         this.rooms.push(room)
+
+        // TODO change the status at the end of the game
+        // this.userService.changeStatusOnLine(myId)
 
         return room
     }

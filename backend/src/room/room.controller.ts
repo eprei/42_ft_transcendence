@@ -36,8 +36,13 @@ export class RoomController {
     async createRoom(
         @Request() req: any,
         @Body() createRoomDto: CreateRoomDto
-    ) {
-        return this.roomService.createRoom(req, createRoomDto)
+    ): Promise<Room> {
+        try {
+            const room = await this.roomService.createRoom(req, createRoomDto)
+            return room
+        } catch (error) {
+            throw new HttpException(error.message, HttpStatus.CONFLICT)
+        }
     }
 
     @Put(':id')
