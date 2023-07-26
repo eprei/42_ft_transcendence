@@ -7,6 +7,8 @@ import { PongService } from './pong.service'
 import { CreatePongDto } from './dto/create-pong.dto'
 import { UpdatePongDto } from './dto/update-pong.dto'
 
+import { Frame } from './entities/pong.entity'
+
 @WebSocketGateway({
     cors: {
         origin: '*',
@@ -15,4 +17,8 @@ import { UpdatePongDto } from './dto/update-pong.dto'
 export class PongGateway {
     constructor(private readonly pongService: PongService) {}
 
+    @SubscribeMessage('getFrame')
+    myGetFrame() {
+        return this.pongService.simpleFrame()
+    }
 }
