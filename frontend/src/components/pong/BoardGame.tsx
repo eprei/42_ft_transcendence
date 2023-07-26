@@ -1,5 +1,6 @@
 import styles from './BoardGame.module.css'
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
+import { io } from 'socket.io-client'
 
 interface Position {
     x: number
@@ -15,6 +16,12 @@ interface Rectangle {
     position: Position
 }
 
+interface Frame {
+    paddleLeft: Rectangle
+    paddleRight: Rectangle
+    ball: Rectangle
+}
+
 function drawRectangle(
     ctx: CanvasRenderingContext2D,
     rectangle: Rectangle
@@ -28,43 +35,23 @@ function drawRectangle(
     )
 }
 
-const BoardGame = () => {
-    const PADDLE_WIDTH: number = 10
-    const PADDLE_HEIGHT: number = 50
-    const BALL_SIZE: number = 10
+const socket = io('http://localhost:8080')
 
-    const frame = {
-        paddle1: {
-            position: {
-                x: 10,
-                y: 20,
-            },
-            size: {
-                width: PADDLE_WIDTH,
-                height: PADDLE_HEIGHT,
-            },
+const BoardGame = () => {
+    const [frame, setFrame] = useState<Frame>({
+        paddleLeft: {
+            size: { width: 20, height: 100 },
+            position: { x: 10, y: 20 },
         },
-        paddle2: {
-            position: {
-                x: 280,
-                y: 20,
-            },
-            size: {
-                width: PADDLE_WIDTH,
-                height: PADDLE_HEIGHT,
-            },
+        paddleRight: {
+            size: { width: 10, height: 50 },
+            position: { x: 100, y: 70 },
         },
         ball: {
-            position: {
-                x: 50,
-                y: 50,
-            },
-            size: {
-                width: BALL_SIZE,
-                height: BALL_SIZE,
-            },
+            size: { width: 10, height: 20 },
+            position: { x: 50, y: 50 },
         },
-    }
+    })
 
     useEffect(() => {
         let canvas: HTMLCanvasElement | null = document.getElementById(
@@ -80,12 +67,19 @@ const BoardGame = () => {
             // TODO manage error
         }
 
-        drawRectangle(ctx, frame.paddle1)
-        drawRectangle(ctx, frame.paddle2)
+        ctx.clearRect(0, 0, 1000, 1000)
+        drawRectangle(ctx, frame.paddleLeft)
+        drawRectangle(ctx, frame.paddleRight)
         drawRectangle(ctx, frame.ball)
 
         console.log(JSON.stringify(frame))
     }, [frame])
+
+    useEffect(() => {
+        socket.emit('getFrame', {}, (response: Frame) => {
+            setFrame(response)
+        })
+    }, [])
 
     return <canvas id="boardGame" className={styles.boarGame}></canvas>
 }

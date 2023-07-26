@@ -14,6 +14,7 @@ import { Match } from './typeorm/match.entity'
 import { FriendModule } from './friend/friend.module'
 import { MatchModule } from './match/match.module'
 import { AuthModule } from './auth/auth.module'
+import { PongModule } from './pong/pong.module'
 import { AuthenticatedGuard } from './auth/guards/authenticated.guard'
 import { APP_GUARD } from '@nestjs/core'
 
@@ -34,6 +35,7 @@ import { APP_GUARD } from '@nestjs/core'
         FriendModule,
         MatchModule,
         AuthModule,
+        PongModule,
     ],
     controllers: [AppController],
     providers: [
