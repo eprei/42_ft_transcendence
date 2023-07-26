@@ -3,7 +3,8 @@ import DmItem from './DmItem'
 
 interface ChannelsDisplayProps {
     channels: Channel[] | []
-    getAllChannels: () => void
+    deleteChannel: (channelId: number) => void
+    leaveChannel: (channelId: number) => void
 }
 
 const DmDisplay = (props: ChannelsDisplayProps) => {
@@ -13,7 +14,8 @@ const DmDisplay = (props: ChannelsDisplayProps) => {
             <DmItem
                 key={channel.id}
                 channel={channel}
-                getAllChannels={props.getAllChannels}
+                deleteChannel={props.deleteChannel}
+                leaveChannel={props.leaveChannel}
             ></DmItem>
         ))
     }

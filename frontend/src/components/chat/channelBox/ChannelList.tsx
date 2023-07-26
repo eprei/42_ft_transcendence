@@ -37,7 +37,6 @@ const ChannelList = (props: ChannelListProps) => {
         const changeName = (channel: Channel) => {
             const name = channel.name
             const nameArray = name.split(' & ')
-            console.log(nameArray)
             const index = nameArray.indexOf(myNickname)
             if (index === 0) channel.name = nameArray[1]
             else channel.name = nameArray[0]
@@ -80,7 +79,8 @@ const ChannelList = (props: ChannelListProps) => {
                 <h2> DM </h2>
                 <DmDisplay
                     channels={myDms}
-                    getAllChannels={props.getAllChannels}
+                    deleteChannel={props.deleteChannel}
+                    leaveChannel={props.leaveChannel}
                 ></DmDisplay>
             </div>
         </div>

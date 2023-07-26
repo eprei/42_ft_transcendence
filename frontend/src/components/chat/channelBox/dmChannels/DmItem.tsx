@@ -4,17 +4,16 @@ import { Channel } from '../../../../types/Channel'
 import IconLeaveChannel from '../../../../assets/icon/block_user.svg'
 import { useAppSelector, useAppDispatch } from '../../../../store/types'
 import { UserData } from '../../../../types/UserData'
-import { io } from 'socket.io-client'
 import { chatActions } from '../../../../store/chat'
 import { Modal } from 'antd'
 
 interface DmItemProps {
     channel: Channel
-    getAllChannels: () => void
+    deleteChannel: (channelId: number) => void
+    leaveChannel: (channelId: number) => void
 }
 
 const DmItem = (props: DmItemProps) => {
-    const socket = io('http://localhost:8080')
     const userData = useAppSelector((state) => state.user.userData) as UserData
     const currentChatSelected = useAppSelector(
         (state) => state.chat.currentChatSelected
@@ -29,18 +28,13 @@ const DmItem = (props: DmItemProps) => {
     }
 
     const LeaveChannel = () => {
-        socket.emit('leaveChannel', props.channel.id, userData.user.id, () => {
-            dispatch(chatActions.selectChat(0))
-            props.getAllChannels()
-        })
+        props.leaveChannel(props.channel.id)
+    }
+    const deleteChannel = () => {
+        props.deleteChannel(props.channel.id)
     }
 
-    const deleteChannel = () => {
-        socket.emit('deleteChannel', props.channel.id, userData.user.id, () => {
-            dispatch(chatActions.selectChat(0))
-            props.getAllChannels()
-        })
-    }
+
     const handleOk = () => {
         setConfirmLoading(true)
         setTimeout(() => {
