@@ -15,6 +15,12 @@ interface Rectangle {
     position: Position
 }
 
+interface Frame {
+    paddleLeft: Rectangle
+    paddleRight: Rectangle
+    ball: Rectangle
+}
+
 function drawRectangle(
     ctx: CanvasRenderingContext2D,
     rectangle: Rectangle
