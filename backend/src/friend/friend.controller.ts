@@ -19,7 +19,7 @@ export class FriendController {
 
     @Post('create/:id')
     async create(@Request() req: any, @Param('id') id: string) {
-        const friend = await this.friendService.create(req, +id)
+        await this.friendService.create(req, +id)
         return { 'Friendship request successfully submitted': 'true' }
     }
 
@@ -31,8 +31,7 @@ export class FriendController {
 
     @Get(':id')
     async findOne(@Param('id') id: string) {
-        const friend = await this.friendService.findOne(+id)
-        return friend
+        return await this.friendService.findOne(+id)
     }
 
     @Patch('accept/:id')
@@ -40,13 +39,13 @@ export class FriendController {
         @Param('id') id: string,
         @Body() updateFriendDto: UpdateFriendDto
     ) {
-        const friend = await this.friendService.accept(+id, updateFriendDto)
+        await this.friendService.accept(+id, updateFriendDto)
         return { 'Friendship successfully accepted': 'true' }
     }
 
     @Delete('delete/:id')
     async remove(@Param('id') id: string) {
-        const friend = await this.friendService.remove(+id)
+        await this.friendService.remove(+id)
         return { 'Friendship successfully removed': 'true' }
     }
 }
