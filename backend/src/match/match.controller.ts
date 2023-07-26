@@ -32,11 +32,11 @@ export class MatchController {
     }
 
     @Get('user')
-    async findByUserId(@Request() req : any) {
+    async findByUserId(@Request() req: any) {
         const matches = await this.matchService.findByUserId(req.user.id)
         return matches
     }
-    
+
     @Get(':id')
     async findOne(@Param('id') id: string) {
         const match = await this.matchService.findOne(+id)

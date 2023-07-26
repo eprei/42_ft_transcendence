@@ -29,24 +29,25 @@ export class MatchService {
     }
 
     async findByUserId(userId: number) {
-        const user = await this.userRepository.findOne({ where: { id: userId } })
+        const user = await this.userRepository.findOne({
+            where: { id: userId },
+        })
         const matchesDB = await this.matchRepository.find({
             where: [{ winner: user }, { loser: user }],
-            relations: ['winner', 'loser']
-        
-        });
+            relations: ['winner', 'loser'],
+        })
 
         const matchesFront = matchesDB.map((match) => ({
-            id : match.id,
+            id: match.id,
             winnerNick: match.winner.nickname,
             winnerPfp: match.winner.avatarUrl,
             loserNick: match.loser.nickname,
             loserPfp: match.loser.avatarUrl,
             scoreWinner: match.scoreWinner,
-            scoreLoser: match.scoreLoser
+            scoreLoser: match.scoreLoser,
         }))
 
-        return matchesFront;
+        return matchesFront
     }
 
     async update(id: number, updateMatchDto: UpdateMatchDto) {

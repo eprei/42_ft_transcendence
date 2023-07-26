@@ -21,7 +21,6 @@ export class AppService {
     ) {}
 
     async seed(id: number) {
-
         //  create Users
         let j: number = 0
 
@@ -305,7 +304,7 @@ export class AppService {
             await this.matchRepo.save(match)
         }
 
-        const loggedUser = await this.userRepo.findOne({ where: { id}});
+        const loggedUser = await this.userRepo.findOne({ where: { id } })
 
         const loggedMatch = this.matchRepo.create({
             winner: loggedUser,
@@ -315,6 +314,6 @@ export class AppService {
             dateGame: new Date(),
         })
 
-        await this.matchRepo.save(loggedMatch);
+        await this.matchRepo.save(loggedMatch)
     }
 }
