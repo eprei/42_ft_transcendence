@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { MatchItem } from "./MatchItem";
 import { useAppSelector } from "../../store/types";
 import { UserData } from "../../types/UserData"
 import { MatchData } from "../../types/MatchData";
@@ -28,16 +27,36 @@ const MatchList = () => {
         fetchMatches();
     }, [userData.user.id]);
 
-    const matchHistoryList = matchHistory.map((match : MatchData) => (
-        <MatchItem key={match.id} data={match}/>
+    const matchHistoryWinner = matchHistory.map((match : MatchData) => (
+        <div className={styles.player}>
+            <span>{match.winnerNick}</span>
+            <img src={match.winnerPfp} alt="winner avatar" />
+            <span>{match.scoreWinner}</span>
+        </div>
+    ));
+
+    const matchHistoryLoser = matchHistory.map((match : MatchData) => (
+        <div className={styles.player}>
+            <span>{match.scoreLoser}</span>
+            <img src={match.loserPfp} alt="loser avatar" />
+            <span>{match.loserNick}</span>
+        </div>
     ));
 
     return (
-        <div className={styles.match_list}>
-            <h2>Score</h2>
-            {matchHistoryList}
-        </div>
+        <>
+            <div className={styles.match_list}>
+                <div className={styles.left}>
+                    <h3 className={styles.player}>Winner</h3>
+                    {matchHistoryWinner}
+                </div>
+                <div className={styles.right}>
+                    <h3 className={styles.player}>Loser</h3>
+                    {matchHistoryLoser}
+                </div> 
+            </div>
+        </>
     );
 };
 
-export { MatchList, MatchItem };
+export { MatchList };
