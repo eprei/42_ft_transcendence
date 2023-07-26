@@ -1,5 +1,6 @@
 import styles from './BoardGame.module.css'
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
+import { io } from 'socket.io-client'
 
 interface Position {
     x: number
@@ -34,8 +35,10 @@ function drawRectangle(
     )
 }
 
+const socket = io('http://localhost:8080')
+
 const BoardGame = () => {
-    const frame = {
+    const [frame, setFrame] = useState<Frame>({
         paddleLeft: {
             size: { width: 20, height: 100 },
             position: { x: 10, y: 20 },
@@ -48,7 +51,7 @@ const BoardGame = () => {
             size: { width: 10, height: 20 },
             position: { x: 50, y: 50 },
         },
-    }
+    })
 
     useEffect(() => {
         let canvas: HTMLCanvasElement | null = document.getElementById(
@@ -71,6 +74,12 @@ const BoardGame = () => {
 
         console.log(JSON.stringify(frame))
     }, [frame])
+
+    useEffect(() => {
+        socket.emit('getFrame', {}, (response: Frame) => {
+            setFrame(response)
+        })
+    }, [])
 
     return <canvas id="boardGame" className={styles.boarGame}></canvas>
 }
