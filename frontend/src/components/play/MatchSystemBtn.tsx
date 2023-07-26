@@ -42,7 +42,7 @@ const MatchSystemBtn = () => {
         if (showMessage) {
             const messageTimer = setTimeout(() => {
                 setShowMessage(false)
-            }, 4000) // Hide the message after 3 seconds
+            }, 4000) // Hide the message after 4 seconds
 
             return () => clearTimeout(messageTimer)
         }
@@ -52,7 +52,7 @@ const MatchSystemBtn = () => {
         if (youAreAlreadyPlaying) {
             const messageTimer = setTimeout(() => {
                 setYouAreAlreadyPlaying(false)
-            }, 4000) // Hide the message after 3 seconds
+            }, 4000) // Hide the message after 4 seconds
 
             return () => clearTimeout(messageTimer)
         }
@@ -62,6 +62,7 @@ const MatchSystemBtn = () => {
         try {
             setFetching(true)
             setRoomNotFound(false)
+            setPercent(0)
 
             const response = await fetch(
                 `http://localhost:8080/api/room/joinroom/random`,
@@ -109,16 +110,14 @@ const MatchSystemBtn = () => {
                     </>
                 </div>
             )}
-            {/* TODO remove overalay with the message */}
-            {roomNotFound && (
-                <div className={styles.overlay}>
-                    {showMessage && (
-                        <>
-                            <h4>We have not found an available room</h4>
-                            <h4> Please try again later</h4>
-                        </>
-                    )}
-                </div>
+
+            {showMessage && (
+                <>
+                    <div className={styles.overlay}>
+                        <h4>We have not found an available room</h4>
+                        <h4> Please try again later</h4>
+                    </div>
+                </>
             )}
 
             {youAreAlreadyPlaying && (
