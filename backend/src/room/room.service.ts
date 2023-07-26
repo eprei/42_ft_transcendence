@@ -4,12 +4,14 @@ import { User } from 'src/typeorm/user.entity'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { CreateRoomDto } from './dto/create-room.dto'
+import { UserService } from 'src/user/user.service'
 
 @Injectable()
 export class RoomService {
     constructor(
         @InjectRepository(User)
-        private readonly userRepository: Repository<User>
+        private readonly userRepository: Repository<User>,
+        private readonly userService: UserService
     ) {}
 
     private readonly rooms: Room[] = []
@@ -74,9 +76,14 @@ export class RoomService {
         }
         const myId = userMe.id
 
+        if (userMe.status === 'playing') {
+            throw new Error('You are already playing')
+        }
+
+        this.userService.changeStatusPlaying(myId)
+
         let index: number = -1
         let i: number = 0
-
         while (i < 10 && index === -1) {
             index = this.rooms.findIndex((room) => room.player_two === 0)
             if (index !== -1) {
@@ -89,5 +96,6 @@ export class RoomService {
             i++
         }
         console.log('no room found for', userMe.nickname)
+        this.userService.changeStatusOnLine(myId)
     }
 }

@@ -7,6 +7,8 @@ import {
     Body,
     Param,
     Request,
+    HttpException,
+    HttpStatus,
 } from '@nestjs/common'
 import { RoomService } from './room.service'
 import { Room } from 'src/types/Room'
@@ -44,7 +46,12 @@ export class RoomController {
     }
 
     @Post('joinroom/random')
-    joinRoom(@Req() req: any): Promise<Room> {
-        return this.roomService.joinRandomRoom(req)
+    async joinRoom(@Req() req: any): Promise<Room> {
+        try {
+            const room = await this.roomService.joinRandomRoom(req)
+            return room
+        } catch (error) {
+            throw new HttpException(error.message, HttpStatus.CONFLICT)
+        }
     }
 }
