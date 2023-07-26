@@ -20,10 +20,10 @@ export class ChatService {
     ) {}
 
     //ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox
-    async newMsg(createMessageDto: CreateMessageDto){
+    async newMsg(createMessageDto: CreateMessageDto) {
         const newMessage = this.messageRepository.create(createMessageDto)
         const savedMessage = await this.messageRepository.save(newMessage)
-        return savedMessage;
+        return savedMessage
     }
 
     async findOneToDisplay(id: number) {
@@ -42,12 +42,12 @@ export class ChatService {
 
     async findAllMsgByChannel(channelId: number): Promise<Message[]> {
         const messages = await this.messageRepository
-          .createQueryBuilder('message')
-          .where('message.channelId = :channelId', { channelId })
-          .getMany();
-    
-        return messages;
-      }
+            .createQueryBuilder('message')
+            .where('message.channelId = :channelId', { channelId })
+            .getMany()
+
+        return messages
+    }
 
     //UserBox UserBox UserBox UserBox UserBox UserBox UserBox UserBox UserBox UserBox
     async findUsersByChannel(id: number) {
@@ -184,5 +184,4 @@ export class ChatService {
         const deleteChannel = await this.channelRepository.remove(channel)
         return channel
     }
-
 }

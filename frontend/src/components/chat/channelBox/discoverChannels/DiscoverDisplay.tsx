@@ -3,7 +3,7 @@ import DiscoverItem from './DiscoverItem'
 
 interface ChannelsDisplayProps {
     channels: Channel[] | []
-    getAllChannels: () => void
+    joinChannel: (channelId: number, password: string) => void
 }
 
 const DiscoverDisplay = (props: ChannelsDisplayProps) => {
@@ -13,7 +13,7 @@ const DiscoverDisplay = (props: ChannelsDisplayProps) => {
             <DiscoverItem
                 key={channel.id}
                 channel={channel}
-                getAllChannels={props.getAllChannels}
+                joinChannel={props.joinChannel}
             ></DiscoverItem>
         ))
     }

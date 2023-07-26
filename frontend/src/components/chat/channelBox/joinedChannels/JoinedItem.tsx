@@ -6,17 +6,16 @@ import IconPrivate from '../../../../assets/icon/lock.svg'
 import ChannelType from '../../../../types/ChannelType'
 import { useAppDispatch, useAppSelector } from '../../../../store/types'
 import { UserData } from '../../../../types/UserData'
-import { io } from 'socket.io-client'
 import { chatActions } from '../../../../store/chat'
 import { Modal } from 'antd'
 
 interface JoinedItemProps {
     channel: Channel
-    getAllChannels: () => void
+    deleteChannel: (channelId: number) => void
+    leaveChannel: (channelId: number) => void
 }
 
 const JoinedItem = (props: JoinedItemProps) => {
-    const socket = io('http://localhost:8080')
     const userData = useAppSelector((state) => state.user.userData) as UserData
     const currentChatSelected = useAppSelector(
         (state) => state.chat.currentChatSelected
@@ -31,16 +30,10 @@ const JoinedItem = (props: JoinedItemProps) => {
     }
 
     const LeaveChannel = () => {
-        socket.emit('leaveChannel', props.channel.id, userData.user.id, () => {
-            dispatch(chatActions.selectChat(0))
-            props.getAllChannels()
-        })
+        props.leaveChannel(props.channel.id)
     }
     const deleteChannel = () => {
-        socket.emit('deleteChannel', props.channel.id, userData.user.id, () => {
-            dispatch(chatActions.selectChat(0))
-            props.getAllChannels()
-        })
+        props.deleteChannel(props.channel.id)
     }
     const handleOk = () => {
         setConfirmLoading(true)

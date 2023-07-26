@@ -10,6 +10,9 @@ import { User, UserData } from '../../../types/UserData'
 interface ChannelListProps {
     allChan: Channel[] | []
     getAllChannels: () => void
+    deleteChannel: (channelId: number) => void
+    leaveChannel: (channelId: number) => void
+    joinChannel: (channelId: number, password: string) => void
 }
 
 const ChannelList = (props: ChannelListProps) => {
@@ -62,14 +65,15 @@ const ChannelList = (props: ChannelListProps) => {
                 <h2> Joined Channels </h2>
                 <JoinedDisplay
                     channels={joinedButNotDms}
-                    getAllChannels={props.getAllChannels}
+                    deleteChannel={props.deleteChannel}
+                    leaveChannel={props.leaveChannel}
                 ></JoinedDisplay>
             </div>
             <div className={styles.list}>
                 <h2> Discover </h2>
                 <DiscoverDisplay
                     channels={notJoinedAndNotDms}
-                    getAllChannels={props.getAllChannels}
+                    joinChannel={props.joinChannel}
                 ></DiscoverDisplay>
             </div>
             <div className={styles.list}>

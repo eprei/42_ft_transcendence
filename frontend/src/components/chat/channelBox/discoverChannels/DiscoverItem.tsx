@@ -3,40 +3,25 @@ import styles from '../ChannelLi.module.css'
 import { Channel } from '../../../../types/Channel'
 import IconPrivate from '../../../../assets/icon/lock.svg'
 import ChannelType from '../../../../types/ChannelType'
-import { useAppDispatch, useAppSelector } from '../../../../store/types'
-import { UserData } from '../../../../types/UserData'
-import { io } from 'socket.io-client'
-import { chatActions } from '../../../../store/chat'
+import { useAppSelector } from '../../../../store/types'
 import { Modal } from 'antd'
 import Input from './Input'
 
 interface DiscoverItemProps {
     channel: Channel
-    getAllChannels: () => void
+    joinChannel: (channelId: number, password: string) => void
 }
 
 const DiscoverItem = (props: DiscoverItemProps) => {
-    const socket = io('http://localhost:8080')
     const [open, setOpen] = useState(false)
     const [confirmLoading, setConfirmLoading] = useState(false)
     const [showInput, setShowInput] = useState(false)
     const [inputValue, setInputValue] = useState('')
-    const userData = useAppSelector((state) => state.user.userData) as UserData
     const currentChatSelected = useAppSelector(
         (state) => state.chat.currentChatSelected
     ) as number
-    const dispatch = useAppDispatch()
     const joinChannel = (password: string) => {
-        socket.emit(
-            'joinChannel',
-            props.channel.id,
-            userData.user.id,
-            password,
-            () => {
-                dispatch(chatActions.selectChat(props.channel.id))
-                props.getAllChannels()
-            }
-        )
+        props.joinChannel(props.channel.id, password)
     }
 
     const showModal = () => {
