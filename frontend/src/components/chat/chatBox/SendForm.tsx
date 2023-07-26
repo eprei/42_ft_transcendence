@@ -2,7 +2,7 @@ import styles from './SendForm.module.css'
 import { useState, ChangeEvent, KeyboardEvent } from 'react'
 import { useAppSelector } from '../../../store/types'
 import { UserData } from '../../../types/UserData'
-import { NewMsg } from './ChatBox'
+import { NewMsg } from '../../../pages/Chat'
 
 interface ChatFeedProps {
     sendMessage: (NewMsg: NewMsg) => void
