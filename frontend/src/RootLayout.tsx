@@ -1,27 +1,9 @@
 import { Outlet } from 'react-router-dom'
 import Navbar from './components/navigation/Navbar'
 import { authActions } from './store/auth'
-import { useAppDispatch } from './store/types'
-import { useLoaderData } from 'react-router-dom'
-
-interface dataStatus {
-    status: string
-}
+import store from './store'
 
 const RootLayout = () => {
-    async function checkStatus(data: dataStatus) {
-        if (data.status === 'isLogged') {
-            dispatch(authActions.login())
-        } else if (data.status === 'need2fa') {
-            dispatch(authActions.setNeed2fa())
-        } else {
-            dispatch(authActions.logout())
-        }
-    }
-    const dispatch = useAppDispatch()
-    const data = useLoaderData() as dataStatus
-    checkStatus(data)
-
     return (
         <>
             <Navbar></Navbar>
@@ -44,5 +26,12 @@ export async function loader() {
         })
     }
     const data = await response.json()
+    if (data.status === 'isLogged') {
+        store.dispatch(authActions.login())
+    } else if (data.status === 'need2fa') {
+        store.dispatch(authActions.setNeed2fa())
+    } else {
+        store.dispatch(authActions.logout())
+    }
     return data
 }
