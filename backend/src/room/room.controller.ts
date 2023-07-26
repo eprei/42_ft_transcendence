@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Put, Req, Body, Param } from '@nestjs/common'
+import {
+    Controller,
+    Get,
+    Post,
+    Put,
+    Req,
+    Body,
+    Param,
+    Request,
+} from '@nestjs/common'
 import { RoomService } from './room.service'
 import { Room } from 'src/types/Room'
 import { Public } from '../decorators/public.decorator'
@@ -22,8 +31,11 @@ export class RoomController {
     }
 
     @Post()
-    createRoom(@Body() room: CreateRoomDto): Room {
-        return this.roomService.createRoom(room)
+    async createRoom(
+        @Request() req: any,
+        @Body() createRoomDto: CreateRoomDto
+    ) {
+        return this.roomService.createRoom(req, createRoomDto)
     }
 
     @Put(':id')

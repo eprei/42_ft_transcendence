@@ -55,6 +55,18 @@
     align-content: space-around;
 }
 
+.bodyLeftSide h4 {
+    margin: 1rem;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    /* font-size: 16px; */
+    line-height: 32px;
+    text-align: center;
+    color: var(--color-white);
+}
+
 .bodyRightSide {
     display: flex;
     flex-direction: column;
@@ -64,4 +76,29 @@
 
     width: 40%;
     height: 100%;
+}
+
+.columns {
+    display: flex;
+    flex-direction: row;
+}
+
+.btn {
+    font-size: 13px;
+
+    margin-top: 0rem;
+    padding: 16px 24px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    background-color: var(--color-dark-green);
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: var(--color-mid-green);
+}
+
+.btn:active {
+    background-color: var(--color-purple);
 }

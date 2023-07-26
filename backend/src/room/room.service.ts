@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, Request, NotFoundException } from '@nestjs/common'
 import { Room } from 'src/types/Room'
 import { User } from 'src/typeorm/user.entity'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
+import { CreateRoomDto } from './dto/create-room.dto'
 
 @Injectable()
 export class RoomService {
@@ -23,8 +24,21 @@ export class RoomService {
         )
     }
 
-    createRoom(room: Room): Room {
+    async createRoom(@Request() req: any, createRoomDto: CreateRoomDto) {
+        const userMe = await this.userRepository.findOneBy({ id: req.user.id })
+
+        if (!userMe) {
+            throw new NotFoundException('User not found')
+        }
+
+        const room: Room = {
+            player_one: userMe.id,
+            player_two: 0,
+            theme: createRoomDto.theme,
+        }
+
         this.rooms.push(room)
+
         return room
     }
 

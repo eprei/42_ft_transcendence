@@ -80,6 +80,7 @@ const MatchSystemBtn = () => {
                             type="circle"
                             percent={percent}
                             style={{ marginRight: 8 }}
+                            showInfo={false}
                         />
                         <h4>
                             We are looking for a free room that you can join to
@@ -92,7 +93,7 @@ const MatchSystemBtn = () => {
                     </>
                 </div>
             )}
-
+            {/* TODO remove overalay with the message */}
             {roomNotFound && (
                 <div className={styles.overlay}>
                     {showMessage && (
