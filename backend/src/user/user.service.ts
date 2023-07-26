@@ -58,25 +58,19 @@ export class UserService {
         return this.userRepository.findOneBy({ FT_id: FT_id })
     }
 
-    findByNickname(nickname: string): Promise<User | undefined> {
-        return new Promise((resolve, reject) => {
-            try {
-                const user = this.userRepository.findOneBy({
-                    nickname: nickname,
-                })
+    async findByNickname(nickname: string) {
+        try {
+            const user = await this.userRepository.findOneBy({
+                nickname: nickname,
+            })
 
-                if (user) {
-                    console.log('User found:', user)
-                    resolve(user)
-                } else {
-                    console.log('No user with the nickname provided was found.')
-                    resolve(undefined)
-                }
-            } catch (error) {
-                console.error('Error when searching for the user: ', error)
-                reject(error)
+            if (!user) {
+                console.log('No user with the nickname provided was found.')
             }
-        })
+            return user
+        } catch (error) {
+            console.error('Error when searching for the user: ', error)
+        }
     }
 
     async getUserRankingPosition(userId: number): Promise<number> {
