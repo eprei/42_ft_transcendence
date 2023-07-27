@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react'
-import { useAppSelector } from '../../store/types'
-import { UserData } from '../../types/UserData'
 import { MatchData } from '../../types/MatchData'
 import styles from './MatchList.module.css'
 
