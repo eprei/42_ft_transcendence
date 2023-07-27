@@ -5,9 +5,6 @@ import { useState, useEffect } from 'react'
 import type { CheckboxChangeEvent } from 'antd/es/checkbox'
 
 const Play = () => {
-    const fetchUserData = useLoaderData() as UserData
-    const dispatch = useAppDispatch()
-    dispatch(userActions.update({ user: fetchUserData }))
 
     const [selectedTheme, setSelectedTheme] = useState<string | null>('Theme 1')
     const [youAreAlreadyPlaying, setYouAreAlreadyPlaying] =
