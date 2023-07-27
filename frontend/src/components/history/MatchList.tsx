@@ -20,7 +20,7 @@ const MatchList = () => {
             }
         }
         fetchMatches()
-    })
+    }, [])
 
     const matchHistoryWinner = matchHistory.map((match: MatchData) => (
         <div className={styles.left} key={match.id}>
