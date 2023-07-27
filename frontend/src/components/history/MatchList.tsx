@@ -6,7 +6,6 @@ import styles from './MatchList.module.css'
 
 const MatchList = () => {
     const [matchHistory, setMatchHistory] = useState<MatchData[]>([])
-    const userData = useAppSelector((state) => state.user.userData) as UserData
 
     useEffect(() => {
         const fetchMatches = async () => {
