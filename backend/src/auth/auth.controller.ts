@@ -33,8 +33,6 @@ export class AuthController {
     @Get('42/redirect')
     @UseGuards(OauthGuard)
     loginRedirect(@Req() req, @Res() res) {
-        console.log('Passport User: ', req.user)
-        console.log('Session: ', req.session)
         res.redirect('http://localhost:4040/profile')
 
         return req.user

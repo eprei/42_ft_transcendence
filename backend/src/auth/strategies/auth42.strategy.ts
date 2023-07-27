@@ -22,10 +22,8 @@ export class Auth42Strategy extends PassportStrategy(Strategy, 'oauth') {
     async validate(accessToken: string): Promise<any> {
         const user = await this.getUserProfile(accessToken)
         if (!user) {
-            console.log('NO USER FOUND')
             throw new UnauthorizedException()
         }
-        console.log('API TOKEN FUNCTIONAL, 42 id: ', user.FT_id)
         const new_user = await this.authService.validateUser(user)
         return new_user
     }

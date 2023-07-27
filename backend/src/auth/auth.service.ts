@@ -27,7 +27,6 @@ export class AuthService {
         } else {
             await this.userService.changeStatusOnLine(user.id)
         }
-        console.log(user)
         return user
     }
 
