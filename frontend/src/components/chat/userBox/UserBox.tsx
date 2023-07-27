@@ -58,16 +58,38 @@ function UserList() {
             otherUserId,
             (response: any) => {
                 if (response) {
-                    // setChatId(response)
+                    getBlockedUsers()
                 }
             }
         )
     }
 
+	const unblockUser = (otherUserId: number) => {
+        socket.emit(
+            'unblockUser',
+            userData.user.id,
+            otherUserId,
+            (response: any) => {
+                if (response) {
+                    getBlockedUsers()
+                }
+            }
+        )
+    }
+
+	const getBlockedUsers = () => {
+		socket.emit('getBlockedUsers', userData.user.id, (response: any) => {
+			console.log(response)
+			setBlockedUsers(response)
+		})
+	}
+
+
     const [allInfo, setAllInfo] = useState<any[]>([])
-    const [users, setUsers] = useState<any[]>([])
+	const [users, setUsers] = useState<any[]>([])
     const [admin, setAdmin] = useState<boolean>(false)
     const [owner, setOwner] = useState<boolean>(false)
+    const [blockedUsers, setBlockedUsers] = useState<any[]>([])
 
     const work = () => {
         if (allInfo) {
@@ -78,8 +100,13 @@ function UserList() {
     useEffect(() => {
         if (currentChatSelected) {
             getChUsers()
-        } else setUsers([])
+			getBlockedUsers()
+        } else {
+			setUsers([])
+			setBlockedUsers([])
+		}
     }, [currentChatSelected])
+
 
     return (
         <div className={`${styles.usersBox}`}>
@@ -95,6 +122,8 @@ function UserList() {
 				status={user.status}
 				createDM={createDM}
 				blockUser={blockUser}
+				unblockUser={unblockUser}
+				blockedUsers={blockedUsers}
 			/> : null
             )}
             <h2> offline </h2>
@@ -109,6 +138,8 @@ function UserList() {
 				status={user.status}
 				createDM={createDM}
 				blockUser={blockUser}
+				unblockUser={unblockUser}
+				blockedUsers={blockedUsers}
 			/> : null
 			)}
         </div>

@@ -53,7 +53,7 @@ export class ChatService {
     async findUsersByChannel(id: number) {
         return await this.channelRepository.findOne({
             relations: {
-                users: true,
+                users: true ,
                 owner: true,
                 admin: true,
             },
@@ -94,6 +94,45 @@ export class ChatService {
             }
         })
     }
+
+	async unblockUser(myId: number, hisId: number) {
+		const user = await this.userRepository.findOne({
+			where: { id: myId },
+			relations: {
+				blockedUsers: true,
+			},
+		})
+
+		const userToUnblock = await this.userRepository.findOne({
+			where: { id: hisId },
+			relations: {
+				blockedBy: true,
+			},
+		})
+
+		userToUnblock.blockedBy = userToUnblock.blockedBy.filter(
+			(u) => u.id !== user.id
+		)
+		await this.userRepository.save(userToUnblock)
+
+		user.blockedUsers = user.blockedUsers.filter(
+			(u) => u.id !== userToUnblock.id
+		)
+		await this.userRepository.save(user)
+	}
+
+	async getBlockedUsers(myId: number)
+	{
+		const user = await this.userRepository.findOne({
+			where: { id: myId },
+			relations: {
+				blockedUsers: true,
+			},
+		})
+		const blockedUserIds = user.blockedUsers.map((blockedUser) => blockedUser.id)
+		console.log(blockedUserIds)
+		return blockedUserIds
+	}
 
     //ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox
     createChannel(createChannelDto: CreateChannelDto) {

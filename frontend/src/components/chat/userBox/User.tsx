@@ -1,19 +1,22 @@
 import styles from './User.module.css'
 import IconMsg from '../../../assets/icon/message.svg'
 import IconInviteToPlay from '../../../assets/icon/invite_to_play.svg'
-import { useState } from 'react'
+import IconBlocked from '../../../assets/icon/block_user.svg'
+import { useEffect, useState } from 'react'
 import { useAppSelector } from '../../../store/types'
 import { UserData } from '../../../types/UserData'
 
 export interface UserProps {
     id: number
-    nickname: string
+	nickname: string
     avatarUrl: string
     isOwner: boolean
     isAdmin: boolean
 	status: string
     createDM: (otherUserId: number) => void
     blockUser: (otherUserId: number) => void
+    unblockUser: (otherUserId: number) => void
+	blockedUsers: number[]
 }
 
 const User = ({
@@ -25,6 +28,8 @@ const User = ({
 	status,
     createDM,
     blockUser,
+	unblockUser,
+	blockedUsers,
 }: UserProps) => {
     const userData = useAppSelector((state) => state.user.userData) as UserData
     const myId = userData.user.id
@@ -34,6 +39,15 @@ const User = ({
         inviteToPlay = <img src={IconInviteToPlay} alt="Invite to Play Icon" />
     }
 
+	const [isBlocked, setIsBlocked] = useState<boolean>(false)
+	
+	useEffect(() => {
+		if (blockedUsers.includes(id)) {
+			setIsBlocked(true)
+		} else {
+			setIsBlocked(false)
+		}
+	}, [blockedUsers])
 
     const createDmHandler = () => {
         createDM(id)
@@ -59,11 +73,15 @@ const User = ({
         blockUser(id)
     }
 
+    const unblockUserHandler = () => {
+        unblockUser(id)
+    }
+
     return (
         <div className={styles.container}>
             <div className={styles.left}>
-                <img // {isBlocked ? (src={IconBlocked}) : (src={avatarUrl})}
-                    src={avatarUrl}
+                <img 
+					src={isBlocked? IconBlocked : avatarUrl}
                     alt="Avatar"
                     className={styles.profilePicture}
                     onClick={() =>
@@ -82,7 +100,9 @@ const User = ({
                         onClick={handleContextMenuClose}
                     >
                         <ul>
-                            <li onClick={blockUserHandler}>Block</li>
+							{isBlocked? <li onClick={unblockUserHandler}>Unblock</li>
+							: <li onClick={blockUserHandler}>Block</li>}
+
                             {isOwner ? (
                                 <div>
                                     <li>Set admin</li>
@@ -121,6 +141,7 @@ const User = ({
                             alt="Message Icon"
                         />
                     </div>
+					
                 </div>
             ) : null}
         </div>

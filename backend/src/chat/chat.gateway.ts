@@ -66,6 +66,39 @@ export class ChatGateway {
         return chanUsers
     }
 
+	
+    @SubscribeMessage('blockUser')
+    async blockUser(@MessageBody() data: any) {
+        try {
+            this.chatService.blockUser(data[0], data[1])
+            return { message: 'User blocked successfully' }
+        } catch (error) {
+            throw new Error('Failed to block user')
+        }
+    }
+
+	@SubscribeMessage('unblockUser')
+	async unblockUser(@MessageBody() data: any) {
+		try {
+			console.log('LA VIE EST BELLE')
+			this.chatService.unblockUser(data[0], data[1])
+			return { message: 'User unblocked successfully' }
+		} catch (error) {
+			throw new Error('Failed to unblock user')
+		}
+	}
+
+	@SubscribeMessage('getBlockedUsers')
+	async getBlockedUsers(@MessageBody() myId: number) {
+		try {
+			const blockedUsers = await this.chatService.getBlockedUsers(myId)
+			// this.server.emit('updateUsers', msgSended)
+			return blockedUsers
+		} catch (error) {
+			throw new Error('Failed to get blocked users')
+		}
+	}
+
     //ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox
     @SubscribeMessage('createNewChannel')
     @UsePipes(ValidationPipe)
@@ -170,16 +203,6 @@ export class ChatGateway {
             return channel
         } catch (error) {
             throw new Error('Failed to remove user from channel')
-        }
-    }
-
-    @SubscribeMessage('blockUser')
-    async blockUser(@MessageBody() data: any) {
-        try {
-            this.chatService.blockUser(data[0], data[1])
-            return { message: 'User blocked successfully' }
-        } catch (error) {
-            throw new Error('Failed to block user')
         }
     }
 

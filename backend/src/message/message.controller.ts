@@ -37,11 +37,19 @@ export class MessageController {
         @Param('id') id: string,
         @Body() createMessageDto: CreateMessageDto
     ) {
-        const chan = await this.channelRepository.findOneBy({ id: +id })
-        ;(createMessageDto.creationDate = new Date()),
-            (createMessageDto.channel = chan)
-        return await this.messageService.create(createMessageDto)
-    }
+    //     const chan = await this.channelRepository.findOneBy({ id: +id })
+    //     ;(createMessageDto.creationDate = new Date()),
+    //         (createMessageDto.channel = chan)
+    //     return await this.messageService.create(createMessageDto)
+    // }
+		// const user = await this.userRepository.findOneBy({
+		// 	id: createMessageDto.creator,
+		// })
+		// const { nickname, avatarUrl } = user
+		// createMessageDto.userNickname = nickname
+		// createMessageDto.userAvatarUrl = avatarUrl
+		const msgSended = await this.messageService.create(createMessageDto)
+	}
 
     @Get()
     async findAll() {
