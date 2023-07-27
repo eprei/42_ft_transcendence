@@ -75,6 +75,21 @@ const BoardGame = () => {
         console.log('actual frame render: ', JSON.stringify(frame))
     }, [frame])
 
+	const handleKeyDown = (event: KeyboardEvent) => {
+        // Capturar el evento cuando el usuario utiliza las flechas de arriba o abajo
+        if (event.key === 'ArrowUp') {
+			console.log('up')
+            // Lógica para mover la paleta hacia arriba
+            // Envía un evento al backend para actualizar la posición de la paleta
+            socket.emit('movePaddle', { direction: 'up' });
+        } else if (event.key === 'ArrowDown') {
+			console.log('down')
+            // Lógica para mover la paleta hacia abajo
+            // Envía un evento al backend para actualizar la posición de la paleta
+            socket.emit('movePaddle', { direction: 'down' });
+        }
+    };
+
     useEffect(() => {
         function onSendFrames(frame: Frame) {
             console.log('sendFrames: ', JSON.stringify(frame))
@@ -85,10 +100,21 @@ const BoardGame = () => {
             setFrame(response)
         })
 
-        socket.on('sendFrames', onSendFrames)
+		// Function to recive the updated frame from the server
+        function onReceiveFrames(frame: Frame) {
+            setFrame(frame); // Actualiza el frame cuando se recibe del servidor
+        }
+
+		// Register event to receive updated frame from server
+        socket.on('sendFrames', onReceiveFrames);
+
+		// Agregar un event listener para capturar las flechas de arriba y abajo
+        document.addEventListener('keydown', handleKeyDown);
 
         return () => {
             socket.off('sendFrames', onSendFrames)
+			// Eliminar el event listener al desmontar el componente
+			// document.removeEventListener('keydown', handleKeyDown);
         }
     }, [])
 
