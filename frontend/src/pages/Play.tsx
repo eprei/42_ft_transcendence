@@ -1,8 +1,4 @@
 import styles from './Play.module.css'
-import { userActions } from '../store/user'
-import { useAppDispatch } from '../store/types'
-import { UserData } from '../types/UserData'
-import { useLoaderData } from 'react-router-dom'
 import MatchSystemBtn from '../components/play/MatchSystemBtn'
 import { Checkbox } from 'antd'
 import { useState, useEffect } from 'react'
