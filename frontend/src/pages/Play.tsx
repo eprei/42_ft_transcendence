@@ -11,11 +11,7 @@ const Play = () => {
         useState<boolean>(false)
 
     const onChange = (e: CheckboxChangeEvent) => {
-        if (e.target.checked) {
-            setSelectedTheme(e.target.value)
-        } else {
-            setSelectedTheme(null)
-        }
+        setSelectedTheme(e.target.value)
     }
 
     useEffect(() => {
