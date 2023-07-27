@@ -134,6 +134,55 @@ export class ChatService {
 		return blockedUserIds
 	}
 
+	async setAdmin(myId: number, hisId: number, channelId: number) {
+		const channel = await this.channelRepository.findOne({
+			where: { id: channelId },
+			relations: {
+				owner: true,
+				admin: true,
+			},
+		})
+		const user = await this.userRepository.findOne({
+			where: { id: myId }
+		})
+		
+		const userToSet = await this.userRepository.findOne({
+			where: { id: hisId }
+		})
+
+		if (channel.owner.id === user.id) {
+			channel.admin.push(userToSet)
+			await this.channelRepository.save(channel)
+		}
+		else
+			throw new UnauthorizedException()
+	}
+
+	async unsetAdmin(myId: number, hisId: number, channelId: number) {
+		const channel = await this.channelRepository.findOne({
+			where: { id: channelId },
+			relations: {
+				owner: true,
+				admin: true,
+			},
+		})
+		const user = await this.userRepository.findOne({
+			where: { id: myId }
+		})
+		
+		const userToUnset = await this.userRepository.findOne({
+			where: { id: hisId }
+		})
+
+		if (channel.owner.id === user.id) {
+			channel.admin = channel.admin.filter((u) => u.id !== userToUnset.id)
+			await this.channelRepository.save(channel)
+		}
+		else
+			throw new UnauthorizedException()
+	}
+
+
     //ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox
     createChannel(createChannelDto: CreateChannelDto) {
         console.log('createChannelDto', createChannelDto)

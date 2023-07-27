@@ -2,7 +2,7 @@ import styles from './User.module.css'
 import IconMsg from '../../../assets/icon/message.svg'
 import IconInviteToPlay from '../../../assets/icon/invite_to_play.svg'
 import IconBlocked from '../../../assets/icon/block_user.svg'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useAppSelector } from '../../../store/types'
 import { UserData } from '../../../types/UserData'
 
@@ -10,26 +10,34 @@ export interface UserProps {
     id: number
 	nickname: string
     avatarUrl: string
+	status: string
+	amIowner: boolean
+	amIadmin: boolean
     isOwner: boolean
     isAdmin: boolean
-	status: string
+	isBlocked: boolean
     createDM: (otherUserId: number) => void
     blockUser: (otherUserId: number) => void
     unblockUser: (otherUserId: number) => void
-	blockedUsers: number[]
+	setAdmin: (targetUserId: number) => void
+	unsetAdmin: (targetUserId: number) => void
 }
 
 const User = ({
     id,
     nickname,
     avatarUrl,
+	status,
+	amIowner,
+	amIadmin,
     isOwner,
     isAdmin,
-	status,
+	isBlocked,
     createDM,
     blockUser,
 	unblockUser,
-	blockedUsers,
+	setAdmin,
+	unsetAdmin
 }: UserProps) => {
     const userData = useAppSelector((state) => state.user.userData) as UserData
     const myId = userData.user.id
@@ -37,20 +45,6 @@ const User = ({
   	let inviteToPlay: JSX.Element | null = null
     if (status === 'online') {
         inviteToPlay = <img src={IconInviteToPlay} alt="Invite to Play Icon" />
-    }
-
-	const [isBlocked, setIsBlocked] = useState<boolean>(false)
-	
-	useEffect(() => {
-		if (blockedUsers.includes(id)) {
-			setIsBlocked(true)
-		} else {
-			setIsBlocked(false)
-		}
-	}, [blockedUsers])
-
-    const createDmHandler = () => {
-        createDM(id)
     }
 
     const [showContextMenu, setShowContextMenu] = useState(false)
@@ -77,6 +71,26 @@ const User = ({
         unblockUser(id)
     }
 
+	let toggleBlockUser: JSX.Element | null = null
+	if (id !== myId) {
+		toggleBlockUser = isBlocked ? <li onClick={unblockUserHandler}>Unblock</li>
+		: <li onClick={blockUserHandler}>Block</li>
+	}
+
+	const createDmHandler = () => {
+        createDM(id)
+    }
+
+	const setAdminHandler = () => {
+		console.log('set admin BUEN DIA')
+		setAdmin(id)
+	}
+
+	const unsetAdminHandler = () => {
+		unsetAdmin(id)
+	}
+
+
     return (
         <div className={styles.container}>
             <div className={styles.left}>
@@ -85,9 +99,10 @@ const User = ({
                     alt="Avatar"
                     className={styles.profilePicture}
                     onClick={() =>
-                        (window.location.href = `http://localhost:4040/user/${nickname}`)
+						alert(isAdmin)
+                        // (window.location.href = `http://localhost:4040/user/${nickname}`)
                     }
-                    onContextMenu={handleContextMenu}
+                    onContextMenu={(id !== myId) ? handleContextMenu : undefined}
                 />
 
                 {showContextMenu && (
@@ -100,19 +115,15 @@ const User = ({
                         onClick={handleContextMenuClose}
                     >
                         <ul>
-							{isBlocked? <li onClick={unblockUserHandler}>Unblock</li>
-							: <li onClick={blockUserHandler}>Block</li>}
-
-                            {isOwner ? (
+							{toggleBlockUser}
+                            {amIowner ? (
                                 <div>
-                                    <li>Set admin</li>
-                                    <li>Remove admin</li>
+									{isAdmin ? <li onClick={unsetAdminHandler}>Remove admin</li> : <li onClick={setAdminHandler}> Set admin</li>}
                                     <li>Kick</li>
                                     <li>Ban</li>
-                                    <li>Silent</li>
+                                    <li>Silence</li>
                                 </div>
-                            ) : null}
-                            {isAdmin && !isOwner ? (
+                            ) : amIadmin && !isOwner ? (
                                 <div>
                                     <li>Kick</li>
                                     <li>Ban</li>

@@ -99,6 +99,26 @@ export class ChatGateway {
 		}
 	}
 
+	@SubscribeMessage('setAdmin')
+	async setAdmin(@MessageBody() data: any) {
+		try {
+			this.chatService.setAdmin(data[0], data[1], data[2])
+			return { message: 'User is now admin' }
+		} catch (error) {
+			throw new Error('Failed to set admin')
+		}
+	}
+
+	@SubscribeMessage('unsetAdmin')
+	async unsetAdmin(@MessageBody() data: any) {
+		try {
+			this.chatService.unsetAdmin(data[0], data[1], data[2])
+			return { message: 'User it is no longer admin' }
+		} catch (error) {
+			throw new Error('Failed to unset admin')
+		}
+	}
+
     //ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox
     @SubscribeMessage('createNewChannel')
     @UsePipes(ValidationPipe)

@@ -1,149 +1,76 @@
-import { useState, useEffect } from 'react'
 import styles from './UserBox.module.css'
 import User from './User'
-import { io } from 'socket.io-client'
-import { useAppSelector, useAppDispatch } from '../../../store/types'
+import { useAppSelector} from '../../../store/types'
 import { UserData } from '../../../types/UserData'
 import { RootState } from '../../../store'
-import { chatActions } from '../../../store/chat'
 
-const socket = io('http://localhost:8080')
+interface UserBoxProps {
+	users: any[]
+	blockedUsers: number[]
+	admins: any[]
+	owner: any
+	createDM: (targetUserId: number) => void
+	blockUser: (targetUserId: number) => void
+	unblockUser: (targetUserId: number) => void
+	setAdmin: (targetUserId: number) => void
+	unsetAdmin: (targetUserId: number) => void
+}
 
-function UserList() {
+const UserBox = (props: UserBoxProps) => {
     const userData = useAppSelector(
         (state: RootState) => state.user.userData
     ) as UserData
 
-    const currentChatSelected = useAppSelector(
-        (state) => state.chat.currentChatSelected
-    ) as number
-
-	const dispatch = useAppDispatch()
-    const getChUsers = () => {
-        socket.emit(
-            'findUsersByChannel',
-            currentChatSelected,	
-            (response: any) => {
-                setUsers(response.users)
-				setOwner(response.owner.id === userData.user.id)
-				setAdmin(false)
-				response.admin.map((admin: any) => {
-					if (admin.id === userData.user.id) setAdmin(true)
-				})
-                console.log(admin, owner)
-                setAllInfo(response)
-            }
-        )
-    }
-
-    const createDM = (otherUserId: number) => {
-        socket.emit(
-            'createDM',
-            userData.user.id,
-            otherUserId,
-            (response: any) => {
-                if (response) {
-					setTimeout(() => {
-					dispatch(chatActions.selectChat(response.id))
-					}, 1000)	
-                }
-            }
-        )
-    }
-
-    const blockUser = (otherUserId: number) => {
-        socket.emit(
-            'blockUser',
-            userData.user.id,
-            otherUserId,
-            (response: any) => {
-                if (response) {
-                    getBlockedUsers()
-                }
-            }
-        )
-    }
-
-	const unblockUser = (otherUserId: number) => {
-        socket.emit(
-            'unblockUser',
-            userData.user.id,
-            otherUserId,
-            (response: any) => {
-                if (response) {
-                    getBlockedUsers()
-                }
-            }
-        )
-    }
-
-	const getBlockedUsers = () => {
-		socket.emit('getBlockedUsers', userData.user.id, (response: any) => {
-			console.log(response)
-			setBlockedUsers(response)
-		})
-	}
-
-
-    const [allInfo, setAllInfo] = useState<any[]>([])
-	const [users, setUsers] = useState<any[]>([])
-    const [admin, setAdmin] = useState<boolean>(false)
-    const [owner, setOwner] = useState<boolean>(false)
-    const [blockedUsers, setBlockedUsers] = useState<any[]>([])
-
-    const work = () => {
-        if (allInfo) {
-            alert(JSON.stringify(allInfo, null, 2))
+	const work = () => {
+        if (props.admins) {
+            alert(JSON.stringify(props.admins, null, 2))
         }
     }
 
-    useEffect(() => {
-        if (currentChatSelected) {
-            getChUsers()
-			getBlockedUsers()
-        } else {
-			setUsers([])
-			setBlockedUsers([])
-		}
-    }, [currentChatSelected])
-
-
     return (
         <div className={`${styles.usersBox}`}>
-            <h2 onClick={work}> online </h2>
-            {users.map((user) =>
+            <h2 onClick={work} > online </h2>
+            {props.users.map((user) =>
                 user.status !== 'offline' ? <User
 				key={user.id}
 				id={user.id}
 				nickname={user.nickname}
 				avatarUrl={user.avatarUrl}
-				isOwner={owner}
-				isAdmin={admin}
 				status={user.status}
-				createDM={createDM}
-				blockUser={blockUser}
-				unblockUser={unblockUser}
-				blockedUsers={blockedUsers}
+				amIowner={props.owner.id === userData.user.id}
+				amIadmin={props.admins.some((admin) => admin.id === userData.user.id)}
+				isOwner={props.owner.id === user.id}
+				isAdmin={props.admins.some((admin) => admin.id === user.id)}
+				isBlocked={props.blockedUsers.includes(user.id)}
+				createDM={props.createDM}
+				blockUser={props.blockUser}
+				unblockUser={props.unblockUser}
+				setAdmin={props.setAdmin}
+				unsetAdmin={props.unsetAdmin}
 			/> : null
             )}
             <h2> offline </h2>
-            {users.map((user) =>
+            {props.users.map((user) =>
                 user.status === 'offline' ? <User
 				key={user.id}
 				id={user.id}
 				nickname={user.nickname}
 				avatarUrl={user.avatarUrl}
-				isOwner={owner}
-				isAdmin={admin}
 				status={user.status}
-				createDM={createDM}
-				blockUser={blockUser}
-				unblockUser={unblockUser}
-				blockedUsers={blockedUsers}
+				amIowner={props.owner.id === userData.user.id}
+				amIadmin={props.admins.some((admin) => admin.id === userData.user.id)}
+				isOwner={props.owner.id === user.id}
+				isAdmin={props.admins.some((admin) => admin.id === user.id)}
+				isBlocked={props.blockedUsers.includes(user.id)}
+				createDM={props.createDM}
+				blockUser={props.blockUser}
+				unblockUser={props.unblockUser}
+				setAdmin={props.setAdmin}
+				unsetAdmin={props.unsetAdmin}
 			/> : null
 			)}
         </div>
     )
 }
 
-export default UserList
+export default UserBox

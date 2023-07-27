@@ -1,7 +1,7 @@
 import styles from './Chat.module.css'
 import ChannelBox from '../components/chat/channelBox/ChannelBox.tsx'
 import ChatBox from '../components/chat/chatBox/ChatBox'
-import UserList from '../components/chat/userBox/UserBox.tsx'
+import UserBox from '../components/chat/userBox/UserBox.tsx'
 import { userActions } from '../store/user'
 import store from '../store'
 import { useEffect, useState } from 'react'
@@ -34,17 +34,28 @@ const Chat = () => {
     ) as number
     const [allChan, setAllChan] = useState<Channel[]>([])
     const [messages, setMesssages] = useState<ReceivedMsg[]>([])
+    const [users, setUsers] = useState<any[]>([])
+	const [blockedUsers, setBlockedUsers] = useState<any[]>([])
+	const [admins, setAdmins] = useState<any[]>([])
+	const [owner, setOwner] = useState()
 
     useEffect(() => {
         getAllChannels()
     }, [])
 
     useEffect(() => {
-        if (currentChatSelected) getAllMsgSocket()
-        else setMesssages([])
+        if (currentChatSelected) {
+			getAllMsg()
+			getChUsers()
+			getBlockedUsers()
+		}
+		else {
+			setMesssages([])
+			setUsers([])
+		}
     }, [currentChatSelected])
 
-    const getAllMsgSocket = () => {
+    const getAllMsg = () => {
         socket.emit(
             'findAllMsgByChannel',
             currentChatSelected,
@@ -115,6 +126,94 @@ const Chat = () => {
         })
     }
 
+	const getChUsers = () => {
+        socket.emit(
+            'findUsersByChannel',
+            currentChatSelected,	
+            (response: any) => {
+                setUsers(response.users)
+				setAdmins(response.admin)
+				setOwner(response.owner)
+            }
+        )
+    }
+
+    const createDM = (targetUserId: number) => {
+        socket.emit(
+            'createDM',
+            userData.user.id,
+            targetUserId,
+            (response: any) => {
+                if (response) {
+					setTimeout(() => {
+					dispatch(chatActions.selectChat(response.id))
+					}, 1000)	
+                }
+            }
+        )
+    }
+
+    const blockUser = (targetUserId: number) => {
+        socket.emit(
+            'blockUser',
+            userData.user.id,
+            targetUserId,
+            (response: any) => {
+                if (response) {
+                    getBlockedUsers()
+                }
+            }
+        )
+    }
+
+	const unblockUser = (targetUserId: number) => {
+        socket.emit(
+            'unblockUser',
+            userData.user.id,
+            targetUserId,
+            (response: any) => {
+                if (response) {
+                    getBlockedUsers()
+                }
+            }
+        )
+    }
+
+	const getBlockedUsers = () => {
+		socket.emit('getBlockedUsers', userData.user.id, (response: any) => {
+			console.log(response)
+			setBlockedUsers(response)
+		})
+	}
+
+	const setAdmin = (targetUserId: number) => {
+		socket.emit(
+			'setAdmin',
+			userData.user.id,
+			targetUserId,
+			currentChatSelected,
+			(response: any) => {
+				if (response) {
+					getChUsers()
+				}
+			}
+		)
+	}
+
+	const unsetAdmin = (targetUserId: number) => {
+		socket.emit(
+			'unsetAdmin',
+			userData.user.id,
+			targetUserId,
+			currentChatSelected,
+			(response: any) => {
+				if (response) {
+					getChUsers()
+				}
+			}
+		)
+	}
+
     return (
         <div className={styles.chatContainer}>
             <ChannelBox
@@ -130,7 +229,20 @@ const Chat = () => {
                 messages={messages}
                 sendMessage={sendMessage}
             />
-            <UserList />
+            <UserBox
+				users={users}
+				blockedUsers={blockedUsers}
+				admins={admins}
+				owner={owner}
+				createDM={createDM}
+				blockUser={blockUser}
+				unblockUser={unblockUser}
+				setAdmin={setAdmin}
+				unsetAdmin={unsetAdmin}
+				// kickUser={kickUser}
+				// BanUser={BanUser}
+				// SilenceUser={SilenceUser}
+			/>
         </div>
     )
 }
