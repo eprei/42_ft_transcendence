@@ -34,7 +34,7 @@ const MatchList = () => {
     ))
 
     const matchHistoryLoser = matchHistory.map((match: MatchData) => (
-        <div className={styles.player}>
+        <div className={styles.player}  key={match.id}>
             <span>{match.scoreLoser}</span>
             <img src={match.loserPfp} alt="loser avatar" />
             <span>{match.loserNick}</span>
