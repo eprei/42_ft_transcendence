@@ -83,9 +83,9 @@ const Play = () => {
                             <h4>Theme 3</h4>
                         </Checkbox>
                     </div>
-                    <div onClick={createRoom} className={styles.btn}>
+                    <button onClick={createRoom} className={styles.btn}>
                         create room
-                    </div>
+                    </button>
                 </div>
                 <div className={styles.bodyRightSide}>
                     <h3>Join an existing room</h3>
