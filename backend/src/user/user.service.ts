@@ -305,7 +305,6 @@ export class UserService {
         if (!user) {
             throw new NotFoundException('User not found')
         }
-        console.log('user.status: logout')
         this.update(user.id, { id: user.id, status: UserStatus.Offline })
 
         await req.session.destroy()
@@ -314,7 +313,6 @@ export class UserService {
     }
 
     async changeStatusOnLine(userId: number) {
-        console.log('user.status: online')
         this.update(userId, { id: userId, status: UserStatus.Online })
     }
 
