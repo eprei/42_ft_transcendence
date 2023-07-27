@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react'
 import styles from './UserBox.module.css'
 import User from './User'
 import { io } from 'socket.io-client'
-import { useAppSelector } from '../../../store/types'
+import { useAppSelector, useAppDispatch } from '../../../store/types'
 import { UserData } from '../../../types/UserData'
 import { RootState } from '../../../store'
+import { chatActions } from '../../../store/chat'
 
 const socket = io('http://localhost:8080')
 
@@ -17,20 +18,19 @@ function UserList() {
         (state) => state.chat.currentChatSelected
     ) as number
 
+	const dispatch = useAppDispatch()
     const getChUsers = () => {
         socket.emit(
             'findUsersByChannel',
-            currentChatSelected,
+            currentChatSelected,	
             (response: any) => {
-                // console.log(response)
                 setUsers(response.users)
-                response.owner.id === userData.user.id
-                    ? setOwner(true)
-                    : setOwner(false)
-                response.admin.id === userData.user.id
-                    ? setAdmin(true)
-                    : setAdmin(false)
-                // console.log(admin, owner)
+				setOwner(response.owner.id === userData.user.id)
+				setAdmin(false)
+				response.admin.map((admin: any) => {
+					if (admin.id === userData.user.id) setAdmin(true)
+				})
+                console.log(admin, owner)
                 setAllInfo(response)
             }
         )
@@ -43,8 +43,9 @@ function UserList() {
             otherUserId,
             (response: any) => {
                 if (response) {
-                    // setChatId(response)
-                    // alert(response)
+					setTimeout(() => {
+					dispatch(chatActions.selectChat(response.id))
+					}, 1000)	
                 }
             }
         )
