@@ -1,12 +1,15 @@
 import { Injectable } from '@nestjs/common'
 import { CreateMessageDto } from '../message/dto/create-message.dto'
 import { CreateChannelDto } from '../channel/dto/create-channel.dto'
+import { CreateChannelUserMutedDto } from '../channel-user-muted/dto/create-channel-user-muted.dto'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Message } from 'src/typeorm/message.entity'
 import { Channel } from 'src/typeorm/channel.entity'
 import { User } from 'src/typeorm/user.entity'
+import { ChannelUserMuted } from 'src/typeorm/channel-user-muted.entity'
 import { Repository } from 'typeorm'
-import { NotFoundException, UnauthorizedException } from '@nestjs/common'
+import { NotFoundException, UnauthorizedException, BadRequestException } from '@nestjs/common'
+
 
 @Injectable()
 export class ChatService {
@@ -16,7 +19,9 @@ export class ChatService {
         @InjectRepository(Channel)
         private readonly channelRepository: Repository<Channel>,
         @InjectRepository(User)
-        private readonly userRepository: Repository<User>
+        private readonly userRepository: Repository<User>,
+		@InjectRepository(ChannelUserMuted)
+		private readonly channelUserMutedRepository: Repository<ChannelUserMuted>
     ) {}
 
     //ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox
@@ -69,14 +74,12 @@ export class ChatService {
                 blockedUsers: true,
             },
         })
-        console.log('user', user)
         const userToBlock = await this.userRepository.findOne({
             where: { id: hisId },
             relations: {
                 blockedBy: true,
             },
         })
-        console.log('userToBlock', userToBlock)
 
         userToBlock.blockedBy.push(user)
         await this.userRepository.save(userToBlock)
@@ -132,7 +135,7 @@ export class ChatService {
         const blockedUserIds = user.blockedUsers.map(
             (blockedUser) => blockedUser.id
         )
-        console.log(blockedUserIds)
+        // console.log(blockedUserIds)
         return blockedUserIds
     }
 
@@ -271,13 +274,55 @@ export class ChatService {
             },
         })
         const bannedUserIds = channel.banned.map((bannedUser) => bannedUser.id)
-        console.log(bannedUserIds)
+        // console.log(bannedUserIds)
         return bannedUserIds
     }
 
+	async muteUser(myId: number, hisId: number, channelId: number) {
+		// this.channelUserMutedRepository.create()
+		const channel = await this.channelRepository.findOne({
+			where: { id: channelId },
+			relations: {
+				owner: true,
+				admin: true,
+			},
+		})
+		const user = await this.userRepository.findOne({
+			where: { id: myId },
+		})
+
+		const userToMute = await this.userRepository.findOne({
+			where: { id: hisId },
+		})
+		if (
+            channel.owner.id !== userToMute.id &&
+            channel.admin.some((u) => u.id === user.id)
+        ) {
+			const isMuted = await this.channelUserMutedRepository.findOne({
+				where: { user: { id: userToMute.id }, channel: { id: channelId } }
+			})
+			if (isMuted) throw new BadRequestException('User is already muted')
+			let chUserMuted : CreateChannelUserMutedDto = new CreateChannelUserMutedDto()
+			chUserMuted.user = userToMute
+			chUserMuted.channel = channel
+            this.channelUserMutedRepository.create(chUserMuted)
+			this.channelUserMutedRepository.save(chUserMuted)
+        } else throw new UnauthorizedException()
+    }
+
+	async getMutedUsers(channelId: number) {
+		const mutedUsers = await this.channelUserMutedRepository
+		.find({
+			where: { channel: { id: channelId } },
+			relations: ['user']
+		})
+		const mutedUserIds = mutedUsers.map((mutedUser) => mutedUser.user.id)	
+		console.log('mutedUserIds', mutedUserIds)
+		return mutedUserIds
+	}
+
     //ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox
     createChannel(createChannelDto: CreateChannelDto) {
-        console.log('createChannelDto', createChannelDto)
         const newChannel = this.channelRepository.create(createChannelDto)
         return this.channelRepository.save(newChannel)
     }
@@ -289,9 +334,6 @@ export class ChatService {
     }
 
     async joinChannel(channelId: number, userId: number, password: string) {
-        console.log('channelId', channelId)
-        console.log('userId', userId)
-        console.log('password', password)
         const channel = await this.channelRepository.findOne({
             relations: ['users', 'banned'],
             where: { id: channelId },

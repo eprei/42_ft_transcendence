@@ -39,6 +39,8 @@ const Chat = () => {
     const [admins, setAdmins] = useState<any[]>([])
     const [owner, setOwner] = useState()
     const [bannedUsers, setBannedUsers] = useState<any[]>([])
+	const [mutedUsers, setMutedUsers] = useState<number[]>([])
+	const [isDM, setIsDM] = useState<boolean>(false)
 
     useEffect(() => {
         getAllChannels()
@@ -49,11 +51,16 @@ const Chat = () => {
             getAllMsg()
             getChUsers()
             getBlockedUsers()
+			getMutedUsers()
+			if (allChan.find((ch) => (ch.id === currentChatSelected && ch.type === 'direct')))  
+				setIsDM(true)
+			else setIsDM(false)
         } else {
             setMesssages([])
             setUsers([])
             setBlockedUsers([])
             setBannedUsers([])
+			getMutedUsers()
         }
     }, [currentChatSelected])
 
@@ -190,7 +197,6 @@ const Chat = () => {
 
     const getBlockedUsers = () => {
         socket.emit('getBlockedUsers', userData.user.id, (response: any) => {
-            console.log(response)
             setBlockedUsers(response)
         })
     }
@@ -265,12 +271,27 @@ const Chat = () => {
         )
     }
 
-    // const getBannedUsers = () => {
+	// const getBannedUsers = () => {
     // 	socket.emit('getBannedUsers', currentChatSelected, (response: any) => {
     // 		console.log(response)
     // 		setBannedUsers(response)
     // 	})
     // }
+
+	const muteUser = (targetUserId: number) => {
+		socket.emit('muteUser', userData.user.id, targetUserId, currentChatSelected, (response: any) => {
+			if (response) {
+				getMutedUsers()
+			}
+		})
+	}
+
+	const getMutedUsers = () => {
+		socket.emit('getMutedUsers', currentChatSelected, (response: any) => {
+			// console.log('mi hermosa respuesta', response)
+			setMutedUsers(response)
+		})
+	}
 
     return (
         <div className={styles.chatContainer}>
@@ -293,6 +314,7 @@ const Chat = () => {
                 admins={admins}
                 owner={owner}
                 bannedUsers={bannedUsers}
+				mutedUsers={mutedUsers}
                 createDM={createDM}
                 blockUser={blockUser}
                 unblockUser={unblockUser}
@@ -301,7 +323,8 @@ const Chat = () => {
                 kickUser={kickUser}
                 banUser={banUser}
                 unbanUser={unbanUser}
-                // SilenceUser={SilenceUser}
+                muteUser={muteUser}
+				isDM={isDM}
             />
         </div>
     )

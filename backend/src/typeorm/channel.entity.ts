@@ -10,6 +10,7 @@ import {
 } from 'typeorm'
 import { User } from './user.entity'
 import { Message } from './message.entity'
+import { ChannelUserMuted } from './channel-user-muted.entity'
 
 @Entity()
 export class Channel {
@@ -42,6 +43,12 @@ export class Channel {
 
     @ManyToMany(() => User, (user) => user.banned)
     banned: User[]
+
+	// @ManyToMany(() => User, (user) => user.muted)
+    // muted: Map<User, Date>
+
+	@OneToMany(() => ChannelUserMuted, (channelUserMuted) => channelUserMuted.channel)
+	muted: ChannelUserMuted[]
 
     @OneToMany(() => Message, (message) => message.channelId)
     @JoinColumn({ name: 'messages' })

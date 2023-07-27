@@ -18,6 +18,7 @@ export interface UserProps {
     isAdmin: boolean
     isBlocked: boolean
     isBanned: boolean
+	isMuted: boolean
     createDM: (otherUserId: number) => void
     blockUser: (otherUserId: number) => void
     unblockUser: (otherUserId: number) => void
@@ -26,6 +27,8 @@ export interface UserProps {
     kickUser: (targetUserId: number) => void
     banUser: (targetUserId: number) => void
     unbanUser: (targetUserId: number) => void
+	muteUser: (targetUserId: number) => void
+	isDM: boolean
 }
 
 const User = ({
@@ -39,6 +42,7 @@ const User = ({
     isAdmin,
     isBlocked,
     isBanned,
+	isMuted,
     createDM,
     blockUser,
     unblockUser,
@@ -47,6 +51,8 @@ const User = ({
     kickUser,
     banUser,
     unbanUser,
+	muteUser,
+	isDM
 }: UserProps) => {
     const userData = useAppSelector((state) => state.user.userData) as UserData
     const myId = userData.user.id
@@ -113,6 +119,10 @@ const User = ({
         unbanUser(id)
     }
 
+	const muteUserHandler = () => {
+		muteUser(id)
+	}
+
     return (
         <div className={styles.container}>
             <div className={styles.left}>
@@ -159,7 +169,7 @@ const User = ({
                                     ) : (
                                         <li onClick={banUserHandler}>Ban</li>
                                     )}
-                                    <li>Silence</li>
+                                    {!isMuted ? <li onClick={muteUserHandler}>Mute</li> : null}
                                 </div>
                             ) : amIadmin && !isOwner ? (
                                 <div>
@@ -173,7 +183,7 @@ const User = ({
                                     ) : (
                                         <li onClick={banUserHandler}>Ban</li>
                                     )}
-                                    <li>Silent</li>
+                                    {!isMuted ? <li onClick={muteUserHandler}>Mute</li> : null}
                                 </div>
                             ) : null}
                         </ul>
@@ -192,11 +202,11 @@ const User = ({
                 <div className={styles.right}>
                     <div>{inviteToPlay}</div>
                     <div>
-                        <img
+					{(!isDM) ? <img 
                             src={IconMsg}
                             onClick={createDmHandler}
                             alt="Message Icon"
-                        />
+                        /> : null}
                     </div>
                 </div>
             ) : null}

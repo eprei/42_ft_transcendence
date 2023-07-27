@@ -13,6 +13,7 @@ import { Channel } from 'src/typeorm/channel.entity'
 import { Repository } from 'typeorm'
 import { WebSocketServer } from '@nestjs/websockets'
 import { User } from 'src/typeorm/user.entity'
+import { ChannelUserMuted } from 'src/typeorm/channel-user-muted.entity'
 
 @WebSocketGateway({
     cors: {
@@ -28,7 +29,7 @@ export class ChatGateway {
         @InjectRepository(Channel)
         private readonly channelRepository: Repository<Channel>,
         @InjectRepository(User)
-        private readonly userRepository: Repository<User>
+        private readonly userRepository: Repository<User>,
     ) {}
 
     @WebSocketServer()
@@ -157,6 +158,26 @@ export class ChatGateway {
             throw new Error('Failed to get banned users')
         }
     }
+
+	@SubscribeMessage('muteUser')
+	async muteUser(@MessageBody() data: any) {
+		try {
+			this.chatService.muteUser(data[0], data[1], data[2])
+			return { message: 'User muted successfully' }
+		} catch (error) {
+			throw new Error('Failed to mute user')
+		}
+	}
+
+	@SubscribeMessage('getMutedUsers')
+	async getMutedUsers(@MessageBody() channelId: number) {
+		try {
+			const mutedUsers = await this.chatService.getMutedUsers(channelId)
+			return mutedUsers
+		} catch (error) {
+			throw new Error('Failed to get muted users')
+		}
+	}
 
     //ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox
     @SubscribeMessage('createNewChannel')

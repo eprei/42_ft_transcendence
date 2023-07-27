@@ -11,6 +11,7 @@ import { MessageModule } from './message/message.module'
 import { Message } from './typeorm/message.entity'
 import { Friend } from './typeorm/friend.entity'
 import { Match } from './typeorm/match.entity'
+import { ChannelUserMuted } from './typeorm/channel-user-muted.entity'
 import { FriendModule } from './friend/friend.module'
 import { MatchModule } from './match/match.module'
 import { AuthModule } from './auth/auth.module'
@@ -19,6 +20,7 @@ import { AuthenticatedGuard } from './auth/guards/authenticated.guard'
 import { APP_GUARD } from '@nestjs/core'
 import { RoomModule } from './room/room.module'
 import { ChatModule } from './chat/chat.module';
+import { ChannelUserMutedModule } from './channel-user-muted/channel-user-muted.module';
 
 @Module({
     imports: [
@@ -28,9 +30,9 @@ import { ChatModule } from './chat/chat.module';
             url: process.env.DATABASE_URL,
             autoLoadEntities: true,
             synchronize: true,
-            entities: [User, Channel, Message, Friend, Match],
+            entities: [User, Channel, Message, Friend, Match, ChannelUserMuted],
         }),
-        TypeOrmModule.forFeature([Channel, User, Message, Friend, Match]),
+        TypeOrmModule.forFeature([Channel, User, Message, Friend, Match, ChannelUserMuted]),
         UserModule,
         ChannelModule,
         MessageModule,
@@ -40,6 +42,7 @@ import { ChatModule } from './chat/chat.module';
         PongModule,
         ChatModule,
         RoomModule,
+		ChannelUserMutedModule,
     ],
     controllers: [AppController],
     providers: [
