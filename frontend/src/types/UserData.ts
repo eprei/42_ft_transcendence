@@ -1,5 +1,6 @@
 export interface UserData {
     user: {
+        id: number
         nickname: string
         avatarUrl: string
         nbVictory: number

@@ -1,8 +1,12 @@
+import { MatchList } from '../components/history/MatchList'
+import styles from './MatchHistory.module.css'
+
 const MatchHistory = () => {
     return (
-        <>
-            <h1>Match History</h1>
-        </>
+        <div>
+            <h1 className={styles.title}>Match History</h1>
+            <MatchList />
+        </div>
     )
 }
 

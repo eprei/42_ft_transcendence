@@ -6,6 +6,7 @@ import {
     Patch,
     Param,
     Delete,
+    Request,
 } from '@nestjs/common'
 import { MatchService } from './match.service'
 import { CreateMatchDto } from './dto/create-match.dto'
@@ -26,6 +27,12 @@ export class MatchController {
     @Get()
     async findAll() {
         const matches = await this.matchService.findAll()
+        return matches
+    }
+
+    @Get('user')
+    async findByUserId(@Request() req: any) {
+        const matches = await this.matchService.findByUserId(req.user.id)
         return matches
     }
 
