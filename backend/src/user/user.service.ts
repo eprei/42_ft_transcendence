@@ -165,7 +165,6 @@ export class UserService {
 
     logStatus(@Req() req) {
         if (req.user && req.session.needTFA === false) {
-
             return { status: 'isLogged' }
         } else if (req.user && req.session.needTFA === true) {
             return { status: 'need2fa' }

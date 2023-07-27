@@ -2,7 +2,6 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import SignIn from './pages/SignIn'
 import MainProfile, { loader as userLoader } from './pages/MainProfile'
 import MatchHistory from './pages/MatchHistory'
-import GameLauncher from './pages/GameLauncher'
 import Game from './pages/Game'
 import Chat from './pages/Chat'
 import RootLayout, { loader as RootLoader } from './RootLayout'
@@ -12,6 +11,7 @@ import TFAVerify from './pages/TFAAuthenticate'
 import TFATurnOn from './pages/TFATurnOn'
 import UserLambda from './pages/UserLambda'
 import ProtectedSignIn from './ProtectedSignIn'
+import Play from './pages/Play'
 
 const router = createBrowserRouter([
     {
@@ -47,15 +47,6 @@ const router = createBrowserRouter([
                 ),
             },
             {
-                path: 'launcher',
-                loader: userLoader,
-                element: (
-                    <ProtectedRoute>
-                        <GameLauncher />
-                    </ProtectedRoute>
-                ),
-            },
-            {
                 path: 'game',
                 loader: userLoader,
                 element: (
@@ -80,6 +71,14 @@ const router = createBrowserRouter([
             {
                 path: 'user/:nickname',
                 element: <UserLambda />,
+            },
+            {
+                path: 'play',
+                element: (
+                    <ProtectedRoute>
+                        <Play />
+                    </ProtectedRoute>
+                ),
             },
         ],
     },
