@@ -1,5 +1,6 @@
 import styles from './User.module.css'
 import IconMsg from '../../../assets/icon/message.svg'
+import IconInviteToPlay from '../../../assets/icon/invite_to_play.svg'
 import { useState } from 'react'
 import { useAppSelector } from '../../../store/types'
 import { UserData } from '../../../types/UserData'
@@ -10,6 +11,7 @@ export interface UserProps {
     avatarUrl: string
     isOwner: boolean
     isAdmin: boolean
+	status: string
     createDM: (otherUserId: number) => void
     blockUser: (otherUserId: number) => void
 }
@@ -20,11 +22,18 @@ const User = ({
     avatarUrl,
     isOwner,
     isAdmin,
+	status,
     createDM,
     blockUser,
 }: UserProps) => {
     const userData = useAppSelector((state) => state.user.userData) as UserData
     const myId = userData.user.id
+
+  	let inviteToPlay: JSX.Element | null = null
+    if (status === 'online') {
+        inviteToPlay = <img src={IconInviteToPlay} alt="Invite to Play Icon" />
+    }
+
 
     const createDmHandler = () => {
         createDM(id)
@@ -94,13 +103,17 @@ const User = ({
                     </div>
                 )}
 
-                <div>
+				<div>
                     <h5>{nickname}</h5>
+                    <p className={styles.status}>
+                        {status === 'playing' ? 'playing' : ''}{' '}
+                    </p>
                 </div>
             </div>
 
             {id != myId ? (
                 <div className={styles.right}>
+					<div>{inviteToPlay}</div>
                     <div>
                         <img
                             src={IconMsg}

@@ -84,26 +84,33 @@ function UserList() {
     return (
         <div className={`${styles.usersBox}`}>
             <h2 onClick={work}> online </h2>
-            {users.map((user) => (
-                <User
-                    key={user.id}
-                    id={user.id}
-                    nickname={user.nickname}
-                    avatarUrl={user.avatarUrl}
-                    isOwner={owner}
-                    isAdmin={admin}
-                    createDM={createDM}
-                    blockUser={blockUser}
-                />
-            ))}
-            {/* <h2> online  </h2>
             {users.map((user) =>
-                user.isOnline ? <User key={user.id} user={user} /> : null
+                user.status !== 'offline' ? <User
+				key={user.id}
+				id={user.id}
+				nickname={user.nickname}
+				avatarUrl={user.avatarUrl}
+				isOwner={owner}
+				isAdmin={admin}
+				status={user.status}
+				createDM={createDM}
+				blockUser={blockUser}
+			/> : null
             )}
             <h2> offline </h2>
             {users.map((user) =>
-                !user.isOnline ? <User key={user.id} user={user} /> : null
-            )}  */}
+                user.status === 'offline' ? <User
+				key={user.id}
+				id={user.id}
+				nickname={user.nickname}
+				avatarUrl={user.avatarUrl}
+				isOwner={owner}
+				isAdmin={admin}
+				status={user.status}
+				createDM={createDM}
+				blockUser={blockUser}
+			/> : null
+			)}
         </div>
     )
 }
