@@ -14,7 +14,7 @@ function ChatBox(props: ChatBoxProps) {
     return (
         <div className={styles.chatBox}>
             <ChatFeed messages={props.messages} />
-            {props.currentChatSelected && (
+            {props.currentChatSelected > 0 && (
                 <SendForm sendMessage={props.sendMessage} />
             )}
         </div>
