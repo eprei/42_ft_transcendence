@@ -9,49 +9,49 @@ import { UserData } from '../../../types/UserData'
 
 export interface UserProps {
     id: number
-	nickname: string
+    nickname: string
     avatarUrl: string
-	status: string
-	amIowner: boolean
-	amIadmin: boolean
+    status: string
+    amIowner: boolean
+    amIadmin: boolean
     isOwner: boolean
     isAdmin: boolean
-	isBlocked: boolean
-	isBanned: boolean
+    isBlocked: boolean
+    isBanned: boolean
     createDM: (otherUserId: number) => void
     blockUser: (otherUserId: number) => void
     unblockUser: (otherUserId: number) => void
-	setAdmin: (targetUserId: number) => void
-	unsetAdmin: (targetUserId: number) => void
-	kickUser: (targetUserId: number) => void
-	banUser: (targetUserId: number) => void
-	unbanUser: (targetUserId: number) => void
+    setAdmin: (targetUserId: number) => void
+    unsetAdmin: (targetUserId: number) => void
+    kickUser: (targetUserId: number) => void
+    banUser: (targetUserId: number) => void
+    unbanUser: (targetUserId: number) => void
 }
 
 const User = ({
     id,
     nickname,
     avatarUrl,
-	status,
-	amIowner,
-	amIadmin,
+    status,
+    amIowner,
+    amIadmin,
     isOwner,
     isAdmin,
-	isBlocked,
-	isBanned,
+    isBlocked,
+    isBanned,
     createDM,
     blockUser,
-	unblockUser,
-	setAdmin,
-	unsetAdmin,
-	kickUser,
-	banUser,
-	unbanUser,
+    unblockUser,
+    setAdmin,
+    unsetAdmin,
+    kickUser,
+    banUser,
+    unbanUser,
 }: UserProps) => {
     const userData = useAppSelector((state) => state.user.userData) as UserData
     const myId = userData.user.id
 
-  	let inviteToPlay: JSX.Element | null = null
+    let inviteToPlay: JSX.Element | null = null
     if (status === 'online') {
         inviteToPlay = <img src={IconInviteToPlay} alt="Invite to Play Icon" />
     }
@@ -80,47 +80,50 @@ const User = ({
         unblockUser(id)
     }
 
-	let toggleBlockUser: JSX.Element | null = null
-	if (id !== myId) {
-		toggleBlockUser = isBlocked ? <li onClick={unblockUserHandler}>Unblock</li>
-		: <li onClick={blockUserHandler}>Block</li>
-	}
+    let toggleBlockUser: JSX.Element | null = null
+    if (id !== myId) {
+        toggleBlockUser = isBlocked ? (
+            <li onClick={unblockUserHandler}>Unblock</li>
+        ) : (
+            <li onClick={blockUserHandler}>Block</li>
+        )
+    }
 
-	const createDmHandler = () => {
+    const createDmHandler = () => {
         createDM(id)
     }
 
-	const setAdminHandler = () => {
-		setAdmin(id)
-	}
+    const setAdminHandler = () => {
+        setAdmin(id)
+    }
 
-	const unsetAdminHandler = () => {
-		unsetAdmin(id)
-	}
+    const unsetAdminHandler = () => {
+        unsetAdmin(id)
+    }
 
-	const kickUserHandler = () => {
-		kickUser(id)
-	}
+    const kickUserHandler = () => {
+        kickUser(id)
+    }
 
-	const banUserHandler = () => {
-		banUser(id)
-	}
+    const banUserHandler = () => {
+        banUser(id)
+    }
 
-	const unbanUserHandler = () => {
-		unbanUser(id)
-	}
+    const unbanUserHandler = () => {
+        unbanUser(id)
+    }
 
     return (
         <div className={styles.container}>
             <div className={styles.left}>
-                <img 
-					src={isBlocked? IconBlocked : avatarUrl}
+                <img
+                    src={isBlocked ? IconBlocked : avatarUrl}
                     alt="Avatar"
                     className={styles.profilePicture}
                     onClick={() =>
                         (window.location.href = `http://localhost:4040/user/${nickname}`)
                     }
-                    onContextMenu={(id !== myId) ? handleContextMenu : undefined}
+                    onContextMenu={id !== myId ? handleContextMenu : undefined}
                 />
 
                 {showContextMenu && (
@@ -133,18 +136,43 @@ const User = ({
                         onClick={handleContextMenuClose}
                     >
                         <ul>
-							{toggleBlockUser}
+                            {toggleBlockUser}
                             {amIowner ? (
                                 <div>
-									{isAdmin ? <li onClick={unsetAdminHandler}>Remove admin</li> : <li onClick={setAdminHandler}> Set admin</li>}
-                                    {isBanned? null : <li onClick={kickUserHandler}>Kick</li>}
-                                    {isBanned? <li onClick={unbanUserHandler}>Unban</li> : <li onClick={banUserHandler}>Ban</li>}
+                                    {isAdmin ? (
+                                        <li onClick={unsetAdminHandler}>
+                                            Remove admin
+                                        </li>
+                                    ) : (
+                                        <li onClick={setAdminHandler}>
+                                            {' '}
+                                            Set admin
+                                        </li>
+                                    )}
+                                    {isBanned ? null : (
+                                        <li onClick={kickUserHandler}>Kick</li>
+                                    )}
+                                    {isBanned ? (
+                                        <li onClick={unbanUserHandler}>
+                                            Unban
+                                        </li>
+                                    ) : (
+                                        <li onClick={banUserHandler}>Ban</li>
+                                    )}
                                     <li>Silence</li>
                                 </div>
                             ) : amIadmin && !isOwner ? (
                                 <div>
-                                    {isBanned? null : <li onClick={kickUserHandler}>Kick</li>}
-                                    {isBanned? <li onClick={unbanUserHandler}>Unban</li> : <li onClick={banUserHandler}>Ban</li>}
+                                    {isBanned ? null : (
+                                        <li onClick={kickUserHandler}>Kick</li>
+                                    )}
+                                    {isBanned ? (
+                                        <li onClick={unbanUserHandler}>
+                                            Unban
+                                        </li>
+                                    ) : (
+                                        <li onClick={banUserHandler}>Ban</li>
+                                    )}
                                     <li>Silent</li>
                                 </div>
                             ) : null}
@@ -152,7 +180,7 @@ const User = ({
                     </div>
                 )}
 
-				<div>
+                <div>
                     <h5>{nickname}</h5>
                     <p className={styles.status}>
                         {status === 'playing' ? 'playing' : ''}{' '}
@@ -162,7 +190,7 @@ const User = ({
 
             {id != myId ? (
                 <div className={styles.right}>
-					<div>{inviteToPlay}</div>
+                    <div>{inviteToPlay}</div>
                     <div>
                         <img
                             src={IconMsg}
@@ -170,7 +198,6 @@ const User = ({
                             alt="Message Icon"
                         />
                     </div>
-					
                 </div>
             ) : null}
         </div>

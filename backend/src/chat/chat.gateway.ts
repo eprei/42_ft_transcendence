@@ -66,7 +66,6 @@ export class ChatGateway {
         return chanUsers
     }
 
-	
     @SubscribeMessage('blockUser')
     async blockUser(@MessageBody() data: any) {
         try {
@@ -77,87 +76,87 @@ export class ChatGateway {
         }
     }
 
-	@SubscribeMessage('unblockUser')
-	async unblockUser(@MessageBody() data: any) {
-		try {
-			console.log('LA VIE EST BELLE')
-			this.chatService.unblockUser(data[0], data[1])
-			return { message: 'User unblocked successfully' }
-		} catch (error) {
-			throw new Error('Failed to unblock user')
-		}
-	}
+    @SubscribeMessage('unblockUser')
+    async unblockUser(@MessageBody() data: any) {
+        try {
+            console.log('LA VIE EST BELLE')
+            this.chatService.unblockUser(data[0], data[1])
+            return { message: 'User unblocked successfully' }
+        } catch (error) {
+            throw new Error('Failed to unblock user')
+        }
+    }
 
-	@SubscribeMessage('getBlockedUsers')
-	async getBlockedUsers(@MessageBody() myId: number) {
-		try {
-			const blockedUsers = await this.chatService.getBlockedUsers(myId)
-			// this.server.emit('updateUsers', msgSended)
-			return blockedUsers
-		} catch (error) {
-			throw new Error('Failed to get blocked users')
-		}
-	}
+    @SubscribeMessage('getBlockedUsers')
+    async getBlockedUsers(@MessageBody() myId: number) {
+        try {
+            const blockedUsers = await this.chatService.getBlockedUsers(myId)
+            // this.server.emit('updateUsers', msgSended)
+            return blockedUsers
+        } catch (error) {
+            throw new Error('Failed to get blocked users')
+        }
+    }
 
-	@SubscribeMessage('setAdmin')
-	async setAdmin(@MessageBody() data: any) {
-		try {
-			this.chatService.setAdmin(data[0], data[1], data[2])
-			return { message: 'User is now admin' }
-		} catch (error) {
-			throw new Error('Failed to set admin')
-		}
-	}
+    @SubscribeMessage('setAdmin')
+    async setAdmin(@MessageBody() data: any) {
+        try {
+            this.chatService.setAdmin(data[0], data[1], data[2])
+            return { message: 'User is now admin' }
+        } catch (error) {
+            throw new Error('Failed to set admin')
+        }
+    }
 
-	@SubscribeMessage('unsetAdmin')
-	async unsetAdmin(@MessageBody() data: any) {
-		try {
-			this.chatService.unsetAdmin(data[0], data[1], data[2])
-			return { message: 'User it is no longer admin' }
-		} catch (error) {
-			throw new Error('Failed to unset admin')
-		}
-	}
+    @SubscribeMessage('unsetAdmin')
+    async unsetAdmin(@MessageBody() data: any) {
+        try {
+            this.chatService.unsetAdmin(data[0], data[1], data[2])
+            return { message: 'User it is no longer admin' }
+        } catch (error) {
+            throw new Error('Failed to unset admin')
+        }
+    }
 
-	@SubscribeMessage('kickUser')
-	async kickUser(@MessageBody() data: any) {
-		try {
-			this.chatService.kickUser(data[0], data[1], data[2])
-			return { message: 'User kicked successfully' }
-		} catch (error) {
-			throw new Error('Failed to kick user')
-		}
-	}
+    @SubscribeMessage('kickUser')
+    async kickUser(@MessageBody() data: any) {
+        try {
+            this.chatService.kickUser(data[0], data[1], data[2])
+            return { message: 'User kicked successfully' }
+        } catch (error) {
+            throw new Error('Failed to kick user')
+        }
+    }
 
-	@SubscribeMessage('banUser')
-	async banUser(@MessageBody() data: any) {
-		try {
-			this.chatService.banUser(data[0], data[1], data[2])
-			return { message: 'User banned successfully' }
-		} catch (error) {
-			throw new Error('Failed to ban user')
-		}
-	}
+    @SubscribeMessage('banUser')
+    async banUser(@MessageBody() data: any) {
+        try {
+            this.chatService.banUser(data[0], data[1], data[2])
+            return { message: 'User banned successfully' }
+        } catch (error) {
+            throw new Error('Failed to ban user')
+        }
+    }
 
-	@SubscribeMessage('unbanUser')
-	async unbanUser(@MessageBody() data: any) {
-		try {
-			this.chatService.unbanUser(data[0], data[1], data[2])
-			return { message: 'User unbanned successfully' }
-		} catch (error) {
-			throw new Error('Failed to unban user')
-		}
-	}
+    @SubscribeMessage('unbanUser')
+    async unbanUser(@MessageBody() data: any) {
+        try {
+            this.chatService.unbanUser(data[0], data[1], data[2])
+            return { message: 'User unbanned successfully' }
+        } catch (error) {
+            throw new Error('Failed to unban user')
+        }
+    }
 
-	@SubscribeMessage('getBannedUsers')
-	async getBannedUsers(@MessageBody() channelId: number) {
-		try {
-			const bannedUsers = await this.chatService.getBannedUsers(channelId)
-			return bannedUsers
-		} catch (error) {
-			throw new Error('Failed to get banned users')
-		}	
-	}
+    @SubscribeMessage('getBannedUsers')
+    async getBannedUsers(@MessageBody() channelId: number) {
+        try {
+            const bannedUsers = await this.chatService.getBannedUsers(channelId)
+            return bannedUsers
+        } catch (error) {
+            throw new Error('Failed to get banned users')
+        }
+    }
 
     //ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox
     @SubscribeMessage('createNewChannel')
@@ -231,16 +230,16 @@ export class ChatGateway {
     @SubscribeMessage('joinChannel')
     async joinChannel(@MessageBody() data: any) {
         console.log('data', data)
-		try {
-			const channel = await this.chatService.joinChannel(
-            	data[0],
-            	data[1],
-            	data[2]
-				)
-			return channel
-		} catch (error) {
-			throw new Error('Failed to join Channel')
-		}
+        try {
+            const channel = await this.chatService.joinChannel(
+                data[0],
+                data[1],
+                data[2]
+            )
+            return channel
+        } catch (error) {
+            throw new Error('Failed to join Channel')
+        }
     }
 
     @SubscribeMessage('leaveChannel')

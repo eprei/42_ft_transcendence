@@ -35,10 +35,10 @@ const Chat = () => {
     const [allChan, setAllChan] = useState<Channel[]>([])
     const [messages, setMesssages] = useState<ReceivedMsg[]>([])
     const [users, setUsers] = useState<any[]>([])
-	const [blockedUsers, setBlockedUsers] = useState<any[]>([])
-	const [admins, setAdmins] = useState<any[]>([])
-	const [owner, setOwner] = useState()
-	const [bannedUsers, setBannedUsers] = useState<any[]>([])
+    const [blockedUsers, setBlockedUsers] = useState<any[]>([])
+    const [admins, setAdmins] = useState<any[]>([])
+    const [owner, setOwner] = useState()
+    const [bannedUsers, setBannedUsers] = useState<any[]>([])
 
     useEffect(() => {
         getAllChannels()
@@ -46,16 +46,15 @@ const Chat = () => {
 
     useEffect(() => {
         if (currentChatSelected) {
-			getAllMsg()
-			getChUsers()
-			getBlockedUsers()
-		}
-		else {
-			setMesssages([])
-			setUsers([])
-			setBlockedUsers([])
-			setBannedUsers([])
-		}
+            getAllMsg()
+            getChUsers()
+            getBlockedUsers()
+        } else {
+            setMesssages([])
+            setUsers([])
+            setBlockedUsers([])
+            setBannedUsers([])
+        }
     }, [currentChatSelected])
 
     const getAllMsg = () => {
@@ -123,24 +122,27 @@ const Chat = () => {
         )
     }
     const changePassword = (channelId: number, password: string) => {
-        socket.emit('changePassword', channelId, password, (response: boolean) => {
-            if (!response)
-                alert('Could not change password, please try again')
-        })
+        socket.emit(
+            'changePassword',
+            channelId,
+            password,
+            (response: boolean) => {
+                if (!response)
+                    alert('Could not change password, please try again')
+            }
+        )
     }
 
-	const getChUsers = () => {
+    const getChUsers = () => {
         socket.emit(
             'findUsersByChannel',
-            currentChatSelected,	
+            currentChatSelected,
             (response: any) => {
                 setUsers(response.users)
-				setAdmins(response.admin)
-				setOwner(response.owner)
-				if (response.banned)
-					setBannedUsers(response.banned)
-				else
-					setBannedUsers([])
+                setAdmins(response.admin)
+                setOwner(response.owner)
+                if (response.banned) setBannedUsers(response.banned)
+                else setBannedUsers([])
             }
         )
     }
@@ -152,9 +154,9 @@ const Chat = () => {
             targetUserId,
             (response: any) => {
                 if (response) {
-					setTimeout(() => {
-					dispatch(chatActions.selectChat(response.id))
-					}, 1000)	
+                    setTimeout(() => {
+                        dispatch(chatActions.selectChat(response.id))
+                    }, 1000)
                 }
             }
         )
@@ -173,7 +175,7 @@ const Chat = () => {
         )
     }
 
-	const unblockUser = (targetUserId: number) => {
+    const unblockUser = (targetUserId: number) => {
         socket.emit(
             'unblockUser',
             userData.user.id,
@@ -186,71 +188,89 @@ const Chat = () => {
         )
     }
 
-	const getBlockedUsers = () => {
-		socket.emit('getBlockedUsers', userData.user.id, (response: any) => {
-			console.log(response)
-			setBlockedUsers(response)
-		})
-	}
+    const getBlockedUsers = () => {
+        socket.emit('getBlockedUsers', userData.user.id, (response: any) => {
+            console.log(response)
+            setBlockedUsers(response)
+        })
+    }
 
-	const setAdmin = (targetUserId: number) => {
-		socket.emit(
-			'setAdmin',
-			userData.user.id,
-			targetUserId,
-			currentChatSelected,
-			(response: any) => {
-				if (response) {
-					getChUsers()
-				}
-			}
-		)
-	}
+    const setAdmin = (targetUserId: number) => {
+        socket.emit(
+            'setAdmin',
+            userData.user.id,
+            targetUserId,
+            currentChatSelected,
+            (response: any) => {
+                if (response) {
+                    getChUsers()
+                }
+            }
+        )
+    }
 
-	const unsetAdmin = (targetUserId: number) => {
-		socket.emit(
-			'unsetAdmin',
-			userData.user.id,
-			targetUserId,
-			currentChatSelected,
-			(response: any) => {
-				if (response) {
-					getChUsers()
-				}
-			}
-		)
-	}
+    const unsetAdmin = (targetUserId: number) => {
+        socket.emit(
+            'unsetAdmin',
+            userData.user.id,
+            targetUserId,
+            currentChatSelected,
+            (response: any) => {
+                if (response) {
+                    getChUsers()
+                }
+            }
+        )
+    }
 
-	const kickUser = (targetUserId: number) => {
-		socket.emit('kickUser', userData.user.id, targetUserId, currentChatSelected, (response: any) => {
-			if (response) {
-			getChUsers()
-			}
-		})
-	}
+    const kickUser = (targetUserId: number) => {
+        socket.emit(
+            'kickUser',
+            userData.user.id,
+            targetUserId,
+            currentChatSelected,
+            (response: any) => {
+                if (response) {
+                    getChUsers()
+                }
+            }
+        )
+    }
 
-	const banUser = (targetUserId: number) => {
-		socket.emit('banUser', userData.user.id, targetUserId, currentChatSelected, (response: any) => {
-			if (response) {
-			getChUsers()
-			}
-		})
-	}
+    const banUser = (targetUserId: number) => {
+        socket.emit(
+            'banUser',
+            userData.user.id,
+            targetUserId,
+            currentChatSelected,
+            (response: any) => {
+                if (response) {
+                    getChUsers()
+                }
+            }
+        )
+    }
 
-	const unbanUser = (targetUserId: number) => {
-		socket.emit('unbanUser', userData.user.id, targetUserId, currentChatSelected, (response: any) => {
-			if (response) {
-			getChUsers()
-			}
-		})
-	}
+    const unbanUser = (targetUserId: number) => {
+        socket.emit(
+            'unbanUser',
+            userData.user.id,
+            targetUserId,
+            currentChatSelected,
+            (response: any) => {
+                if (response) {
+                    getChUsers()
+                }
+            }
+        )
+    }
 
-	// const getBannedUsers = () => {
-	// 	socket.emit('getBannedUsers', currentChatSelected, (response: any) => {
-	// 		console.log(response)
-	// 		setBannedUsers(response)
-	// 	})
-	// }
+    // const getBannedUsers = () => {
+    // 	socket.emit('getBannedUsers', currentChatSelected, (response: any) => {
+    // 		console.log(response)
+    // 		setBannedUsers(response)
+    // 	})
+    // }
 
     return (
         <div className={styles.chatContainer}>
@@ -268,21 +288,21 @@ const Chat = () => {
                 sendMessage={sendMessage}
             />
             <UserBox
-				users={users}
-				blockedUsers={blockedUsers}
-				admins={admins}
-				owner={owner}
-				bannedUsers={bannedUsers}
-				createDM={createDM}
-				blockUser={blockUser}
-				unblockUser={unblockUser}
-				setAdmin={setAdmin}
-				unsetAdmin={unsetAdmin}
-				kickUser={kickUser}
-				banUser={banUser}
-				unbanUser={unbanUser}
-				// SilenceUser={SilenceUser}
-			/>
+                users={users}
+                blockedUsers={blockedUsers}
+                admins={admins}
+                owner={owner}
+                bannedUsers={bannedUsers}
+                createDM={createDM}
+                blockUser={blockUser}
+                unblockUser={unblockUser}
+                setAdmin={setAdmin}
+                unsetAdmin={unsetAdmin}
+                kickUser={kickUser}
+                banUser={banUser}
+                unbanUser={unbanUser}
+                // SilenceUser={SilenceUser}
+            />
         </div>
     )
 }

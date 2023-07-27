@@ -40,7 +40,7 @@ export class Channel {
     @ManyToMany(() => User, (user) => user.admin)
     admin: User[]
 
-	@ManyToMany(() => User, (user) => user.banned)
+    @ManyToMany(() => User, (user) => user.banned)
     banned: User[]
 
     @OneToMany(() => Message, (message) => message.channelId)

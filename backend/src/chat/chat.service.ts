@@ -56,7 +56,7 @@ export class ChatService {
                 users: true,
                 owner: true,
                 admin: true,
-				banned: true,
+                banned: true,
             },
             where: { id: id },
         })
@@ -96,186 +96,184 @@ export class ChatService {
         })
     }
 
-	async unblockUser(myId: number, hisId: number) {
-		const user = await this.userRepository.findOne({
-			where: { id: myId },
-			relations: {
-				blockedUsers: true,
-			},
-		})
+    async unblockUser(myId: number, hisId: number) {
+        const user = await this.userRepository.findOne({
+            where: { id: myId },
+            relations: {
+                blockedUsers: true,
+            },
+        })
 
-		const userToUnblock = await this.userRepository.findOne({
-			where: { id: hisId },
-			relations: {
-				blockedBy: true,
-			},
-		})
+        const userToUnblock = await this.userRepository.findOne({
+            where: { id: hisId },
+            relations: {
+                blockedBy: true,
+            },
+        })
 
-		userToUnblock.blockedBy = userToUnblock.blockedBy.filter(
-			(u) => u.id !== user.id
-		)
-		await this.userRepository.save(userToUnblock)
+        userToUnblock.blockedBy = userToUnblock.blockedBy.filter(
+            (u) => u.id !== user.id
+        )
+        await this.userRepository.save(userToUnblock)
 
-		user.blockedUsers = user.blockedUsers.filter(
-			(u) => u.id !== userToUnblock.id
-		)
-		await this.userRepository.save(user)
-	}
+        user.blockedUsers = user.blockedUsers.filter(
+            (u) => u.id !== userToUnblock.id
+        )
+        await this.userRepository.save(user)
+    }
 
-	async getBlockedUsers(myId: number)
-	{
-		const user = await this.userRepository.findOne({
-			where: { id: myId },
-			relations: {
-				blockedUsers: true,
-			},
-		})
-		const blockedUserIds = user.blockedUsers.map((blockedUser) => blockedUser.id)
-		console.log(blockedUserIds)
-		return blockedUserIds
-	}
+    async getBlockedUsers(myId: number) {
+        const user = await this.userRepository.findOne({
+            where: { id: myId },
+            relations: {
+                blockedUsers: true,
+            },
+        })
+        const blockedUserIds = user.blockedUsers.map(
+            (blockedUser) => blockedUser.id
+        )
+        console.log(blockedUserIds)
+        return blockedUserIds
+    }
 
-	async setAdmin(myId: number, hisId: number, channelId: number) {
-		const channel = await this.channelRepository.findOne({
-			where: { id: channelId },
-			relations: {
-				owner: true,
-				admin: true,
-			},
-		})
-		const user = await this.userRepository.findOne({
-			where: { id: myId }
-		})
-		
-		const userToSet = await this.userRepository.findOne({
-			where: { id: hisId }
-		})
+    async setAdmin(myId: number, hisId: number, channelId: number) {
+        const channel = await this.channelRepository.findOne({
+            where: { id: channelId },
+            relations: {
+                owner: true,
+                admin: true,
+            },
+        })
+        const user = await this.userRepository.findOne({
+            where: { id: myId },
+        })
 
-		if (channel.owner.id === user.id) {
-			channel.admin.push(userToSet)
-			await this.channelRepository.save(channel)
-		}
-		else
-			throw new UnauthorizedException()
-	}
+        const userToSet = await this.userRepository.findOne({
+            where: { id: hisId },
+        })
 
-	async unsetAdmin(myId: number, hisId: number, channelId: number) {
-		const channel = await this.channelRepository.findOne({
-			where: { id: channelId },
-			relations: {
-				owner: true,
-				admin: true,
-			},
-		})
-		const user = await this.userRepository.findOne({
-			where: { id: myId }
-		})
-		
-		const userToUnset = await this.userRepository.findOne({
-			where: { id: hisId }
-		})
+        if (channel.owner.id === user.id) {
+            channel.admin.push(userToSet)
+            await this.channelRepository.save(channel)
+        } else throw new UnauthorizedException()
+    }
 
-		if (channel.owner.id === user.id) {
-			channel.admin = channel.admin.filter((u) => u.id !== userToUnset.id)
-			await this.channelRepository.save(channel)
-		}
-		else
-			throw new UnauthorizedException()
-	}
+    async unsetAdmin(myId: number, hisId: number, channelId: number) {
+        const channel = await this.channelRepository.findOne({
+            where: { id: channelId },
+            relations: {
+                owner: true,
+                admin: true,
+            },
+        })
+        const user = await this.userRepository.findOne({
+            where: { id: myId },
+        })
 
-	async kickUser(myId: number, hisId: number, channelId: number) {
-		const channel = await this.channelRepository.findOne({
-			where: { id: channelId },
-			relations: {
-				owner: true,
-				admin: true,
-				users: true,
-			},
-		})
-		
-		const user = await this.userRepository.findOne({
-			where: { id: myId }
-		})
-		
-		const userToKick = await this.userRepository.findOne({
-			where: { id: hisId }
-		})
+        const userToUnset = await this.userRepository.findOne({
+            where: { id: hisId },
+        })
 
-		if (channel.owner.id !== userToKick.id && channel.admin.some((u) => u.id === user.id)) {
-			channel.users = channel.users.filter((u) => u.id !== userToKick.id)
-			await this.channelRepository.save(channel)
-		}
-		else
-			throw new UnauthorizedException()
-	}
+        if (channel.owner.id === user.id) {
+            channel.admin = channel.admin.filter((u) => u.id !== userToUnset.id)
+            await this.channelRepository.save(channel)
+        } else throw new UnauthorizedException()
+    }
 
-	async banUser(myId: number, hisId: number, channelId: number) {
-		const channel = await this.channelRepository.findOne({
-			where: { id: channelId },
-			relations: {
-				owner: true,
-				admin: true,
-				users: true,
-				banned: true
-			},
-		})
-		
-		const user = await this.userRepository.findOne({
-			where: { id: myId }
-		})
-		
-		const userToBan = await this.userRepository.findOne({
-			where: { id: hisId }
-		})
+    async kickUser(myId: number, hisId: number, channelId: number) {
+        const channel = await this.channelRepository.findOne({
+            where: { id: channelId },
+            relations: {
+                owner: true,
+                admin: true,
+                users: true,
+            },
+        })
 
-		if (channel.owner.id !== userToBan.id && channel.admin.some((u) => u.id === user.id)) {
-			channel.banned.push(userToBan)
-			channel.users = channel.users.filter((u) => u.id !== userToBan.id)
-			channel.admin = channel.admin.filter((u) => u.id !== userToBan.id)
-			await this.channelRepository.save(channel)
-		}
-		else
-			throw new UnauthorizedException()
-	}
+        const user = await this.userRepository.findOne({
+            where: { id: myId },
+        })
 
-	async unbanUser(myId: number, hisId: number, channelId: number) {
-		const channel = await this.channelRepository.findOne({
-			where: { id: channelId },
-			relations: {
-				admin: true,
-				users: true,
-				banned: true
-			},
-		})
-		
-		const user = await this.userRepository.findOne({
-			where: { id: myId }
-		})
-		
-		const userToUnban = await this.userRepository.findOne({
-			where: { id: hisId }
-		})
+        const userToKick = await this.userRepository.findOne({
+            where: { id: hisId },
+        })
 
-		if (channel.admin.some((u) => u.id === user.id)) {
-			channel.banned = channel.banned.filter((u) => u.id !== userToUnban.id)
-			await this.channelRepository.save(channel)
-		}
-		else
-			throw new UnauthorizedException()
-	}
+        if (
+            channel.owner.id !== userToKick.id &&
+            channel.admin.some((u) => u.id === user.id)
+        ) {
+            channel.users = channel.users.filter((u) => u.id !== userToKick.id)
+            await this.channelRepository.save(channel)
+        } else throw new UnauthorizedException()
+    }
 
-	async getBannedUsers(channelId: number)	{
-		const channel = await this.channelRepository.findOne({
-			where: { id: channelId },
-			relations: {
-				banned: true,
-			},
-		})
-		const bannedUserIds = channel.banned.map((bannedUser) => bannedUser.id)
-		console.log(bannedUserIds)
-		return bannedUserIds
-	}
+    async banUser(myId: number, hisId: number, channelId: number) {
+        const channel = await this.channelRepository.findOne({
+            where: { id: channelId },
+            relations: {
+                owner: true,
+                admin: true,
+                users: true,
+                banned: true,
+            },
+        })
 
+        const user = await this.userRepository.findOne({
+            where: { id: myId },
+        })
+
+        const userToBan = await this.userRepository.findOne({
+            where: { id: hisId },
+        })
+
+        if (
+            channel.owner.id !== userToBan.id &&
+            channel.admin.some((u) => u.id === user.id)
+        ) {
+            channel.banned.push(userToBan)
+            channel.users = channel.users.filter((u) => u.id !== userToBan.id)
+            channel.admin = channel.admin.filter((u) => u.id !== userToBan.id)
+            await this.channelRepository.save(channel)
+        } else throw new UnauthorizedException()
+    }
+
+    async unbanUser(myId: number, hisId: number, channelId: number) {
+        const channel = await this.channelRepository.findOne({
+            where: { id: channelId },
+            relations: {
+                admin: true,
+                users: true,
+                banned: true,
+            },
+        })
+
+        const user = await this.userRepository.findOne({
+            where: { id: myId },
+        })
+
+        const userToUnban = await this.userRepository.findOne({
+            where: { id: hisId },
+        })
+
+        if (channel.admin.some((u) => u.id === user.id)) {
+            channel.banned = channel.banned.filter(
+                (u) => u.id !== userToUnban.id
+            )
+            await this.channelRepository.save(channel)
+        } else throw new UnauthorizedException()
+    }
+
+    async getBannedUsers(channelId: number) {
+        const channel = await this.channelRepository.findOne({
+            where: { id: channelId },
+            relations: {
+                banned: true,
+            },
+        })
+        const bannedUserIds = channel.banned.map((bannedUser) => bannedUser.id)
+        console.log(bannedUserIds)
+        return bannedUserIds
+    }
 
     //ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox
     createChannel(createChannelDto: CreateChannelDto) {
@@ -305,9 +303,9 @@ export class ChatService {
         const user = await this.userRepository.findOne({
             where: { id: userId },
         })
-		if (channel.banned.some((u) => u.id === user.id)) {
-			throw new UnauthorizedException()
-		}
+        if (channel.banned.some((u) => u.id === user.id)) {
+            throw new UnauthorizedException()
+        }
         if (channel.type === 'direct') {
             if (channel.users.length === 1) {
                 channel.users.push(user)
