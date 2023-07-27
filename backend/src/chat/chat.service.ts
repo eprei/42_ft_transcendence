@@ -53,9 +53,10 @@ export class ChatService {
     async findUsersByChannel(id: number) {
         return await this.channelRepository.findOne({
             relations: {
-                users: true ,
+                users: true,
                 owner: true,
                 admin: true,
+				banned: true,
             },
             where: { id: id },
         })
@@ -182,6 +183,99 @@ export class ChatService {
 			throw new UnauthorizedException()
 	}
 
+	async kickUser(myId: number, hisId: number, channelId: number) {
+		const channel = await this.channelRepository.findOne({
+			where: { id: channelId },
+			relations: {
+				owner: true,
+				admin: true,
+				users: true,
+			},
+		})
+		
+		const user = await this.userRepository.findOne({
+			where: { id: myId }
+		})
+		
+		const userToKick = await this.userRepository.findOne({
+			where: { id: hisId }
+		})
+
+		if (channel.owner.id !== userToKick.id && channel.admin.some((u) => u.id === user.id)) {
+			channel.users = channel.users.filter((u) => u.id !== userToKick.id)
+			await this.channelRepository.save(channel)
+		}
+		else
+			throw new UnauthorizedException()
+	}
+
+	async banUser(myId: number, hisId: number, channelId: number) {
+		const channel = await this.channelRepository.findOne({
+			where: { id: channelId },
+			relations: {
+				owner: true,
+				admin: true,
+				users: true,
+				banned: true
+			},
+		})
+		
+		const user = await this.userRepository.findOne({
+			where: { id: myId }
+		})
+		
+		const userToBan = await this.userRepository.findOne({
+			where: { id: hisId }
+		})
+
+		if (channel.owner.id !== userToBan.id && channel.admin.some((u) => u.id === user.id)) {
+			channel.banned.push(userToBan)
+			channel.users = channel.users.filter((u) => u.id !== userToBan.id)
+			channel.admin = channel.admin.filter((u) => u.id !== userToBan.id)
+			await this.channelRepository.save(channel)
+		}
+		else
+			throw new UnauthorizedException()
+	}
+
+	async unbanUser(myId: number, hisId: number, channelId: number) {
+		const channel = await this.channelRepository.findOne({
+			where: { id: channelId },
+			relations: {
+				admin: true,
+				users: true,
+				banned: true
+			},
+		})
+		
+		const user = await this.userRepository.findOne({
+			where: { id: myId }
+		})
+		
+		const userToUnban = await this.userRepository.findOne({
+			where: { id: hisId }
+		})
+
+		if (channel.admin.some((u) => u.id === user.id)) {
+			channel.banned = channel.banned.filter((u) => u.id !== userToUnban.id)
+			await this.channelRepository.save(channel)
+		}
+		else
+			throw new UnauthorizedException()
+	}
+
+	async getBannedUsers(channelId: number)	{
+		const channel = await this.channelRepository.findOne({
+			where: { id: channelId },
+			relations: {
+				banned: true,
+			},
+		})
+		const bannedUserIds = channel.banned.map((bannedUser) => bannedUser.id)
+		console.log(bannedUserIds)
+		return bannedUserIds
+	}
+
 
     //ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox
     createChannel(createChannelDto: CreateChannelDto) {
@@ -201,28 +295,28 @@ export class ChatService {
         console.log('userId', userId)
         console.log('password', password)
         const channel = await this.channelRepository.findOne({
-            relations: ['users'],
+            relations: ['users', 'banned'],
             where: { id: channelId },
         })
 
         if (channel.password && channel.password !== password) {
-            return null
+            throw new UnauthorizedException()
         }
         const user = await this.userRepository.findOne({
             where: { id: userId },
         })
-        //TO DO: if not banned
+		if (channel.banned.some((u) => u.id === user.id)) {
+			throw new UnauthorizedException()
+		}
         if (channel.type === 'direct') {
             if (channel.users.length === 1) {
                 channel.users.push(user)
             } else {
                 //if (channel.users.length === 2 && channel.users[0].id !== user.id && channel.users[1].id !== user.id){
                 console.log('channel is full')
-                return null
+                throw new UnauthorizedException()
             }
         } else channel.users.push(user)
-        // console.log('JOIN channel executed')
-        // console.log('channel', channel)
         return await this.channelRepository.save(channel)
     }
 

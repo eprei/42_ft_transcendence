@@ -119,6 +119,46 @@ export class ChatGateway {
 		}
 	}
 
+	@SubscribeMessage('kickUser')
+	async kickUser(@MessageBody() data: any) {
+		try {
+			this.chatService.kickUser(data[0], data[1], data[2])
+			return { message: 'User kicked successfully' }
+		} catch (error) {
+			throw new Error('Failed to kick user')
+		}
+	}
+
+	@SubscribeMessage('banUser')
+	async banUser(@MessageBody() data: any) {
+		try {
+			this.chatService.banUser(data[0], data[1], data[2])
+			return { message: 'User banned successfully' }
+		} catch (error) {
+			throw new Error('Failed to ban user')
+		}
+	}
+
+	@SubscribeMessage('unbanUser')
+	async unbanUser(@MessageBody() data: any) {
+		try {
+			this.chatService.unbanUser(data[0], data[1], data[2])
+			return { message: 'User unbanned successfully' }
+		} catch (error) {
+			throw new Error('Failed to unban user')
+		}
+	}
+
+	@SubscribeMessage('getBannedUsers')
+	async getBannedUsers(@MessageBody() channelId: number) {
+		try {
+			const bannedUsers = await this.chatService.getBannedUsers(channelId)
+			return bannedUsers
+		} catch (error) {
+			throw new Error('Failed to get banned users')
+		}	
+	}
+
     //ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox
     @SubscribeMessage('createNewChannel')
     @UsePipes(ValidationPipe)
@@ -191,12 +231,16 @@ export class ChatGateway {
     @SubscribeMessage('joinChannel')
     async joinChannel(@MessageBody() data: any) {
         console.log('data', data)
-        const channel = await this.chatService.joinChannel(
-            data[0],
-            data[1],
-            data[2]
-        )
-        return channel
+		try {
+			const channel = await this.chatService.joinChannel(
+            	data[0],
+            	data[1],
+            	data[2]
+				)
+			return channel
+		} catch (error) {
+			throw new Error('Failed to join Channel')
+		}
     }
 
     @SubscribeMessage('leaveChannel')

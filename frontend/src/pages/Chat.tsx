@@ -38,6 +38,7 @@ const Chat = () => {
 	const [blockedUsers, setBlockedUsers] = useState<any[]>([])
 	const [admins, setAdmins] = useState<any[]>([])
 	const [owner, setOwner] = useState()
+	const [bannedUsers, setBannedUsers] = useState<any[]>([])
 
     useEffect(() => {
         getAllChannels()
@@ -52,6 +53,8 @@ const Chat = () => {
 		else {
 			setMesssages([])
 			setUsers([])
+			setBlockedUsers([])
+			setBannedUsers([])
 		}
     }, [currentChatSelected])
 
@@ -134,6 +137,10 @@ const Chat = () => {
                 setUsers(response.users)
 				setAdmins(response.admin)
 				setOwner(response.owner)
+				if (response.banned)
+					setBannedUsers(response.banned)
+				else
+					setBannedUsers([])
             }
         )
     }
@@ -214,6 +221,37 @@ const Chat = () => {
 		)
 	}
 
+	const kickUser = (targetUserId: number) => {
+		socket.emit('kickUser', userData.user.id, targetUserId, currentChatSelected, (response: any) => {
+			if (response) {
+			getChUsers()
+			}
+		})
+	}
+
+	const banUser = (targetUserId: number) => {
+		socket.emit('banUser', userData.user.id, targetUserId, currentChatSelected, (response: any) => {
+			if (response) {
+			getChUsers()
+			}
+		})
+	}
+
+	const unbanUser = (targetUserId: number) => {
+		socket.emit('unbanUser', userData.user.id, targetUserId, currentChatSelected, (response: any) => {
+			if (response) {
+			getChUsers()
+			}
+		})
+	}
+
+	// const getBannedUsers = () => {
+	// 	socket.emit('getBannedUsers', currentChatSelected, (response: any) => {
+	// 		console.log(response)
+	// 		setBannedUsers(response)
+	// 	})
+	// }
+
     return (
         <div className={styles.chatContainer}>
             <ChannelBox
@@ -234,13 +272,15 @@ const Chat = () => {
 				blockedUsers={blockedUsers}
 				admins={admins}
 				owner={owner}
+				bannedUsers={bannedUsers}
 				createDM={createDM}
 				blockUser={blockUser}
 				unblockUser={unblockUser}
 				setAdmin={setAdmin}
 				unsetAdmin={unsetAdmin}
-				// kickUser={kickUser}
-				// BanUser={BanUser}
+				kickUser={kickUser}
+				banUser={banUser}
+				unbanUser={unbanUser}
 				// SilenceUser={SilenceUser}
 			/>
         </div>

@@ -65,6 +65,10 @@ export class User {
     @JoinTable()
     admin: Channel[]
 
+	@ManyToMany(() => Channel, (channel) => channel.banned)
+    @JoinTable()
+    banned: Channel[]
+
     @OneToMany(() => Friend, (friend) => friend.user)
     friends: Friend[]
 
