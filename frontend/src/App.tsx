@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import SignIn from './pages/SignIn'
-import MainProfile, { loader as ProfileLoader } from './pages/MainProfile'
+import MainProfile, { loader as userLoader } from './pages/MainProfile'
 import MatchHistory from './pages/MatchHistory'
 import GameLauncher from './pages/GameLauncher'
 import Game from './pages/Game'
@@ -30,7 +30,7 @@ const router = createBrowserRouter([
             },
             {
                 path: 'profile',
-                loader: ProfileLoader,
+                loader: userLoader,
                 element: (
                     <ProtectedRoute>
                         <MainProfile />
@@ -39,6 +39,7 @@ const router = createBrowserRouter([
             },
             {
                 path: 'history',
+                loader: userLoader,
                 element: (
                     <ProtectedRoute>
                         <MatchHistory />
@@ -47,6 +48,7 @@ const router = createBrowserRouter([
             },
             {
                 path: 'launcher',
+                loader: userLoader,
                 element: (
                     <ProtectedRoute>
                         <GameLauncher />
@@ -55,6 +57,7 @@ const router = createBrowserRouter([
             },
             {
                 path: 'game',
+                loader: userLoader,
                 element: (
                     <ProtectedRoute>
                         <Game />
@@ -63,6 +66,7 @@ const router = createBrowserRouter([
             },
             {
                 path: 'chat',
+                loader: userLoader,
                 element: (
                     <ProtectedRoute>
                         <Chat />
