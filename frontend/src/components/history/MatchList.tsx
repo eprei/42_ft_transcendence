@@ -26,7 +26,7 @@ const MatchList = () => {
     }, [userData.user.id])
 
     const matchHistoryWinner = matchHistory.map((match: MatchData) => (
-        <div className={styles.player} key={match.id}>
+        <div className={styles.left} key={match.id}>
             <span>{match.winnerNick}</span>
             <img src={match.winnerPfp} alt="winner avatar" />
             <span>{match.scoreWinner}</span>
@@ -34,7 +34,7 @@ const MatchList = () => {
     ))
 
     const matchHistoryLoser = matchHistory.map((match: MatchData) => (
-        <div className={styles.player} key={match.id}>
+        <div className={styles.right} key={match.id}>
             <span>{match.scoreLoser}</span>
             <img src={match.loserPfp} alt="loser avatar" />
             <span>{match.loserNick}</span>
@@ -44,12 +44,12 @@ const MatchList = () => {
     return (
         <>
             <div className={styles.match_list}>
-                <div className={styles.left}>
-                    <h3 className={styles.player}>Winner</h3>
+                <div className={styles.player}>
+                    <h3 className={styles.left}>Winner</h3>
                     {matchHistoryWinner}
                 </div>
-                <div className={styles.right}>
-                    <h3 className={styles.player}>Loser</h3>
+                <div className={styles.player}>
+                    <h3 className={styles.right}>Loser</h3>
                     {matchHistoryLoser}
                 </div>
             </div>
