@@ -5,7 +5,7 @@ import { MatchData } from '../../types/MatchData'
 import styles from './MatchList.module.css'
 
 const MatchList = () => {
-    const [matchHistory, setMatchHistory] = useState([])
+    const [matchHistory, setMatchHistory] = useState<MatchData[]>([])
     const userData = useAppSelector((state) => state.user.userData) as UserData
 
     useEffect(() => {
@@ -23,7 +23,7 @@ const MatchList = () => {
             }
         }
         fetchMatches()
-    }, [userData.user.id])
+    }, )
 
     const matchHistoryWinner = matchHistory.map((match: MatchData) => (
         <div className={styles.left} key={match.id}>
