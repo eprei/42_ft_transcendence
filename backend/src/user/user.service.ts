@@ -170,18 +170,12 @@ export class UserService {
     }
 
     logStatus(@Req() req) {
-        console.log(
-            'user.service: req.session.needTFA  = ',
-            req.session.needTFA
-        )
         if (req.user && req.session.needTFA === false) {
-            console.log('user.service: is logged')
+
             return { status: 'isLogged' }
         } else if (req.user && req.session.needTFA === true) {
-            console.log('user.service: need2fa')
             return { status: 'need2fa' }
         } else {
-            console.log('user.service: not autenticated')
             return { status: 'error', message: 'Not authenticated' }
         }
     }
@@ -206,7 +200,6 @@ export class UserService {
             fileExt
         ).replace(/\s+/g, '_')
         const uniqueFilename = `${fileNameWithoutExtAndSpaces}${uniqueSuffix}${fileExt}`
-        console.log('uniqueFilename = ', uniqueFilename)
 
         try {
             // Read temporary file
@@ -312,7 +305,6 @@ export class UserService {
         if (!user) {
             throw new NotFoundException('User not found')
         }
-        console.log('user.status: logout')
         this.update(user.id, { id: user.id, status: UserStatus.Offline })
 
         await req.session.destroy()
@@ -321,7 +313,6 @@ export class UserService {
     }
 
     async changeStatusOnLine(userId: number) {
-        console.log('user.status: online')
         this.update(userId, { id: userId, status: UserStatus.Online })
     }
 
