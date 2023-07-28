@@ -32,6 +32,15 @@ Table player_channels_channel {
     channel int
 }
 
+Table Channel {
+    id int [pk]
+    owner int
+    name varchar(500)
+    type varchar
+    password varchar
+    creationDate date
+}
+
 Ref: Player.id < Friends.player
 Ref: Player.id < Friends.friend
 
@@ -40,3 +49,5 @@ Ref: Player.id < Match.playerForeign
 Ref: Player.id < Match.Winner
 
 Ref: Player.id < player_channels_channel.user
+
+Ref: player_channels_channel.channel > Channel.id
