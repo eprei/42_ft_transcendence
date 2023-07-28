@@ -4,6 +4,6 @@ import { PongService } from './pong.service'
 import { Server } from 'socket.io'
 
 @Module({
-  providers: [PongGateway, PongService, Server],
+    providers: [PongGateway, PongService, Server],
 })
 export class PongModule {}

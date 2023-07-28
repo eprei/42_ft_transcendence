@@ -54,6 +54,7 @@ const BoardGame = () => {
     })
 
     useEffect(() => {
+        console.log('render')
         let canvas: HTMLCanvasElement | null = document.getElementById(
             'boardGame'
         ) as HTMLCanvasElement
@@ -75,46 +76,38 @@ const BoardGame = () => {
         console.log('actual frame render: ', JSON.stringify(frame))
     }, [frame])
 
-	const handleKeyDown = (event: KeyboardEvent) => {
-        // Capturar el evento cuando el usuario utiliza las flechas de arriba o abajo
+    const handleKeyDown = (event: KeyboardEvent) => {
         if (event.key === 'ArrowUp') {
-			console.log('up')
-            // Lógica para mover la paleta hacia arriba
-            // Envía un evento al backend para actualizar la posición de la paleta
-            socket.emit('movePaddle', { direction: 'up' });
+            console.log('up')
+            socket.emit('movePaddle', { direction: 'up' })
         } else if (event.key === 'ArrowDown') {
-			console.log('down')
-            // Lógica para mover la paleta hacia abajo
-            // Envía un evento al backend para actualizar la posición de la paleta
-            socket.emit('movePaddle', { direction: 'down' });
+            console.log('down')
+            socket.emit('movePaddle', { direction: 'down' })
         }
-    };
+    }
 
     useEffect(() => {
-        function onSendFrames(frame: Frame) {
-            console.log('sendFrames: ', JSON.stringify(frame))
+        function onReceiveFrames(updatedFrame: Frame) {
+            console.log('updated frame: ', JSON.stringify(updatedFrame))
+            setFrame(updatedFrame) // Actualiza el frame cuando se recibe del servidor
         }
 
         socket.emit('getFrame', {}, (response: Frame) => {
-            console.log('getFrame: ', JSON.stringify(frame))
-            setFrame(response)
+            setFrame(response) // Establece el frame inicial cuando se recibe del servidor al conectarse
         })
 
-		// Function to recive the updated frame from the server
-        function onReceiveFrames(frame: Frame) {
-            setFrame(frame); // Actualiza el frame cuando se recibe del servidor
-        }
+        // Agregar un event listener para capturar las flechas de arriba y abajo
+        document.addEventListener('keydown', handleKeyDown)
 
-		// Register event to receive updated frame from server
-        socket.on('sendFrames', onReceiveFrames);
-
-		// Agregar un event listener para capturar las flechas de arriba y abajo
-        document.addEventListener('keydown', handleKeyDown);
+        // Registro del evento para recibir fotogramas actualizados del servidor
+        socket.on('sendFrames', onReceiveFrames)
 
         return () => {
-            socket.off('sendFrames', onSendFrames)
-			// Eliminar el event listener al desmontar el componente
-			// document.removeEventListener('keydown', handleKeyDown);
+            // Eliminar el event listener al desmontar el componente para evitar fugas de memoria
+            document.removeEventListener('keydown', handleKeyDown)
+
+            // Desregistrar el evento para recibir fotogramas actualizados del servidor
+            socket.off('sendFrames', onReceiveFrames)
         }
     }, [])
 
