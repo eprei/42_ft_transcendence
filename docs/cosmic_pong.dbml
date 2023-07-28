@@ -1,29 +1,29 @@
 Table Player {
-    id integer [pk]
+    id int [pk]
     login text
     avatarUrl text
-    nbVictory integer
-    totalPlay integer
-    xp integer
+    nbVictory int
+    totalPlay int
+    xp int
     TFASecret varchar
     TFAEnabled boolean
     FT_id varchar
 }
 
 Table Friends {
-    id integer [pk]
-    player integer
-    friend integer
+    id int [pk]
+    player int
+    friend int
     isPending boolean
 }
 
 Table Match {
-    id integer [pk]
-    playerHome integer
-    playerForeign integer
-    Winner integer
-    HomeScore integer
-    ForeignScore integer
+    id int [pk]
+    playerHome int
+    playerForeign int
+    Winner int
+    HomeScore int
+    ForeignScore int
     creationDate date
 }
 
