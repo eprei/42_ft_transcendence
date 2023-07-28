@@ -41,6 +41,14 @@ Table Channel {
     creationDate date
 }
 
+Table Message {
+    id int [pk]
+    creator int
+    content text
+    channelid int
+    creationDate date
+}
+
 Ref: Player.id < Friends.player
 Ref: Player.id < Friends.friend
 
@@ -51,3 +59,5 @@ Ref: Player.id < Match.Winner
 Ref: Player.id < player_channels_channel.user
 
 Ref: player_channels_channel.channel > Channel.id
+
+Ref: Channel.id < Message.channelid
