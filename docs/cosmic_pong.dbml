@@ -26,3 +26,6 @@ Table Match {
     ForeignScore integer
     creationDate date
 }
+
+Ref: Player.id < Friends.player
+Ref: Player.id < Friends.friend
