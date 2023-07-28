@@ -44,11 +44,14 @@ export class Channel {
     @ManyToMany(() => User, (user) => user.banned)
     banned: User[]
 
-	// @ManyToMany(() => User, (user) => user.muted)
+    // @ManyToMany(() => User, (user) => user.muted)
     // muted: Map<User, Date>
 
-	@OneToMany(() => ChannelUserMuted, (channelUserMuted) => channelUserMuted.channel)
-	muted: ChannelUserMuted[]
+    @OneToMany(
+        () => ChannelUserMuted,
+        (channelUserMuted) => channelUserMuted.channel
+    )
+    muted: ChannelUserMuted[]
 
     @OneToMany(() => Message, (message) => message.channelId)
     @JoinColumn({ name: 'messages' })

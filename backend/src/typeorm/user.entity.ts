@@ -70,12 +70,14 @@ export class User {
     @JoinTable()
     banned: Channel[]
 
-	@OneToMany(() => ChannelUserMuted, (channelUserMuted) => channelUserMuted.user)
-	muted: ChannelUserMuted[]
-	// @ManyToMany(() => Channel, (channel) => channel.muted)
+    @OneToMany(
+        () => ChannelUserMuted,
+        (channelUserMuted) => channelUserMuted.user
+    )
+    muted: ChannelUserMuted[]
+    // @ManyToMany(() => Channel, (channel) => channel.muted)
     // @JoinTable()
     // muted: Map<Channel, Date>
-
 
     @OneToMany(() => Friend, (friend) => friend.user)
     friends: Friend[]

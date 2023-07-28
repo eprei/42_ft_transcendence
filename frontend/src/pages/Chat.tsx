@@ -15,6 +15,7 @@ import { Channel } from '../types/Channel'
 export interface ReceivedMsg {
     id: number
     content: string
+    creator: number
     userNickname: string
     userAvatarUrl: string
 }
@@ -35,12 +36,12 @@ const Chat = () => {
     const [allChan, setAllChan] = useState<Channel[]>([])
     const [messages, setMesssages] = useState<ReceivedMsg[]>([])
     const [users, setUsers] = useState<any[]>([])
-    const [blockedUsers, setBlockedUsers] = useState<any[]>([])
+    const [blockedUsers, setBlockedUsers] = useState<number[]>([])
     const [admins, setAdmins] = useState<any[]>([])
     const [owner, setOwner] = useState()
     const [bannedUsers, setBannedUsers] = useState<any[]>([])
-	const [mutedUsers, setMutedUsers] = useState<number[]>([])
-	const [isDM, setIsDM] = useState<boolean>(false)
+    const [mutedUsers, setMutedUsers] = useState<number[]>([])
+    const [isDM, setIsDM] = useState<boolean>(false)
 
     useEffect(() => {
         getAllChannels()
@@ -51,16 +52,21 @@ const Chat = () => {
             getAllMsg()
             getChUsers()
             getBlockedUsers()
-			getMutedUsers()
-			if (allChan.find((ch) => (ch.id === currentChatSelected && ch.type === 'direct')))  
-				setIsDM(true)
-			else setIsDM(false)
+            getMutedUsers()
+            if (
+                allChan.find(
+                    (ch) =>
+                        ch.id === currentChatSelected && ch.type === 'direct'
+                )
+            )
+                setIsDM(true)
+            else setIsDM(false)
         } else {
             setMesssages([])
             setUsers([])
             setBlockedUsers([])
             setBannedUsers([])
-			getMutedUsers()
+            getMutedUsers()
         }
     }, [currentChatSelected])
 
@@ -271,27 +277,33 @@ const Chat = () => {
         )
     }
 
-	// const getBannedUsers = () => {
+    // const getBannedUsers = () => {
     // 	socket.emit('getBannedUsers', currentChatSelected, (response: any) => {
     // 		console.log(response)
     // 		setBannedUsers(response)
     // 	})
     // }
 
-	const muteUser = (targetUserId: number) => {
-		socket.emit('muteUser', userData.user.id, targetUserId, currentChatSelected, (response: any) => {
-			if (response) {
-				getMutedUsers()
-			}
-		})
-	}
+    const muteUser = (targetUserId: number) => {
+        socket.emit(
+            'muteUser',
+            userData.user.id,
+            targetUserId,
+            currentChatSelected,
+            (response: any) => {
+                if (response) {
+                    getMutedUsers()
+                }
+            }
+        )
+    }
 
-	const getMutedUsers = () => {
-		socket.emit('getMutedUsers', currentChatSelected, (response: any) => {
-			// console.log('mi hermosa respuesta', response)
-			setMutedUsers(response)
-		})
-	}
+    const getMutedUsers = () => {
+        socket.emit('getMutedUsers', currentChatSelected, (response: any) => {
+            // console.log('mi hermosa respuesta', response)
+            setMutedUsers(response)
+        })
+    }
 
     return (
         <div className={styles.chatContainer}>
@@ -307,6 +319,10 @@ const Chat = () => {
                 currentChatSelected={currentChatSelected}
                 messages={messages}
                 sendMessage={sendMessage}
+                amImuted={mutedUsers.some(
+                    (user: any) => user.id === userData.user.id
+                )}
+                blockedUsers={blockedUsers}
             />
             <UserBox
                 users={users}
@@ -314,7 +330,7 @@ const Chat = () => {
                 admins={admins}
                 owner={owner}
                 bannedUsers={bannedUsers}
-				mutedUsers={mutedUsers}
+                mutedUsers={mutedUsers}
                 createDM={createDM}
                 blockUser={blockUser}
                 unblockUser={unblockUser}
@@ -324,7 +340,7 @@ const Chat = () => {
                 banUser={banUser}
                 unbanUser={unbanUser}
                 muteUser={muteUser}
-				isDM={isDM}
+                isDM={isDM}
             />
         </div>
     )

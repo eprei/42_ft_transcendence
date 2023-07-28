@@ -1,12 +1,14 @@
 import { useEffect, useRef } from 'react'
 import Msg from './Msg'
 import styles from './ChatFeed.module.css'
+import { ReceivedMsg } from '../../../pages/Chat'
 
 interface ChatFeedProps {
-    messages: any[]
+    messages: ReceivedMsg[]
+    blockedUsers: number[]
 }
 
-const ChatFeed = ({ messages }: ChatFeedProps) => {
+const ChatFeed = ({ messages, blockedUsers }: ChatFeedProps) => {
     const isFeedFull = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
@@ -17,7 +19,7 @@ const ChatFeed = ({ messages }: ChatFeedProps) => {
     return (
         <div className={styles.container} ref={isFeedFull}>
             {messages.map((msg) => (
-                <Msg key={msg.id} msg={msg}></Msg>
+                <Msg key={msg.id} msg={msg} blockedUsers={blockedUsers}></Msg>
             ))}
         </div>
     )

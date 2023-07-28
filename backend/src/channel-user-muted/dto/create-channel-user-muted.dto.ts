@@ -6,7 +6,7 @@ export class CreateChannelUserMutedDto {
     @IsNotEmpty()
     user: User
 
-	@IsNotEmpty()
+    @IsNotEmpty()
     channel: Channel
 
     @IsOptional()

@@ -9,6 +9,8 @@ import { ChannelUserMuted } from 'src/typeorm/channel-user-muted.entity'
 
 @Module({
     providers: [ChatGateway, ChatService],
-    imports: [TypeOrmModule.forFeature([Message, Channel, User, ChannelUserMuted])],
+    imports: [
+        TypeOrmModule.forFeature([Message, Channel, User, ChannelUserMuted]),
+    ],
 })
 export class ChatModule {}

@@ -1,21 +1,26 @@
-import { Entity, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn } from 'typeorm';
-import { JoinColumn } from 'typeorm';
-import { Channel } from './channel.entity';
-import { User } from './user.entity';
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    ManyToOne,
+    CreateDateColumn,
+} from 'typeorm'
+import { JoinColumn } from 'typeorm'
+import { Channel } from './channel.entity'
+import { User } from './user.entity'
 
 @Entity()
 export class ChannelUserMuted {
-  @PrimaryGeneratedColumn()
-  id: number;
+    @PrimaryGeneratedColumn()
+    id: number
 
-  @ManyToOne(() => Channel, (channel) => channel.muted, { cascade: true })
+    @ManyToOne(() => Channel, (channel) => channel.muted, { cascade: true })
     @JoinColumn({ name: 'channelId' })
-  channel: Channel;
+    channel: Channel
 
-  @ManyToOne(() => User, (user) => user.muted)
-  @JoinColumn({ name: 'userId' })
-  user: User;
+    @ManyToOne(() => User, (user) => user.muted)
+    @JoinColumn({ name: 'userId' })
+    user: User
 
-  @CreateDateColumn()
-  mutedAt: Date;
+    @CreateDateColumn()
+    mutedAt: Date
 }

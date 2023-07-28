@@ -2,7 +2,7 @@ import styles from './User.module.css'
 import IconMsg from '../../../assets/icon/message.svg'
 import IconInviteToPlay from '../../../assets/icon/invite_to_play.svg'
 import IconBlocked from '../../../assets/icon/block_user.svg'
-import IconBanned from '../../../assets/icon/lock.svg'
+// import IconBanned from '../../../assets/icon/lock.svg'
 import { useState } from 'react'
 import { useAppSelector } from '../../../store/types'
 import { UserData } from '../../../types/UserData'
@@ -18,7 +18,7 @@ export interface UserProps {
     isAdmin: boolean
     isBlocked: boolean
     isBanned: boolean
-	isMuted: boolean
+    isMuted: boolean
     createDM: (otherUserId: number) => void
     blockUser: (otherUserId: number) => void
     unblockUser: (otherUserId: number) => void
@@ -27,8 +27,8 @@ export interface UserProps {
     kickUser: (targetUserId: number) => void
     banUser: (targetUserId: number) => void
     unbanUser: (targetUserId: number) => void
-	muteUser: (targetUserId: number) => void
-	isDM: boolean
+    muteUser: (targetUserId: number) => void
+    isDM: boolean
 }
 
 const User = ({
@@ -42,7 +42,7 @@ const User = ({
     isAdmin,
     isBlocked,
     isBanned,
-	isMuted,
+    isMuted,
     createDM,
     blockUser,
     unblockUser,
@@ -51,8 +51,8 @@ const User = ({
     kickUser,
     banUser,
     unbanUser,
-	muteUser,
-	isDM
+    muteUser,
+    isDM,
 }: UserProps) => {
     const userData = useAppSelector((state) => state.user.userData) as UserData
     const myId = userData.user.id
@@ -119,9 +119,9 @@ const User = ({
         unbanUser(id)
     }
 
-	const muteUserHandler = () => {
-		muteUser(id)
-	}
+    const muteUserHandler = () => {
+        muteUser(id)
+    }
 
     return (
         <div className={styles.container}>
@@ -169,7 +169,9 @@ const User = ({
                                     ) : (
                                         <li onClick={banUserHandler}>Ban</li>
                                     )}
-                                    {!isMuted ? <li onClick={muteUserHandler}>Mute</li> : null}
+                                    {!isMuted ? (
+                                        <li onClick={muteUserHandler}>Mute</li>
+                                    ) : null}
                                 </div>
                             ) : amIadmin && !isOwner ? (
                                 <div>
@@ -183,7 +185,9 @@ const User = ({
                                     ) : (
                                         <li onClick={banUserHandler}>Ban</li>
                                     )}
-                                    {!isMuted ? <li onClick={muteUserHandler}>Mute</li> : null}
+                                    {!isMuted ? (
+                                        <li onClick={muteUserHandler}>Mute</li>
+                                    ) : null}
                                 </div>
                             ) : null}
                         </ul>
@@ -202,11 +206,13 @@ const User = ({
                 <div className={styles.right}>
                     <div>{inviteToPlay}</div>
                     <div>
-					{(!isDM) ? <img 
-                            src={IconMsg}
-                            onClick={createDmHandler}
-                            alt="Message Icon"
-                        /> : null}
+                        {!isDM ? (
+                            <img
+                                src={IconMsg}
+                                onClick={createDmHandler}
+                                alt="Message Icon"
+                            />
+                        ) : null}
                     </div>
                 </div>
             ) : null}

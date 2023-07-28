@@ -8,8 +8,11 @@ import { Channel } from 'src/typeorm/channel.entity'
 import { User } from 'src/typeorm/user.entity'
 import { ChannelUserMuted } from 'src/typeorm/channel-user-muted.entity'
 import { Repository } from 'typeorm'
-import { NotFoundException, UnauthorizedException, BadRequestException } from '@nestjs/common'
-
+import {
+    NotFoundException,
+    UnauthorizedException,
+    BadRequestException,
+} from '@nestjs/common'
 
 @Injectable()
 export class ChatService {
@@ -20,8 +23,8 @@ export class ChatService {
         private readonly channelRepository: Repository<Channel>,
         @InjectRepository(User)
         private readonly userRepository: Repository<User>,
-		@InjectRepository(ChannelUserMuted)
-		private readonly channelUserMutedRepository: Repository<ChannelUserMuted>
+        @InjectRepository(ChannelUserMuted)
+        private readonly channelUserMutedRepository: Repository<ChannelUserMuted>
     ) {}
 
     //ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox
@@ -39,6 +42,7 @@ export class ChatService {
                 'message.content',
                 'user.nickname',
                 'user.avatarUrl',
+                'message.creator',
             ])
             .where('message.id = :id', { id })
             .getOne()
@@ -278,48 +282,61 @@ export class ChatService {
         return bannedUserIds
     }
 
-	async muteUser(myId: number, hisId: number, channelId: number) {
-		// this.channelUserMutedRepository.create()
-		const channel = await this.channelRepository.findOne({
-			where: { id: channelId },
-			relations: {
-				owner: true,
-				admin: true,
-			},
-		})
-		const user = await this.userRepository.findOne({
-			where: { id: myId },
-		})
+    async muteUser(myId: number, hisId: number, channelId: number) {
+        // this.channelUserMutedRepository.create()
+        const channel = await this.channelRepository.findOne({
+            where: { id: channelId },
+            relations: {
+                owner: true,
+                admin: true,
+            },
+        })
+        const user = await this.userRepository.findOne({
+            where: { id: myId },
+        })
 
-		const userToMute = await this.userRepository.findOne({
-			where: { id: hisId },
-		})
-		if (
+        const userToMute = await this.userRepository.findOne({
+            where: { id: hisId },
+        })
+        if (
             channel.owner.id !== userToMute.id &&
             channel.admin.some((u) => u.id === user.id)
         ) {
-			const isMuted = await this.channelUserMutedRepository.findOne({
-				where: { user: { id: userToMute.id }, channel: { id: channelId } }
-			})
-			if (isMuted) throw new BadRequestException('User is already muted')
-			let chUserMuted : CreateChannelUserMutedDto = new CreateChannelUserMutedDto()
-			chUserMuted.user = userToMute
-			chUserMuted.channel = channel
+            const isMuted = await this.channelUserMutedRepository.findOne({
+                where: {
+                    user: { id: userToMute.id },
+                    channel: { id: channelId },
+                },
+            })
+            if (isMuted) throw new BadRequestException('User is already muted')
+            let chUserMuted: CreateChannelUserMutedDto =
+                new CreateChannelUserMutedDto()
+            chUserMuted.user = userToMute
+            chUserMuted.channel = channel
             this.channelUserMutedRepository.create(chUserMuted)
-			this.channelUserMutedRepository.save(chUserMuted)
+            this.channelUserMutedRepository.save(chUserMuted)
         } else throw new UnauthorizedException()
     }
 
-	async getMutedUsers(channelId: number) {
-		const mutedUsers = await this.channelUserMutedRepository
-		.find({
-			where: { channel: { id: channelId } },
-			relations: ['user']
+    async getMutedUsers(channelId: number) {
+        const mutedUsers = await this.channelUserMutedRepository.find({
+            where: { channel: { id: channelId } },
+            relations: ['user'],
+        })
+		
+		// delete all muted users that were muted more than 1 hour ago
+		const currentDate = new Date()
+		mutedUsers.forEach((mutedUser) => {
+			if (mutedUser.mutedAt.getTime() + 3600000 > currentDate.getTime()) {
+				this.channelUserMutedRepository.delete(mutedUser)
+			}
 		})
-		const mutedUserIds = mutedUsers.map((mutedUser) => mutedUser.user.id)	
-		console.log('mutedUserIds', mutedUserIds)
-		return mutedUserIds
-	}
+
+		// return still muted users
+        const mutedUserIds = mutedUsers.map((mutedUser) => mutedUser.user.id)
+        console.log('mutedUserIds', mutedUserIds)
+        return mutedUserIds
+    }
 
     //ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox
     createChannel(createChannelDto: CreateChannelDto) {
