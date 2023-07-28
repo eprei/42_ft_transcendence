@@ -49,6 +49,12 @@ Table Message {
     creationDate date
 }
 
+Table player_blocked_players_player {
+    id int [pk]
+    player int
+    BlockedPlayer int
+}
+
 Ref: Player.id < Friends.player
 Ref: Player.id < Friends.friend
 
@@ -61,3 +67,6 @@ Ref: Player.id < player_channels_channel.user
 Ref: player_channels_channel.channel > Channel.id
 
 Ref: Channel.id < Message.channelid
+
+Ref: Player.id < player_blocked_players_player.player
+Ref: Player.id < player_blocked_players_player.BlockedPlayer
