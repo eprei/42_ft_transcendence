@@ -14,6 +14,9 @@ services:
             - postgres
         env_file:
             - ./env/nest.env
+        environment:
+            - URL_BACKEND=http://localhost:8080
+            - URL_FRONTEND=http://localhost:4040
         networks:
             - appnet
 
