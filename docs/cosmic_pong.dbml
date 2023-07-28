@@ -27,9 +27,16 @@ Table Match {
     creationDate date
 }
 
+Table player_channels_channel {
+    user int
+    channel int
+}
+
 Ref: Player.id < Friends.player
 Ref: Player.id < Friends.friend
 
 Ref: Player.id < Match.playerHome
 Ref: Player.id < Match.playerForeign
 Ref: Player.id < Match.Winner
+
+Ref: Player.id < player_channels_channel.user
