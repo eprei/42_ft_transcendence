@@ -323,16 +323,16 @@ export class ChatService {
             where: { channel: { id: channelId } },
             relations: ['user'],
         })
-		
-		// delete all muted users that were muted more than 1 hour ago
-		const currentDate = new Date()
-		mutedUsers.forEach((mutedUser) => {
-			if (mutedUser.mutedAt.getTime() + 3600000 > currentDate.getTime()) {
-				this.channelUserMutedRepository.delete(mutedUser)
-			}
-		})
 
-		// return still muted users
+        // delete all muted users that were muted more than 1 hour ago
+        const currentDate = new Date()
+        mutedUsers.forEach((mutedUser) => {
+            if (mutedUser.mutedAt.getTime() + 3600000 > currentDate.getTime()) {
+                this.channelUserMutedRepository.delete(mutedUser)
+            }
+        })
+
+        // return still muted users
         const mutedUserIds = mutedUsers.map((mutedUser) => mutedUser.user.id)
         console.log('mutedUserIds', mutedUserIds)
         return mutedUserIds

@@ -19,8 +19,8 @@ import { PongModule } from './pong/pong.module'
 import { AuthenticatedGuard } from './auth/guards/authenticated.guard'
 import { APP_GUARD } from '@nestjs/core'
 import { RoomModule } from './room/room.module'
-import { ChatModule } from './chat/chat.module';
-import { ChannelUserMutedModule } from './channel-user-muted/channel-user-muted.module';
+import { ChatModule } from './chat/chat.module'
+import { ChannelUserMutedModule } from './channel-user-muted/channel-user-muted.module'
 
 @Module({
     imports: [
@@ -49,7 +49,7 @@ import { ChannelUserMutedModule } from './channel-user-muted/channel-user-muted.
         PongModule,
         ChatModule,
         RoomModule,
-		ChannelUserMutedModule,
+        ChannelUserMutedModule,
     ],
     controllers: [AppController],
     providers: [
