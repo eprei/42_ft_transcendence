@@ -56,13 +56,13 @@ export class PongGateway {
         // Actualizar el fotograma en el servicio
         const updatedFrame = this.pongService.updateFrame(direction)
         // Emitir el fotograma actualizado a todos los clientes conectados
-        this.sendFrameToClients(frame)
+        this.sendFrameToClients(updatedFrame)
     }
 
     @SubscribeMessage('getFrame')
     myGetFrame() {
-        this.pongService.updateFrameLogic() // Llamamos al método para actualizar el fotograma antes de enviarlo
-        const frame = this.pongService.getFrame()
-        return frame
+        this.pongService.updateFrameLogic();
+        const frame = this.pongService.getFrame();
+        return frame;
     }
 }

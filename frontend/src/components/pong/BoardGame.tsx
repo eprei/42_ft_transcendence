@@ -96,7 +96,7 @@ const BoardGame = () => {
             setFrame(response) // Establece el frame inicial cuando se recibe del servidor al conectarse
         })
 
-        // Agregar un event listener para capturar las flechas de arriba y abajo
+        // Event listener to captures up and down keys
         document.addEventListener('keydown', handleKeyDown)
 
         // Registro del evento para recibir fotogramas actualizados del servidor
