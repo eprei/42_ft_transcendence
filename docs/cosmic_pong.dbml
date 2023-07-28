@@ -9,3 +9,10 @@ Table Player {
     TFAEnabled boolean
     FT_id varchar
 }
+
+Table Friends {
+    id integer
+    player integer
+    friend integer
+    isPending boolean
+}
