@@ -27,7 +27,7 @@ export class AppService {
         const user1 = this.userRepo.create({
             nickname: 'user1',
             xp: 12,
-            avatarUrl: 'http://localhost:8080/api/user/picture/user1.webp',
+            avatarUrl: `${process.env.URL_BACKEND}/api/user/picture/user1.webp`,
             status:
                 j % 3 === 0
                     ? UserStatus.Online
@@ -40,7 +40,7 @@ export class AppService {
         const user2 = this.userRepo.create({
             nickname: 'user2',
             xp: 23,
-            avatarUrl: 'http://localhost:8080/api/user/picture/user2.webp',
+            avatarUrl: `${process.env.URL_BACKEND}/api/user/picture/user2.webp`,
             status:
                 j % 3 === 0
                     ? UserStatus.Online
@@ -53,7 +53,7 @@ export class AppService {
         const user3 = this.userRepo.create({
             nickname: 'user3',
             xp: 34,
-            avatarUrl: 'http://localhost:8080/api/user/picture/user3.webp',
+            avatarUrl: `${process.env.URL_BACKEND}/api/user/picture/user3.webp`,
             status:
                 j % 3 === 0
                     ? UserStatus.Online
@@ -66,7 +66,7 @@ export class AppService {
         const user4 = this.userRepo.create({
             nickname: 'user4',
             xp: 45,
-            avatarUrl: 'http://localhost:8080/api/user/picture/user4.webp',
+            avatarUrl: `${process.env.URL_BACKEND}/api/user/picture/user4.webp`,
             status:
                 j % 3 === 0
                     ? UserStatus.Online
@@ -79,7 +79,7 @@ export class AppService {
         const user5 = this.userRepo.create({
             nickname: 'user5',
             xp: 56,
-            avatarUrl: 'http://localhost:8080/api/user/picture/user5.webp',
+            avatarUrl: `${process.env.URL_BACKEND}/api/user/picture/user5.webp`,
             status:
                 j % 3 === 0
                     ? UserStatus.Online
@@ -92,7 +92,7 @@ export class AppService {
         const user6 = this.userRepo.create({
             nickname: 'user6',
             xp: 67,
-            avatarUrl: 'http://localhost:8080/api/user/picture/user6.webp',
+            avatarUrl: `${process.env.URL_BACKEND}/api/user/picture/user6.webp`,
             status:
                 j % 3 === 0
                     ? UserStatus.Online
@@ -105,7 +105,7 @@ export class AppService {
         const user7 = this.userRepo.create({
             nickname: 'NOT MY FRIEND',
             xp: 54,
-            avatarUrl: 'http://localhost:8080/api/user/picture/user1.webp',
+            avatarUrl: `${process.env.URL_BACKEND}/api/user/picture/user1.webp`,
             status:
                 j % 3 === 0
                     ? UserStatus.Online
