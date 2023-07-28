@@ -327,6 +327,8 @@ export class ChatService {
         })
 
         // delete all muted users that were muted more than 1 hour ago
+		if (mutedUsers.length === 0) 
+			return []
         const currentDate = new Date()
         mutedUsers.forEach((mutedUser) => {
             if (mutedUser.mutedAt.getTime() + 3600000 > currentDate.getTime()) {
@@ -336,7 +338,6 @@ export class ChatService {
 
         // return still muted users
         const mutedUserIds = mutedUsers.map((mutedUser) => mutedUser.user.id)
-        console.log('mutedUserIds', mutedUserIds)
         return mutedUserIds
     }
 

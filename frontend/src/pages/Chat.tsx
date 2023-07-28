@@ -64,11 +64,23 @@ const Chat = () => {
         } else {
             setMesssages([])
             setUsers([])
+			setAdmins([])
             setBlockedUsers([])
             setBannedUsers([])
-            getMutedUsers()
+            setMutedUsers([])
         }
     }, [currentChatSelected])
+
+	const [reloadUsers, setReloadUsers] = useState(false)
+	
+	useEffect(() => {
+		if (reloadUsers) {
+			getChUsers()
+			getBlockedUsers()
+            getMutedUsers()
+			setReloadUsers(false)
+		}
+	  }, [reloadUsers]);
 
     const getAllMsg = () => {
         socket.emit(
@@ -81,6 +93,7 @@ const Chat = () => {
     }
 
     socket.on('incomingMessage', (newMessage: any) => {
+		//filtrar mensages por channel id
         const msgCpy = [...messages]
         msgCpy.push(newMessage)
         setMesssages(msgCpy)
@@ -154,8 +167,7 @@ const Chat = () => {
                 setUsers(response.users)
                 setAdmins(response.admin)
                 setOwner(response.owner)
-                if (response.banned) setBannedUsers(response.banned)
-                else setBannedUsers([])
+                response.banned ? setBannedUsers(response.banned) : setBannedUsers([])
             }
         )
     }
@@ -182,7 +194,7 @@ const Chat = () => {
             targetUserId,
             (response: any) => {
                 if (response) {
-                    getBlockedUsers()
+					setReloadUsers(true)
                 }
             }
         )
@@ -195,7 +207,7 @@ const Chat = () => {
             targetUserId,
             (response: any) => {
                 if (response) {
-                    getBlockedUsers()
+					setReloadUsers(true)
                 }
             }
         )
@@ -215,7 +227,7 @@ const Chat = () => {
             currentChatSelected,
             (response: any) => {
                 if (response) {
-                    getChUsers()
+                    setReloadUsers(true)
                 }
             }
         )
@@ -229,7 +241,7 @@ const Chat = () => {
             currentChatSelected,
             (response: any) => {
                 if (response) {
-                    getChUsers()
+                    setReloadUsers(true)
                 }
             }
         )
@@ -243,7 +255,7 @@ const Chat = () => {
             currentChatSelected,
             (response: any) => {
                 if (response) {
-                    getChUsers()
+                    setReloadUsers(true)
                 }
             }
         )
@@ -257,7 +269,7 @@ const Chat = () => {
             currentChatSelected,
             (response: any) => {
                 if (response) {
-                    getChUsers()
+                    setReloadUsers(true)
                 }
             }
         )
@@ -271,7 +283,7 @@ const Chat = () => {
             currentChatSelected,
             (response: any) => {
                 if (response) {
-                    getChUsers()
+                    setReloadUsers(true)
                 }
             }
         )
@@ -292,7 +304,7 @@ const Chat = () => {
             currentChatSelected,
             (response: any) => {
                 if (response) {
-                    getMutedUsers()
+                    setReloadUsers(true)
                 }
             }
         )
@@ -300,7 +312,6 @@ const Chat = () => {
 
     const getMutedUsers = () => {
         socket.emit('getMutedUsers', currentChatSelected, (response: any) => {
-            // console.log('mi hermosa respuesta', response)
             setMutedUsers(response)
         })
     }
