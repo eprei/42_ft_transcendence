@@ -1,5 +1,5 @@
 Table Player {
-    id integer
+    id integer [pk]
     login text
     avatarUrl text
     nbVictory integer
@@ -11,14 +11,14 @@ Table Player {
 }
 
 Table Friends {
-    id integer
+    id integer [pk]
     player integer
     friend integer
     isPending boolean
 }
 
 Table Match {
-    id integer
+    id integer [pk]
     playerHome integer
     playerForeign integer
     Winner integer
