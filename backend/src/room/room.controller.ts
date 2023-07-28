@@ -12,11 +12,9 @@ import {
 } from '@nestjs/common'
 import { RoomService } from './room.service'
 import { Room } from 'src/types/Room'
-import { Public } from '../decorators/public.decorator'
 import { ApiTags } from '@nestjs/swagger'
 import { CreateRoomDto } from './dto/create-room.dto'
 
-@Public()
 @ApiTags('room')
 @Controller('room')
 export class RoomController {
