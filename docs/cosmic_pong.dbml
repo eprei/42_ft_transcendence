@@ -64,7 +64,7 @@ Ref: Player.id < Match.Winner
 
 Ref: Player.id < player_channels_channel.user
 
-Ref: player_channels_channel.channel > Channel.id
+Ref: Channel.id < player_channels_channel.channel
 
 Ref: Channel.id < Message.channelid
 
