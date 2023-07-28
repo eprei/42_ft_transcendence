@@ -271,3 +271,4 @@ rectangle {
 == Database
 
 image::./assets/data.png[]
+image::./assets/cosmic_pong_db.svg[]
