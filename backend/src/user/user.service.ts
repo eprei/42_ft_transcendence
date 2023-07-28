@@ -205,7 +205,7 @@ export class UserService {
             fs.unlinkSync(file.path)
 
             // Construct the URL for the photo on our server
-            const serverBaseUrl = 'http://localhost:8080/api/user' // Profile's pictures base URL
+            const serverBaseUrl = `${process.env.URL_BACKEND}/api/user` // Profile's pictures base URL
             const photoUrl: string = `${serverBaseUrl}/profile-images/${uniqueFilename}`
 
             // Get the current user from the database
