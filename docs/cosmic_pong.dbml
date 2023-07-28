@@ -29,3 +29,7 @@ Table Match {
 
 Ref: Player.id < Friends.player
 Ref: Player.id < Friends.friend
+
+Ref: Player.id < Match.playerHome
+Ref: Player.id < Match.playerForeign
+Ref: Player.id < Match.Winner
