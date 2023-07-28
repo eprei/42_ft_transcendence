@@ -21,7 +21,7 @@ import { RoomModule } from './room/room.module'
 
 @Module({
     imports: [
-        ConfigModule.forRoot({ isGlobal: true }),
+        ConfigModule.forRoot({ isGlobal: true, ignoreEnvFile: true }),
         TypeOrmModule.forRoot({
             type: 'postgres',
             url: process.env.DATABASE_URL,
