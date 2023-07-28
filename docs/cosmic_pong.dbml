@@ -16,3 +16,13 @@ Table Friends {
     friend integer
     isPending boolean
 }
+
+Table Match {
+    id integer
+    playerHome integer
+    playerForeign integer
+    Winner integer
+    HomeScore integer
+    ForeignScore integer
+    creationDate date
+}
