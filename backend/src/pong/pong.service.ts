@@ -48,7 +48,7 @@ export class PongService {
     }
 
     updateFrame(direction?: string): Frame {
-        console.log('updateFrame')
+        // console.log('updateFrame')
         // Actualizar la posición de la paleta según la dirección proporcionada
         if (direction === 'up') {
             this.frame.paddleLeft.position.y -= PADDLE_SPEED

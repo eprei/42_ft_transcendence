@@ -87,6 +87,10 @@ const BoardGame = () => {
     }
 
     useEffect(() => {
+        socket.on('connect', () => {
+            console.log('Connected to server')
+        })
+
         function onReceiveFrames(updatedFrame: Frame) {
             console.log('updated frame: ', JSON.stringify(updatedFrame))
             setFrame(updatedFrame) // Actualiza el frame cuando se recibe del servidor
@@ -107,6 +111,7 @@ const BoardGame = () => {
             document.removeEventListener('keydown', handleKeyDown)
 
             // Desregistrar el evento para recibir fotogramas actualizados del servidor
+            console.log('Unregistering event...')
             socket.off('sendFrames', onReceiveFrames)
         }
     }, [])

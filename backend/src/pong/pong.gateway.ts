@@ -3,12 +3,19 @@ import { PongService } from './pong.service'
 import { Frame } from './entities/pong.entity'
 import { Socket, Server } from 'socket.io'
 import { WebSocketServer } from '@nestjs/websockets'
+import {
+    OnGatewayConnection,
+    OnGatewayDisconnect,
+    OnGatewayInit,
+} from '@nestjs/websockets'
 @WebSocketGateway({
     cors: {
         origin: '*',
     },
 })
-export class PongGateway {
+export class PongGateway
+    implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
+{
     private frameInterval: NodeJS.Timeout
 
     @WebSocketServer()
@@ -18,18 +25,9 @@ export class PongGateway {
         private readonly pongService: PongService,
         private readonly socket: Server
     ) {}
-    handleGetFrame() {
-        return this.pongService.getFrame() // Function tu get the updated frame
-    }
 
-    // Function to send the frame to all conected clients
-    sendFrameToClients(frame: Frame) {
-        console.log('sendFrameToClients')
-        console.log(frame)
-        this.server.emit('sendFrames', frame)
-    }
-
-    afterInit() {
+    afterInit(server: any) {
+        console.log('This is excecuted when server socket is initialized')
         // Llamamos a la función inicialmente cuando se establece la conexión
         const frame = this.pongService.getFrame()
         this.sendFrameToClients(frame)
@@ -41,13 +39,32 @@ export class PongGateway {
         }, 1000 / 24) // 24 fps
     }
 
+    handleConnection(client: any, ...args: any[]) {
+        console.log(`Client connected via socket: ${client.id}`)
+    }
+
+    handleDisconnect(client: any) {
+        console.log(`Client disconnected via socket: ${client.id}`)
+    }
+
+    handleGetFrame() {
+        return this.pongService.getFrame() // Function tu get the updated frame
+    }
+
+    // Function to send the frame to all conected clients
+    sendFrameToClients(frame: Frame) {
+        // console.log('sendFrameToClients')
+        // console.log(frame)
+        this.server.emit('sendFrames', frame)
+    }
+
     @SubscribeMessage('movePaddle')
     handleMovePaddle(client: Socket, data: { direction: string }) {
         const { direction } = data
         // Obtener el fotograma actual
         const frame = this.pongService.getFrame()
         // Mover las paletas según la dirección enviada desde el frontend
-        console.log(direction)
+        // console.log(direction)
         if (direction === 'up') {
             frame.paddleLeft.position.y -= 5 // Mover la paleta izquierda hacia arriba
         } else if (direction === 'down') {
@@ -61,8 +78,8 @@ export class PongGateway {
 
     @SubscribeMessage('getFrame')
     myGetFrame() {
-        this.pongService.updateFrameLogic();
-        const frame = this.pongService.getFrame();
-        return frame;
+        this.pongService.updateFrameLogic()
+        const frame = this.pongService.getFrame()
+        return frame
     }
 }
