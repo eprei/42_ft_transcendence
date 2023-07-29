@@ -431,8 +431,10 @@ export class ChatService {
             createChannelDto.type = 'direct'
             createChannelDto.name = user.nickname + ' & ' + target.nickname
             createChannelDto.password = ''
-            const channelCreated = await this.createChannel(createChannelDto)
-            return channelCreated
+            const channelCreated = await this.channelRepository.create(
+                createChannelDto
+            )
+            return this.channelRepository.save(channelCreated)
         }
     }
 
