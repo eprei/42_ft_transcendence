@@ -94,9 +94,9 @@ const BoardGame = () => {
             setFrame(updatedFrame) // Actualiza el frame cuando se recibe del servidor
         }
 
-        socket.emit('getFrame', {}, (response: Frame) => {
-            setFrame(response) // Establece el frame inicial cuando se recibe del servidor al conectarse
-        })
+        // socket.emit('getFrame', {}, (response: Frame) => {
+        //     setFrame(response) // Establece el frame inicial cuando se recibe del servidor al conectarse
+        // })
 
         // Event listener to captures up and down keys
         document.addEventListener('keydown', handleKeyDown)
@@ -105,16 +105,28 @@ const BoardGame = () => {
         socket.on('sendFrames', onReceiveFrames)
 
         return () => {
-            // Eliminar el event listener al desmontar el componente para evitar fugas de memoria
+            // Remove the event listener when disassembling the component to avoid memory leaks
             document.removeEventListener('keydown', handleKeyDown)
 
-            // Desregistrar el evento para recibir fotogramas actualizados del servidor
+            // Unregister event to receive updated frames from server
             console.log('Unregistering event...')
             socket.off('sendFrames', onReceiveFrames)
         }
     }, [])
 
-    return <canvas id="boardGame" className={styles.boarGame}></canvas>
+    return (
+        <div>
+            <div className={styles.scoreContainer}>
+                <div id="scorePlayerOne" className={styles.score}>
+                    0
+                </div>
+                <div id="scorePlayerTwo" className={styles.score}>
+                    4
+                </div>
+            </div>
+            <canvas id="boardGame" className={styles.boardGame}></canvas>
+        </div>
+    )
 }
 
 export default BoardGame
