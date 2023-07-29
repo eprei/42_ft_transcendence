@@ -194,7 +194,7 @@ const Chat = () => {
             'blockUser',
             userData.user.id,
             targetUserId,
-            (response: any) => {
+            (response: {message: string}) => {
                 if (response) {
 					setReloadUsers(true)
                 }
@@ -207,7 +207,7 @@ const Chat = () => {
             'unblockUser',
             userData.user.id,
             targetUserId,
-            (response: any) => {
+            (response: {message: string}) => {
                 if (response) {
 					setReloadUsers(true)
                 }
@@ -227,7 +227,7 @@ const Chat = () => {
             userData.user.id,
             targetUserId,
             currentChatSelected,
-            (response: any) => {
+            (response: {message: string}) => {
                 if (response) {
                     setReloadUsers(true)
                 }
@@ -241,7 +241,7 @@ const Chat = () => {
             userData.user.id,
             targetUserId,
             currentChatSelected,
-            (response: any) => {
+            (response: {message: string}) => {
                 if (response) {
                     setReloadUsers(true)
                 }
@@ -255,7 +255,7 @@ const Chat = () => {
             userData.user.id,
             targetUserId,
             currentChatSelected,
-            (response: any) => {
+            (response: {message: string}) => {
                 if (response) {
                     setReloadUsers(true)
                 }
@@ -269,7 +269,7 @@ const Chat = () => {
             userData.user.id,
             targetUserId,
             currentChatSelected,
-            (response: any) => {
+            (response: {message: string}) => {
                 if (response) {
                     setReloadUsers(true)
                 }
@@ -283,7 +283,7 @@ const Chat = () => {
             userData.user.id,
             targetUserId,
             currentChatSelected,
-            (response: any) => {
+            (response: {message: string}) => {
                 if (response) {
                     setReloadUsers(true)
                 }
@@ -304,7 +304,7 @@ const Chat = () => {
             userData.user.id,
             targetUserId,
             currentChatSelected,
-            (response: any) => {
+            (response: {message: string}) => {
                 if (response) {
                     setReloadUsers(true)
                 }
@@ -313,7 +313,7 @@ const Chat = () => {
     }
 
     const getMutedUsers = () => {
-        socket.emit('getMutedUsers', currentChatSelected, (response: any) => {
+        socket.emit('getMutedUsers', currentChatSelected, (response: number[]) => {
             setMutedUsers(response)
         })
     }

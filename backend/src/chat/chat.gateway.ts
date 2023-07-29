@@ -14,21 +14,22 @@ import { WebSocketServer } from '@nestjs/websockets'
 import { User } from 'src/typeorm/user.entity'
 
 type PasswordChangeData = [channelId: number, password: string]
+type ChannelUserData = [channelId: number, userId: number]
+type ChannelUserPassword = [channelId: number, userId: number, password: string]
+type UserTargetData = [userId: number, targetId: number]
+type UserTargetChannelData = [
+    userId: number,
+    targetId: number,
+    channelId: number
+]
 
 @WebSocketGateway({
     cors: {
         origin: '*',
     },
-    // methods: ['GET', 'POST'],
-    // allowedHeaders: ['Content-Type', 'Authorization'],
-    // credentials: true,
 })
 export class ChatGateway {
-    constructor(
-        private readonly chatService: ChatService,
-        @InjectRepository(User)
-        private readonly userRepository: Repository<User>
-    ) {}
+    constructor(private readonly chatService: ChatService) {}
 
     @WebSocketServer()
     server: Server
@@ -36,244 +37,213 @@ export class ChatGateway {
     @SubscribeMessage('postMsg')
     @UsePipes(ValidationPipe)
     async postMsg(@MessageBody() createMessageDto: CreateMessageDto) {
-        console.log(createMessageDto)
-        const user = await this.userRepository.findOneBy({
-            id: createMessageDto.creator,
-        })
-        const { nickname, avatarUrl } = user
-        createMessageDto.userNickname = nickname
-        createMessageDto.userAvatarUrl = avatarUrl
-        const msgSended = await this.chatService.newMsg(createMessageDto)
-        this.server.emit('incomingMessage', msgSended)
+        try {
+            const msgSended = await this.chatService.newMsg(createMessageDto)
+            this.server.emit('incomingMessage', msgSended)
+        } catch (error) {
+            console.log('Error while posting message')
+        }
     }
 
     @SubscribeMessage('findAllMsgByChannel')
-    async findAllMsgByChannel(
-        @MessageBody() channelId: number,
-        @Request() req: any
-    ) {
-        const chanAllMsgs = await this.chatService.findAllMsgByChannel(
-            channelId
-        )
-        return chanAllMsgs
+    async findAllMsgByChannel(@MessageBody() channelId: number) {
+        try {
+            const chanAllMsgs = await this.chatService.findAllMsgByChannel(
+                channelId
+            )
+            return chanAllMsgs
+        } catch (error) {
+            console.log('Error while finding all messages by channel')
+        }
     }
 
     //UserBox UserBox UserBox UserBox UserBox UserBox UserBox UserBox UserBox UserBox
     @SubscribeMessage('findUsersByChannel')
     async findAllUsersByChannel(@MessageBody() channelId: number) {
-        const chanUsers = await this.chatService.findUsersByChannel(channelId)
-        return chanUsers
+        try {
+            return await this.chatService.findUsersByChannel(channelId)
+        } catch (error) {
+            console.log('Error while finding users by channel')
+        }
     }
 
     @SubscribeMessage('blockUser')
-    async blockUser(@MessageBody() data: any) {
+    async blockUser(@MessageBody() data: UserTargetData) {
+        const [userId, targetId] = data
         try {
-            this.chatService.blockUser(data[0], data[1])
+            await this.chatService.blockUser(userId, targetId)
             return { message: 'User blocked successfully' }
         } catch (error) {
-            throw new Error('Failed to block user')
+            console.log('Failed to block user')
         }
     }
 
     @SubscribeMessage('unblockUser')
-    async unblockUser(@MessageBody() data: any) {
+    async unblockUser(@MessageBody() data: UserTargetData) {
+        const [userId, targetId] = data
         try {
-            this.chatService.unblockUser(data[0], data[1])
+            this.chatService.unblockUser(userId, targetId)
             return { message: 'User unblocked successfully' }
         } catch (error) {
-            throw new Error('Failed to unblock user')
+            console.log('Failed to unblock user')
         }
     }
 
     @SubscribeMessage('getBlockedUsers')
     async getBlockedUsers(@MessageBody() myId: number) {
         try {
-            const blockedUsers = await this.chatService.getBlockedUsers(myId)
-            // this.server.emit('updateUsers', msgSended)
-            return blockedUsers
+            return await this.chatService.getBlockedUsers(myId)
         } catch (error) {
-            throw new Error('Failed to get blocked users')
+            console.log('Failed to get blocked users')
         }
     }
 
     @SubscribeMessage('setAdmin')
-    async setAdmin(@MessageBody() data: any) {
+    async setAdmin(@MessageBody() data: UserTargetChannelData) {
+        const [userId, targetId, channelId] = data
         try {
-            this.chatService.setAdmin(data[0], data[1], data[2])
+            await this.chatService.setAdmin(userId, targetId, channelId)
             return { message: 'User is now admin' }
         } catch (error) {
-            throw new Error('Failed to set admin')
+            console.log('Failed to set admin')
         }
     }
 
     @SubscribeMessage('unsetAdmin')
-    async unsetAdmin(@MessageBody() data: any) {
+    async unsetAdmin(@MessageBody() data: UserTargetChannelData) {
+        const [userId, targetId, channelId] = data
         try {
-            this.chatService.unsetAdmin(data[0], data[1], data[2])
+            this.chatService.unsetAdmin(userId, targetId, channelId)
             return { message: 'User it is no longer admin' }
         } catch (error) {
-            throw new Error('Failed to unset admin')
+            console.log('Failed to unset admin')
         }
     }
 
     @SubscribeMessage('kickUser')
-    async kickUser(@MessageBody() data: any) {
+    async kickUser(@MessageBody() data: UserTargetChannelData) {
+        const [userId, targetId, channelId] = data
         try {
-            this.chatService.kickUser(data[0], data[1], data[2])
+            this.chatService.kickUser(userId, targetId, channelId)
             return { message: 'User kicked successfully' }
         } catch (error) {
-            throw new Error('Failed to kick user')
+            console.log('Failed to kick user')
         }
     }
 
     @SubscribeMessage('banUser')
-    async banUser(@MessageBody() data: any) {
+    async banUser(@MessageBody() data: UserTargetChannelData) {
+        const [userId, targetId, channelId] = data
         try {
-            this.chatService.banUser(data[0], data[1], data[2])
+            this.chatService.banUser(userId, targetId, channelId)
             return { message: 'User banned successfully' }
         } catch (error) {
-            throw new Error('Failed to ban user')
+            console.log('Failed to ban user')
         }
     }
 
     @SubscribeMessage('unbanUser')
-    async unbanUser(@MessageBody() data: any) {
+    async unbanUser(@MessageBody() data: UserTargetChannelData) {
+        const [userId, targetId, channelId] = data
         try {
-            this.chatService.unbanUser(data[0], data[1], data[2])
+            this.chatService.unbanUser(userId, targetId, channelId)
             return { message: 'User unbanned successfully' }
         } catch (error) {
-            throw new Error('Failed to unban user')
+            console.log('Failed to unban user')
         }
     }
 
     @SubscribeMessage('getBannedUsers')
     async getBannedUsers(@MessageBody() channelId: number) {
         try {
-            const bannedUsers = await this.chatService.getBannedUsers(channelId)
-            return bannedUsers
+            return await this.chatService.getBannedUsers(channelId)
         } catch (error) {
-            throw new Error('Failed to get banned users')
+            console.log('Failed to get banned users')
         }
     }
 
     @SubscribeMessage('muteUser')
-    async muteUser(@MessageBody() data: any) {
+    async muteUser(@MessageBody() data: UserTargetChannelData) {
+        const [userId, targetId, channelId] = data
         try {
-            this.chatService.muteUser(data[0], data[1], data[2])
+            this.chatService.muteUser(userId, targetId, channelId)
             return { message: 'User muted successfully' }
         } catch (error) {
-            throw new Error('Failed to mute user')
+            console.log('Failed to mute user')
         }
     }
 
     @SubscribeMessage('getMutedUsers')
     async getMutedUsers(@MessageBody() channelId: number) {
         try {
-            const mutedUsers = await this.chatService.getMutedUsers(channelId)
-            return mutedUsers
+            return await this.chatService.getMutedUsers(channelId)
         } catch (error) {
-            throw new Error('Failed to get muted users')
+            console.log('Failed to get muted users')
         }
     }
 
-    //ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox
     @SubscribeMessage('createNewChannel')
     @UsePipes(ValidationPipe)
     async createChannel(@MessageBody() createChannelDto: CreateChannelDto) {
-        const channelCreated = await this.chatService.createChannel(
-            createChannelDto
-        )
-        this.server.emit('newChannel', channelCreated)
-        return channelCreated
+        try {
+            const channelCreated = await this.chatService.createChannel(
+                createChannelDto
+            )
+            this.server.emit('newChannel', channelCreated)
+        } catch (error) {
+            console.log('Failed to create channel')
+        }
     }
 
     @SubscribeMessage('createDM')
     @UsePipes(ValidationPipe)
-    async createDirectChannel(@MessageBody() body: any) {
-        const createChannelDto = new CreateChannelDto()
-        const user = await this.userRepository.findOneBy({
-            id: body[0],
-        })
-
-        const user2 = await this.userRepository.findOneBy({
-            id: body[1],
-        })
-        const channel = await this.chatService.findChanDM(
-            user.nickname,
-            user2.nickname
-        )
-        if (channel) {
-            const joinChannel = await this.chatService.joinChannel(
-                channel.id,
-                +body[0],
-                ''
-            )
-            if (joinChannel) this.server.emit('newChannel', joinChannel)
-            return joinChannel.id
-        }
-        createChannelDto.owner = user
-        createChannelDto.admin = [user]
-        createChannelDto.users = [user, user2]
-        createChannelDto.type = 'direct'
-        createChannelDto.name = user.nickname + ' & ' + user2.nickname
-        createChannelDto.password = ''
-
-        const channelCreated = await this.chatService.createChannel(
-            createChannelDto
-        )
-        if (channelCreated) {
-            this.server.emit('newChannel', channelCreated)
-            return channelCreated
-        } else {
-            return null
-        }
+    async createDirectChannel(@MessageBody() body: UserTargetData) {
+        const [userId, targetId] = body
+        const channel = await this.chatService.findChanDM(userId, targetId)
+        this.server.emit('newChannel', channel)
+        return channel
     }
 
     @SubscribeMessage('getAllChannels')
     @UsePipes(ValidationPipe)
     async getAllChannels() {
-        const channels = await this.chatService.getAllChannels()
-        return channels
+        try {
+            return await this.chatService.getAllChannels()
+        } catch (error) {
+            console.log('Failed to get all channels')
+        }
     }
 
     @SubscribeMessage('joinChannel')
-    async joinChannel(@MessageBody() data: any) {
-        console.log('data', data)
+    async joinChannel(@MessageBody() data: ChannelUserPassword) {
+        const [channelId, userId, password] = data
         try {
-            const channel = await this.chatService.joinChannel(
-                data[0],
-                data[1],
-                data[2]
+            return await this.chatService.joinChannel(
+                channelId,
+                userId,
+                password
             )
-            return channel
         } catch (error) {
-            throw new Error('Failed to join Channel')
+            console.log('Failed to join Channel')
         }
     }
 
     @SubscribeMessage('leaveChannel')
-    async leaveChannel(@MessageBody() data: any) {
+    async leaveChannel(@MessageBody() data: ChannelUserData) {
+        const [channelId, userId] = data
         try {
-            console.log('data leave', data)
-            const channel = await this.chatService.leaveChannel(
-                data[0],
-                data[1]
-            )
-            return channel
+            return await this.chatService.leaveChannel(channelId, userId)
         } catch (error) {
-            throw new Error('Failed to remove user from channel')
+            console.log('Failed to remove user from channel')
         }
     }
     @SubscribeMessage('deleteChannel')
-    async deleteChannel(@MessageBody() data: any) {
+    async deleteChannel(@MessageBody() data: ChannelUserData) {
+        const [channelId, userId] = data
         try {
-            const channel = await this.chatService.deleteChannel(
-                data[0],
-                data[1]
-            )
-            return channel
+            return await this.chatService.deleteChannel(channelId, userId)
         } catch (error) {
-            throw new Error('Failed to remove user from channel')
+            console.log('Failed to remove user from channel')
         }
     }
 
@@ -281,6 +251,10 @@ export class ChatGateway {
     @UsePipes(ValidationPipe)
     async changeChannelPassword(@MessageBody() data: PasswordChangeData) {
         const [channelId, password] = data
-        return await this.chatService.changePassword(channelId, password)
+        try {
+            return await this.chatService.changePassword(channelId, password)
+        } catch (error) {
+            console.log('Failed to change password')
+        }
     }
 }

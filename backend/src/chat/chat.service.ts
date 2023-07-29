@@ -29,11 +29,15 @@ export class ChatService {
         private readonly channelUserMutedRepository: Repository<ChannelUserMuted>
     ) {}
 
-    //ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox ChatBox
     async newMsg(createMessageDto: CreateMessageDto) {
+        const user = await this.userRepository.findOneBy({
+            id: createMessageDto.creator,
+        })
+        const { nickname, avatarUrl } = user
+        createMessageDto.userNickname = nickname
+        createMessageDto.userAvatarUrl = avatarUrl
         const newMessage = this.messageRepository.create(createMessageDto)
-        const savedMessage = await this.messageRepository.save(newMessage)
-        return savedMessage
+        return await this.messageRepository.save(newMessage)
     }
 
     async findOneToDisplay(id: number) {
@@ -60,7 +64,6 @@ export class ChatService {
         return messages
     }
 
-    //UserBox UserBox UserBox UserBox UserBox UserBox UserBox UserBox UserBox UserBox
     async findUsersByChannel(id: number) {
         return await this.channelRepository.findOne({
             relations: {
@@ -73,15 +76,15 @@ export class ChatService {
         })
     }
 
-    async blockUser(myId: number, hisId: number) {
+    async blockUser(userId: number, targetId: number) {
         const user = await this.userRepository.findOne({
-            where: { id: myId },
+            where: { id: userId },
             relations: {
                 blockedUsers: true,
             },
         })
         const userToBlock = await this.userRepository.findOne({
-            where: { id: hisId },
+            where: { id: targetId },
             relations: {
                 blockedBy: true,
             },
@@ -93,16 +96,10 @@ export class ChatService {
         user.blockedUsers.push(userToBlock)
         await this.userRepository.save(user)
 
-        const direcChan = this.findChanDM(
-            user.nickname,
-            userToBlock.nickname
-        ).then((channel) => {
-            if (channel) {
-                return this.channelRepository.remove(channel)
-                // this.leaveChannel(channel.id, user.id)
-                // this.leaveChannel(channel.id, userToBlock.id)
-            }
-        })
+        const direcChan = await this.findChanDM(userId, targetId)
+        if (direcChan) {
+            await this.channelRepository.remove(direcChan)
+        }
     }
 
     async unblockUser(myId: number, hisId: number) {
@@ -145,7 +142,7 @@ export class ChatService {
         return blockedUserIds
     }
 
-    async setAdmin(myId: number, hisId: number, channelId: number) {
+    async setAdmin(userId: number, targetId: number, channelId: number) {
         const channel = await this.channelRepository.findOne({
             where: { id: channelId },
             relations: {
@@ -154,20 +151,22 @@ export class ChatService {
             },
         })
         const user = await this.userRepository.findOne({
-            where: { id: myId },
+            where: { id: userId },
         })
 
         const userToSet = await this.userRepository.findOne({
-            where: { id: hisId },
+            where: { id: targetId },
         })
 
         if (channel.owner.id === user.id) {
             channel.admin.push(userToSet)
             await this.channelRepository.save(channel)
-        } else throw new UnauthorizedException()
+        } else {
+            throw new UnauthorizedException()
+        }
     }
 
-    async unsetAdmin(myId: number, hisId: number, channelId: number) {
+    async unsetAdmin(userId: number, targetId: number, channelId: number) {
         const channel = await this.channelRepository.findOne({
             where: { id: channelId },
             relations: {
@@ -176,20 +175,22 @@ export class ChatService {
             },
         })
         const user = await this.userRepository.findOne({
-            where: { id: myId },
+            where: { id: userId },
         })
 
         const userToUnset = await this.userRepository.findOne({
-            where: { id: hisId },
+            where: { id: targetId },
         })
 
         if (channel.owner.id === user.id) {
             channel.admin = channel.admin.filter((u) => u.id !== userToUnset.id)
             await this.channelRepository.save(channel)
-        } else throw new UnauthorizedException()
+        } else {
+            throw new UnauthorizedException()
+        }
     }
 
-    async kickUser(myId: number, hisId: number, channelId: number) {
+    async kickUser(userId: number, targetId: number, channelId: number) {
         const channel = await this.channelRepository.findOne({
             where: { id: channelId },
             relations: {
@@ -200,11 +201,11 @@ export class ChatService {
         })
 
         const user = await this.userRepository.findOne({
-            where: { id: myId },
+            where: { id: userId },
         })
 
         const userToKick = await this.userRepository.findOne({
-            where: { id: hisId },
+            where: { id: targetId },
         })
 
         if (
@@ -216,7 +217,7 @@ export class ChatService {
         } else throw new UnauthorizedException()
     }
 
-    async banUser(myId: number, hisId: number, channelId: number) {
+    async banUser(userId: number, targetId: number, channelId: number) {
         const channel = await this.channelRepository.findOne({
             where: { id: channelId },
             relations: {
@@ -228,11 +229,11 @@ export class ChatService {
         })
 
         const user = await this.userRepository.findOne({
-            where: { id: myId },
+            where: { id: userId },
         })
 
         const userToBan = await this.userRepository.findOne({
-            where: { id: hisId },
+            where: { id: targetId },
         })
 
         if (
@@ -246,7 +247,7 @@ export class ChatService {
         } else throw new UnauthorizedException()
     }
 
-    async unbanUser(myId: number, hisId: number, channelId: number) {
+    async unbanUser(userId: number, targetId: number, channelId: number) {
         const channel = await this.channelRepository.findOne({
             where: { id: channelId },
             relations: {
@@ -257,11 +258,11 @@ export class ChatService {
         })
 
         const user = await this.userRepository.findOne({
-            where: { id: myId },
+            where: { id: userId },
         })
 
         const userToUnban = await this.userRepository.findOne({
-            where: { id: hisId },
+            where: { id: targetId },
         })
 
         if (channel.admin.some((u) => u.id === user.id)) {
@@ -283,7 +284,7 @@ export class ChatService {
         return bannedUserIds
     }
 
-    async muteUser(myId: number, hisId: number, channelId: number) {
+    async muteUser(userId: number, targetId: number, channelId: number) {
         const channel = await this.channelRepository.findOne({
             where: { id: channelId },
             relations: {
@@ -292,11 +293,11 @@ export class ChatService {
             },
         })
         const user = await this.userRepository.findOne({
-            where: { id: myId },
+            where: { id: userId },
         })
 
         const userToMute = await this.userRepository.findOne({
-            where: { id: hisId },
+            where: { id: targetId },
         })
         if (
             channel.owner.id !== userToMute.id &&
@@ -405,27 +406,38 @@ export class ChatService {
         return await this.channelRepository.save(channel)
     }
 
-    findChanDM(nick1: string, nick2: string): Promise<Channel | undefined> {
-        return new Promise((resolve, reject) => {
-            try {
-                let chName = nick1 + ' & ' + nick2
-                let channel = this.channelRepository.findOneBy({
-                    name: chName,
-                })
-                if (channel) resolve(channel)
-                else {
-                    chName = nick2 + ' & ' + nick1
-                    channel = this.channelRepository.findOneBy({
-                        name: chName,
-                    })
-                    if (channel) resolve(channel)
-                    else resolve(undefined)
-                }
-            } catch (error) {
-                console.error('Error when searching for the channel: ', error)
-                reject(error)
-            }
+    async findChanDM(userId: number, TargetId: number) {
+        const user = await this.userRepository.findOneBy({
+            id: userId,
         })
+        const target = await this.userRepository.findOneBy({
+            id: TargetId,
+        })
+
+        let channelName = user.nickname + ' & ' + target.nickname
+        let channel = await this.channelRepository.findOneBy({
+            name: channelName,
+        })
+        if (!channel) {
+            channelName = target.nickname + ' & ' + user.nickname
+            channel = await this.channelRepository.findOneBy({
+                name: channelName,
+            })
+        }
+        if (channel) {
+            const joinChannel = await this.joinChannel(channel.id, userId, '')
+            return joinChannel
+        } else {
+            const createChannelDto = new CreateChannelDto()
+            createChannelDto.owner = user
+            createChannelDto.admin = [user]
+            createChannelDto.users = [user, target]
+            createChannelDto.type = 'direct'
+            createChannelDto.name = user.nickname + ' & ' + target.nickname
+            createChannelDto.password = ''
+            const channelCreated = await this.createChannel(createChannelDto)
+            return channelCreated
+        }
     }
 
     async deleteChannel(channelId: number, userId: number) {
