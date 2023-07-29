@@ -280,12 +280,10 @@ export class ChatService {
             },
         })
         const bannedUserIds = channel.banned.map((bannedUser) => bannedUser.id)
-        // console.log(bannedUserIds)
         return bannedUserIds
     }
 
     async muteUser(myId: number, hisId: number, channelId: number) {
-        // this.channelUserMutedRepository.create()
         const channel = await this.channelRepository.findOne({
             where: { id: channelId },
             relations: {

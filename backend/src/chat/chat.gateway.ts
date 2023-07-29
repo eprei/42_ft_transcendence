@@ -78,7 +78,6 @@ export class ChatGateway {
     @SubscribeMessage('unblockUser')
     async unblockUser(@MessageBody() data: any) {
         try {
-            console.log('LA VIE EST BELLE')
             this.chatService.unblockUser(data[0], data[1])
             return { message: 'User unblocked successfully' }
         } catch (error) {

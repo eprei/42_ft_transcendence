@@ -42,6 +42,7 @@ const Chat = () => {
     const [bannedUsers, setBannedUsers] = useState<any[]>([])
     const [mutedUsers, setMutedUsers] = useState<number[]>([])
     const [isDM, setIsDM] = useState<boolean>(false)
+	const [reloadUsers, setReloadUsers] = useState(false)
 
     useEffect(() => {
         getAllChannels()
@@ -49,7 +50,9 @@ const Chat = () => {
 
     useEffect(() => {
         if (currentChatSelected) {
-            getAllMsg()
+			if (!reloadUsers) {
+				getAllMsg()
+			}
             getChUsers()
             getBlockedUsers()
             getMutedUsers()
@@ -69,18 +72,17 @@ const Chat = () => {
             setBannedUsers([])
             setMutedUsers([])
         }
-    }, [currentChatSelected])
+		setReloadUsers(false)
+    }, [currentChatSelected, reloadUsers])
 
-	const [reloadUsers, setReloadUsers] = useState(false)
-	
-	useEffect(() => {
-		if (reloadUsers) {
-			getChUsers()
-			getBlockedUsers()
-            getMutedUsers()
-			setReloadUsers(false)
-		}
-	  }, [reloadUsers]);
+	// useEffect(() => {
+	// 	if (reloadUsers) {
+	// 		getChUsers()
+	// 		getBlockedUsers()
+    //         getMutedUsers()
+	// 		setReloadUsers(false)
+	// 	}
+	//   }, [reloadUsers]);
 
     const getAllMsg = () => {
         socket.emit(
