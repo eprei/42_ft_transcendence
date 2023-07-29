@@ -9,9 +9,6 @@ import {
     UsePipes,
     ValidationPipe,
 } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
-import { User } from 'src/typeorm/user.entity'
-import { Repository } from 'typeorm'
 import { ChannelService } from './channel.service'
 import { CreateChannelDto } from './dto/create-channel.dto'
 import { UpdateChannelDto } from './dto/update-channel.dto'
@@ -20,41 +17,27 @@ import { ApiTags } from '@nestjs/swagger'
 @ApiTags('channel')
 @Controller('channel')
 export class ChannelController {
-    constructor(
-        private readonly channelService: ChannelService,
-        @InjectRepository(User)
-        private readonly userRepository: Repository<User>
-    ) {}
+    constructor(private readonly channelService: ChannelService) {}
 
     @Post()
     @UsePipes(ValidationPipe)
     async create(@Body() createChannelDto: CreateChannelDto) {
-        const user = await this.userRepository.findOneBy({
-            id: createChannelDto.ownerId,
-        })
-        createChannelDto.owner = user
-        createChannelDto.admin = [user]
-        createChannelDto.users = [user]
-        const channel = await this.channelService.create(createChannelDto)
-        return channel
+        return await this.channelService.create(createChannelDto)
     }
 
     @Get('user-channels/:id')
     async getUserChannels(@Param('id') id: string) {
-        const channels = await this.channelService.getUserChannels(+id)
-        return channels
+        return await this.channelService.getUserChannels(+id)
     }
 
     @Get()
     async findAll() {
-        const channels = await this.channelService.findAll()
-        return channels
+        return await this.channelService.findAll()
     }
 
     @Get(':id')
     async findOne(@Param('id') id: string) {
-        const channel = await this.channelService.findOne(+id)
-        return channel
+        return await this.channelService.findOne(+id)
     }
 
     @Patch(':id')
@@ -62,14 +45,12 @@ export class ChannelController {
         @Param('id') id: string,
         @Body() updateChannelDto: UpdateChannelDto
     ) {
-        const channel = await this.channelService.update(+id, updateChannelDto)
-        return channel
+        return await this.channelService.update(+id, updateChannelDto)
     }
 
     @Delete(':id')
     async remove(@Param('id') id: string) {
-        const channel = await this.channelService.remove(+id)
-        return channel
+        return await this.channelService.remove(+id)
     }
 
     @Delete(':channelId/users/:userId')
@@ -81,7 +62,7 @@ export class ChannelController {
             await this.channelService.removeUserFromChannel(channelId, userId)
             return { message: 'User removed from channel successfully' }
         } catch (error) {
-            throw new Error('Failed to remove user from channel')
+            console.log('Failed to remove user from channel')
         }
     }
 

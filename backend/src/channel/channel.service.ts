@@ -15,7 +15,13 @@ export class ChannelService {
         private readonly userRepository: Repository<User>
     ) {}
 
-    create(createChannelDto: CreateChannelDto) {
+    async create(createChannelDto: CreateChannelDto) {
+        const user = await this.userRepository.findOneBy({
+            id: createChannelDto.ownerId,
+        })
+        createChannelDto.owner = user
+        createChannelDto.admin = [user]
+        createChannelDto.users = [user]
         const newChannel = this.channelRepository.create(createChannelDto)
         return this.channelRepository.save(newChannel)
     }
