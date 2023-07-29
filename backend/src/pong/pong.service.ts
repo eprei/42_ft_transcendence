@@ -60,17 +60,6 @@ export class PongService {
         ) {
             this.frame.paddleLeft.position.y += PADDLE_SPEED
         }
-
-        // Aquí va la lógica para mover las paletas y la pelota
-        // Puedes usar variables para representar la velocidad y dirección de las paletas y la pelota, y calcular las nuevas posiciones en función de ellas.
-        // Por ejemplo:
-        // this.frame.paddleLeft.position.y += this.paddleLeftSpeed;
-        // this.frame.ball.position.x += this.ballSpeedX;
-        // this.frame.ball.position.y += this.ballSpeedY;
-
-        // Resto del código para actualizar la posición de la pelota y las paletas.
-
-        // Retornar el fotograma actualizado
         return this.frame
     }
 

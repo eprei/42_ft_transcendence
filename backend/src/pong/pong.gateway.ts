@@ -17,8 +17,8 @@ import { Logger } from '@nestjs/common'
 export class PongGateway
     implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
-    private frameInterval: NodeJS.Timeout
     private loger: Logger = new Logger('PongGateway')
+    private frameIntervals: { [clientId: string]: NodeJS.Timeout } = {}
 
     @WebSocketServer()
     server: Server
@@ -30,23 +30,22 @@ export class PongGateway
 
     afterInit(server: any) {
         this.loger.log('Server socket is initialized')
-        // Llamamos a la función inicialmente cuando se establece la conexión
-        const frame = this.pongService.getFrame()
-        this.sendFrameToClients(frame)
+    }
 
-        // Configuramos el intervalo para llamar a la función 24 veces por segundo
-        this.frameInterval = setInterval(() => {
+    handleConnection(client: Socket, ...args: any[]) {
+        this.loger.log(`Client socket connected: ${client.id}`)
+
+        this.frameIntervals[client.id] = setInterval(() => {
             const frame = this.pongService.getFrame()
             this.sendFrameToClients(frame)
         }, 1000 / 24) // 24 fps
     }
 
-    handleConnection(client: any, ...args: any[]) {
-        this.loger.log(`Client socket connected: ${client.id}`)
-    }
-
-    handleDisconnect(client: any) {
+    handleDisconnect(client: Socket) {
         this.loger.log(`Client socket disconnected: ${client.id}`)
+
+        clearInterval(this.frameIntervals[client.id])
+        delete this.frameIntervals[client.id]
     }
 
     handleGetFrame() {
@@ -77,9 +76,8 @@ export class PongGateway
     @SubscribeMessage('movePaddle')
     handleMovePaddle(client: Socket, data: { direction: string }) {
         const { direction } = data
-        // Actualizar el fotograma en el servicio
         const updatedFrame = this.pongService.updateFrame(direction)
-        // Emitir el fotograma actualizado a todos los clientes conectados
+
         this.sendFrameToClients(updatedFrame)
     }
 
