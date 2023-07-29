@@ -43,6 +43,7 @@ export class PongService {
                 height: BALL_SIZE,
             },
         },
+        score: { playerOne: 0, playerTwo: 0 },
     }
 
     simpleFrame(): Frame {
@@ -95,12 +96,14 @@ export class PongService {
         }
 
         // Reset the position of the ball when it leaves the playing field
-        if (
-            this.frame.ball.position.x + BALL_SIZE >= FRAME_WIDTH ||
-            this.frame.ball.position.x <= 0
-        ) {
+        if (this.frame.ball.position.x + BALL_SIZE >= FRAME_WIDTH) {
             this.frame.ball.position.x = FRAME_WIDTH / 2
             this.frame.ball.position.y = FRAME_HEIGHT / 4
+            this.frame.score.playerOne += 1
+        } else if (this.frame.ball.position.x <= 0) {
+            this.frame.ball.position.x = FRAME_WIDTH / 2
+            this.frame.ball.position.y = FRAME_HEIGHT / 4
+            this.frame.score.playerTwo += 1
         }
     }
 

@@ -20,6 +20,7 @@ interface Frame {
     paddleLeft: Rectangle
     paddleRight: Rectangle
     ball: Rectangle
+    score: { playerOne: number; playerTwo: number }
 }
 
 function drawRectangle(
@@ -51,6 +52,7 @@ const BoardGame = () => {
             size: { width: 10, height: 20 },
             position: { x: 50, y: 50 },
         },
+        score: { playerOne: 0, playerTwo: 0 },
     })
 
     useEffect(() => {
@@ -91,17 +93,17 @@ const BoardGame = () => {
 
         function onReceiveFrames(updatedFrame: Frame) {
             console.log('updated frame: ', JSON.stringify(updatedFrame))
-            setFrame(updatedFrame) // Actualiza el frame cuando se recibe del servidor
+            setFrame(updatedFrame) // Updates the frame when received from the server
+            document.getElementById('scorePlayerOne').innerText =
+                updatedFrame.score.playerOne.toString()
+            document.getElementById('scorePlayerTwo').innerText =
+                updatedFrame.score.playerTwo.toString()
         }
-
-        // socket.emit('getFrame', {}, (response: Frame) => {
-        //     setFrame(response) // Establece el frame inicial cuando se recibe del servidor al conectarse
-        // })
 
         // Event listener to captures up and down keys
         document.addEventListener('keydown', handleKeyDown)
 
-        // Registro del evento para recibir fotogramas actualizados del servidor
+        // Event registration to receive updated frames from the server
         socket.on('sendFrames', onReceiveFrames)
 
         return () => {
