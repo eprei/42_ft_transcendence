@@ -29,7 +29,7 @@ export class PongGateway
     ) {}
 
     afterInit(server: any) {
-        this.loger.log('Server socket is initialized')
+        this.loger.log('Game server is initialized')
     }
 
     handleConnection(client: Socket, ...args: any[]) {
@@ -48,10 +48,6 @@ export class PongGateway
         delete this.frameIntervals[client.id]
     }
 
-    handleGetFrame() {
-        return this.pongService.getFrame() // Function tu get the updated frame
-    }
-
     @SubscribeMessage('joinRoom')
     handleJoinRoom(client: Socket, roomId: string) {
         client.join(roomId)
@@ -66,7 +62,6 @@ export class PongGateway
         this.loger.log(`Client socket ${client} left room: ${roomId}`)
     }
 
-    // Function to send the frame to all conected clients
     sendFrameToClients(frame: Frame) {
         this.server.emit('sendFrames', frame)
     }
