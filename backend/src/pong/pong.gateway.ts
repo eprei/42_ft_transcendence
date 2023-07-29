@@ -8,6 +8,7 @@ import {
     OnGatewayDisconnect,
     OnGatewayInit,
 } from '@nestjs/websockets'
+import { Logger } from '@nestjs/common'
 @WebSocketGateway({
     cors: {
         origin: '*',
@@ -17,6 +18,7 @@ export class PongGateway
     implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
     private frameInterval: NodeJS.Timeout
+    private loger: Logger = new Logger('PongGateway')
 
     @WebSocketServer()
     server: Server
@@ -27,7 +29,7 @@ export class PongGateway
     ) {}
 
     afterInit(server: any) {
-        console.log('This is excecuted when server socket is initialized')
+        this.loger.log('Server socket is initialized')
         // Llamamos a la función inicialmente cuando se establece la conexión
         const frame = this.pongService.getFrame()
         this.sendFrameToClients(frame)
@@ -40,11 +42,11 @@ export class PongGateway
     }
 
     handleConnection(client: any, ...args: any[]) {
-        console.log(`Client connected via socket: ${client.id}`)
+        this.loger.log(`Client socket connected: ${client.id}`)
     }
 
     handleDisconnect(client: any) {
-        console.log(`Client disconnected via socket: ${client.id}`)
+        this.loger.log(`Client socket disconnected: ${client.id}`)
     }
 
     handleGetFrame() {
