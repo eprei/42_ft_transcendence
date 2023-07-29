@@ -1,11 +1,11 @@
 import BoardGame from './../components/pong/BoardGame'
+import styles from './Game.module.css'
 
 const Game = () => {
     return (
-        <>
-            <h1>The Game</h1>
+        <div className={styles.container}>
             <BoardGame />
-        </>
+        </div>
     )
 }
 

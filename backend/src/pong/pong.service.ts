@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import { Frame } from './entities/pong.entity'
 
+const FRAME_WIDTH: number = 300
+const FRAME_HEIGHT: number = 300
 const PADDLE_WIDTH: number = 10
 const PADDLE_HEIGHT: number = 50
 let BALL_SIZE: number = 10
@@ -48,7 +50,6 @@ export class PongService {
     }
 
     updateFrame(direction?: string): Frame {
-        // console.log('updateFrame')
         // Actualizar la posición de la paleta según la dirección proporcionada
         if (direction === 'up' && this.frame.paddleLeft.position.y > 0) {
             this.frame.paddleLeft.position.y -= PADDLE_SPEED
@@ -70,41 +71,23 @@ export class PongService {
 
         // Lógica para evitar que la pelota se salga de la pantalla
         if (
-            this.frame.ball.position.x + BALL_SIZE >= 400 ||
+            this.frame.ball.position.x + BALL_SIZE >= FRAME_WIDTH ||
             this.frame.ball.position.x <= 0
         ) {
             // Invertir dirección horizontal si alcanza los límites horizontales de la pantalla
             BALL_SPEED_X *= -1
         }
         if (
-            this.frame.ball.position.y + BALL_SIZE >= 200 ||
+            this.frame.ball.position.y + BALL_SIZE >= FRAME_HEIGHT ||
             this.frame.ball.position.y <= 0
         ) {
             // Invertir dirección vertical si alcanza los límites verticales de la pantalla
             BALL_SPEED_Y *= -1
         }
-
-        // Lógica para mover las paletas
-        if (
-            this.frame.paddleLeft.position.y + PADDLE_HEIGHT >= 200 ||
-            this.frame.paddleLeft.position.y <= 0
-        ) {
-            PADDLE_SPEED *= -1
-        }
-        this.frame.paddleLeft.position.y += PADDLE_SPEED
-
-        // Mover la paleta derecha de manera similar a la paleta izquierda
-        if (
-            this.frame.paddleRight.position.y + PADDLE_HEIGHT >= 200 ||
-            this.frame.paddleRight.position.y <= 0
-        ) {
-            PADDLE_SPEED *= -1
-        }
-        this.frame.paddleRight.position.y += PADDLE_SPEED
     }
 
     getFrame(): Frame {
-        this.updateFrame()
+        this.updateFrameLogic()
         return this.frame
     }
 }

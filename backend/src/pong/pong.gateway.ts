@@ -38,7 +38,7 @@ export class PongGateway
         this.frameIntervals[client.id] = setInterval(() => {
             const frame = this.pongService.getFrame()
             this.sendFrameToClients(frame)
-        }, 1000 / 24) // 24 fps
+        }, 1000 / 50) // 50 fps
     }
 
     handleDisconnect(client: Socket) {
@@ -68,8 +68,6 @@ export class PongGateway
 
     // Function to send the frame to all conected clients
     sendFrameToClients(frame: Frame) {
-        // console.log('sendFrameToClients')
-        // console.log(frame)
         this.server.emit('sendFrames', frame)
     }
 

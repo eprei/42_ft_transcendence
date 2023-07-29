@@ -68,7 +68,7 @@ const BoardGame = () => {
             // TODO manage error
         }
 
-        ctx.clearRect(0, 0, 1000, 1000)
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
         drawRectangle(ctx, frame.paddleLeft)
         drawRectangle(ctx, frame.paddleRight)
         drawRectangle(ctx, frame.ball)
