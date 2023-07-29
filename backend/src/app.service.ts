@@ -8,6 +8,7 @@ import { Message } from './typeorm/message.entity'
 import { Match } from './typeorm/match.entity'
 import { UserService } from './user/user.service'
 import { UserStatus } from './typeorm/user.entity'
+import * as bcrypt from 'bcrypt'
 
 @Injectable()
 export class AppService {
@@ -139,11 +140,12 @@ export class AppService {
         })
         await this.channelRepo.save(chan2)
 
+        let hashedPassword = await bcrypt.hash('1234', 10)
         const chan3 = this.channelRepo.create({
             owner: user1,
             name: 'chan 3',
             type: 'private',
-            password: '1234',
+            password: hashedPassword,
             admin: [user1],
             users: [user1, user3],
         })
@@ -153,7 +155,7 @@ export class AppService {
             owner: user2,
             name: 'chan 4',
             type: 'private',
-            password: '1234',
+            password: hashedPassword,
             admin: [user2],
             users: [user2, user4],
         })
@@ -163,7 +165,7 @@ export class AppService {
             owner: user2,
             name: 'chan 5',
             type: 'direct',
-            password: null,
+            password: '',
             admin: [user2],
             users: [user2, user5],
         })
@@ -173,7 +175,7 @@ export class AppService {
             owner: user3,
             name: 'chan 6',
             type: 'direct',
-            password: null,
+            password: '',
             admin: [user3],
         })
         chan6.users = [user3, user4]

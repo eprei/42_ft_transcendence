@@ -12,7 +12,8 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { WebSocketServer } from '@nestjs/websockets'
 import { User } from 'src/typeorm/user.entity'
-import * as bcrypt from 'bcrypt'
+
+type PasswordChangeData = [channelId: number, password: string]
 
 @WebSocketGateway({
     cors: {
@@ -180,18 +181,6 @@ export class ChatGateway {
     @SubscribeMessage('createNewChannel')
     @UsePipes(ValidationPipe)
     async createChannel(@MessageBody() createChannelDto: CreateChannelDto) {
-        const user = await this.userRepository.findOneBy({
-            id: createChannelDto.ownerId,
-        })
-        createChannelDto.owner = user
-        createChannelDto.admin = [user]
-        createChannelDto.users = [user]
-        createChannelDto.messages = []
-
-        if (createChannelDto?.password) {
-            const PlainTextPassword = createChannelDto.password.trim()
-            createChannelDto.password = await bcrypt.hash(PlainTextPassword, 10)
-        }
         const channelCreated = await this.chatService.createChannel(
             createChannelDto
         )
@@ -291,7 +280,8 @@ export class ChatGateway {
 
     @SubscribeMessage('changePassword')
     @UsePipes(ValidationPipe)
-    async changeChannelPassword(@MessageBody() data: any) {
-        return await this.chatService.changePassword(data[0], data[1])
+    async changeChannelPassword(@MessageBody() data: PasswordChangeData) {
+        const [channelId, password] = data
+        return await this.chatService.changePassword(channelId, password)
     }
 }

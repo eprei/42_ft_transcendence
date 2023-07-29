@@ -13,6 +13,8 @@ import {
     UnauthorizedException,
     BadRequestException,
 } from '@nestjs/common'
+import * as bcrypt from 'bcrypt'
+import ChannelType from 'src/types/ChannelTypes'
 
 @Injectable()
 export class ChatService {
@@ -339,7 +341,19 @@ export class ChatService {
     }
 
     //ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox
-    createChannel(createChannelDto: CreateChannelDto) {
+    async createChannel(createChannelDto: CreateChannelDto) {
+        const user = await this.userRepository.findOneBy({
+            id: createChannelDto.ownerId,
+        })
+        createChannelDto.owner = user
+        createChannelDto.admin = [user]
+        createChannelDto.users = [user]
+        createChannelDto.messages = []
+
+        if (createChannelDto?.password) {
+            const PlainTextPassword = createChannelDto.password.trim()
+            createChannelDto.password = await bcrypt.hash(PlainTextPassword, 10)
+        }
         const newChannel = this.channelRepository.create(createChannelDto)
         return this.channelRepository.save(newChannel)
     }
@@ -356,8 +370,11 @@ export class ChatService {
             where: { id: channelId },
         })
 
-        if (channel.password && channel.password !== password) {
-            throw new UnauthorizedException()
+        if (channel.type === ChannelType.Private) {
+            const isSamePwd = await bcrypt.compare(password, channel.password)
+            if (!isSamePwd) {
+                throw new UnauthorizedException()
+            }
         }
         const user = await this.userRepository.findOne({
             where: { id: userId },
@@ -424,12 +441,12 @@ export class ChatService {
         return deleteChannel
     }
 
-    async changePassword(channelId: number, password: string) {
+    async changePassword(channelId: number, PlainTextPassword: string) {
         try {
             const chan = await this.channelRepository.findOne({
                 where: { id: channelId },
             })
-            chan.password = password
+            chan.password = await bcrypt.hash(PlainTextPassword, 10)
             await this.channelRepository.update(channelId, chan)
             return true
         } catch (error) {
