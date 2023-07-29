@@ -12,6 +12,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { WebSocketServer } from '@nestjs/websockets'
 import { User } from 'src/typeorm/user.entity'
+import * as bcrypt from 'bcrypt'
 
 @WebSocketGateway({
     cors: {
@@ -182,12 +183,15 @@ export class ChatGateway {
         const user = await this.userRepository.findOneBy({
             id: createChannelDto.ownerId,
         })
-        // Check if password is not empty
-        // if yes crypto the password
         createChannelDto.owner = user
         createChannelDto.admin = [user]
         createChannelDto.users = [user]
         createChannelDto.messages = []
+
+        if (createChannelDto?.password) {
+            const PlainTextPassword = createChannelDto.password.trim()
+            createChannelDto.password = await bcrypt.hash(PlainTextPassword, 10)
+        }
         const channelCreated = await this.chatService.createChannel(
             createChannelDto
         )
