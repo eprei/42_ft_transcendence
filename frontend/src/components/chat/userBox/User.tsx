@@ -30,9 +30,9 @@ export interface UserProps {
     unbanUser: (targetUserId: number) => void
     muteUser: (targetUserId: number) => void
     isDM: boolean
-	handleOpenMenu: () => void
-	handleCloseMenu: () => void
-	openMenus: number
+    handleOpenMenu: () => void
+    handleCloseMenu: () => void
+    openMenus: number
 }
 
 const User = ({
@@ -57,9 +57,9 @@ const User = ({
     unbanUser,
     muteUser,
     isDM,
-	handleOpenMenu,
-	handleCloseMenu,
-	openMenus,
+    handleOpenMenu,
+    handleCloseMenu,
+    openMenus,
 }: UserProps) => {
     const userData = useAppSelector((state) => state.user.userData) as UserData
     const myId = userData.user.id
@@ -77,15 +77,15 @@ const User = ({
 
     const handleContextMenu = (event: React.MouseEvent<HTMLImageElement>) => {
         event.preventDefault()
-		if (openMenus === 0) {
-			handleOpenMenu()
-        	setShowContextMenu(true)
-        	setContextMenuPosition({ x: event.clientX, y: event.clientY })
-		}
+        if (openMenus === 0) {
+            handleOpenMenu()
+            setShowContextMenu(true)
+            setContextMenuPosition({ x: event.clientX, y: event.clientY })
+        }
     }
 
     const handleContextMenuClose = () => {
-		handleCloseMenu()
+        handleCloseMenu()
         setShowContextMenu(false)
     }
 
@@ -134,16 +134,19 @@ const User = ({
         muteUser(id)
     }
 
-	const contextMenuRef = useRef<HTMLDivElement>(null);
+    const contextMenuRef = useRef<HTMLDivElement>(null)
 
-	useEffect(() => {
+    useEffect(() => {
         const handleOutsideClick = (event: MouseEvent) => {
             // Comprobar si el clic se realizó fuera del menú contextual abierto
-            if (contextMenuRef.current && !contextMenuRef.current.contains(event.target as Node)) {
+            if (
+                contextMenuRef.current &&
+                !contextMenuRef.current.contains(event.target as Node)
+            ) {
                 handleContextMenuClose()
-				handleCloseMenu()
+                handleCloseMenu()
             }
-        };
+        }
 
         // Agregar el listener de clic global cuando se muestra el menú contextual
         if (showContextMenu) {
@@ -155,7 +158,6 @@ const User = ({
             document.removeEventListener('click', handleOutsideClick)
         }
     }, [showContextMenu])
-	
 
     return (
         <div className={styles.container}>
@@ -172,7 +174,7 @@ const User = ({
 
                 {showContextMenu && (
                     <div
-						ref={contextMenuRef}
+                        ref={contextMenuRef}
                         className={styles.contextMenu}
                         style={{
                             top: contextMenuPosition.y,

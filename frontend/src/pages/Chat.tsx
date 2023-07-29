@@ -42,7 +42,7 @@ const Chat = () => {
     const [bannedUsers, setBannedUsers] = useState<any[]>([])
     const [mutedUsers, setMutedUsers] = useState<number[]>([])
     const [isDM, setIsDM] = useState<boolean>(false)
-	const [reloadUsers, setReloadUsers] = useState(false)
+    const [reloadUsers, setReloadUsers] = useState(false)
 
     useEffect(() => {
         getAllChannels()
@@ -50,9 +50,9 @@ const Chat = () => {
 
     useEffect(() => {
         if (currentChatSelected) {
-			if (!reloadUsers) {
-				getAllMsg()
-			}
+            if (!reloadUsers) {
+                getAllMsg()
+            }
             getChUsers()
             getBlockedUsers()
             getMutedUsers()
@@ -67,22 +67,22 @@ const Chat = () => {
         } else {
             setMesssages([])
             setUsers([])
-			setAdmins([])
+            setAdmins([])
             setBlockedUsers([])
             setBannedUsers([])
             setMutedUsers([])
         }
-		setReloadUsers(false)
+        setReloadUsers(false)
     }, [currentChatSelected, reloadUsers])
 
-	// useEffect(() => {
-	// 	if (reloadUsers) {
-	// 		getChUsers()
-	// 		getBlockedUsers()
+    // useEffect(() => {
+    // 	if (reloadUsers) {
+    // 		getChUsers()
+    // 		getBlockedUsers()
     //         getMutedUsers()
-	// 		setReloadUsers(false)
-	// 	}
-	//   }, [reloadUsers]);
+    // 		setReloadUsers(false)
+    // 	}
+    //   }, [reloadUsers]);
 
     const getAllMsg = () => {
         socket.emit(
@@ -95,7 +95,7 @@ const Chat = () => {
     }
 
     socket.on('incomingMessage', (newMessage: any) => {
-		//filtrar mensages por channel id
+        //filtrar mensages por channel id
         const msgCpy = [...messages]
         msgCpy.push(newMessage)
         setMesssages(msgCpy)
@@ -169,7 +169,9 @@ const Chat = () => {
                 setUsers(response.users)
                 setAdmins(response.admin)
                 setOwner(response.owner)
-                response.banned ? setBannedUsers(response.banned) : setBannedUsers([])
+                response.banned
+                    ? setBannedUsers(response.banned)
+                    : setBannedUsers([])
             }
         )
     }
@@ -196,7 +198,7 @@ const Chat = () => {
             targetUserId,
             (response: { message: string }) => {
                 if (response) {
-					setReloadUsers(true)
+                    setReloadUsers(true)
                 }
             }
         )
@@ -209,7 +211,7 @@ const Chat = () => {
             targetUserId,
             (response: { message: string }) => {
                 if (response) {
-					setReloadUsers(true)
+                    setReloadUsers(true)
                 }
             }
         )
