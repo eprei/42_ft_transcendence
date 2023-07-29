@@ -64,10 +64,19 @@ const User = ({
     const userData = useAppSelector((state) => state.user.userData) as UserData
     const myId = userData.user.id
 
+	const startGameHandler = () => {
+		console.log('start game')
+		// TODO
+		// launchGame(myId, id)		
+	}
+
+
     let inviteToPlay: JSX.Element | null = null
     if (status === 'online') {
-        inviteToPlay = <img src={IconInviteToPlay} alt="Invite to Play Icon" />
+        inviteToPlay = <img src={IconInviteToPlay} alt="Invite to Play Icon" onClick={startGameHandler} />
     }
+
+		
 
     const [showContextMenu, setShowContextMenu] = useState(false)
     const [contextMenuPosition, setContextMenuPosition] = useState({
