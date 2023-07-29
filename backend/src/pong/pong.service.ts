@@ -57,7 +57,7 @@ export class PongService {
             direction === 'down' &&
             this.frame.paddleLeft.position.y +
                 this.frame.paddleLeft.size.height <
-                150
+                FRAME_HEIGHT / 2
         ) {
             this.frame.paddleLeft.position.y += PADDLE_SPEED
         }
@@ -78,7 +78,7 @@ export class PongService {
             BALL_SPEED_X *= -1
         }
         if (
-            this.frame.ball.position.y + BALL_SIZE >= FRAME_HEIGHT ||
+            this.frame.ball.position.y + BALL_SIZE >= FRAME_HEIGHT / 2 ||
             this.frame.ball.position.y <= 0
         ) {
             // Invertir dirección vertical si alcanza los límites verticales de la pantalla
