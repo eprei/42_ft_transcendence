@@ -138,7 +138,6 @@ export class ChatService {
         const blockedUserIds = user.blockedUsers.map(
             (blockedUser) => blockedUser.id
         )
-        // console.log(blockedUserIds)
         return blockedUserIds
     }
 
@@ -335,12 +334,10 @@ export class ChatService {
             }
         })
 
-        // return still muted users
         const mutedUserIds = mutedUsers.map((mutedUser) => mutedUser.user.id)
         return mutedUserIds
     }
 
-    //ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox ChannelBox
     async createChannel(createChannelDto: CreateChannelDto) {
         const user = await this.userRepository.findOneBy({
             id: createChannelDto.ownerId,
@@ -448,8 +445,7 @@ export class ChatService {
             throw new NotFoundException('Channel not found')
         }
 
-        const deleteChannel = await this.channelRepository.remove(channel)
-        return deleteChannel
+        return await this.channelRepository.remove(channel)
     }
 
     async changePassword(channelId: number, PlainTextPassword: string) {

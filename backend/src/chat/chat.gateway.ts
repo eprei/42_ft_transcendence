@@ -57,7 +57,6 @@ export class ChatGateway {
         }
     }
 
-    //UserBox UserBox UserBox UserBox UserBox UserBox UserBox UserBox UserBox UserBox
     @SubscribeMessage('findUsersByChannel')
     async findAllUsersByChannel(@MessageBody() channelId: number) {
         try {
