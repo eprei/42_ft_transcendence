@@ -5,7 +5,7 @@ import {
 } from '@nestjs/websockets'
 import { ChatService } from './chat.service'
 import { Server } from 'socket.io'
-import { CreateMessageDto } from 'src/message/dto/create-message.dto'
+import { CreateMessageDto } from 'src/chat/dto/create-message.dto'
 import { CreateChannelDto } from 'src/channel/dto/create-channel.dto'
 import { UsePipes, ValidationPipe } from '@nestjs/common'
 import { WebSocketServer } from '@nestjs/websockets'
