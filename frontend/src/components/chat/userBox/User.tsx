@@ -6,6 +6,7 @@ import IconBlocked from '../../../assets/icon/block_user.svg'
 import { useState } from 'react'
 import { useAppSelector } from '../../../store/types'
 import { UserData } from '../../../types/UserData'
+import { useEffect, useRef } from 'react'
 
 export interface UserProps {
     id: number
@@ -29,6 +30,9 @@ export interface UserProps {
     unbanUser: (targetUserId: number) => void
     muteUser: (targetUserId: number) => void
     isDM: boolean
+	handleOpenMenu: () => void
+	handleCloseMenu: () => void
+	openMenus: number
 }
 
 const User = ({
@@ -53,6 +57,9 @@ const User = ({
     unbanUser,
     muteUser,
     isDM,
+	handleOpenMenu,
+	handleCloseMenu,
+	openMenus,
 }: UserProps) => {
     const userData = useAppSelector((state) => state.user.userData) as UserData
     const myId = userData.user.id
@@ -70,11 +77,15 @@ const User = ({
 
     const handleContextMenu = (event: React.MouseEvent<HTMLImageElement>) => {
         event.preventDefault()
-        setShowContextMenu(true)
-        setContextMenuPosition({ x: event.clientX, y: event.clientY })
+		if (openMenus === 0) {
+			handleOpenMenu()
+        	setShowContextMenu(true)
+        	setContextMenuPosition({ x: event.clientX, y: event.clientY })
+		}
     }
 
     const handleContextMenuClose = () => {
+		handleCloseMenu()
         setShowContextMenu(false)
     }
 
@@ -123,6 +134,29 @@ const User = ({
         muteUser(id)
     }
 
+	const contextMenuRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+        const handleOutsideClick = (event: MouseEvent) => {
+            // Comprobar si el clic se realizó fuera del menú contextual abierto
+            if (contextMenuRef.current && !contextMenuRef.current.contains(event.target as Node)) {
+                handleContextMenuClose()
+				handleCloseMenu()
+            }
+        };
+
+        // Agregar el listener de clic global cuando se muestra el menú contextual
+        if (showContextMenu) {
+            document.addEventListener('click', handleOutsideClick)
+        }
+
+        // Eliminar el listener cuando el componente se desmonta o el menú se cierra
+        return () => {
+            document.removeEventListener('click', handleOutsideClick)
+        }
+    }, [showContextMenu])
+	
+
     return (
         <div className={styles.container}>
             <div className={styles.left}>
@@ -138,6 +172,7 @@ const User = ({
 
                 {showContextMenu && (
                     <div
+						ref={contextMenuRef}
                         className={styles.contextMenu}
                         style={{
                             top: contextMenuPosition.y,

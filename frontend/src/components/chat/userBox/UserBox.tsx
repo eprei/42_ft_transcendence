@@ -3,6 +3,7 @@ import User from './User'
 import { useAppSelector } from '../../../store/types'
 import { UserData } from '../../../types/UserData'
 import { RootState } from '../../../store'
+import { useState } from 'react'
 
 interface UserBoxProps {
     users: any[]
@@ -50,6 +51,16 @@ const UserBox = (props: UserBoxProps) => {
     //     }
     // }
 
+	const [openMenus, setOpenMenus] = useState(0)
+
+	const handleOpenMenu = () => {
+		setOpenMenus(1)
+	}
+
+	const handleCloseMenu = () => {
+		setOpenMenus(0)
+	}
+
     return (
         <div className={`${styles.usersBox}`}>
             {/* <h2 onClick={userAlert}> online </h2> */}
@@ -87,6 +98,9 @@ const UserBox = (props: UserBoxProps) => {
                         unbanUser={props.unbanUser}
                         muteUser={props.muteUser}
                         isDM={props.isDM}
+						handleOpenMenu={handleOpenMenu}
+						handleCloseMenu={handleCloseMenu}
+						openMenus={openMenus}
                     />
                 ) : null
             )}
@@ -125,6 +139,9 @@ const UserBox = (props: UserBoxProps) => {
                         unbanUser={props.unbanUser}
                         muteUser={props.muteUser}
                         isDM={props.isDM}
+						handleOpenMenu={handleOpenMenu}
+						handleCloseMenu={handleCloseMenu}
+						openMenus={openMenus}
                     />
                 ) : null
             )}
@@ -160,6 +177,9 @@ const UserBox = (props: UserBoxProps) => {
                     unbanUser={props.unbanUser}
                     muteUser={props.muteUser}
                     isDM={props.isDM}
+					handleOpenMenu={handleOpenMenu}
+					handleCloseMenu={handleCloseMenu}
+					openMenus={openMenus}
                 />
             ))}
         </div>
