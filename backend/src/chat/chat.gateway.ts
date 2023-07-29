@@ -4,12 +4,11 @@ import {
     MessageBody,
 } from '@nestjs/websockets'
 import { ChatService } from './chat.service'
-import { Server, Socket } from 'socket.io'
+import { Server } from 'socket.io'
 import { CreateMessageDto } from 'src/message/dto/create-message.dto'
 import { CreateChannelDto } from 'src/channel/dto/create-channel.dto'
 import { UsePipes, ValidationPipe, Request } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Channel } from 'src/typeorm/channel.entity'
 import { Repository } from 'typeorm'
 import { WebSocketServer } from '@nestjs/websockets'
 import { User } from 'src/typeorm/user.entity'
@@ -25,8 +24,6 @@ import { User } from 'src/typeorm/user.entity'
 export class ChatGateway {
     constructor(
         private readonly chatService: ChatService,
-        @InjectRepository(Channel)
-        private readonly channelRepository: Repository<Channel>,
         @InjectRepository(User)
         private readonly userRepository: Repository<User>
     ) {}
