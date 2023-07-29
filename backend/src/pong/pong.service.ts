@@ -50,9 +50,14 @@ export class PongService {
     updateFrame(direction?: string): Frame {
         // console.log('updateFrame')
         // Actualizar la posición de la paleta según la dirección proporcionada
-        if (direction === 'up') {
+        if (direction === 'up' && this.frame.paddleLeft.position.y > 0) {
             this.frame.paddleLeft.position.y -= PADDLE_SPEED
-        } else if (direction === 'down') {
+        } else if (
+            direction === 'down' &&
+            this.frame.paddleLeft.position.y +
+                this.frame.paddleLeft.size.height <
+                150
+        ) {
             this.frame.paddleLeft.position.y += PADDLE_SPEED
         }
 
@@ -98,6 +103,15 @@ export class PongService {
             PADDLE_SPEED *= -1
         }
         this.frame.paddleLeft.position.y += PADDLE_SPEED
+
+        // Mover la paleta derecha de manera similar a la paleta izquierda
+        if (
+            this.frame.paddleRight.position.y + PADDLE_HEIGHT >= 200 ||
+            this.frame.paddleRight.position.y <= 0
+        ) {
+            PADDLE_SPEED *= -1
+        }
+        this.frame.paddleRight.position.y += PADDLE_SPEED
     }
 
     getFrame(): Frame {

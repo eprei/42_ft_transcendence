@@ -72,8 +72,6 @@ const BoardGame = () => {
         drawRectangle(ctx, frame.paddleLeft)
         drawRectangle(ctx, frame.paddleRight)
         drawRectangle(ctx, frame.ball)
-
-        console.log('actual frame render: ', JSON.stringify(frame))
     }, [frame])
 
     const handleKeyDown = (event: KeyboardEvent) => {

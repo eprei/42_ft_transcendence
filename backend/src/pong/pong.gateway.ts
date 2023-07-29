@@ -53,6 +53,20 @@ export class PongGateway
         return this.pongService.getFrame() // Function tu get the updated frame
     }
 
+    @SubscribeMessage('joinRoom')
+    handleJoinRoom(client: Socket, roomId: string) {
+        client.join(roomId)
+        client.emit('joinedRoom', roomId)
+        this.loger.log(`Client socket ${client} joined room: ${roomId}`)
+    }
+
+    @SubscribeMessage('leaveRoom')
+    handleLeaveRoom(client: Socket, roomId: string) {
+        client.leave(roomId)
+        client.emit('leftRoom', roomId)
+        this.loger.log(`Client socket ${client} left room: ${roomId}`)
+    }
+
     // Function to send the frame to all conected clients
     sendFrameToClients(frame: Frame) {
         // console.log('sendFrameToClients')
@@ -63,15 +77,6 @@ export class PongGateway
     @SubscribeMessage('movePaddle')
     handleMovePaddle(client: Socket, data: { direction: string }) {
         const { direction } = data
-        // Obtener el fotograma actual
-        const frame = this.pongService.getFrame()
-        // Mover las paletas según la dirección enviada desde el frontend
-        // console.log(direction)
-        if (direction === 'up') {
-            frame.paddleLeft.position.y -= 5 // Mover la paleta izquierda hacia arriba
-        } else if (direction === 'down') {
-            frame.paddleLeft.position.y += 5 // Mover la paleta izquierda hacia abajo
-        }
         // Actualizar el fotograma en el servicio
         const updatedFrame = this.pongService.updateFrame(direction)
         // Emitir el fotograma actualizado a todos los clientes conectados
