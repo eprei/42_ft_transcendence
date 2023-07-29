@@ -124,17 +124,6 @@ export class UserController {
     async getOtherUsers(@Request() req: any) {
         return await this.userService.getAllUsersWithNoFriendship(req)
     }
-    async getUser(@Request() req: any) {
-        const user = await this.userService.findOne(req.user.id)
-        if (!user) {
-            throw new NotFoundException('User not found')
-        }
-        const { TFASecret, FT_id, ...rest } = user
-        const userPosition = await this.userService.getUserRankingPosition(
-            req.user.id
-        )
-        return { ...rest, userPosition }
-    }
 
     @Get('nickname/:nickname')
     async getLambda(@Param('nickname') nickname: string) {
