@@ -44,6 +44,27 @@ export class PongService {
             },
         },
         score: { playerOne: 0, playerTwo: 0 },
+        gameOver: false,
+    }
+
+    gameActive: boolean = true
+
+    startGame(): void {
+        this.gameActive = true
+        this.frame.score.playerOne = 0
+        this.frame.score.playerTwo = 0
+        this.frame.ball.position.x = FRAME_WIDTH / 2
+        this.frame.ball.position.y = FRAME_HEIGHT / 4
+        this.frame.gameOver = false
+    }
+
+    resetGame(): void {
+        this.gameActive = false
+        this.frame.score.playerOne = 0
+        this.frame.score.playerTwo = 0
+        this.frame.ball.position.x = FRAME_WIDTH / 2
+        this.frame.ball.position.y = FRAME_HEIGHT / 4
+        this.frame.gameOver = false
     }
 
     simpleFrame(): Frame {
@@ -66,6 +87,9 @@ export class PongService {
     }
 
     updateFrameLogic() {
+        if (!this.gameActive) {
+            return
+        }
         this.frame.ball.position.x += BALL_SPEED_X
         this.frame.ball.position.y += BALL_SPEED_Y
 
@@ -100,10 +124,27 @@ export class PongService {
             this.frame.ball.position.x = FRAME_WIDTH / 2
             this.frame.ball.position.y = FRAME_HEIGHT / 4
             this.frame.score.playerOne += 1
+            if (this.frame.score.playerOne >= 10) {
+                this.frame.gameOver = true
+                this.frame.score.playerOne = 0
+                this.frame.score.playerTwo = 0
+            }
         } else if (this.frame.ball.position.x <= 0) {
             this.frame.ball.position.x = FRAME_WIDTH / 2
             this.frame.ball.position.y = FRAME_HEIGHT / 4
             this.frame.score.playerTwo += 1
+            if (this.frame.score.playerTwo >= 10) {
+                this.frame.gameOver = true
+                this.frame.score.playerOne = 0
+                this.frame.score.playerTwo = 0
+            }
+        }
+
+        if (
+            this.frame.score.playerOne >= 10 ||
+            this.frame.score.playerTwo >= 10
+        ) {
+            this.gameActive = false
         }
     }
 

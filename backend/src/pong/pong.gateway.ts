@@ -35,6 +35,8 @@ export class PongGateway
     handleConnection(client: Socket, ...args: any[]) {
         this.loger.log(`Client socket connected: ${client.id}`)
 
+        this.pongService.startGame()
+
         this.frameIntervals[client.id] = setInterval(() => {
             const frame = this.pongService.getFrame()
             this.sendFrameToClients(frame)
@@ -79,5 +81,19 @@ export class PongGateway
         this.pongService.updateFrameLogic()
         const frame = this.pongService.getFrame()
         return frame
+    }
+
+    @SubscribeMessage('startGame')
+    handleStartGame(client: Socket, data: any) {
+        this.pongService.startGame()
+        const updatedFrame = this.pongService.getFrame()
+        this.sendFrameToClients(updatedFrame)
+    }
+
+    @SubscribeMessage('resetGame')
+    handleResetGame(client: Socket, data: any) {
+        this.pongService.resetGame()
+        const updatedFrame = this.pongService.getFrame()
+        this.sendFrameToClients(updatedFrame)
     }
 }

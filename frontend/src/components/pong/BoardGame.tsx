@@ -21,6 +21,7 @@ interface Frame {
     paddleRight: Rectangle
     ball: Rectangle
     score: { playerOne: number; playerTwo: number }
+    gameOver: boolean
 }
 
 function drawRectangle(
@@ -53,6 +54,7 @@ const BoardGame = () => {
             position: { x: 50, y: 50 },
         },
         score: { playerOne: 0, playerTwo: 0 },
+        gameOver: false,
     })
 
     useEffect(() => {
@@ -98,6 +100,15 @@ const BoardGame = () => {
                 updatedFrame.score.playerOne.toString()
             document.getElementById('scorePlayerTwo').innerText =
                 updatedFrame.score.playerTwo.toString()
+
+            // if (updatedFrame.gameOver) {
+            //     let winner =
+            //         updatedFrame.score.playerOne > updatedFrame.score.playerTwo
+            //             ? 'Player One'
+            //             : 'Player Two'
+            //     alert(`Game Over! ${winner} won!`)
+            //     socket.emit('resetGame')
+            // }
         }
 
         // Event listener to captures up and down keys
@@ -123,7 +134,7 @@ const BoardGame = () => {
                     0
                 </div>
                 <div id="scorePlayerTwo" className={styles.score}>
-                    4
+                    0
                 </div>
             </div>
             <canvas id="boardGame" className={styles.boardGame}></canvas>
