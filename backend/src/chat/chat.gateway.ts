@@ -267,7 +267,6 @@ export class ChatGateway {
                 data[0],
                 data[1]
             )
-            // return { message: 'User removed from channel successfully' }
             return channel
         } catch (error) {
             throw new Error('Failed to remove user from channel')

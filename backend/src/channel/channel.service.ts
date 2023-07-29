@@ -77,7 +77,6 @@ export class ChannelService {
         channelId: number,
         userId: number
     ): Promise<void> {
-        // const channel = await this.channelRepository.findOne(channelId), { relations: ['users'] });
         const channel = await this.channelRepository.findOne({
             relations: {
                 users: true,
