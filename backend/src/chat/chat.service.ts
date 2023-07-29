@@ -382,7 +382,6 @@ export class ChatService {
             if (channel.users.length === 1) {
                 channel.users.push(user)
             } else {
-                //if (channel.users.length === 2 && channel.users[0].id !== user.id && channel.users[1].id !== user.id){
                 console.log('channel is full')
                 throw new UnauthorizedException()
             }
@@ -411,18 +410,28 @@ export class ChatService {
         })
 
         let channelName = user.nickname + ' & ' + target.nickname
-        let channel = await this.channelRepository.findOneBy({
-            name: channelName,
+        let channel = await this.channelRepository.findOne({
+            where: { name: channelName },
+            relations: ['users'],
         })
         if (!channel) {
             channelName = target.nickname + ' & ' + user.nickname
-            channel = await this.channelRepository.findOneBy({
-                name: channelName,
+            let channel = await this.channelRepository.findOne({
+                where: { name: channelName },
+                relations: ['users'],
             })
         }
         if (channel) {
-            const joinChannel = await this.joinChannel(channel.id, userId, '')
-            return joinChannel
+            if (channel.users.some((u) => u.id === user.id)) {
+                return channel
+            } else {
+                const joinChannel = await this.joinChannel(
+                    channel.id,
+                    userId,
+                    ''
+                )
+                return joinChannel
+            }
         } else {
             const createChannelDto = new CreateChannelDto()
             createChannelDto.owner = user
