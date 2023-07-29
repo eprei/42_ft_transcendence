@@ -7,11 +7,8 @@ import { ChatService } from './chat.service'
 import { Server } from 'socket.io'
 import { CreateMessageDto } from 'src/message/dto/create-message.dto'
 import { CreateChannelDto } from 'src/channel/dto/create-channel.dto'
-import { UsePipes, ValidationPipe, Request } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
+import { UsePipes, ValidationPipe } from '@nestjs/common'
 import { WebSocketServer } from '@nestjs/websockets'
-import { User } from 'src/typeorm/user.entity'
 
 type PasswordChangeData = [channelId: number, password: string]
 type ChannelUserData = [channelId: number, userId: number]
