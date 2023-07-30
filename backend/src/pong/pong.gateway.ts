@@ -11,11 +11,7 @@ import {
 import { Logger } from '@nestjs/common'
 
 const FPS: number = 25
-@WebSocketGateway({
-    cors: {
-        origin: '*',
-    },
-})
+@WebSocketGateway({ namespace: 'game', cors: { origin: '*' } })
 export class PongGateway
     implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {

@@ -86,7 +86,7 @@ const BoardGame = ({ room, player_one, player_two, theme }: BoardGameProps) => {
     }, [frame])
 
     useEffect(() => {
-        const socket = io('http://localhost:8080')
+		const socket = io('http://localhost:8080/game')
 
         socket.on('connect', () => {
             console.log('Connected to server')
@@ -116,6 +116,7 @@ const BoardGame = ({ room, player_one, player_two, theme }: BoardGameProps) => {
             document.getElementById('scorePlayerTwo').innerText =
                 updatedFrame.score.playerTwo.toString()
 
+			// TODO Handle game over
             // if (updatedFrame.gameOver) {
             //     let winner =
             //         updatedFrame.score.playerOne > updatedFrame.score.playerTwo
@@ -144,12 +145,14 @@ const BoardGame = ({ room, player_one, player_two, theme }: BoardGameProps) => {
         }
     }, [])
 
+	// TODO Handle theme
     // const themeImages: { [key: string]: string } = {
     // 	'theme 1': theme1,
     // 	'theme 2': theme2,
     // 	'theme 3': theme3,
     // }
 
+	// TODO add player names and photos to the board
     return (
         <div>
             <div className={styles.scoreContainer}>
