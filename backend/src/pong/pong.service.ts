@@ -2,12 +2,12 @@ import { Injectable } from '@nestjs/common'
 import { Frame } from './entities/pong.entity'
 
 const FRAME_WIDTH: number = 300
-const FRAME_HEIGHT: number = 300
+const FRAME_HEIGHT: number = 150
 const PADDLE_WIDTH: number = 2
 const PADDLE_HEIGHT: number = 30
 let BALL_SIZE: number = 2
-let BALL_SPEED_X: number = 3
-let BALL_SPEED_Y: number = 3
+let BALL_SPEED_X: number = 1
+let BALL_SPEED_Y: number = 1
 let PADDLE_SPEED: number = 9
 
 @Injectable()
@@ -79,7 +79,7 @@ export class PongService {
             direction === 'down' &&
             this.frame.paddleLeft.position.y +
                 this.frame.paddleLeft.size.height <
-                FRAME_HEIGHT / 2
+                FRAME_HEIGHT
         ) {
             this.frame.paddleLeft.position.y += PADDLE_SPEED
         }
@@ -95,7 +95,7 @@ export class PongService {
 
         // Reverse vertical direction if it reaches the vertical limits of the screen
         if (
-            this.frame.ball.position.y + BALL_SIZE >= FRAME_HEIGHT / 2 ||
+            this.frame.ball.position.y + BALL_SIZE >= FRAME_HEIGHT ||
             this.frame.ball.position.y <= 0
         ) {
             BALL_SPEED_Y *= -1
