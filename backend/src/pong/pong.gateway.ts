@@ -9,6 +9,8 @@ import {
     OnGatewayInit,
 } from '@nestjs/websockets'
 import { Logger } from '@nestjs/common'
+
+const FPS: number = 50
 @WebSocketGateway({
     cors: {
         origin: '*',
@@ -45,7 +47,7 @@ export class PongGateway
         this.frameIntervals[client.id] = setInterval(() => {
             const frame = this.pongService.getFrame()
             this.sendFrameToClients(frame)
-        }, 1000 / 50) // 50 fps
+        }, 1000 / FPS)
     }
 
     handleDisconnect(client: Socket) {
@@ -53,6 +55,7 @@ export class PongGateway
 
         clearInterval(this.frameIntervals[client.id])
         delete this.frameIntervals[client.id]
+        // TODO: Handle cleanup when a client disconnects
     }
 
     @SubscribeMessage('joinRoom')
