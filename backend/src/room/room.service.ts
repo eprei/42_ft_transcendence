@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { CreateRoomDto } from './dto/create-room.dto'
 import { UserService } from 'src/user/user.service'
+import { v4 as uuidv4 } from 'uuid'
 
 @Injectable()
 export class RoomService {
@@ -40,14 +41,13 @@ export class RoomService {
             throw new Error('You are already playing')
         }
 
-        const myId = userMe.id
-
-        this.userService.changeStatusPlaying(myId)
+        this.userService.changeStatusPlaying(userMe.id)
 
         const room: Room = {
             player_one: userMe.id,
             player_two: 0,
             theme: createRoomDto.theme,
+            room_id: uuidv4(),
         }
 
         this.rooms.push(room)
