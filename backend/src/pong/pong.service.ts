@@ -3,12 +3,12 @@ import { Frame } from './entities/pong.entity'
 
 const FRAME_WIDTH: number = 300
 const FRAME_HEIGHT: number = 300
-const PADDLE_WIDTH: number = 10
-const PADDLE_HEIGHT: number = 50
-let BALL_SIZE: number = 10
-let BALL_SPEED_X: number = 5
-let BALL_SPEED_Y: number = 5
-let PADDLE_SPEED: number = 8
+const PADDLE_WIDTH: number = 2
+const PADDLE_HEIGHT: number = 30
+let BALL_SIZE: number = 2
+let BALL_SPEED_X: number = 3
+let BALL_SPEED_Y: number = 3
+let PADDLE_SPEED: number = 9
 
 @Injectable()
 export class PongService {
@@ -16,7 +16,7 @@ export class PongService {
         paddleLeft: {
             position: {
                 x: 10,
-                y: 20,
+                y: 60,
             },
             size: {
                 width: PADDLE_WIDTH,
@@ -26,7 +26,7 @@ export class PongService {
         paddleRight: {
             position: {
                 x: 280,
-                y: 20,
+                y: 60,
             },
             size: {
                 width: PADDLE_WIDTH,
