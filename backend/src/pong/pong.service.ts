@@ -101,12 +101,11 @@ export class PongService {
             BALL_SPEED_Y *= -1
         }
 
-        // Change the direction of the ball when it hits a paddle
         if (
             this.frame.ball.position.x <=
                 this.frame.paddleLeft.position.x + PADDLE_WIDTH &&
             this.frame.ball.position.y + BALL_SIZE >=
-                this.frame.paddleLeft.position.y &&
+                this.frame.paddleLeft.position.y + BALL_SIZE &&
             this.frame.ball.position.y <=
                 this.frame.paddleLeft.position.y + PADDLE_HEIGHT - BALL_SIZE
         ) {
@@ -118,14 +117,14 @@ export class PongService {
             this.frame.ball.position.x + BALL_SIZE >=
                 this.frame.paddleRight.position.x &&
             this.frame.ball.position.y + BALL_SIZE >=
-                this.frame.paddleRight.position.y &&
+                this.frame.paddleRight.position.y + BALL_SIZE &&
             this.frame.ball.position.y <=
                 this.frame.paddleRight.position.y + PADDLE_HEIGHT - BALL_SIZE
         ) {
             BALL_SPEED_X *= -1
             // Adjust the ball's position to be outside of the paddle
             this.frame.ball.position.x =
-                this.frame.paddleRight.position.x - BALL_SIZE
+                this.frame.paddleRight.position.x - PADDLE_WIDTH
         }
 
         // Reset the position of the ball when it leaves the playing field
