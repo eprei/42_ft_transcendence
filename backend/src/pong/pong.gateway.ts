@@ -33,6 +33,11 @@ export class PongGateway
     }
 
     handleConnection(client: Socket, ...args: any[]) {
+        const requestOrigin = client.handshake.headers.origin
+        if (requestOrigin !== 'http://localhost:4040') {
+            client.disconnect()
+            return
+        }
         this.loger.log(`Client socket connected: ${client.id}`)
 
         this.pongService.startGame()
