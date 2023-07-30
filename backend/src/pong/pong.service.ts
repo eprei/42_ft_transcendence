@@ -122,7 +122,7 @@ export class PongService {
         // Reset the position of the ball when it leaves the playing field
         if (this.frame.ball.position.x + BALL_SIZE >= FRAME_WIDTH) {
             this.frame.ball.position.x = FRAME_WIDTH / 2
-            this.frame.ball.position.y = FRAME_HEIGHT / 4
+            this.frame.ball.position.y = FRAME_HEIGHT / 2
             this.frame.score.playerOne += 1
             if (this.frame.score.playerOne >= 10) {
                 this.frame.gameOver = true
@@ -131,7 +131,7 @@ export class PongService {
             }
         } else if (this.frame.ball.position.x <= 0) {
             this.frame.ball.position.x = FRAME_WIDTH / 2
-            this.frame.ball.position.y = FRAME_HEIGHT / 4
+            this.frame.ball.position.y = FRAME_HEIGHT / 2
             this.frame.score.playerTwo += 1
             if (this.frame.score.playerTwo >= 10) {
                 this.frame.gameOver = true
