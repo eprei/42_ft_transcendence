@@ -35,7 +35,6 @@ const OtherUser = ({ id, nickname, avatarUrl }: OtherUserProps) => {
         } catch (error) {
             console.error(error)
         }
-        console.log('Friendship request successfully sent')
     }
 
     return (

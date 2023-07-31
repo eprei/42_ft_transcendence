@@ -58,20 +58,24 @@ const BoardGame = ({
     imPlayerOne,
 }: BoardGameProps) => {
     const userData = useAppSelector((state) => state.user.userData) as UserData
+    const [waitingForPlayer, setWaitingForPlayer] = useState<boolean>(false)
     let playerNumber: string =
         imPlayerOne === true ? 'player_one' : 'player_two'
+    const BALL_SIZE: number = 2
+    const PADDLE_WIDTH: number = 2
+    const PADDLE_HEIGHT: number = 30
 
     const [frame, setFrame] = useState<Frame>({
         paddleLeft: {
-            size: { width: 20, height: 100 },
-            position: { x: 10, y: 20 },
+            size: { width: PADDLE_WIDTH, height: PADDLE_HEIGHT },
+            position: { x: 10, y: 60 },
         },
         paddleRight: {
-            size: { width: 10, height: 50 },
-            position: { x: 100, y: 70 },
+            size: { width: PADDLE_WIDTH, height: PADDLE_HEIGHT },
+            position: { x: 280, y: 60 },
         },
         ball: {
-            size: { width: 10, height: 20 },
+            size: { width: BALL_SIZE, height: BALL_SIZE },
             position: { x: 50, y: 50 },
         },
         score: { playerOne: 0, playerTwo: 0 },
@@ -101,10 +105,17 @@ const BoardGame = ({
     useEffect(() => {
         const socket = io('http://localhost:8080/game')
 
-        socket.on('connect', () => {
-            console.log('Connected to server')
-            socket.emit('createRoom', room)
-        })
+        if (playerNumber === 'player_one') {
+            socket.on('connect', () => {
+                console.log('Connected to server')
+                socket.emit('createRoom', room)
+            })
+        } else {
+            socket.on('connect', () => {
+                console.log('Connected to server')
+                socket.emit('joinRoom', room)
+            })
+        }
 
         socket.on('connect_error', (error) => {
             console.log('Connection Error', error)
@@ -121,7 +132,7 @@ const BoardGame = ({
         }
 
         function onReceiveFrames(updatedFrame: Frame) {
-            // console.log('updated frame: ', JSON.stringify(updatedFrame))
+            setWaitingForPlayer(false)
             setFrame(updatedFrame)
             document.getElementById('scorePlayerOne').innerText =
                 updatedFrame.score.playerOne.toString()
@@ -144,6 +155,10 @@ const BoardGame = ({
 
         // Event registration to receive updated frames from the server
         socket.on('sendFrames', onReceiveFrames)
+
+        socket.on('waitingForSecondPlayer', () => {
+            setWaitingForPlayer(true)
+        })
 
         return () => {
             // Remove the event listener when disassembling the component to avoid memory leaks
@@ -174,6 +189,13 @@ const BoardGame = ({
                 <div id="scorePlayerTwo" className={styles.score}>
                     0
                 </div>
+            </div>
+            <div className={styles.waitingForPlayer}>
+                {playerNumber === 'player_one' ? (
+                    waitingForPlayer ? (
+                        <div>Waiting for the second player...</div>
+                    ) : null
+                ) : null}
             </div>
             <canvas id="boardGame" className={styles.boardGame}></canvas>
         </div>

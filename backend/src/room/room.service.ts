@@ -102,11 +102,9 @@ export class RoomService {
                 // TODO  Call the game launching service
                 return this.rooms[index]
             }
-            console.log('searching room for', userMe.nickname)
             await this.sleep(1000)
             i++
         }
-        console.log('no room found for', userMe.nickname)
         this.userService.changeStatusOnLine(myId)
     }
 }

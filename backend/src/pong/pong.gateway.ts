@@ -18,6 +18,7 @@ export class PongGateway
     private loger: Logger = new Logger('PongGateway')
     private frameIntervals: { [roomId: string]: NodeJS.Timeout } = {}
     private pongServices: { [roomId: string]: PongService } = {}
+    private waitingForSecondPlayer: { [roomId: string]: boolean } = {}
 
     @WebSocketServer()
     server: Server
@@ -43,23 +44,23 @@ export class PongGateway
     @SubscribeMessage('createRoom')
     handleCreateRoom(client: Socket, roomId: string) {
         client.join(roomId)
-        console.log('joinRoom', roomId)
         this.pongServices[roomId] = new PongService()
-        this.pongServices[roomId].startGame()
-        this.frameIntervals[roomId] = setInterval(() => {
-            const frame = this.pongServices[roomId].getFrame()
-            this.sendFrameToRoom(roomId, frame)
-        }, 1000 / FPS)
-        client.emit('roomCreated', roomId)
+        this.waitingForSecondPlayer[roomId] = true
         this.loger.log(`Room created: ${roomId}`)
+        client.emit('waitingForSecondPlayer', roomId)
     }
 
     @SubscribeMessage('joinRoom')
     handleJoinRoom(client: Socket, roomId: string) {
         if (this.pongServices[roomId]) {
             client.join(roomId)
-            client.emit('joinedRoom', roomId)
             this.loger.log(`Client socket ${client.id} joined room: ${roomId}`)
+            if (this.waitingForSecondPlayer[roomId]) {
+                this.waitingForSecondPlayer[roomId] = false
+                setTimeout(() => {
+                    this.startGame(roomId)
+                }, 3000)
+            }
         } else {
             client.emit('error', 'Room does not exist')
         }
@@ -73,6 +74,14 @@ export class PongGateway
         // TODO: Handle cleanup when a client leaves a room
         // TODO change playe's status at the end of the game
         // this.userService.changeStatusOnLine(playerId)
+    }
+
+    private startGame(roomId: string) {
+        this.pongServices[roomId].startGame()
+        this.frameIntervals[roomId] = setInterval(() => {
+            const frame = this.pongServices[roomId].getFrame()
+            this.sendFrameToRoom(roomId, frame)
+        }, 1000 / FPS)
     }
 
     sendFrameToRoom(roomId: string, frame: Frame) {

@@ -88,8 +88,6 @@ const MatchSystemBtn = () => {
                     throw new Error('Error creating room')
                 }
             } else {
-                console.log('Room created successfully')
-
                 const room = await response.json()
 
                 navigate('/game', {
@@ -107,8 +105,6 @@ const MatchSystemBtn = () => {
         } finally {
             setFetching(false)
         }
-
-        console.log('Random room successfully joined')
     }
 
     return (

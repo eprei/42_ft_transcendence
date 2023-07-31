@@ -1,62 +1,382 @@
+diff --git a/backend/src/pong/pong.gateway.ts b/backend/src/pong/pong.gateway.ts
+index 5bfaddb5..25f1f27f 100644
+--- a/backend/src/pong/pong.gateway.ts
++++ b/backend/src/pong/pong.gateway.ts
+@@ -18,6 +18,7 @@ export class PongGateway
+     private loger: Logger = new Logger('PongGateway')
+     private frameIntervals: { [roomId: string]: NodeJS.Timeout } = {}
+     private pongServices: { [roomId: string]: PongService } = {}
++    private waitingForSecondPlayer: { [roomId: string]: boolean } = {}
+ 
+     @WebSocketServer()
+     server: Server
+@@ -43,23 +44,23 @@ export class PongGateway
+     @SubscribeMessage('createRoom')
+     handleCreateRoom(client: Socket, roomId: string) {
+         client.join(roomId)
+-        console.log('joinRoom', roomId)
+         this.pongServices[roomId] = new PongService()
+-        this.pongServices[roomId].startGame()
+-        this.frameIntervals[roomId] = setInterval(() => {
+-            const frame = this.pongServices[roomId].getFrame()
+-            this.sendFrameToRoom(roomId, frame)
+-        }, 1000 / FPS)
+-        client.emit('roomCreated', roomId)
++        this.waitingForSecondPlayer[roomId] = true
+         this.loger.log(`Room created: ${roomId}`)
++        client.emit('waitingForSecondPlayer', roomId)
+     }
+ 
+     @SubscribeMessage('joinRoom')
+     handleJoinRoom(client: Socket, roomId: string) {
+         if (this.pongServices[roomId]) {
+             client.join(roomId)
+-            client.emit('joinedRoom', roomId)
+             this.loger.log(`Client socket ${client.id} joined room: ${roomId}`)
++            if (this.waitingForSecondPlayer[roomId]) {
++                this.waitingForSecondPlayer[roomId] = false
++                setTimeout(() => {
++                    this.startGame(roomId)
++                }, 3000)
++            }
+         } else {
+             client.emit('error', 'Room does not exist')
+         }
+@@ -75,6 +76,14 @@ export class PongGateway
+         // this.userService.changeStatusOnLine(playerId)
+     }
+ 
++    private startGame(roomId: string) {
++        this.pongServices[roomId].startGame()
++        this.frameIntervals[roomId] = setInterval(() => {
++            const frame = this.pongServices[roomId].getFrame()
++            this.sendFrameToRoom(roomId, frame)
++        }, 1000 / FPS)
++    }
++
+     sendFrameToRoom(roomId: string, frame: Frame) {
+         this.server.to(roomId).emit('sendFrames', frame)
+     }
+diff --git a/backend/src/pong/pong.service.ts b/backend/src/pong/pong.service.ts
+index b3204458..2568e05f 100644
+--- a/backend/src/pong/pong.service.ts
++++ b/backend/src/pong/pong.service.ts
+@@ -178,6 +178,7 @@ export class PongService {
+         }
+         // TODO change playe's status at the end of the game
+         // this.userService.changeStatusOnLine(playerId)
++		// TODO add info to the match table
+     }
+ 
+     getFrame(): Frame {
+diff --git a/backend/src/room/room.service.ts b/backend/src/room/room.service.ts
+index 84dd19ec..c3550b10 100644
+--- a/backend/src/room/room.service.ts
++++ b/backend/src/room/room.service.ts
+@@ -102,11 +102,9 @@ export class RoomService {
+                 // TODO  Call the game launching service
+                 return this.rooms[index]
+             }
+-            console.log('searching room for', userMe.nickname)
+             await this.sleep(1000)
+             i++
+         }
+-        console.log('no room found for', userMe.nickname)
+         this.userService.changeStatusOnLine(myId)
+     }
+ }
+diff --git a/frontend/src/components/TFAVerify/TwoFactorVerificationBox.tsx b/frontend/src/components/TFAVerify/TwoFactorVerificationBox.tsx
+index bb2e8220..c07cd510 100644
+--- a/frontend/src/components/TFAVerify/TwoFactorVerificationBox.tsx
++++ b/frontend/src/components/TFAVerify/TwoFactorVerificationBox.tsx
+@@ -47,14 +47,12 @@ const TwoFactorVerificationBox = ({
+             })
+ 
+             const data = await response.json()
+-            console.log(data)
+ 
+             if (
+                 data.error === 'Unauthorized' &&
+                 data.message === 'Wrong authentication code'
+             ) {
+                 setErrorMessage('Wrong code')
+-                console.log('Wrong code')
+             } else if (
+                 data.message === 'Forbidden resource' &&
+                 data.error === 'Forbidden'
+@@ -64,11 +62,8 @@ const TwoFactorVerificationBox = ({
+                 )
+             } else {
+                 setErrorMessage('')
+-                console.log('Valid code')
+                 window.location.href = 'http://localhost:4040/profile'
+             }
+-
+-            console.log(data)
+         } catch (error) {
+             console.error(error)
+         }
 diff --git a/frontend/src/components/play/MatchSystemBtn.tsx b/frontend/src/components/play/MatchSystemBtn.tsx
-index 1571ba3e..a46ca901 100644
+index a46ca901..5861da04 100644
 --- a/frontend/src/components/play/MatchSystemBtn.tsx
 +++ b/frontend/src/components/play/MatchSystemBtn.tsx
-@@ -98,6 +98,7 @@ const MatchSystemBtn = () => {
-                         player_two: room.player_two,
-                         theme: room.theme,
-                         roomId: room.room_id,
-+                        imPlayerOne: false,
-                     },
-                 })
-             }
-diff --git a/frontend/src/components/pong/BoardGame.tsx b/frontend/src/components/pong/BoardGame.tsx
-index b9e8c470..6d122648 100644
---- a/frontend/src/components/pong/BoardGame.tsx
-+++ b/frontend/src/components/pong/BoardGame.tsx
-@@ -47,12 +47,19 @@ export interface BoardGameProps {
-     player_one: number
-     player_two: number
-     theme: string
-+    imPlayerOne: boolean
+@@ -88,8 +88,6 @@ const MatchSystemBtn = () => {
+                     throw new Error('Error creating room')
+                 }
+             } else {
+-                console.log('Room created successfully')
+-
+                 const room = await response.json()
+ 
+                 navigate('/game', {
+@@ -107,8 +105,6 @@ const MatchSystemBtn = () => {
+         } finally {
+             setFetching(false)
+         }
+-
+-        console.log('Random room successfully joined')
+     }
+ 
+     return (
+diff --git a/frontend/src/components/pong/BoardGame.module.css b/frontend/src/components/pong/BoardGame.module.css
+index 64d2f2d6..590ed954 100644
+--- a/frontend/src/components/pong/BoardGame.module.css
++++ b/frontend/src/components/pong/BoardGame.module.css
+@@ -1,9 +1,9 @@
+-/* TODO improve frame responsivenes  */
+ .boardGame {
+     display: flex;
+     flex-direction: row;
+     justify-content: center;
+-    height: 50vh;
++    height: 60vh;
++    width: 100%;
  }
  
--const BoardGame = ({ room, player_one, player_two, theme }: BoardGameProps) => {
-+const BoardGame = ({
-+    room,
-+    player_one,
-+    player_two,
-+    theme,
-+    imPlayerOne,
-+}: BoardGameProps) => {
+ .scoreContainer {
+@@ -32,3 +32,8 @@
+ 
+     mix-blend-mode: color-dodge;
+ }
++
++.waitingForPlayer {
++    display: flex;
++    justify-content: center;
++}
+diff --git a/frontend/src/components/pong/BoardGame.tsx b/frontend/src/components/pong/BoardGame.tsx
+index 6d122648..f5d69668 100644
+--- a/frontend/src/components/pong/BoardGame.tsx
++++ b/frontend/src/components/pong/BoardGame.tsx
+@@ -58,20 +58,24 @@ const BoardGame = ({
+     imPlayerOne,
+ }: BoardGameProps) => {
      const userData = useAppSelector((state) => state.user.userData) as UserData
++    const [waitingForPlayer, setWaitingForPlayer] = useState<boolean>(false)
      let playerNumber: string =
--        userData.user.id === player_one ? 'player_one' : 'player_two'
-+        imPlayerOne === true ? 'player_one' : 'player_two'
+         imPlayerOne === true ? 'player_one' : 'player_two'
++    const BALL_SIZE: number = 2
++    const PADDLE_WIDTH: number = 2
++    const PADDLE_HEIGHT: number = 30
  
      const [frame, setFrame] = useState<Frame>({
          paddleLeft: {
-diff --git a/frontend/src/pages/Game.tsx b/frontend/src/pages/Game.tsx
-index 602d14e2..a6a3963e 100644
---- a/frontend/src/pages/Game.tsx
-+++ b/frontend/src/pages/Game.tsx
-@@ -17,6 +17,7 @@ const Game = () => {
-                 player_one={player_one}
-                 player_two={player_two}
-                 theme={theme}
-+                imPlayerOne={location.state.imPlayerOne}
-             />
+-            size: { width: 20, height: 100 },
+-            position: { x: 10, y: 20 },
++            size: { width: PADDLE_WIDTH, height: PADDLE_HEIGHT },
++            position: { x: 10, y: 60 },
+         },
+         paddleRight: {
+-            size: { width: 10, height: 50 },
+-            position: { x: 100, y: 70 },
++            size: { width: PADDLE_WIDTH, height: PADDLE_HEIGHT },
++            position: { x: 280, y: 60 },
+         },
+         ball: {
+-            size: { width: 10, height: 20 },
++            size: { width: BALL_SIZE, height: BALL_SIZE },
+             position: { x: 50, y: 50 },
+         },
+         score: { playerOne: 0, playerTwo: 0 },
+@@ -101,10 +105,17 @@ const BoardGame = ({
+     useEffect(() => {
+         const socket = io('http://localhost:8080/game')
+ 
+-        socket.on('connect', () => {
+-            console.log('Connected to server')
+-            socket.emit('createRoom', room)
+-        })
++        if (playerNumber === 'player_one') {
++            socket.on('connect', () => {
++                console.log('Connected to server')
++                socket.emit('createRoom', room)
++            })
++        } else {
++            socket.on('connect', () => {
++                console.log('Connected to server')
++                socket.emit('joinRoom', room)
++            })
++        }
+ 
+         socket.on('connect_error', (error) => {
+             console.log('Connection Error', error)
+@@ -121,7 +132,7 @@ const BoardGame = ({
+         }
+ 
+         function onReceiveFrames(updatedFrame: Frame) {
+-            // console.log('updated frame: ', JSON.stringify(updatedFrame))
++            setWaitingForPlayer(false)
+             setFrame(updatedFrame)
+             document.getElementById('scorePlayerOne').innerText =
+                 updatedFrame.score.playerOne.toString()
+@@ -145,6 +156,10 @@ const BoardGame = ({
+         // Event registration to receive updated frames from the server
+         socket.on('sendFrames', onReceiveFrames)
+ 
++        socket.on('waitingForSecondPlayer', () => {
++            setWaitingForPlayer(true)
++        })
++
+         return () => {
+             // Remove the event listener when disassembling the component to avoid memory leaks
+             document.removeEventListener('keydown', handleKeyDown)
+@@ -175,6 +190,13 @@ const BoardGame = ({
+                     0
+                 </div>
+             </div>
++            <div className={styles.waitingForPlayer}>
++                {playerNumber === 'player_one' ? (
++                    waitingForPlayer ? (
++                        <div>Waiting for the second player...</div>
++                    ) : null
++                ) : null}
++            </div>
+             <canvas id="boardGame" className={styles.boardGame}></canvas>
          </div>
      )
-diff --git a/frontend/src/pages/Play.tsx b/frontend/src/pages/Play.tsx
-index f98eb7b7..f3460822 100644
---- a/frontend/src/pages/Play.tsx
-+++ b/frontend/src/pages/Play.tsx
-@@ -53,6 +53,7 @@ const Play = () => {
-                         player_two: room.player_two,
-                         theme: room.theme,
-                         roomId: room.room_id,
-+                        imPlayerOne: true,
-                     },
-                 })
-             }
+diff --git a/frontend/src/components/profile/Friend.tsx b/frontend/src/components/profile/Friend.tsx
+index fb8ff0fb..4ac019ce 100644
+--- a/frontend/src/components/profile/Friend.tsx
++++ b/frontend/src/components/profile/Friend.tsx
+@@ -78,7 +78,6 @@ const Friend = ({
+         } catch (error) {
+             console.error(error)
+         }
+-        console.log('Friendship removed sucsefully')
+     }
+ 
+     const acceptFriendship = async (id: number) => {
+@@ -106,7 +105,6 @@ const Friend = ({
+         } catch (error) {
+             console.error(error)
+         }
+-        console.log('Friend sucsefully accepted')
+     }
+ 
+     return (
+diff --git a/frontend/src/components/profile/OtherUsers.tsx b/frontend/src/components/profile/OtherUsers.tsx
+index 0a20b716..e219991c 100644
+--- a/frontend/src/components/profile/OtherUsers.tsx
++++ b/frontend/src/components/profile/OtherUsers.tsx
+@@ -35,7 +35,6 @@ const OtherUser = ({ id, nickname, avatarUrl }: OtherUserProps) => {
+         } catch (error) {
+             console.error(error)
+         }
+-        console.log('Friendship request successfully sent')
+     }
+ 
+     return (
+diff --git a/frontend/src/components/profile/UserInformation.tsx b/frontend/src/components/profile/UserInformation.tsx
+index f76f7e03..b1ba4dc3 100644
+--- a/frontend/src/components/profile/UserInformation.tsx
++++ b/frontend/src/components/profile/UserInformation.tsx
+@@ -27,7 +27,6 @@ const UserInformation = () => {
+             )
+ 
+             if (response.ok) {
+-                console.log('Nickname updated successfully')
+                 window.location.reload()
+             } else {
+                 console.error('Failed to update nickname')
+@@ -50,7 +49,6 @@ const UserInformation = () => {
+                     }
+                 )
+                 if (response.ok) {
+-                    console.log('2FA turned off')
+                     setTFAEnabled(false)
+                 }
+             } catch (error) {
+@@ -96,7 +94,6 @@ const UserInformation = () => {
+                 )
+ 
+                 if (response.status === 201) {
+-                    console.log('Profile image updated correctly')
+                     window.location.reload()
+                 } else {
+                     console.error(
+diff --git a/txt b/txt
+index 3723d3c2..7b2841c8 100644
+--- a/txt
++++ b/txt
+@@ -1,62 +0,0 @@
+-diff --git a/frontend/src/components/play/MatchSystemBtn.tsx b/frontend/src/components/play/MatchSystemBtn.tsx
+-index 1571ba3e..a46ca901 100644
+---- a/frontend/src/components/play/MatchSystemBtn.tsx
+-+++ b/frontend/src/components/play/MatchSystemBtn.tsx
+-@@ -98,6 +98,7 @@ const MatchSystemBtn = () => {
+-                         player_two: room.player_two,
+-                         theme: room.theme,
+-                         roomId: room.room_id,
+-+                        imPlayerOne: false,
+-                     },
+-                 })
+-             }
+-diff --git a/frontend/src/components/pong/BoardGame.tsx b/frontend/src/components/pong/BoardGame.tsx
+-index b9e8c470..6d122648 100644
+---- a/frontend/src/components/pong/BoardGame.tsx
+-+++ b/frontend/src/components/pong/BoardGame.tsx
+-@@ -47,12 +47,19 @@ export interface BoardGameProps {
+-     player_one: number
+-     player_two: number
+-     theme: string
+-+    imPlayerOne: boolean
+- }
+- 
+--const BoardGame = ({ room, player_one, player_two, theme }: BoardGameProps) => {
+-+const BoardGame = ({
+-+    room,
+-+    player_one,
+-+    player_two,
+-+    theme,
+-+    imPlayerOne,
+-+}: BoardGameProps) => {
+-     const userData = useAppSelector((state) => state.user.userData) as UserData
+-     let playerNumber: string =
+--        userData.user.id === player_one ? 'player_one' : 'player_two'
+-+        imPlayerOne === true ? 'player_one' : 'player_two'
+- 
+-     const [frame, setFrame] = useState<Frame>({
+-         paddleLeft: {
+-diff --git a/frontend/src/pages/Game.tsx b/frontend/src/pages/Game.tsx
+-index 602d14e2..a6a3963e 100644
+---- a/frontend/src/pages/Game.tsx
+-+++ b/frontend/src/pages/Game.tsx
+-@@ -17,6 +17,7 @@ const Game = () => {
+-                 player_one={player_one}
+-                 player_two={player_two}
+-                 theme={theme}
+-+                imPlayerOne={location.state.imPlayerOne}
+-             />
+-         </div>
+-     )
+-diff --git a/frontend/src/pages/Play.tsx b/frontend/src/pages/Play.tsx
+-index f98eb7b7..f3460822 100644
+---- a/frontend/src/pages/Play.tsx
+-+++ b/frontend/src/pages/Play.tsx
+-@@ -53,6 +53,7 @@ const Play = () => {
+-                         player_two: room.player_two,
+-                         theme: room.theme,
+-                         roomId: room.room_id,
+-+                        imPlayerOne: true,
+-                     },
+-                 })
+-             }

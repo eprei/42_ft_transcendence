@@ -178,6 +178,7 @@ export class PongService {
         }
         // TODO change playe's status at the end of the game
         // this.userService.changeStatusOnLine(playerId)
+        // TODO add info to the match table
     }
 
     getFrame(): Frame {

@@ -47,14 +47,12 @@ const TwoFactorVerificationBox = ({
             })
 
             const data = await response.json()
-            console.log(data)
 
             if (
                 data.error === 'Unauthorized' &&
                 data.message === 'Wrong authentication code'
             ) {
                 setErrorMessage('Wrong code')
-                console.log('Wrong code')
             } else if (
                 data.message === 'Forbidden resource' &&
                 data.error === 'Forbidden'
@@ -64,11 +62,8 @@ const TwoFactorVerificationBox = ({
                 )
             } else {
                 setErrorMessage('')
-                console.log('Valid code')
                 window.location.href = 'http://localhost:4040/profile'
             }
-
-            console.log(data)
         } catch (error) {
             console.error(error)
         }
