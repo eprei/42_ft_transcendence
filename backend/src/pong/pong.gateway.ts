@@ -71,6 +71,8 @@ export class PongGateway
         client.emit('leftRoom', roomId)
         this.loger.log(`Client socket ${client.id} left room: ${roomId}`)
         // TODO: Handle cleanup when a client leaves a room
+        // TODO change playe's status at the end of the game
+        // this.userService.changeStatusOnLine(playerId)
     }
 
     sendFrameToRoom(roomId: string, frame: Frame) {
@@ -80,14 +82,17 @@ export class PongGateway
     @SubscribeMessage('movePaddle')
     handleMovePaddle(
         client: Socket,
-        data: { direction: string; roomId: string }
+        data: { player: string; direction: string; roomId: string }
     ) {
-        const { direction, roomId } = data
+        const { player, direction, roomId } = data
         if (!this.pongServices[roomId]) {
             console.error(`No PongService found for roomId ${roomId}`)
             return
         }
-        this.pongServices[roomId].updateFrame(direction)
+        this.pongServices[roomId].updateFrame(
+            player,
+            direction === 'ArrowUp' ? 'up' : 'down'
+        )
     }
 
     @SubscribeMessage('getFrame')

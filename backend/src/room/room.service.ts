@@ -52,9 +52,6 @@ export class RoomService {
 
         this.rooms.push(room)
 
-        // TODO change the status at the end of the game
-        // this.userService.changeStatusOnLine(myId)
-
         return room
     }
 

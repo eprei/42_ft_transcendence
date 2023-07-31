@@ -73,17 +73,30 @@ export class PongService {
         return this.frame
     }
 
-    updateFrame(direction?: string): Frame {
+    updateFrame(player: string, direction?: string): Frame {
         // Update the position of the pallet according to the direction provided
-        if (direction === 'up' && this.frame.paddleLeft.position.y > 0) {
-            this.frame.paddleLeft.position.y -= this.PADDLE_SPEED
-        } else if (
-            direction === 'down' &&
-            this.frame.paddleLeft.position.y +
-                this.frame.paddleLeft.size.height <
-                FRAME_HEIGHT
-        ) {
-            this.frame.paddleLeft.position.y += this.PADDLE_SPEED
+        if (player === 'player_one') {
+            if (direction === 'up' && this.frame.paddleLeft.position.y > 0) {
+                this.frame.paddleLeft.position.y -= this.PADDLE_SPEED
+            } else if (
+                direction === 'down' &&
+                this.frame.paddleLeft.position.y +
+                    this.frame.paddleLeft.size.height <
+                    FRAME_HEIGHT
+            ) {
+                this.frame.paddleLeft.position.y += this.PADDLE_SPEED
+            }
+        } else if (player === 'player_two') {
+            if (direction === 'up' && this.frame.paddleRight.position.y > 0) {
+                this.frame.paddleRight.position.y -= this.PADDLE_SPEED
+            } else if (
+                direction === 'down' &&
+                this.frame.paddleRight.position.y +
+                    this.frame.paddleRight.size.height <
+                    FRAME_HEIGHT
+            ) {
+                this.frame.paddleRight.position.y += this.PADDLE_SPEED
+            }
         }
         return this.frame
     }
@@ -163,6 +176,8 @@ export class PongService {
         ) {
             this.gameActive = false
         }
+        // TODO change playe's status at the end of the game
+        // this.userService.changeStatusOnLine(playerId)
     }
 
     getFrame(): Frame {

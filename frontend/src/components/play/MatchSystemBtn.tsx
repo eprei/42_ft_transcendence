@@ -1,8 +1,10 @@
 import styles from './MatchSystemBtn.module.css'
 import { useState, useEffect } from 'react'
 import { Progress } from 'antd'
+import { useNavigate } from 'react-router-dom'
 
 const MatchSystemBtn = () => {
+    const navigate = useNavigate()
     const [fetching, setFetching] = useState(false)
     const [percent, setPercent] = useState<number>(0)
     const [roomNotFound, setRoomNotFound] = useState<boolean>(false)
@@ -71,12 +73,33 @@ const MatchSystemBtn = () => {
                     credentials: 'include',
                 }
             )
+            // if (!response.ok) {
+            //     if (response.status === 409) {
+            //         setYouAreAlreadyPlaying(true)
+            //     } else {
+            //         throw new Error('Error joining random room')
+            //     }
+            // }
+
             if (!response.ok) {
                 if (response.status === 409) {
                     setYouAreAlreadyPlaying(true)
                 } else {
-                    throw new Error('Error joining random room')
+                    throw new Error('Error creating room')
                 }
+            } else {
+                console.log('Room created successfully')
+
+                const room = await response.json()
+
+                navigate('/game', {
+                    state: {
+                        player_one: room.player_one,
+                        player_two: room.player_two,
+                        theme: room.theme,
+                        roomId: room.room_id,
+                    },
+                })
             }
         } catch (error) {
             console.error(error)

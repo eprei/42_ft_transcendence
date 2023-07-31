@@ -4,6 +4,8 @@ import { io } from 'socket.io-client'
 // import theme1 from '../../assets/bg/theme1.jpg'
 // import theme2 from '../../assets/bg/theme2.avif'
 // import theme3 from '../../assets/bg/theme3.avif'
+import { useAppSelector } from '../../store/types'
+import { UserData } from '../../types/UserData'
 
 interface Position {
     x: number
@@ -42,12 +44,16 @@ function drawRectangle(
 
 export interface BoardGameProps {
     room: string
-    player_one: string
-    player_two: string
+    player_one: number
+    player_two: number
     theme: string
 }
 
 const BoardGame = ({ room, player_one, player_two, theme }: BoardGameProps) => {
+    const userData = useAppSelector((state) => state.user.userData) as UserData
+    let playerNumber: string =
+        userData.user.id === player_one ? 'player_one' : 'player_two'
+
     const [frame, setFrame] = useState<Frame>({
         paddleLeft: {
             size: { width: 20, height: 100 },
@@ -98,13 +104,12 @@ const BoardGame = ({ room, player_one, player_two, theme }: BoardGameProps) => {
         })
 
         const handleKeyDown = (event: KeyboardEvent) => {
-            console.log('room in handleKeyDown: ', room)
-            if (event.key === 'ArrowUp') {
-                console.log('up', room)
-                socket.emit('movePaddle', { direction: 'up', roomId: room })
-            } else if (event.key === 'ArrowDown') {
-                console.log('down', room)
-                socket.emit('movePaddle', { direction: 'down', roomId: room })
+            if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+                socket.emit('movePaddle', {
+                    player: playerNumber,
+                    direction: event.key,
+                    roomId: room,
+                })
             }
         }
 
