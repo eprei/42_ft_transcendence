@@ -6,7 +6,7 @@ import { io } from 'socket.io-client'
 // import theme3 from '../../assets/bg/theme3.avif'
 import { useAppSelector } from '../../store/types'
 import { UserData } from '../../types/UserData'
-
+import { useNavigate } from 'react-router-dom'
 interface Position {
     x: number
     y: number
@@ -64,6 +64,9 @@ const BoardGame = ({
     const BALL_SIZE: number = 2
     const PADDLE_WIDTH: number = 2
     const PADDLE_HEIGHT: number = 30
+    const [gameOver, setGameOver] = useState<boolean>(false)
+    const [winner, setWinner] = useState<string>('')
+    const navigate = useNavigate()
 
     const [frame, setFrame] = useState<Frame>({
         paddleLeft: {
@@ -139,15 +142,18 @@ const BoardGame = ({
             document.getElementById('scorePlayerTwo').innerText =
                 updatedFrame.score.playerTwo.toString()
 
-            // TODO Handle game over
-            // if (updatedFrame.gameOver) {
-            //     let winner =
-            //         updatedFrame.score.playerOne > updatedFrame.score.playerTwo
-            //             ? 'Player One'
-            //             : 'Player Two'
-            //     alert(`Game Over! ${winner} won!`)
-            //     socket.emit('resetGame')
-            // }
+            if (updatedFrame.gameOver) {
+                let winner =
+                    updatedFrame.score.playerOne > updatedFrame.score.playerTwo
+                        ? 'Player One'
+                        : 'Player Two'
+                setWinner(winner)
+                socket.emit('resetGame')
+                setGameOver(true)
+                setTimeout(() => {
+                    navigate('/play')
+                }, 3000)
+            }
         }
 
         // Event listener to captures up and down keys
@@ -183,6 +189,11 @@ const BoardGame = ({
     return (
         <div>
             <div className={styles.scoreContainer}>
+                {gameOver && (
+                    <div className={styles.gameOver}>
+                        Game Over! {winner} won!
+                    </div>
+                )}
                 <div id="scorePlayerOne" className={styles.score}>
                     0
                 </div>

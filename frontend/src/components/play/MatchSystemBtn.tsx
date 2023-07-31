@@ -73,14 +73,6 @@ const MatchSystemBtn = () => {
                     credentials: 'include',
                 }
             )
-            // if (!response.ok) {
-            //     if (response.status === 409) {
-            //         setYouAreAlreadyPlaying(true)
-            //     } else {
-            //         throw new Error('Error joining random room')
-            //     }
-            // }
-
             if (!response.ok) {
                 if (response.status === 409) {
                     setYouAreAlreadyPlaying(true)

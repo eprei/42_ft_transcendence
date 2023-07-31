@@ -5,6 +5,7 @@ const FRAME_WIDTH: number = 300
 const FRAME_HEIGHT: number = 150
 const PADDLE_WIDTH: number = 2
 const PADDLE_HEIGHT: number = 30
+const TOP_SCORE: number = 3
 
 @Injectable()
 export class PongService {
@@ -171,10 +172,12 @@ export class PongService {
         }
 
         if (
-            this.frame.score.playerOne >= 10 ||
-            this.frame.score.playerTwo >= 10
+            this.frame.score.playerOne >= TOP_SCORE ||
+            this.frame.score.playerTwo >= TOP_SCORE
         ) {
             this.gameActive = false
+            this.frame.gameOver = true
+            return
         }
         // TODO change playe's status at the end of the game
         // this.userService.changeStatusOnLine(playerId)

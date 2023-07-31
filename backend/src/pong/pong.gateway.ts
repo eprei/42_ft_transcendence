@@ -120,8 +120,10 @@ export class PongGateway
 
     @SubscribeMessage('resetGame')
     handleResetGame(client: Socket, roomId: string) {
-        this.pongServices[roomId].resetGame()
-        const updatedFrame = this.pongServices[roomId].getFrame()
-        this.sendFrameToRoom(roomId, updatedFrame)
+        clearInterval(this.frameIntervals[roomId])
+        delete this.pongServices[roomId]
+        delete this.frameIntervals[roomId]
+        delete this.waitingForSecondPlayer[roomId]
+        client.leave(roomId)
     }
 }
