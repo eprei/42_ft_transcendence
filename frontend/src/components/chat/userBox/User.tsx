@@ -207,22 +207,6 @@ const User = ({
                                             Set admin
                                         </li>
                                     )}
-                                    {!isBanned &&(
-                                        <li onClick={kickUserHandler}>Kick</li>
-                                    )}
-                                    {isBanned ? (
-                                        <li onClick={unbanUserHandler}>
-                                            Unban
-                                        </li>
-                                    ) : (
-                                        <li onClick={banUserHandler}>Ban</li>
-                                    )}
-                                    {!isMuted && (
-                                        <li onClick={muteUserHandler}>Mute</li>
-                                    )}
-                                </ul>
-                            ) : amIadmin && !isOwner && (
-                                <ul>
                                     {!isBanned && (
                                         <li onClick={kickUserHandler}>Kick</li>
                                     )}
@@ -237,6 +221,31 @@ const User = ({
                                         <li onClick={muteUserHandler}>Mute</li>
                                     )}
                                 </ul>
+                            ) : (
+                                amIadmin &&
+                                !isOwner && (
+                                    <ul>
+                                        {!isBanned && (
+                                            <li onClick={kickUserHandler}>
+                                                Kick
+                                            </li>
+                                        )}
+                                        {isBanned ? (
+                                            <li onClick={unbanUserHandler}>
+                                                Unban
+                                            </li>
+                                        ) : (
+                                            <li onClick={banUserHandler}>
+                                                Ban
+                                            </li>
+                                        )}
+                                        {!isMuted && (
+                                            <li onClick={muteUserHandler}>
+                                                Mute
+                                            </li>
+                                        )}
+                                    </ul>
+                                )
                             )}
                         </ul>
                     </div>

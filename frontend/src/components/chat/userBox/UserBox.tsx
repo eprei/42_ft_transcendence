@@ -29,28 +29,6 @@ const UserBox = (props: UserBoxProps) => {
         (state: RootState) => state.user.userData
     ) as UserData
 
-    // const userAlert = () => {
-    //     if (props.admins) {
-    //         // const allInfo = [props.users, props.blockedUsers, props.admins, props.owner]
-    //         const allInfo = [props.users]
-    //         alert(JSON.stringify(allInfo, null, 2))
-    //     }
-    // }
-
-    // const banAlert = () => {
-    //     if (props.bannedUsers) {
-    //         const allInfo = [props.bannedUsers]
-    //         alert(JSON.stringify(allInfo, null, 2))
-    //     }
-    // }
-
-    // const muteAlert = () => {
-    //     if (props.mutedUsers) {
-    //         const allInfo = [props.mutedUsers]
-    //         alert(JSON.stringify(allInfo, null, 2))
-    //     }
-    // }
-
     const [openMenus, setOpenMenus] = useState(0)
 
     const handleOpenMenu = () => {
@@ -63,7 +41,6 @@ const UserBox = (props: UserBoxProps) => {
 
     return (
         <div className={`${styles.usersBox}`}>
-            {/* <h2 onClick={userAlert}> online </h2> */}
             <h2> online </h2>
             {props.users.map((user) =>
                 user.status !== 'offline' ? (
@@ -105,7 +82,6 @@ const UserBox = (props: UserBoxProps) => {
                 ) : null
             )}
             <h2> offline </h2>
-            {/* <h2 onClick={muteAlert}> offline </h2> */}
             {props.users.map((user) =>
                 user.status === 'offline' ? (
                     <User
@@ -146,7 +122,6 @@ const UserBox = (props: UserBoxProps) => {
                 ) : null
             )}
             <h2> banned </h2>
-            {/* <h2 onClick={banAlert}> banned </h2> */}
             {props.bannedUsers.map((banUser) => (
                 <User
                     key={banUser.id}
