@@ -42,6 +42,7 @@ export class PongGateway
     handleDisconnect(client: Socket) {
         this.loger.log(`Client socket disconnected: ${client.id}`)
         // TODO: Handle cleanup when a client disconnects. Leave the room, etc.
+        // disconnect == leave room ???
     }
 
     @SubscribeMessage('createRoom')
@@ -77,12 +78,15 @@ export class PongGateway
     }
 
     @SubscribeMessage('leaveRoom')
-    handleLeaveRoom(client: Socket, roomId: string) {
+    handleLeaveRoom(client: Socket, data: { userId: number }) {
+        const { userId } = data
+        const roomId = client.rooms[0]
         client.leave(roomId)
         client.emit('leftRoom', roomId)
         this.loger.log(`Client socket ${client.id} left room: ${roomId}`)
-        // TODO: Handle cleanup when a client leaves a room
-        // this.userService.changeStatusOnLine(+client.id) //doenst work with client.id
+        this.userService.changeStatusOnLine(userId)
+        // TODO notify other player that the game is over and manage the game state and the frontend
+        // TODO delete the room from room service if it only has one player !!!
     }
 
     private startGame(roomId: string) {
@@ -138,5 +142,6 @@ export class PongGateway
         delete this.secondPlayerIds[roomId]
         this.userService.changeStatusOnLine(userId)
         client.leave(roomId)
+        // TODO add info to the match table to 'match history' feature
     }
 }

@@ -179,7 +179,7 @@ export class PongService {
             this.frame.gameOver = true
             return
         }
-        // TODO add info to the match table
+        // TODO add info to the match table to 'match history' feature
     }
 
     getFrame(): Frame {

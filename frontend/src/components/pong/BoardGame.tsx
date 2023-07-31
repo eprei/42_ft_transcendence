@@ -1,9 +1,6 @@
 import styles from './BoardGame.module.css'
 import { useState, useEffect } from 'react'
 import { io } from 'socket.io-client'
-// import theme1 from '../../assets/bg/theme1.jpg'
-// import theme2 from '../../assets/bg/theme2.avif'
-// import theme3 from '../../assets/bg/theme3.avif'
 import { useAppSelector } from '../../store/types'
 import { UserData } from '../../types/UserData'
 import { useNavigate } from 'react-router-dom'
@@ -48,7 +45,6 @@ export interface BoardGameProps {
     room: string
     player_one: number
     player_two: number
-    theme: string
     imPlayerOne: boolean
 }
 
@@ -56,7 +52,6 @@ const BoardGame = ({
     room,
     player_one,
     player_two,
-    theme,
     imPlayerOne,
 }: BoardGameProps) => {
     const userData = useAppSelector((state) => state.user.userData) as UserData
@@ -134,12 +129,12 @@ const BoardGame = ({
 
         if (playerNumber === 'player_one') {
             socket.on('connect', () => {
-                console.log('Connected to server')
+                console.log('Connected to game server')
                 socket.emit('createRoom', room)
             })
         } else {
             socket.on('connect', () => {
-                console.log('Connected to server')
+                console.log('Connected to game server')
                 socket.emit('joinRoom', room, userData.user.id)
             })
         }
@@ -201,7 +196,6 @@ const BoardGame = ({
             }
         }
 
-        // Event listener to captures up and down keys
         document.addEventListener('keydown', handleKeyDown)
 
         // Event registration to receive updated frames from the server
@@ -215,22 +209,20 @@ const BoardGame = ({
             // Remove the event listener when disassembling the component to avoid memory leaks
             document.removeEventListener('keydown', handleKeyDown)
 
-            // Unregister event to receive updated frames from server
-            console.log('Unregistering event...')
+            // Unregister to events
+            socket.off('connect_error')
+            socket.off('connect')
+            socket.off('secondPlayerJoined')
             socket.off('sendFrames', onReceiveFrames)
+            socket.off('waitingForSecondPlayer')
+
+            socket.emit('leaveRoom', {
+                userId: userData.user.id,
+            })
             socket.close()
-            // socket.emit('leaveRoom', room)
         }
     }, [])
 
-    // TODO Handle theme
-    // const themeImages: { [key: string]: string } = {
-    // 	'theme 1': theme1,
-    // 	'theme 2': theme2,
-    // 	'theme 3': theme3,
-    // }
-
-    // TODO add photos to the board
     return (
         <div>
             <div className={styles.scoreContainer}>

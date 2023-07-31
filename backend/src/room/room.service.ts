@@ -99,7 +99,6 @@ export class RoomService {
             index = this.rooms.findIndex((room) => room.player_two === 0)
             if (index !== -1) {
                 this.rooms[index].player_two = myId
-                // TODO  Call the game launching service
                 return this.rooms[index]
             }
             await this.sleep(1000)
