@@ -69,6 +69,8 @@ const BoardGame = ({
     const [gameOver, setGameOver] = useState<boolean>(false)
     const [winner, setWinner] = useState<string>('')
     const navigate = useNavigate()
+    const [playerOneData, setPlayerOneData] = useState<UserData>({} as UserData)
+    const [playerTwoData, setPlayerTwoData] = useState<UserData>({} as UserData)
 
     const [frame, setFrame] = useState<Frame>({
         paddleLeft: {
@@ -87,6 +89,21 @@ const BoardGame = ({
         gameOver: false,
     })
 
+    async function getUserData(userId: number) {
+        const response = await fetch(
+            `http://localhost:8080/api/user/id/${userId}`,
+            {
+                method: 'GET',
+                credentials: 'include',
+            }
+        )
+        if (!response.ok) {
+            throw new Error('Failed to fetch user')
+        }
+        return response.json()
+    }
+
+    // Draw the board
     useEffect(() => {
         let canvas: HTMLCanvasElement | null = document.getElementById(
             'boardGame'
@@ -107,8 +124,13 @@ const BoardGame = ({
         drawRectangle(ctx, frame.ball)
     }, [frame])
 
+    // Handle socket connections
     useEffect(() => {
         const socket = io('http://localhost:8080/game')
+
+        socket.on('connect_error', (error) => {
+            console.log('Connection Error', error)
+        })
 
         if (playerNumber === 'player_one') {
             socket.on('connect', () => {
@@ -118,13 +140,32 @@ const BoardGame = ({
         } else {
             socket.on('connect', () => {
                 console.log('Connected to server')
-                socket.emit('joinRoom', room)
+                socket.emit('joinRoom', room, userData.user.id)
             })
         }
 
-        socket.on('connect_error', (error) => {
-            console.log('Connection Error', error)
-        })
+        if (playerNumber === 'player_one') {
+            socket.on('secondPlayerJoined', async (playerId) => {
+                console.log(`Second player connected: ${playerId}`)
+                const dataPlayerOne = await getUserData(player_one)
+                setPlayerOneData({ user: dataPlayerOne })
+
+                const dataPlayerTwo = await getUserData(playerId)
+                setPlayerTwoData({ user: dataPlayerTwo })
+            })
+        }
+
+        if (playerNumber === 'player_two') {
+            socket.on('connect', async () => {
+                socket.emit('joinRoom', room, userData.user.id)
+
+                const dataPlayerOne = await getUserData(player_one)
+                setPlayerOneData({ user: dataPlayerOne })
+
+                const dataPlayerTwo = await getUserData(player_two)
+                setPlayerTwoData({ user: dataPlayerTwo })
+            })
+        }
 
         const handleKeyDown = (event: KeyboardEvent) => {
             if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
@@ -189,7 +230,7 @@ const BoardGame = ({
     // 	'theme 3': theme3,
     // }
 
-    // TODO add player names and photos to the board
+    // TODO add photos to the board
     return (
         <div>
             <div className={styles.scoreContainer}>
@@ -198,14 +239,14 @@ const BoardGame = ({
                         Game Over! {winner} won!
                     </div>
                 )}
-                <Player userId={player_one} />
+                <Player userData={playerOneData} />
                 <div id="scorePlayerOne" className={styles.score}>
                     0
                 </div>
                 <div id="scorePlayerTwo" className={styles.score}>
                     0
                 </div>
-                <Player userId={player_two} />
+                <Player userData={playerTwoData} />
             </div>
             <div className={styles.waitingForPlayer}>
                 {playerNumber === 'player_one' ? (

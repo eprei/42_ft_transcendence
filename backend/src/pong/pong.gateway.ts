@@ -21,6 +21,7 @@ export class PongGateway
     private frameIntervals: { [roomId: string]: NodeJS.Timeout } = {}
     private pongServices: { [roomId: string]: PongService } = {}
     private waitingForSecondPlayer: { [roomId: string]: boolean } = {}
+    private secondPlayerIds: { [roomId: string]: number } = {}
 
     @WebSocketServer()
     server: Server
@@ -53,19 +54,26 @@ export class PongGateway
     }
 
     @SubscribeMessage('joinRoom')
-    handleJoinRoom(client: Socket, roomId: string) {
+    handleJoinRoom(client: Socket, [roomId, playerId]: [string, number]) {
         if (this.pongServices[roomId]) {
             client.join(roomId)
+            this.secondPlayerIds[roomId] = playerId
             this.loger.log(`Client socket ${client.id} joined room: ${roomId}`)
             if (this.waitingForSecondPlayer[roomId]) {
                 this.waitingForSecondPlayer[roomId] = false
                 setTimeout(() => {
                     this.startGame(roomId)
+                    this.emitSecondPlayerJoined(roomId)
                 }, 3000)
             }
         } else {
             client.emit('error', 'Room does not exist')
         }
+    }
+
+    private emitSecondPlayerJoined(roomId: string) {
+        const playerId = this.secondPlayerIds[roomId]
+        this.server.to(roomId).emit('secondPlayerJoined', playerId)
     }
 
     @SubscribeMessage('leaveRoom')
@@ -123,11 +131,11 @@ export class PongGateway
     handleResetGame(client: Socket, data: { userId: number }) {
         const { userId } = data
         const roomId = client.rooms[0]
-
         clearInterval(this.frameIntervals[roomId])
         delete this.pongServices[roomId]
         delete this.frameIntervals[roomId]
         delete this.waitingForSecondPlayer[roomId]
+        delete this.secondPlayerIds[roomId]
         this.userService.changeStatusOnLine(userId)
         client.leave(roomId)
     }

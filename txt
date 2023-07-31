@@ -1,0 +1,214 @@
+diff --git a/backend/src/pong/pong.gateway.ts b/backend/src/pong/pong.gateway.ts
+index 409777ac..d99a59d4 100644
+--- a/backend/src/pong/pong.gateway.ts
++++ b/backend/src/pong/pong.gateway.ts
+@@ -21,6 +21,7 @@ export class PongGateway
+     private frameIntervals: { [roomId: string]: NodeJS.Timeout } = {}
+     private pongServices: { [roomId: string]: PongService } = {}
+     private waitingForSecondPlayer: { [roomId: string]: boolean } = {}
++    private secondPlayerIds: { [roomId: string]: number } = {}
+ 
+     @WebSocketServer()
+     server: Server
+@@ -53,14 +54,16 @@ export class PongGateway
+     }
+ 
+     @SubscribeMessage('joinRoom')
+-    handleJoinRoom(client: Socket, roomId: string) {
++    handleJoinRoom(client: Socket, [roomId, playerId]: [string, number]) {
+         if (this.pongServices[roomId]) {
+             client.join(roomId)
++            this.secondPlayerIds[roomId] = playerId
+             this.loger.log(`Client socket ${client.id} joined room: ${roomId}`)
+             if (this.waitingForSecondPlayer[roomId]) {
+                 this.waitingForSecondPlayer[roomId] = false
+                 setTimeout(() => {
+                     this.startGame(roomId)
++                    this.emitSecondPlayerJoined(roomId)
+                 }, 3000)
+             }
+         } else {
+@@ -68,6 +71,11 @@ export class PongGateway
+         }
+     }
+ 
++    private emitSecondPlayerJoined(roomId: string) {
++        const playerId = this.secondPlayerIds[roomId]
++        this.server.to(roomId).emit('secondPlayerJoined', playerId)
++    }
++
+     @SubscribeMessage('leaveRoom')
+     handleLeaveRoom(client: Socket, roomId: string) {
+         client.leave(roomId)
+@@ -123,11 +131,11 @@ export class PongGateway
+     handleResetGame(client: Socket, data: { userId: number }) {
+         const { userId } = data
+         const roomId = client.rooms[0]
+-
+         clearInterval(this.frameIntervals[roomId])
+         delete this.pongServices[roomId]
+         delete this.frameIntervals[roomId]
+         delete this.waitingForSecondPlayer[roomId]
++        delete this.secondPlayerIds[roomId]
+         this.userService.changeStatusOnLine(userId)
+         client.leave(roomId)
+     }
+diff --git a/frontend/src/components/pong/BoardGame.tsx b/frontend/src/components/pong/BoardGame.tsx
+index 0f780504..74037949 100644
+--- a/frontend/src/components/pong/BoardGame.tsx
++++ b/frontend/src/components/pong/BoardGame.tsx
+@@ -69,6 +69,8 @@ const BoardGame = ({
+     const [gameOver, setGameOver] = useState<boolean>(false)
+     const [winner, setWinner] = useState<string>('')
+     const navigate = useNavigate()
++    const [playerOneData, setPlayerOneData] = useState<UserData>({} as UserData)
++    const [playerTwoData, setPlayerTwoData] = useState<UserData>({} as UserData)
+ 
+     const [frame, setFrame] = useState<Frame>({
+         paddleLeft: {
+@@ -87,6 +89,21 @@ const BoardGame = ({
+         gameOver: false,
+     })
+ 
++    async function getUserData(userId: number) {
++        const response = await fetch(
++            `http://localhost:8080/api/user/id/${userId}`,
++            {
++                method: 'GET',
++                credentials: 'include',
++            }
++        )
++        if (!response.ok) {
++            throw new Error('Failed to fetch user')
++        }
++        return response.json()
++    }
++
++    // Draw the board
+     useEffect(() => {
+         let canvas: HTMLCanvasElement | null = document.getElementById(
+             'boardGame'
+@@ -107,9 +124,14 @@ const BoardGame = ({
+         drawRectangle(ctx, frame.ball)
+     }, [frame])
+ 
++    // Handle socket connections
+     useEffect(() => {
+         const socket = io('http://localhost:8080/game')
+ 
++        socket.on('connect_error', (error) => {
++            console.log('Connection Error', error)
++        })
++
+         if (playerNumber === 'player_one') {
+             socket.on('connect', () => {
+                 console.log('Connected to server')
+@@ -118,13 +140,32 @@ const BoardGame = ({
+         } else {
+             socket.on('connect', () => {
+                 console.log('Connected to server')
+-                socket.emit('joinRoom', room)
++                socket.emit('joinRoom', room, userData.user.id)
+             })
+         }
+ 
+-        socket.on('connect_error', (error) => {
+-            console.log('Connection Error', error)
+-        })
++        if (playerNumber === 'player_one') {
++            socket.on('secondPlayerJoined', async (playerId) => {
++                console.log(`Second player connected: ${playerId}`)
++                const dataPlayerOne = await getUserData(player_one)
++                setPlayerOneData({ user: dataPlayerOne })
++
++                const dataPlayerTwo = await getUserData(playerId)
++                setPlayerTwoData({ user: dataPlayerTwo })
++            })
++        }
++
++        if (playerNumber === 'player_two') {
++            socket.on('connect', async () => {
++                socket.emit('joinRoom', room, userData.user.id)
++
++                const dataPlayerOne = await getUserData(player_one)
++                setPlayerOneData({ user: dataPlayerOne })
++
++                const dataPlayerTwo = await getUserData(player_two)
++                setPlayerTwoData({ user: dataPlayerTwo })
++            })
++        }
+ 
+         const handleKeyDown = (event: KeyboardEvent) => {
+             if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+@@ -189,7 +230,7 @@ const BoardGame = ({
+     // 	'theme 3': theme3,
+     // }
+ 
+-    // TODO add player names and photos to the board
++    // TODO add photos to the board
+     return (
+         <div>
+             <div className={styles.scoreContainer}>
+@@ -198,14 +239,14 @@ const BoardGame = ({
+                         Game Over! {winner} won!
+                     </div>
+                 )}
+-                <Player userId={player_one} />
++                <Player userData={playerOneData} />
+                 <div id="scorePlayerOne" className={styles.score}>
+                     0
+                 </div>
+                 <div id="scorePlayerTwo" className={styles.score}>
+                     0
+                 </div>
+-                <Player userId={player_two} />
++                <Player userData={playerTwoData} />
+             </div>
+             <div className={styles.waitingForPlayer}>
+                 {playerNumber === 'player_one' ? (
+diff --git a/frontend/src/components/pong/Player.tsx b/frontend/src/components/pong/Player.tsx
+index b2f2f503..49e835bb 100644
+--- a/frontend/src/components/pong/Player.tsx
++++ b/frontend/src/components/pong/Player.tsx
+@@ -1,36 +1,12 @@
+ import styles from './Player.module.css'
+-import { useEffect, useState } from 'react'
+ import { UserData } from '../../types/UserData'
+ 
+-const Player = ({ userId }: { userId: number }) => {
+-    const [userData, setUserData] = useState<UserData>({} as UserData)
+-    const [loading, setLoading] = useState(true)
+-
+-    useEffect(() => {
+-        getCurrentUser()
+-    }, [])
+-
+-    async function getCurrentUser() {
+-        try {
+-            const response = await fetch(
+-                `http://localhost:8080/api/user/id/${userId}`,
+-                {
+-                    method: 'GET',
+-                    credentials: 'include',
+-                }
+-            )
+-            if (!response.ok) {
+-                throw new Error('Failed to fetch user')
+-            }
+-            const data = await response.json()
+-            setUserData({ user: data })
+-            setLoading(false)
+-        } catch (error) {
+-            // TODO handle error
+-        }
+-    }
++interface PlayerProps {
++    userData: UserData
++}
+ 
+-    if (loading) {
++const Player = ({ userData }: PlayerProps) => {
++    if (!userData || !userData.user) {
+         return <div>Loading...</div>
+     }
+ 
