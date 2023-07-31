@@ -5,13 +5,15 @@ const FRAME_WIDTH: number = 300
 const FRAME_HEIGHT: number = 150
 const PADDLE_WIDTH: number = 2
 const PADDLE_HEIGHT: number = 30
-let BALL_SIZE: number = 2
-let BALL_SPEED_X: number = 2
-let BALL_SPEED_Y: number = 2
-let PADDLE_SPEED: number = 9
 
 @Injectable()
 export class PongService {
+    BALL_SIZE: number = 2
+    PADDLE_SPEED: number = 9
+    // TODO Adjust the speed of the ball according to the processing capacity of the school's computers
+    BALL_SPEED_Y: number = 2
+    BALL_SPEED_X: number = 2
+
     frame: Frame = {
         paddleLeft: {
             position: {
@@ -39,8 +41,8 @@ export class PongService {
                 y: 50,
             },
             size: {
-                width: BALL_SIZE,
-                height: BALL_SIZE,
+                width: this.BALL_SIZE,
+                height: this.BALL_SIZE,
             },
         },
         score: { playerOne: 0, playerTwo: 0 },
@@ -74,14 +76,14 @@ export class PongService {
     updateFrame(direction?: string): Frame {
         // Update the position of the pallet according to the direction provided
         if (direction === 'up' && this.frame.paddleLeft.position.y > 0) {
-            this.frame.paddleLeft.position.y -= PADDLE_SPEED
+            this.frame.paddleLeft.position.y -= this.PADDLE_SPEED
         } else if (
             direction === 'down' &&
             this.frame.paddleLeft.position.y +
                 this.frame.paddleLeft.size.height <
                 FRAME_HEIGHT
         ) {
-            this.frame.paddleLeft.position.y += PADDLE_SPEED
+            this.frame.paddleLeft.position.y += this.PADDLE_SPEED
         }
         return this.frame
     }
@@ -90,45 +92,52 @@ export class PongService {
         if (!this.gameActive) {
             return
         }
-        this.frame.ball.position.x += BALL_SPEED_X
-        this.frame.ball.position.y += BALL_SPEED_Y
+        this.frame.ball.position.x += this.BALL_SPEED_X
+        this.frame.ball.position.y += this.BALL_SPEED_Y
 
         // Reverse vertical direction if it reaches the vertical limits of the screen
         if (
-            this.frame.ball.position.y + BALL_SIZE >= FRAME_HEIGHT ||
+            this.frame.ball.position.y + this.BALL_SIZE >= FRAME_HEIGHT ||
             this.frame.ball.position.y <= 0
         ) {
-            BALL_SPEED_Y *= -1
+            this.BALL_SPEED_Y *= -1
         }
 
+        // COALITION LOGIQUE
+        // TODO improve the calculation of coalition with the paddle to make it more accurate
+        // probably eliminating this.BALL_SIZE from the equation or modifiyng it
         if (
             this.frame.ball.position.x <=
                 this.frame.paddleLeft.position.x + PADDLE_WIDTH &&
-            this.frame.ball.position.y + BALL_SIZE >=
-                this.frame.paddleLeft.position.y + BALL_SIZE &&
+            this.frame.ball.position.y + this.BALL_SIZE >=
+                this.frame.paddleLeft.position.y + this.BALL_SIZE &&
             this.frame.ball.position.y <=
-                this.frame.paddleLeft.position.y + PADDLE_HEIGHT - BALL_SIZE
+                this.frame.paddleLeft.position.y +
+                    PADDLE_HEIGHT -
+                    this.BALL_SIZE
         ) {
-            BALL_SPEED_X *= -1
+            this.BALL_SPEED_X *= -1
             // Adjust the ball's position to be outside of the paddle
             this.frame.ball.position.x =
                 this.frame.paddleLeft.position.x + PADDLE_WIDTH
         } else if (
-            this.frame.ball.position.x + BALL_SIZE >=
+            this.frame.ball.position.x + this.BALL_SIZE >=
                 this.frame.paddleRight.position.x &&
-            this.frame.ball.position.y + BALL_SIZE >=
-                this.frame.paddleRight.position.y + BALL_SIZE &&
+            this.frame.ball.position.y + this.BALL_SIZE >=
+                this.frame.paddleRight.position.y + this.BALL_SIZE &&
             this.frame.ball.position.y <=
-                this.frame.paddleRight.position.y + PADDLE_HEIGHT - BALL_SIZE
+                this.frame.paddleRight.position.y +
+                    PADDLE_HEIGHT -
+                    this.BALL_SIZE
         ) {
-            BALL_SPEED_X *= -1
+            this.BALL_SPEED_X *= -1
             // Adjust the ball's position to be outside of the paddle
             this.frame.ball.position.x =
                 this.frame.paddleRight.position.x - PADDLE_WIDTH
         }
 
         // Reset the position of the ball when it leaves the playing field
-        if (this.frame.ball.position.x + BALL_SIZE >= FRAME_WIDTH) {
+        if (this.frame.ball.position.x + this.BALL_SIZE >= FRAME_WIDTH) {
             this.frame.ball.position.x = FRAME_WIDTH / 2
             this.frame.ball.position.y = FRAME_HEIGHT / 2
             this.frame.score.playerOne += 1

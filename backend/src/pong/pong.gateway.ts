@@ -42,20 +42,15 @@ export class PongGateway
 
     @SubscribeMessage('createRoom')
     handleCreateRoom(client: Socket, roomId: string) {
-        console.log('control 1')
         client.join(roomId)
-        console.log('control 2')
+        console.log('joinRoom', roomId)
         this.pongServices[roomId] = new PongService()
-        console.log('control 3')
         this.pongServices[roomId].startGame()
-        console.log('control 4')
         this.frameIntervals[roomId] = setInterval(() => {
             const frame = this.pongServices[roomId].getFrame()
             this.sendFrameToRoom(roomId, frame)
         }, 1000 / FPS)
-        console.log('control 5')
         client.emit('roomCreated', roomId)
-        console.log('control 6')
         this.loger.log(`Room created: ${roomId}`)
     }
 
