@@ -74,7 +74,7 @@ export class PongService {
         return this.frame
     }
 
-    updateFrame(player: string, direction?: string): Frame {
+    updateFrame(player: string, direction: string): Frame {
         // Update the position of the pallet according to the direction provided
         if (player === 'player_one') {
             if (direction === 'up' && this.frame.paddleLeft.position.y > 0) {
@@ -179,8 +179,6 @@ export class PongService {
             this.frame.gameOver = true
             return
         }
-        // TODO change playe's status at the end of the game
-        // this.userService.changeStatusOnLine(playerId)
         // TODO add info to the match table
     }
 

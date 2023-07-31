@@ -148,8 +148,10 @@ const BoardGame = ({
                         ? 'Player One'
                         : 'Player Two'
                 setWinner(winner)
-                socket.emit('resetGame')
                 setGameOver(true)
+                socket.emit('resetGame', {
+                    userId: userData.user.id,
+                })
                 setTimeout(() => {
                     navigate('/play')
                 }, 3000)

@@ -306,11 +306,16 @@ export class UserService {
     }
 
     async changeStatusOnLine(userId: number) {
-        this.update(userId, { id: userId, status: UserStatus.Online })
+        const user = await this.findOne(userId)
+
+        if (user && user.status != UserStatus.Online)
+            this.update(userId, { id: userId, status: UserStatus.Online })
     }
 
     async changeStatusPlaying(userId: number) {
-        console.log('user.status: playing')
-        this.update(userId, { id: userId, status: UserStatus.Playing })
+        const user = await this.findOne(userId)
+
+        if (user && user.status != UserStatus.Playing)
+            this.update(userId, { id: userId, status: UserStatus.Playing })
     }
 }

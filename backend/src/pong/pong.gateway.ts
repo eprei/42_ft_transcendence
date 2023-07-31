@@ -9,12 +9,14 @@ import {
     OnGatewayInit,
 } from '@nestjs/websockets'
 import { Logger } from '@nestjs/common'
+import { UserService } from 'src/user/user.service'
 
 const FPS: number = 25
 @WebSocketGateway({ namespace: 'game', cors: { origin: '*' } })
 export class PongGateway
     implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
+    constructor(private userService: UserService) {}
     private loger: Logger = new Logger('PongGateway')
     private frameIntervals: { [roomId: string]: NodeJS.Timeout } = {}
     private pongServices: { [roomId: string]: PongService } = {}
@@ -72,8 +74,7 @@ export class PongGateway
         client.emit('leftRoom', roomId)
         this.loger.log(`Client socket ${client.id} left room: ${roomId}`)
         // TODO: Handle cleanup when a client leaves a room
-        // TODO change playe's status at the end of the game
-        // this.userService.changeStatusOnLine(playerId)
+        // this.userService.changeStatusOnLine(+client.id) //doenst work with client.id
     }
 
     private startGame(roomId: string) {
@@ -119,11 +120,15 @@ export class PongGateway
     }
 
     @SubscribeMessage('resetGame')
-    handleResetGame(client: Socket, roomId: string) {
+    handleResetGame(client: Socket, data: { userId: number }) {
+        const { userId } = data
+        const roomId = client.rooms[0]
+
         clearInterval(this.frameIntervals[roomId])
         delete this.pongServices[roomId]
         delete this.frameIntervals[roomId]
         delete this.waitingForSecondPlayer[roomId]
+        this.userService.changeStatusOnLine(userId)
         client.leave(roomId)
     }
 }
