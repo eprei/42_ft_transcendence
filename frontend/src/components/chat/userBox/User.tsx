@@ -153,7 +153,6 @@ const User = ({
 
     useEffect(() => {
         const handleOutsideClick = (event: MouseEvent) => {
-            // Comprobar si el clic se realizó fuera del menú contextual abierto
             if (
                 contextMenuRef.current &&
                 !contextMenuRef.current.contains(event.target as Node)
@@ -163,12 +162,10 @@ const User = ({
             }
         }
 
-        // Agregar el listener de clic global cuando se muestra el menú contextual
         if (showContextMenu) {
             document.addEventListener('click', handleOutsideClick)
         }
 
-        // Eliminar el listener cuando el componente se desmonta o el menú se cierra
         return () => {
             document.removeEventListener('click', handleOutsideClick)
         }
@@ -200,18 +197,17 @@ const User = ({
                         <ul>
                             {toggleBlockUser}
                             {amIowner ? (
-                                <div>
+                                <ul>
                                     {isAdmin ? (
                                         <li onClick={unsetAdminHandler}>
                                             Remove admin
                                         </li>
                                     ) : (
                                         <li onClick={setAdminHandler}>
-                                            {' '}
                                             Set admin
                                         </li>
                                     )}
-                                    {isBanned ? null : (
+                                    {!isBanned &&(
                                         <li onClick={kickUserHandler}>Kick</li>
                                     )}
                                     {isBanned ? (
@@ -221,13 +217,13 @@ const User = ({
                                     ) : (
                                         <li onClick={banUserHandler}>Ban</li>
                                     )}
-                                    {!isMuted ? (
+                                    {!isMuted && (
                                         <li onClick={muteUserHandler}>Mute</li>
-                                    ) : null}
-                                </div>
-                            ) : amIadmin && !isOwner ? (
-                                <div>
-                                    {isBanned ? null : (
+                                    )}
+                                </ul>
+                            ) : amIadmin && !isOwner && (
+                                <ul>
+                                    {!isBanned && (
                                         <li onClick={kickUserHandler}>Kick</li>
                                     )}
                                     {isBanned ? (
@@ -237,37 +233,35 @@ const User = ({
                                     ) : (
                                         <li onClick={banUserHandler}>Ban</li>
                                     )}
-                                    {!isMuted ? (
+                                    {!isMuted && (
                                         <li onClick={muteUserHandler}>Mute</li>
-                                    ) : null}
-                                </div>
-                            ) : null}
+                                    )}
+                                </ul>
+                            )}
                         </ul>
                     </div>
                 )}
-
                 <div>
                     <h5>{nickname}</h5>
                     <p className={styles.status}>
-                        {status === 'playing' ? 'playing' : ''}{' '}
+                        {status === 'playing' ? 'playing' : ''}
                     </p>
                 </div>
             </div>
-
-            {id != myId ? (
+            {id != myId && (
                 <div className={styles.right}>
                     <div>{inviteToPlay}</div>
                     <div>
-                        {!isDM ? (
+                        {!isDM && (
                             <img
                                 src={IconMsg}
                                 onClick={createDmHandler}
                                 alt="Message Icon"
                             />
-                        ) : null}
+                        )}
                     </div>
                 </div>
-            ) : null}
+            )}
         </div>
     )
 }
