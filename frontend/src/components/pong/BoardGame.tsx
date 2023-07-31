@@ -7,6 +7,8 @@ import { io } from 'socket.io-client'
 import { useAppSelector } from '../../store/types'
 import { UserData } from '../../types/UserData'
 import { useNavigate } from 'react-router-dom'
+import Player from './Player'
+
 interface Position {
     x: number
     y: number
@@ -196,12 +198,14 @@ const BoardGame = ({
                         Game Over! {winner} won!
                     </div>
                 )}
+                <Player userId={player_one} />
                 <div id="scorePlayerOne" className={styles.score}>
                     0
                 </div>
                 <div id="scorePlayerTwo" className={styles.score}>
                     0
                 </div>
+                <Player userId={player_two} />
             </div>
             <div className={styles.waitingForPlayer}>
                 {playerNumber === 'player_one' ? (
