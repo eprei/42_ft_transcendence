@@ -1,0 +1,62 @@
+diff --git a/frontend/src/components/play/MatchSystemBtn.tsx b/frontend/src/components/play/MatchSystemBtn.tsx
+index 1571ba3e..a46ca901 100644
+--- a/frontend/src/components/play/MatchSystemBtn.tsx
++++ b/frontend/src/components/play/MatchSystemBtn.tsx
+@@ -98,6 +98,7 @@ const MatchSystemBtn = () => {
+                         player_two: room.player_two,
+                         theme: room.theme,
+                         roomId: room.room_id,
++                        imPlayerOne: false,
+                     },
+                 })
+             }
+diff --git a/frontend/src/components/pong/BoardGame.tsx b/frontend/src/components/pong/BoardGame.tsx
+index b9e8c470..6d122648 100644
+--- a/frontend/src/components/pong/BoardGame.tsx
++++ b/frontend/src/components/pong/BoardGame.tsx
+@@ -47,12 +47,19 @@ export interface BoardGameProps {
+     player_one: number
+     player_two: number
+     theme: string
++    imPlayerOne: boolean
+ }
+ 
+-const BoardGame = ({ room, player_one, player_two, theme }: BoardGameProps) => {
++const BoardGame = ({
++    room,
++    player_one,
++    player_two,
++    theme,
++    imPlayerOne,
++}: BoardGameProps) => {
+     const userData = useAppSelector((state) => state.user.userData) as UserData
+     let playerNumber: string =
+-        userData.user.id === player_one ? 'player_one' : 'player_two'
++        imPlayerOne === true ? 'player_one' : 'player_two'
+ 
+     const [frame, setFrame] = useState<Frame>({
+         paddleLeft: {
+diff --git a/frontend/src/pages/Game.tsx b/frontend/src/pages/Game.tsx
+index 602d14e2..a6a3963e 100644
+--- a/frontend/src/pages/Game.tsx
++++ b/frontend/src/pages/Game.tsx
+@@ -17,6 +17,7 @@ const Game = () => {
+                 player_one={player_one}
+                 player_two={player_two}
+                 theme={theme}
++                imPlayerOne={location.state.imPlayerOne}
+             />
+         </div>
+     )
+diff --git a/frontend/src/pages/Play.tsx b/frontend/src/pages/Play.tsx
+index f98eb7b7..f3460822 100644
+--- a/frontend/src/pages/Play.tsx
++++ b/frontend/src/pages/Play.tsx
+@@ -53,6 +53,7 @@ const Play = () => {
+                         player_two: room.player_two,
+                         theme: room.theme,
+                         roomId: room.room_id,
++                        imPlayerOne: true,
+                     },
+                 })
+             }

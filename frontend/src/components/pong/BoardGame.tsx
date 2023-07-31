@@ -47,12 +47,19 @@ export interface BoardGameProps {
     player_one: number
     player_two: number
     theme: string
+    imPlayerOne: boolean
 }
 
-const BoardGame = ({ room, player_one, player_two, theme }: BoardGameProps) => {
+const BoardGame = ({
+    room,
+    player_one,
+    player_two,
+    theme,
+    imPlayerOne,
+}: BoardGameProps) => {
     const userData = useAppSelector((state) => state.user.userData) as UserData
     let playerNumber: string =
-        userData.user.id === player_one ? 'player_one' : 'player_two'
+        imPlayerOne === true ? 'player_one' : 'player_two'
 
     const [frame, setFrame] = useState<Frame>({
         paddleLeft: {

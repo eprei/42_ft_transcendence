@@ -53,6 +53,7 @@ const Play = () => {
                         player_two: room.player_two,
                         theme: room.theme,
                         roomId: room.room_id,
+                        imPlayerOne: true,
                     },
                 })
             }

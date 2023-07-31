@@ -17,6 +17,7 @@ const Game = () => {
                 player_one={player_one}
                 player_two={player_two}
                 theme={theme}
+                imPlayerOne={location.state.imPlayerOne}
             />
         </div>
     )
