@@ -4,8 +4,8 @@ import { Channel } from '../../../../types/Channel'
 import IconPrivate from '../../../../assets/icon/lock.svg'
 import ChannelType from '../../../../types/ChannelType'
 import { useAppSelector } from '../../../../store/types'
-import { Modal } from 'antd'
-import Input from './Input'
+import SimpleConfirm from '../../../ui/modal/SimpleConfirm'
+import SimpleInput from '../../../ui/modal/SimpleInput'
 
 interface DiscoverItemProps {
     channel: Channel
@@ -14,15 +14,10 @@ interface DiscoverItemProps {
 
 const DiscoverItem = (props: DiscoverItemProps) => {
     const [open, setOpen] = useState(false)
-    const [confirmLoading, setConfirmLoading] = useState(false)
     const [showInput, setShowInput] = useState(false)
-    const [inputValue, setInputValue] = useState('')
     const currentChatSelected = useAppSelector(
         (state) => state.chat.currentChatSelected
     ) as number
-    const joinChannel = (password: string) => {
-        props.joinChannel(props.channel.id, password)
-    }
 
     const showModal = () => {
         if (props.channel.type === ChannelType.Private) {
@@ -31,39 +26,37 @@ const DiscoverItem = (props: DiscoverItemProps) => {
         setOpen(true)
     }
 
-    const handleOk = () => {
-        setConfirmLoading(true)
-        setTimeout(() => {
-            if (props.channel.type === ChannelType.Private) {
-                joinChannel(inputValue)
-            } else {
-                joinChannel('')
-            }
-            setOpen(false)
-            setConfirmLoading(false)
-        }, 1000)
+    const handleJoiningDemand = (password: string) => {
+        setOpen(false)
         setShowInput(false)
-        setInputValue('')
+        setTimeout(() => {
+            props.joinChannel(props.channel.id, password)
+        }, 300)
     }
 
     const handleCancel = () => {
         setOpen(false)
     }
 
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setInputValue(event.target.value)
+    const handleEnteredPassword = (password: string) => {
+        handleJoiningDemand(password)
     }
+
+    const handleNoPassword = () => {
+        handleJoiningDemand("")
+    }
+
+    let title = `Do you want to join ${props.channel.name}??`
+    let content = ''
+    if (showInput) {
+        content = 'Please, enter the Password'
+    }
+
+    let isActive = props.channel.id === currentChatSelected ? styles.active : ''
 
     return (
         <>
-            <li
-                className={`${styles.li} ${
-                    props.channel.id === currentChatSelected
-                        ? styles.active
-                        : ''
-                }`}
-                onClick={showModal}
-            >
+            <li className={`${styles.li} ${isActive}`} onClick={showModal}>
                 <div className={styles.text}>{props.channel.name}</div>
                 <div className={styles.iconsContainer}>
                     {props.channel.type === ChannelType.Private ? (
@@ -75,21 +68,22 @@ const DiscoverItem = (props: DiscoverItemProps) => {
                     ) : null}
                 </div>
             </li>
-            <Modal
-                open={open}
-                onOk={handleOk}
-                confirmLoading={confirmLoading}
-                onCancel={handleCancel}
-            >
-                <p>{`Do you want to join ${props.channel.name}?`}</p>
-                {showInput && (
-                    <Input
-                        placeholder="Enter Channel password"
-                        value={inputValue}
-                        onChange={handleInputChange}
-                    />
-                )}
-            </Modal>
+            {open && !showInput && (
+                <SimpleConfirm
+                    onConfirm={handleNoPassword}
+                    onCancel={handleCancel}
+                    title={title}
+                    content={content}
+                />
+            )}
+            {open && showInput && (
+                <SimpleInput
+                    onConfirm={handleEnteredPassword}
+                    onCancel={handleCancel}
+                    title={title}
+                    content={content}
+                />
+            )}
         </>
     )
 }

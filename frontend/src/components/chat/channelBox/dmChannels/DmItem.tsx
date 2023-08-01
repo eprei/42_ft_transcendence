@@ -5,7 +5,7 @@ import IconLeaveChannel from '../../../../assets/icon/block_user.svg'
 import { useAppSelector, useAppDispatch } from '../../../../store/types'
 import { UserData } from '../../../../types/UserData'
 import { chatActions } from '../../../../store/chat'
-import { Modal } from 'antd'
+import SimpleConfirm from '../../../ui/modal/SimpleConfirm'
 
 interface DmItemProps {
     channel: Channel
@@ -20,31 +20,21 @@ const DmItem = (props: DmItemProps) => {
     ) as number
     const dispatch = useAppDispatch()
     const [open, setOpen] = useState(false)
-    const [confirmLoading, setConfirmLoading] = useState(false)
     const [isOwner, setIsOwner] = useState(false)
 
     const handleClick = () => {
         dispatch(chatActions.selectChat(props.channel.id))
     }
 
-    const LeaveChannel = () => {
-        props.leaveChannel(props.channel.id)
-    }
-    const deleteChannel = () => {
-        props.deleteChannel(props.channel.id)
-    }
-
     const handleOk = () => {
-        setConfirmLoading(true)
+        setOpen(false)
+        setIsOwner(false)
         setTimeout(() => {
             if (isOwner) {
-                deleteChannel()
+                props.deleteChannel(props.channel.id)
             } else {
-                LeaveChannel()
+                props.leaveChannel(props.channel.id)
             }
-            setOpen(false)
-            setConfirmLoading(false)
-            setIsOwner(false)
         }, 1000)
     }
 
@@ -59,14 +49,19 @@ const DmItem = (props: DmItemProps) => {
         setOpen(true)
     }
 
+    let title = `Are you sure you want to leave ${props.channel.name}?`
+    let content = ''
+    if (isOwner) {
+        content = `If you leave, the channel will be deleted. Continue?`
+    }
+
+    let isActive = props.channel.id === currentChatSelected ? styles.active : ''
+
+
     return (
         <>
             <li
-                className={`${styles.li} ${
-                    props.channel.id === currentChatSelected
-                        ? styles.active
-                        : ''
-                }`}
+                className={`${styles.li} ${isActive}`}
                 onClick={handleClick}
             >
                 <div className={styles.text}>{props.channel.name}</div>
@@ -81,23 +76,14 @@ const DmItem = (props: DmItemProps) => {
                     }
                 </div>
             </li>
-            <Modal
-                open={open}
-                onOk={handleOk}
-                confirmLoading={confirmLoading}
-                onCancel={handleCancel}
-            >
-                {!isOwner && (
-                    <p>{`Are you sure you want to leave ${props.channel.name}?`}</p>
-                )}
-                {isOwner && (
-                    <div>
-                        <p>You are the owner of this channel.</p>
-                        <p>If you leave, the channel will be deleted.</p>
-                        <p>Continue?</p>
-                    </div>
-                )}
-            </Modal>
+            {open && (
+                <SimpleConfirm
+                    onConfirm={handleOk}
+                    onCancel={handleCancel}
+                    title={title}
+                    content={content}
+                />
+            )}
         </>
     )
 }
