@@ -10,10 +10,10 @@ const TOP_SCORE: number = 3
 @Injectable()
 export class PongService {
     BALL_SIZE: number = 2
-    PADDLE_SPEED: number = 9
+    PADDLE_SPEED: number = 2
     // TODO Adjust the speed of the ball according to the processing capacity of the school's computers
-    BALL_SPEED_Y: number = 2
-    BALL_SPEED_X: number = 2
+    BALL_SPEED_Y: number = 1
+    BALL_SPEED_X: number = 1
 
     frame: Frame = {
         paddleLeft: {
