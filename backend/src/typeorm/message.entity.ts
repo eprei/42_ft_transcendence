@@ -17,11 +17,19 @@ export class Message {
     creator: number
 
     @Column({ type: 'text' })
+    userNickname: string
+
+    @Column({ type: 'text' })
+    userAvatarUrl: string
+
+    @Column({ type: 'text' })
     content: string
 
-    @ManyToOne(() => Channel, (channel) => channel.messages)
+    @ManyToOne(() => Channel, (channel) => channel.messages, {
+        onDelete: 'CASCADE',
+    })
     @JoinColumn({ name: 'channelId' })
-    channelId: Channel
+    channelId: number
 
     @CreateDateColumn()
     creationDate: Date

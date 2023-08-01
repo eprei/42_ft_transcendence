@@ -7,7 +7,6 @@ import { UserModule } from './user/user.module'
 import { ChannelModule } from './channel/channel.module'
 import { User } from './typeorm/user.entity'
 import { Channel } from './typeorm/channel.entity'
-import { MessageModule } from './message/message.module'
 import { Message } from './typeorm/message.entity'
 import { Friend } from './typeorm/friend.entity'
 import { Match } from './typeorm/match.entity'
@@ -18,6 +17,7 @@ import { PongModule } from './pong/pong.module'
 import { AuthenticatedGuard } from './auth/guards/authenticated.guard'
 import { APP_GUARD } from '@nestjs/core'
 import { RoomModule } from './room/room.module'
+import { ChatModule } from './chat/chat.module'
 
 @Module({
     imports: [
@@ -31,16 +31,16 @@ import { RoomModule } from './room/room.module'
             url: process.env.DATABASE_URL,
             autoLoadEntities: true,
             synchronize: true,
-            entities: [User, Channel, Message, Friend, Match],
+            entities: [User, Channel, Friend, Match],
         }),
         TypeOrmModule.forFeature([Channel, User, Message, Friend, Match]),
         UserModule,
         ChannelModule,
-        MessageModule,
         FriendModule,
         MatchModule,
         AuthModule,
         PongModule,
+        ChatModule,
         RoomModule,
     ],
     controllers: [AppController],

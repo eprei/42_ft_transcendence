@@ -238,7 +238,7 @@ export class UserService {
             throw new NotFoundException('User not found')
         }
 
-        const { id, TFASecret, FT_id, ...rest } = user
+        const { TFASecret, FT_id, ...rest } = user
 
         const userPosition = await this.getUserRankingPosition(req.user.id)
 

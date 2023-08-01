@@ -9,6 +9,7 @@ import {
 import { Channel } from './channel.entity'
 import { Friend } from './friend.entity'
 import { Match } from './match.entity'
+import { ChannelUserMuted } from './channel-user-muted.entity'
 
 export enum UserStatus {
     Online = 'online',
@@ -54,9 +55,29 @@ export class User {
     })
     status: UserStatus
 
+    @OneToMany(() => Channel, (channel) => channel.owner)
+    ownedChannels: Channel[]
+
     @ManyToMany(() => Channel, (channel) => channel.users)
     @JoinTable()
-    channels: Channel[]
+    joinedChannel: Channel[]
+
+    @ManyToMany(() => Channel, (channel) => channel.admin)
+    @JoinTable()
+    admin: Channel[]
+
+    @ManyToMany(() => Channel, (channel) => channel.banned)
+    @JoinTable()
+    banned: Channel[]
+
+    @OneToMany(
+        () => ChannelUserMuted,
+        (channelUserMuted) => channelUserMuted.user
+    )
+    muted: ChannelUserMuted[]
+    // @ManyToMany(() => Channel, (channel) => channel.muted)
+    // @JoinTable()
+    // muted: Map<Channel, Date>
 
     @OneToMany(() => Friend, (friend) => friend.user)
     friends: Friend[]
@@ -72,4 +93,11 @@ export class User {
 
     @OneToMany(() => Friend, (friend) => friend.createdBy)
     createdFriends: Friend[]
+
+    @ManyToMany(() => User, (user) => user.blockedBy)
+    @JoinTable()
+    blockedUsers: User[]
+
+    @ManyToMany(() => User, (user) => user.blockedUsers)
+    blockedBy: User[]
 }

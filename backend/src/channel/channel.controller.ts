@@ -22,20 +22,22 @@ export class ChannelController {
     @Post()
     @UsePipes(ValidationPipe)
     async create(@Body() createChannelDto: CreateChannelDto) {
-        const channel = await this.channelService.create(createChannelDto)
-        return channel
+        return await this.channelService.create(createChannelDto)
+    }
+
+    @Get('user-channels/:id')
+    async getUserChannels(@Param('id') id: string) {
+        return await this.channelService.getUserChannels(+id)
     }
 
     @Get()
     async findAll() {
-        const channels = await this.channelService.findAll()
-        return channels
+        return await this.channelService.findAll()
     }
 
     @Get(':id')
     async findOne(@Param('id') id: string) {
-        const channel = await this.channelService.findOne(+id)
-        return channel
+        return await this.channelService.findOne(+id)
     }
 
     @Patch(':id')
@@ -43,13 +45,34 @@ export class ChannelController {
         @Param('id') id: string,
         @Body() updateChannelDto: UpdateChannelDto
     ) {
-        const channel = await this.channelService.update(+id, updateChannelDto)
-        return channel
+        return await this.channelService.update(+id, updateChannelDto)
     }
 
     @Delete(':id')
     async remove(@Param('id') id: string) {
-        const channel = await this.channelService.remove(+id)
-        return channel
+        return await this.channelService.remove(+id)
+    }
+
+    @Delete(':channelId/users/:userId')
+    async removeUserFromChannel(
+        @Param('channelId') channelId: number,
+        @Param('userId') userId: number
+    ) {
+        try {
+            await this.channelService.removeUserFromChannel(channelId, userId)
+            return { message: 'User removed from channel successfully' }
+        } catch (error) {
+            console.log('Failed to remove user from channel')
+        }
+    }
+
+    @Get(':id/users')
+    async getChannelUsers(@Param('id') id: string) {
+        return await this.channelService.getChannelUsers(+id)
+    }
+
+    @Get(':id/msg')
+    async getChannelMsg(@Param('id') id: string) {
+        return await this.channelService.getChannelMsg(+id)
     }
 }

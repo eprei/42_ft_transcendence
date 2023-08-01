@@ -8,6 +8,7 @@ import { Message } from './typeorm/message.entity'
 import { Match } from './typeorm/match.entity'
 import { UserService } from './user/user.service'
 import { UserStatus } from './typeorm/user.entity'
+import * as bcrypt from 'bcrypt'
 
 @Injectable()
 export class AppService {
@@ -120,61 +121,62 @@ export class AppService {
 
         //   create Channels
         const chan1 = this.channelRepo.create({
-            owner: 1,
+            owner: user1,
             name: 'chan 1',
             type: 'public',
             password: null,
-            admin: user1,
+            admin: [user1],
             users: [user1, user2, user5],
         })
         await this.channelRepo.save(chan1)
 
         const chan2 = this.channelRepo.create({
-            owner: 1,
+            owner: user1,
             name: 'chan 2',
             type: 'public',
             password: null,
-            admin: user1,
+            admin: [user1],
             users: [user1, user4],
         })
         await this.channelRepo.save(chan2)
 
+        let hashedPassword = await bcrypt.hash('1234', 10)
         const chan3 = this.channelRepo.create({
-            owner: 1,
+            owner: user1,
             name: 'chan 3',
             type: 'private',
-            password: '1234',
-            admin: user1,
+            password: hashedPassword,
+            admin: [user1],
             users: [user1, user3],
         })
         await this.channelRepo.save(chan3)
 
         const chan4 = this.channelRepo.create({
-            owner: 2,
+            owner: user2,
             name: 'chan 4',
             type: 'private',
-            password: '1234',
-            admin: user2,
+            password: hashedPassword,
+            admin: [user2],
             users: [user2, user4],
         })
         await this.channelRepo.save(chan4)
 
         const chan5 = this.channelRepo.create({
-            owner: 2,
+            owner: user2,
             name: 'chan 5',
             type: 'direct',
-            password: null,
-            admin: user2,
+            password: '',
+            admin: [user2],
             users: [user2, user5],
         })
         await this.channelRepo.save(chan5)
 
         const chan6 = this.channelRepo.create({
-            owner: 3,
+            owner: user3,
             name: 'chan 6',
             type: 'direct',
-            password: null,
-            admin: user3,
+            password: '',
+            admin: [user3],
         })
         chan6.users = [user3, user4]
         await this.channelRepo.save(chan6)
@@ -246,39 +248,39 @@ export class AppService {
         await this.friendRepo.save(friendship6)
 
         // Create messages
-        const channels = await this.channelRepo.find()
-        for (const channel of channels) {
-            let userCount = 3
-            if (channel.type === 'direct') {
-                userCount = 2
-            }
+        // const channels = await this.channelRepo.find()
+        // for (const channel of channels) {
+        //     let userCount = 3
+        //     if (channel.type === 'direct') {
+        //         userCount = 2
+        //     }
 
-            const users = await this.userRepo.find({ take: userCount })
-            const channelUsers = users
-                .filter((user) => user.id !== channel.owner)
-                .filter((user) => user !== undefined)
-            if (channelUsers.length >= userCount) {
-                channelUsers.pop()
-            }
+        //     const users = await this.userRepo.find({ take: userCount })
+        //     const channelUsers = users
+        //         .filter((user) => user !== channel.owner)
+        //         .filter((user) => user !== undefined)
+        //     if (channelUsers.length >= userCount) {
+        //         channelUsers.pop()
+        //     }
 
-            const allUsers = await this.userRepo.find()
-            const owner = allUsers.find((user) => user.id === channel.owner)
-            channelUsers.unshift(owner)
+        //     const allUsers = await this.userRepo.find()
+        //     const owner = allUsers.find((user) => user === channel.owner)
+        //     channelUsers.unshift(owner)
 
-            for (let i = 0; i < 10; i++) {
-                const creator = channelUsers[i % userCount].id
-                const content = `Message ${i + 1}`
+        //     for (let i = 0; i < 10; i++) {
+        //         const creator = channelUsers[i % userCount].id
+        //         const content = `Message ${i + 1}`
 
-                const message = this.messageRepo.create({
-                    creator,
-                    content,
-                    creationDate: new Date(),
-                    channelId: channel,
-                })
+        //         const message = this.messageRepo.create({
+        //             creator,
+        //             content,
+        //             creationDate: new Date(),
+        //             channelId: channel,
+        //         })
 
-                await this.messageRepo.save(message)
-            }
-        }
+        //         await this.messageRepo.save(message)
+        //     }
+        // }
 
         const allusers = await this.userRepo.find()
 
