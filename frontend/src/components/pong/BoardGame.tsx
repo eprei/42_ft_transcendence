@@ -175,9 +175,9 @@ const BoardGame = ({
         function onReceiveFrames(updatedFrame: Frame) {
             setWaitingForPlayer(false)
             setFrame(updatedFrame)
-            document.getElementById('scorePlayerOne').innerText =
+            document.getElementById('scorePlayerOne')!.innerText =
                 updatedFrame.score.playerOne.toString()
-            document.getElementById('scorePlayerTwo').innerText =
+            document.getElementById('scorePlayerTwo')!.innerText =
                 updatedFrame.score.playerTwo.toString()
 
             if (updatedFrame.gameOver) {
