@@ -8,43 +8,55 @@ alias pwgen="docker run \
 	--capitalize \
 	--secure 20 1"
 
-generate_postgres_credentials () {
+is_environement_file_already_exist () {
+	if [ -e ".env" ]
+	then
+		echo the ".env" file already exist
+		echo you need to delete it to recreate a new one
+		exit 0
+	fi
+}
+
+generate_all_variables () {
 	POSTGRES_USER=$(whoami)
 	POSTGRES_PASSWORD=$(pwgen)
 	POSTGRES_NAME="our-data"
 }
 
-create_env_postgres () {
-	cat > env/postgres.env <<- eof
+ask_42_api_credentials () {
+	printf "42 UID   : "; read -r FT_UUID
+	printf "42 SECRET: "; read -r FT_SECRET
+}
+
+create_the_environment_file () {
+	cat > .env <<- environment_file
+	# Cosmic Pong
+	# > all secret and environment data
+
+	# File created the $(date +"%Y.%m.%d") by $(whoami)
+
+	# 42 credentials
+	FT_UUID=${FT_UUID}
+	FT_SECRET=${FT_SECRET}
+
+	# PostgreSQL
 	POSTGRES_USER=${POSTGRES_USER}
 	POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
 	POSTGRES_DB=${POSTGRES_NAME}
-	eof
-}
 
-create_env_nest () {
-	cat > env/nest.env <<- eof
+	# NestJS
 	DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_NAME}
 	PORT=3000
-	eof
-}
+	environment_file
 
-ask_api_42_credentials () {
-	printf "42 UID   : "; read -r FT_UUID
-	printf "42 SECRET: "; read -r FT_SECRET
-
-	cat >> env/nest.env <<- 42
-	FT_UUID=${FT_UUID}
-	FT_SECRET=${FT_SECRET}
-	42
 }
 
 main () {
-	mkdir -p env
-	generate_postgres_credentials
-	create_env_nest
-	create_env_postgres
-	ask_api_42_credentials
+	is_environement_file_already_exist
+
+	ask_42_api_credentials
+	generate_all_variables
+	create_the_environment_file
 }
 
 main
