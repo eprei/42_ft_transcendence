@@ -78,7 +78,6 @@ const Friend = ({
         } catch (error) {
             console.error(error)
         }
-        console.log('Friendship removed sucsefully')
     }
 
     const acceptFriendship = async (id: number) => {
@@ -106,7 +105,6 @@ const Friend = ({
         } catch (error) {
             console.error(error)
         }
-        console.log('Friend sucsefully accepted')
     }
 
     return (

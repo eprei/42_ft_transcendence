@@ -27,7 +27,6 @@ const UserInformation = () => {
             )
 
             if (response.ok) {
-                console.log('Nickname updated successfully')
                 window.location.reload()
             } else {
                 console.error('Failed to update nickname')
@@ -50,7 +49,6 @@ const UserInformation = () => {
                     }
                 )
                 if (response.ok) {
-                    console.log('2FA turned off')
                     setTFAEnabled(false)
                 }
             } catch (error) {
@@ -96,7 +94,6 @@ const UserInformation = () => {
                 )
 
                 if (response.status === 201) {
-                    console.log('Profile image updated correctly')
                     window.location.reload()
                 } else {
                     console.error(

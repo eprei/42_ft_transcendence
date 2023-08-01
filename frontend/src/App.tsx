@@ -74,6 +74,7 @@ const router = createBrowserRouter([
             },
             {
                 path: 'play',
+                loader: userLoader,
                 element: (
                     <ProtectedRoute>
                         <Play />

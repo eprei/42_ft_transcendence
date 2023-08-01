@@ -43,16 +43,6 @@ const Navbar = () => {
                         )}
                         {isLoggedIn === 'isLogged' && (
                             <NavLink
-                                to="/game"
-                                className={({ isActive }) =>
-                                    isActive ? styles.active : undefined
-                                }
-                            >
-                                Game
-                            </NavLink>
-                        )}
-                        {isLoggedIn === 'isLogged' && (
-                            <NavLink
                                 to="/play"
                                 className={({ isActive }) =>
                                     isActive ? styles.active : undefined

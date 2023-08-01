@@ -3,8 +3,10 @@ import MatchSystemBtn from '../components/play/MatchSystemBtn'
 import { Checkbox } from 'antd'
 import { useState, useEffect } from 'react'
 import type { CheckboxChangeEvent } from 'antd/es/checkbox'
+import { useNavigate } from 'react-router-dom'
 
 const Play = () => {
+    const navigate = useNavigate()
     const [selectedTheme, setSelectedTheme] = useState<string>('Theme 1')
     const [youAreAlreadyPlaying, setYouAreAlreadyPlaying] =
         useState<boolean>(false)
@@ -40,10 +42,21 @@ const Play = () => {
                 } else {
                     throw new Error('Error creating room')
                 }
-            }
+            } else {
+                console.log('Room created successfully')
 
-            console.log('Room created successfully')
-            // TODO redirect to game page
+                const room = await response.json()
+
+                navigate('/game', {
+                    state: {
+                        player_one: room.player_one,
+                        player_two: room.player_two,
+                        theme: room.theme,
+                        roomId: room.room_id,
+                        imPlayerOne: true,
+                    },
+                })
+            }
         } catch (error) {
             console.error(error)
         }

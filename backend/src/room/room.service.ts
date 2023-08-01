@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { CreateRoomDto } from './dto/create-room.dto'
 import { UserService } from 'src/user/user.service'
+import { v4 as uuidv4 } from 'uuid'
 
 @Injectable()
 export class RoomService {
@@ -40,20 +41,16 @@ export class RoomService {
             throw new Error('You are already playing')
         }
 
-        const myId = userMe.id
-
-        this.userService.changeStatusPlaying(myId)
+        this.userService.changeStatusPlaying(userMe.id)
 
         const room: Room = {
             player_one: userMe.id,
             player_two: 0,
             theme: createRoomDto.theme,
+            room_id: uuidv4(),
         }
 
         this.rooms.push(room)
-
-        // TODO change the status at the end of the game
-        // this.userService.changeStatusOnLine(myId)
 
         return room
     }
@@ -102,14 +99,11 @@ export class RoomService {
             index = this.rooms.findIndex((room) => room.player_two === 0)
             if (index !== -1) {
                 this.rooms[index].player_two = myId
-                // TODO  Call the game launching service
                 return this.rooms[index]
             }
-            console.log('searching room for', userMe.nickname)
             await this.sleep(1000)
             i++
         }
-        console.log('no room found for', userMe.nickname)
         this.userService.changeStatusOnLine(myId)
     }
 }

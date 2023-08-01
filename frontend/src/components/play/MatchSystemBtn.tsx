@@ -1,8 +1,10 @@
 import styles from './MatchSystemBtn.module.css'
 import { useState, useEffect } from 'react'
 import { Progress } from 'antd'
+import { useNavigate } from 'react-router-dom'
 
 const MatchSystemBtn = () => {
+    const navigate = useNavigate()
     const [fetching, setFetching] = useState(false)
     const [percent, setPercent] = useState<number>(0)
     const [roomNotFound, setRoomNotFound] = useState<boolean>(false)
@@ -75,16 +77,26 @@ const MatchSystemBtn = () => {
                 if (response.status === 409) {
                     setYouAreAlreadyPlaying(true)
                 } else {
-                    throw new Error('Error joining random room')
+                    throw new Error('Error creating room')
                 }
+            } else {
+                const room = await response.json()
+
+                navigate('/game', {
+                    state: {
+                        player_one: room.player_one,
+                        player_two: room.player_two,
+                        theme: room.theme,
+                        roomId: room.room_id,
+                        imPlayerOne: false,
+                    },
+                })
             }
         } catch (error) {
             console.error(error)
         } finally {
             setFetching(false)
         }
-
-        console.log('Random room successfully joined')
     }
 
     return (

@@ -17,4 +17,6 @@ export interface Frame {
     paddleLeft: Rectangle
     paddleRight: Rectangle
     ball: Rectangle
+    score: { playerOne: number; playerTwo: number }
+    gameOver: boolean
 }
