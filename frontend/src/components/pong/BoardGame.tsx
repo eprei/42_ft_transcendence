@@ -1,5 +1,5 @@
 import styles from './BoardGame.module.css'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { io } from 'socket.io-client'
 import { useAppSelector } from '../../store/types'
 import { UserData } from '../../types/UserData'
@@ -61,11 +61,12 @@ const BoardGame = ({
     const BALL_SIZE: number = 2
     const PADDLE_WIDTH: number = 2
     const PADDLE_HEIGHT: number = 30
-    const [gameOver, setGameOver] = useState<boolean>(false)
     const [winner, setWinner] = useState<string>('')
     const navigate = useNavigate()
     const [playerOneData, setPlayerOneData] = useState<UserData>({} as UserData)
     const [playerTwoData, setPlayerTwoData] = useState<UserData>({} as UserData)
+    const matchSaved = useRef<boolean>(false)
+    const gameOver = useRef<boolean>(false)
 
     const [frame, setFrame] = useState<Frame>({
         paddleLeft: {
@@ -180,16 +181,54 @@ const BoardGame = ({
             document.getElementById('scorePlayerTwo')!.innerText =
                 updatedFrame.score.playerTwo.toString()
 
-            if (updatedFrame.gameOver) {
-                let winner =
+            if (updatedFrame.gameOver && gameOver.current === false) {
+                let winner: string =
                     updatedFrame.score.playerOne > updatedFrame.score.playerTwo
                         ? 'Player One'
                         : 'Player Two'
                 setWinner(winner)
-                setGameOver(true)
+                gameOver.current = true
                 socket.emit('resetGame', {
                     userId: userData.user.id,
                 })
+
+                if (imPlayerOne === false && !matchSaved.current) {
+                    async function saveMatch() {
+                        try {
+                            const createMatchDto = {
+                                winner: player_one,
+                                loser: player_two,
+                                scoreWinner: updatedFrame.score.playerOne,
+                                scoreLoser: updatedFrame.score.playerTwo,
+                            }
+                            console.log(
+                                'createMatchDto front: ',
+                                createMatchDto
+                            )
+                            const response = await fetch(
+                                `http://localhost:8080/api/match`,
+                                {
+                                    method: 'POST',
+                                    credentials: 'include',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify(createMatchDto),
+                                }
+                            )
+
+                            if (!response.ok) {
+                                throw new Error(
+                                    'Error saving match into the database'
+                                )
+                            }
+                        } catch (error) {
+                            console.error(error)
+                        }
+                    }
+                    saveMatch()
+                    matchSaved.current = true
+                }
                 setTimeout(() => {
                     navigate('/play')
                 }, 3000)
@@ -226,7 +265,7 @@ const BoardGame = ({
     return (
         <div>
             <div className={styles.scoreContainer}>
-                {gameOver && (
+                {gameOver.current && (
                     <div className={styles.gameOver}>
                         Game Over! {winner} won!
                     </div>
