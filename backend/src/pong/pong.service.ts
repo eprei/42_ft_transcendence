@@ -152,20 +152,10 @@ export class PongService {
             this.frame.ball.position.x = FRAME_WIDTH / 2
             this.frame.ball.position.y = FRAME_HEIGHT / 2
             this.frame.score.playerOne += 1
-            if (this.frame.score.playerOne >= TOP_SCORE) {
-                this.frame.gameOver = true
-                this.frame.score.playerOne = 0
-                this.frame.score.playerTwo = 0
-            }
         } else if (this.frame.ball.position.x <= 0) {
             this.frame.ball.position.x = FRAME_WIDTH / 2
             this.frame.ball.position.y = FRAME_HEIGHT / 2
             this.frame.score.playerTwo += 1
-            if (this.frame.score.playerTwo >= TOP_SCORE) {
-                this.frame.gameOver = true
-                this.frame.score.playerOne = 0
-                this.frame.score.playerTwo = 0
-            }
         }
 
         if (
