@@ -7,8 +7,8 @@ import ChannelType from '../../../../types/ChannelType'
 import { useAppDispatch, useAppSelector } from '../../../../store/types'
 import { UserData } from '../../../../types/UserData'
 import { chatActions } from '../../../../store/chat'
-import { Modal } from 'antd'
-import Input from '../discoverChannels/Input'
+import SimpleConfirm from '../../../ui/modal/SimpleConfirm'
+import SimpleInput from '../../../ui/modal/SimpleInput'
 
 interface JoinedItemProps {
     channel: Channel
@@ -24,36 +24,29 @@ const JoinedItem = (props: JoinedItemProps) => {
     ) as number
     const dispatch = useAppDispatch()
     const [open, setOpen] = useState(false)
-    const [confirmLoading, setConfirmLoading] = useState(false)
     const [isOwner, setIsOwner] = useState(false)
     const [canChangePassword, setCanChangePassword] = useState(false)
-    const [inputValue, setInputValue] = useState('')
 
     const handleClick = () => {
         dispatch(chatActions.selectChat(props.channel.id))
     }
 
-    const LeaveChannel = () => {
-        props.leaveChannel(props.channel.id)
-    }
-    const deleteChannel = () => {
-        props.deleteChannel(props.channel.id)
-    }
     const handleOk = () => {
-        setConfirmLoading(true)
+        setOpen(false)
+        setIsOwner(false)
         setTimeout(() => {
-            if (isOwner && !canChangePassword) {
-                deleteChannel()
-            } else if (!isOwner && !canChangePassword) {
-                LeaveChannel()
-            } else if (!isOwner && canChangePassword) {
-                props.changePassword(props.channel.id, inputValue)
+            if (isOwner) {
+                props.deleteChannel(props.channel.id)
+            } else {
+                props.leaveChannel(props.channel.id)
             }
-            setOpen(false)
-            setConfirmLoading(false)
-            setIsOwner(false)
-            setCanChangePassword(false)
-        }, 1000)
+        }, 300)
+    }
+
+    const handleChangePassword = (newPassword: string) => {
+        props.changePassword(props.channel.id, newPassword)
+        setCanChangePassword(false)
+        setOpen(false)
     }
 
     const handleCancel = () => {
@@ -75,20 +68,21 @@ const JoinedItem = (props: JoinedItemProps) => {
             setOpen(true)
         }
     }
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setInputValue(event.target.value)
+
+    let title = `Are you sure you want to leave ${props.channel.name}?`
+    let content = ''
+    if (isOwner) {
+        content = `If you leave, the channel will be deleted. Continue?`
     }
+    if (canChangePassword) {
+        title = 'Please, enter a new Password'
+    }
+
+    let isActive = props.channel.id === currentChatSelected ? styles.active : ''
 
     return (
         <>
-            <li
-                className={`${styles.li} ${
-                    props.channel.id === currentChatSelected
-                        ? styles.active
-                        : ''
-                }`}
-                onClick={handleClick}
-            >
+            <li className={`${styles.li} ${isActive}`} onClick={handleClick}>
                 <div className={styles.text}>{props.channel.name}</div>
                 <div className={styles.iconsContainer}>
                     {
@@ -109,33 +103,22 @@ const JoinedItem = (props: JoinedItemProps) => {
                     ) : null}
                 </div>
             </li>
-            <Modal
-                open={open}
-                onOk={handleOk}
-                confirmLoading={confirmLoading}
-                onCancel={handleCancel}
-            >
-                {!canChangePassword && !isOwner && (
-                    <p>{`Are you sure you want to leave ${props.channel.name}?`}</p>
-                )}
-                {!canChangePassword && isOwner && (
-                    <div>
-                        <p>You are the owner of this channel.</p>
-                        <p>If you leave, the channel will be deleted.</p>
-                        <p>Continue?</p>
-                    </div>
-                )}
-                {canChangePassword && !isOwner && (
-                    <div>
-                        <p>Enter channel new password</p>
-                        <Input
-                            placeholder="new password"
-                            value={inputValue}
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                )}
-            </Modal>
+            {open && !canChangePassword && (
+                <SimpleConfirm
+                    onConfirm={handleOk}
+                    onCancel={handleCancel}
+                    title={title}
+                    content={content}
+                />
+            )}
+            {open && canChangePassword && (
+                <SimpleInput
+                    onConfirm={handleChangePassword}
+                    onCancel={handleCancel}
+                    title={title}
+                    content={content}
+                />
+            )}
         </>
     )
 }
