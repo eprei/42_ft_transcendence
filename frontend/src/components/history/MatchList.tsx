@@ -1,20 +1,24 @@
 import { useEffect, useState } from 'react'
 import { MatchData } from '../../types/MatchData'
 import styles from './MatchList.module.css'
+import { UserData } from '../../types/UserData'
 
-const MatchList = (props) => {
+export interface UserProp {
+    userData: UserData
+}
+
+const MatchList = ({ userData} : UserProp) => {
     const [matchHistory, setMatchHistory] = useState<MatchData[]>([])
 
     useEffect(() => {
         const fetchMatches = async () => {
             try {
                 const res = await fetch(
-                    `http://localhost:8080/api/match/user/${props.userid.toString()}`,
+                    `http://localhost:8080/api/match/user/${String(userData.user.id)}`,
                     { credentials: 'include' }
                 )
                 const resjson = await res.json()
                 setMatchHistory(resjson)
-                console.log(resjson)
             } catch (error) {
                 console.log(error)
             }
