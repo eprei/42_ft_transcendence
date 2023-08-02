@@ -142,6 +142,5 @@ export class PongGateway
         delete this.secondPlayerIds[roomId]
         this.userService.changeStatusOnLine(userId)
         client.leave(roomId)
-        // TODO add info to the match table to 'match history' feature
     }
 }
