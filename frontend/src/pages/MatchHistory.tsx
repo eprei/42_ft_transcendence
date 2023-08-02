@@ -6,7 +6,6 @@ import styles from './MatchHistory.module.css'
 const MatchHistory = () => {
     const userdata = useAppSelector((state) => state.user.userData) as UserData
 
-
     return (
         <div>
             <h1 className={styles.title}>Match History</h1>
