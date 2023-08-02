@@ -84,7 +84,6 @@ export class PongGateway
         this.server.to(roomId).emit('leftRoom')
         this.loger.log(`Client socket ${client.id} left room: ${roomId}`)
         this.userService.changeStatusOnLine(userId)
-        // TODO delete the room from room service if it only has one player !!!
     }
 
     private startGame(roomId: string) {

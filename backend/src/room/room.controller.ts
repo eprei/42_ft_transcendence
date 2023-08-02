@@ -9,6 +9,7 @@ import {
     Request,
     HttpException,
     HttpStatus,
+    Delete,
 } from '@nestjs/common'
 import { RoomService } from './room.service'
 import { Room } from 'src/types/Room'
@@ -56,5 +57,10 @@ export class RoomController {
         } catch (error) {
             throw new HttpException(error.message, HttpStatus.CONFLICT)
         }
+    }
+
+    @Delete('id/:roomId')
+    deleteRoom(@Param('roomId') roomId: string) {
+        return this.roomService.deleteRoom(roomId)
     }
 }

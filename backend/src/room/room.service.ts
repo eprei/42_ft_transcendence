@@ -15,7 +15,7 @@ export class RoomService {
         private readonly userService: UserService
     ) {}
 
-    private readonly rooms: Room[] = []
+    private rooms: Room[] = []
 
     getAllRooms(): Room[] {
         return this.rooms
@@ -51,6 +51,8 @@ export class RoomService {
         }
 
         this.rooms.push(room)
+        console.log('createRoom method from room.service has been called')
+        this.printRooms(this.rooms)
 
         return room
     }
@@ -66,10 +68,27 @@ export class RoomService {
         return null
     }
 
-    deleteRoom(id: number): Room {
-        const index = this.rooms.findIndex(
-            (room) => room.player_one === id || room.player_two === id
-        )
+    printRooms(rooms: Room[]): void {
+        console.log('List of rooms:')
+        rooms.forEach((room, index) => {
+            console.log(`Room ${index + 1}:`)
+            console.log(`Player One: ${room.player_one}`)
+            console.log(`Player Two: ${room.player_two}`)
+            console.log(`Theme: ${room.theme}`)
+            console.log(`Room ID: ${room.room_id}`)
+            console.log('---------------------')
+        })
+    }
+
+    deleteRoom(room_id: string): Room | null {
+        const index = this.rooms.findIndex((room) => room.room_id === room_id)
+        console.log('deleteRoom method from room.service has been called')
+        this.printRooms(this.rooms)
+        if (index !== -1) {
+            console.log('room deleted', room_id)
+        } else {
+            console.log('room not found', room_id)
+        }
         if (index !== -1) {
             return this.rooms.splice(index, 1)[0]
         }
@@ -99,6 +118,8 @@ export class RoomService {
             index = this.rooms.findIndex((room) => room.player_two === 0)
             if (index !== -1) {
                 this.rooms[index].player_two = myId
+                console.log('room found: ', this.rooms[index].room_id)
+                this.printRooms(this.rooms)
                 return this.rooms[index]
             }
             await this.sleep(1000)

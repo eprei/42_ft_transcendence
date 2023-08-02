@@ -47,6 +47,29 @@ export interface BoardGameProps {
     imPlayerOne: boolean
 }
 
+async function deleteRoomFromMatchingSystem(room: string) {
+    try {
+        console.log('function deleteRoomFromMatchingSystem')
+        console.log('timestamp: ' + Date.now())
+        const response = await fetch(
+            `http://localhost:8080/api/room/id/${room}`,
+            {
+                method: 'DELETE',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }
+        )
+
+        if (!response.ok) {
+            throw new Error('Error deleting room from matching system')
+        }
+    } catch (error) {
+        console.error(error)
+    }
+}
+
 const BoardGame = ({
     room,
     player_one,
@@ -67,6 +90,7 @@ const BoardGame = ({
     const matchSaved = useRef<boolean>(false)
     const gameOver = useRef<boolean>(false)
     const otherPlayerHasLeftTheRoom = useRef<boolean>(false)
+    const isUnmounted = useRef(false)
 
     const [frame, setFrame] = useState<Frame>({
         paddleLeft: {
@@ -183,6 +207,7 @@ const BoardGame = ({
             document.getElementById('scorePlayerTwo')!.innerText =
                 updatedFrame.score.playerTwo.toString()
 
+            // Handle game over
             if (updatedFrame.gameOver && gameOver.current === false) {
                 let winner: string =
                     updatedFrame.score.playerOne > updatedFrame.score.playerTwo
@@ -194,6 +219,7 @@ const BoardGame = ({
                     userId: userData.user.id,
                 })
 
+                // Save match
                 if (imPlayerOne === false && !matchSaved.current) {
                     async function saveMatch() {
                         try {
@@ -265,9 +291,23 @@ const BoardGame = ({
             }, 3000)
         }
 
+        const handleDeleteRoom = async () => {
+            try {
+                console.log('DELETE room from matching system')
+                await deleteRoomFromMatchingSystem(room)
+            } catch (error) {
+                console.error(error)
+            }
+        }
+
         return () => {
             // Remove the event listener when disassembling the component to avoid memory leaks
+            isUnmounted.current = true
             document.removeEventListener('keydown', handleKeyDown)
+
+            if (isUnmounted.current) {
+                handleDeleteRoom()
+            }
 
             socket.emit('leaveRoom', {
                 roomId: room,
@@ -283,7 +323,7 @@ const BoardGame = ({
 
             socket.close()
         }
-    }, [])
+    }, [room])
 
     return (
         <div>
