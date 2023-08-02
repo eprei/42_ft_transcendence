@@ -196,10 +196,26 @@ const BoardGame = ({
                     async function saveMatch() {
                         try {
                             const createMatchDto = {
-                                winner: player_one,
-                                loser: player_two,
-                                scoreWinner: updatedFrame.score.playerOne,
-                                scoreLoser: updatedFrame.score.playerTwo,
+                                winner:
+                                    updatedFrame.score.playerOne >
+                                    updatedFrame.score.playerTwo
+                                        ? player_one
+                                        : player_two,
+                                loser:
+                                    updatedFrame.score.playerOne >
+                                    updatedFrame.score.playerTwo
+                                        ? player_two
+                                        : player_one,
+                                scoreWinner:
+                                    updatedFrame.score.playerOne >
+                                    updatedFrame.score.playerTwo
+                                        ? updatedFrame.score.playerOne
+                                        : updatedFrame.score.playerTwo,
+                                scoreLoser:
+                                    updatedFrame.score.playerOne >
+                                    updatedFrame.score.playerTwo
+                                        ? updatedFrame.score.playerTwo
+                                        : updatedFrame.score.playerOne,
                             }
                             console.log(
                                 'createMatchDto front: ',
