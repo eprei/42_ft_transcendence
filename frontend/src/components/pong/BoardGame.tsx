@@ -5,7 +5,6 @@ import { useAppSelector } from '../../store/types'
 import { UserData } from '../../types/UserData'
 import { useNavigate } from 'react-router-dom'
 import Player from './Player'
-
 interface Position {
     x: number
     y: number
@@ -67,6 +66,7 @@ const BoardGame = ({
     const [playerTwoData, setPlayerTwoData] = useState<UserData>({} as UserData)
     const matchSaved = useRef<boolean>(false)
     const gameOver = useRef<boolean>(false)
+    const otherPlayerHasLeftTheRoom = useRef<boolean>(false)
 
     const [frame, setFrame] = useState<Frame>({
         paddleLeft: {
@@ -173,6 +173,8 @@ const BoardGame = ({
             }
         }
 
+        socket.on('sendFrames', onReceiveFrames)
+
         function onReceiveFrames(updatedFrame: Frame) {
             setWaitingForPlayer(false)
             setFrame(updatedFrame)
@@ -217,10 +219,6 @@ const BoardGame = ({
                                         ? updatedFrame.score.playerTwo
                                         : updatedFrame.score.playerOne,
                             }
-                            console.log(
-                                'createMatchDto front: ',
-                                createMatchDto
-                            )
                             const response = await fetch(
                                 `http://localhost:8080/api/match`,
                                 {
@@ -253,27 +251,36 @@ const BoardGame = ({
 
         document.addEventListener('keydown', handleKeyDown)
 
-        // Event registration to receive updated frames from the server
-        socket.on('sendFrames', onReceiveFrames)
-
         socket.on('waitingForSecondPlayer', () => {
             setWaitingForPlayer(true)
         })
+
+        socket.on('leftRoom', onSecondPlayerLeftTheRoom)
+
+        function onSecondPlayerLeftTheRoom() {
+            console.log('The other player left the room')
+            otherPlayerHasLeftTheRoom.current = true
+            setTimeout(() => {
+                navigate('/play')
+            }, 3000)
+        }
 
         return () => {
             // Remove the event listener when disassembling the component to avoid memory leaks
             document.removeEventListener('keydown', handleKeyDown)
 
-            // Unregister to events
+            socket.emit('leaveRoom', {
+                roomId: room,
+                userId: userData.user.id,
+            })
+
             socket.off('connect_error')
             socket.off('connect')
             socket.off('secondPlayerJoined')
             socket.off('sendFrames', onReceiveFrames)
             socket.off('waitingForSecondPlayer')
+            socket.off('leftRoom', onSecondPlayerLeftTheRoom)
 
-            socket.emit('leaveRoom', {
-                userId: userData.user.id,
-            })
             socket.close()
         }
     }, [])
@@ -281,6 +288,11 @@ const BoardGame = ({
     return (
         <div>
             <div className={styles.scoreContainer}>
+                {otherPlayerHasLeftTheRoom.current && (
+                    <div className={styles.gameOver}>
+                        Game Over! The other player has left the room.
+                    </div>
+                )}
                 {gameOver.current && (
                     <div className={styles.gameOver}>
                         Game Over! {winner} won!

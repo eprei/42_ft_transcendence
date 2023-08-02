@@ -116,7 +116,7 @@ export class PongService {
             this.BALL_SPEED_Y *= -1
         }
 
-        // COALITION LOGIQUE
+        // COALITION LOGIC
         // left paddle
         if (
             this.frame.ball.position.x <=

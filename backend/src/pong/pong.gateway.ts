@@ -78,14 +78,12 @@ export class PongGateway
     }
 
     @SubscribeMessage('leaveRoom')
-    handleLeaveRoom(client: Socket, data: { userId: number }) {
-        const { userId } = data
-        const roomId = client.rooms[0]
+    handleLeaveRoom(client: Socket, data: { roomId: string; userId: number }) {
+        const { roomId, userId } = data
         client.leave(roomId)
-        client.emit('leftRoom', roomId)
+        this.server.to(roomId).emit('leftRoom')
         this.loger.log(`Client socket ${client.id} left room: ${roomId}`)
         this.userService.changeStatusOnLine(userId)
-        // TODO notify other player that the game is over and manage the game state and the frontend
         // TODO delete the room from room service if it only has one player !!!
     }
 
