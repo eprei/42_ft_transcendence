@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { MatchData } from '../../types/MatchData'
 import styles from './MatchList.module.css'
 
-const MatchList = () => {
+const MatchList = (userid) => {
     const [matchHistory, setMatchHistory] = useState<MatchData[]>([])
 
     useEffect(() => {
