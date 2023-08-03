@@ -49,8 +49,6 @@ export interface BoardGameProps {
 
 async function deleteRoomFromMatchingSystem(room: string) {
     try {
-        console.log('function deleteRoomFromMatchingSystem')
-        console.log('timestamp: ' + Date.now())
         const response = await fetch(
             `http://localhost:8080/api/room/id/${room}`,
             {
@@ -90,7 +88,6 @@ const BoardGame = ({
     const matchSaved = useRef<boolean>(false)
     const gameOver = useRef<boolean>(false)
     const otherPlayerHasLeftTheRoom = useRef<boolean>(false)
-    const isUnmounted = useRef(false)
 
     const [frame, setFrame] = useState<Frame>({
         paddleLeft: {
@@ -284,7 +281,6 @@ const BoardGame = ({
         socket.on('leftRoom', onSecondPlayerLeftTheRoom)
 
         function onSecondPlayerLeftTheRoom() {
-            console.log('The other player left the room')
             otherPlayerHasLeftTheRoom.current = true
             setTimeout(() => {
                 navigate('/play')
@@ -293,7 +289,6 @@ const BoardGame = ({
 
         const handleDeleteRoom = async () => {
             try {
-                console.log('DELETE room from matching system')
                 await deleteRoomFromMatchingSystem(room)
             } catch (error) {
                 console.error(error)
@@ -302,10 +297,9 @@ const BoardGame = ({
 
         return () => {
             // Remove the event listener when disassembling the component to avoid memory leaks
-            isUnmounted.current = true
             document.removeEventListener('keydown', handleKeyDown)
 
-            if (isUnmounted.current) {
+            if (imPlayerOne === true) {
                 handleDeleteRoom()
             }
 
@@ -321,7 +315,10 @@ const BoardGame = ({
             socket.off('waitingForSecondPlayer')
             socket.off('leftRoom', onSecondPlayerLeftTheRoom)
 
-            socket.close()
+            // TODO MOVE UP IN THE HIERARCHY THE SOCKET DECLARATION AND MANAGEMENT
+            //socket.close() was commented out because it ran too fast and did not allow to emit the other events that have to be emitted previously.
+            // However, in the future the socket will never be closed.
+            // socket.close()
         }
     }, [room])
 

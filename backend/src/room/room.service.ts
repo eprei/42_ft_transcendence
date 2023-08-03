@@ -51,8 +51,6 @@ export class RoomService {
         }
 
         this.rooms.push(room)
-        console.log('createRoom method from room.service has been called')
-        this.printRooms(this.rooms)
 
         return room
     }
@@ -82,8 +80,6 @@ export class RoomService {
 
     deleteRoom(room_id: string): Room | null {
         const index = this.rooms.findIndex((room) => room.room_id === room_id)
-        console.log('deleteRoom method from room.service has been called')
-        this.printRooms(this.rooms)
         if (index !== -1) {
             console.log('room deleted', room_id)
         } else {
