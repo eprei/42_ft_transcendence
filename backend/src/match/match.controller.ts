@@ -5,7 +5,7 @@ import {
     Body,
     Patch,
     Param,
-    Delete
+    Delete,
 } from '@nestjs/common'
 import { MatchService } from './match.service'
 import { CreateMatchDto } from './dto/create-match.dto'

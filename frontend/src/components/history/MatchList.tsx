@@ -7,14 +7,16 @@ export interface UserProp {
     userData: UserData
 }
 
-const MatchList = ({ userData} : UserProp) => {
+const MatchList = ({ userData }: UserProp) => {
     const [matchHistory, setMatchHistory] = useState<MatchData[]>([])
 
     useEffect(() => {
         const fetchMatches = async () => {
             try {
                 const res = await fetch(
-                    `http://localhost:8080/api/match/user/${String(userData.user.id)}`,
+                    `http://localhost:8080/api/match/user/${String(
+                        userData.user.id
+                    )}`,
                     { credentials: 'include' }
                 )
                 const resjson = await res.json()
@@ -28,33 +30,34 @@ const MatchList = ({ userData} : UserProp) => {
 
     const matchHistoryWinner = matchHistory.map((match: MatchData) => (
         <div className={styles.left} key={match.id}>
-            <span>{match.winnerNick}</span>
+            <div>{match.winnerNick}</div>
             <img src={match.winnerPfp} alt="winner avatar" />
-            <span>{match.scoreWinner}</span>
+            <div className={styles.score}>{match.scoreWinner}</div>
         </div>
     ))
 
     const matchHistoryLoser = matchHistory.map((match: MatchData) => (
         <div className={styles.right} key={match.id}>
-            <span>{match.scoreLoser}</span>
+            <div className={styles.score}>{match.scoreLoser}</div>
             <img src={match.loserPfp} alt="loser avatar" />
-            <span>{match.loserNick}</span>
+            <div>{match.loserNick}</div>
         </div>
     ))
 
     return (
-        <>
+        <div className={styles.container}>
+            <h1>Match History</h1>
             <div className={styles.match_list}>
-                <div className={styles.player}>
-                    <h3 className={styles.left}>Winner</h3>
+                <div>
+                    <h3>Winner</h3>
                     {matchHistoryWinner}
                 </div>
-                <div className={styles.player}>
-                    <h3 className={styles.right}>Loser</h3>
+                <div>
+                    <h3>Loser</h3>
                     {matchHistoryLoser}
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 
