@@ -148,23 +148,17 @@ const BoardGame = ({
 
         if (playerNumber === 'player_one') {
             if (socket.connected) {
-                console.log('Creating room...')
                 socket.emit('createRoom', room)
             } else {
                 socket.on('connect', () => {
-                    console.log('Connected to game server')
-                    console.log('Creating room...')
                     socket.emit('createRoom', room)
                 })
             }
         } else {
             if (socket.connected) {
-                console.log('Joining room...')
                 socket.emit('joinRoom', room, userData.user.id)
             } else {
                 socket.on('connect', () => {
-                    console.log('Connected to game server')
-                    console.log('Joining room...')
                     socket.emit('joinRoom', room, userData.user.id)
                 })
             }
@@ -172,7 +166,6 @@ const BoardGame = ({
 
         if (playerNumber === 'player_one') {
             socket.on('secondPlayerJoined', async (playerId) => {
-                console.log(`Second player connected: ${playerId}`)
                 const dataPlayerOne = await getUserData(player_one)
                 setPlayerOneData({ user: dataPlayerOne })
 
