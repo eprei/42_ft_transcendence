@@ -3,20 +3,14 @@ import { User } from '../../typeorm/user.entity'
 
 export class CreateMatchDto {
     @IsNotEmpty()
-    userHome: User
-
-    @IsNotEmpty()
-    userForeign: User
-
-    @IsNotEmpty()
     winner: User
 
     @IsNotEmpty()
-    homeScore: number
+    loser: User
 
     @IsNotEmpty()
-    foreignScore: number
+    scoreWinner: number
 
-    @IsOptional()
-    timestamp: Date
+    @IsNotEmpty()
+    scoreLoser: number
 }

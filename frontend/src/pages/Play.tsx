@@ -43,8 +43,6 @@ const Play = () => {
                     throw new Error('Error creating room')
                 }
             } else {
-                console.log('Room created successfully')
-
                 const room = await response.json()
 
                 navigate('/game', {

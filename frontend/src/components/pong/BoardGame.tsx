@@ -1,11 +1,10 @@
 import styles from './BoardGame.module.css'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { io } from 'socket.io-client'
 import { useAppSelector } from '../../store/types'
 import { UserData } from '../../types/UserData'
 import { useNavigate } from 'react-router-dom'
 import Player from './Player'
-
 interface Position {
     x: number
     y: number
@@ -48,6 +47,27 @@ export interface BoardGameProps {
     imPlayerOne: boolean
 }
 
+async function deleteRoomFromMatchingSystem(room: string) {
+    try {
+        const response = await fetch(
+            `http://localhost:8080/api/room/id/${room}`,
+            {
+                method: 'DELETE',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }
+        )
+
+        if (!response.ok) {
+            throw new Error('Error deleting room from matching system')
+        }
+    } catch (error) {
+        console.error(error)
+    }
+}
+
 const BoardGame = ({
     room,
     player_one,
@@ -61,11 +81,13 @@ const BoardGame = ({
     const BALL_SIZE: number = 2
     const PADDLE_WIDTH: number = 2
     const PADDLE_HEIGHT: number = 30
-    const [gameOver, setGameOver] = useState<boolean>(false)
     const [winner, setWinner] = useState<string>('')
     const navigate = useNavigate()
     const [playerOneData, setPlayerOneData] = useState<UserData>({} as UserData)
     const [playerTwoData, setPlayerTwoData] = useState<UserData>({} as UserData)
+    const matchSaved = useRef<boolean>(false)
+    const gameOver = useRef<boolean>(false)
+    const otherPlayerHasLeftTheRoom = useRef<boolean>(false)
 
     const [frame, setFrame] = useState<Frame>({
         paddleLeft: {
@@ -172,6 +194,8 @@ const BoardGame = ({
             }
         }
 
+        socket.on('sendFrames', onReceiveFrames)
+
         function onReceiveFrames(updatedFrame: Frame) {
             setWaitingForPlayer(false)
             setFrame(updatedFrame)
@@ -180,16 +204,68 @@ const BoardGame = ({
             document.getElementById('scorePlayerTwo')!.innerText =
                 updatedFrame.score.playerTwo.toString()
 
-            if (updatedFrame.gameOver) {
-                let winner =
+            // Handle game over
+            if (updatedFrame.gameOver && gameOver.current === false) {
+                let winner: string =
                     updatedFrame.score.playerOne > updatedFrame.score.playerTwo
                         ? 'Player One'
                         : 'Player Two'
                 setWinner(winner)
-                setGameOver(true)
+                gameOver.current = true
                 socket.emit('resetGame', {
                     userId: userData.user.id,
                 })
+
+                // Save match
+                if (imPlayerOne === false && !matchSaved.current) {
+                    async function saveMatch() {
+                        try {
+                            const createMatchDto = {
+                                winner:
+                                    updatedFrame.score.playerOne >
+                                    updatedFrame.score.playerTwo
+                                        ? player_one
+                                        : player_two,
+                                loser:
+                                    updatedFrame.score.playerOne >
+                                    updatedFrame.score.playerTwo
+                                        ? player_two
+                                        : player_one,
+                                scoreWinner:
+                                    updatedFrame.score.playerOne >
+                                    updatedFrame.score.playerTwo
+                                        ? updatedFrame.score.playerOne
+                                        : updatedFrame.score.playerTwo,
+                                scoreLoser:
+                                    updatedFrame.score.playerOne >
+                                    updatedFrame.score.playerTwo
+                                        ? updatedFrame.score.playerTwo
+                                        : updatedFrame.score.playerOne,
+                            }
+                            const response = await fetch(
+                                `http://localhost:8080/api/match`,
+                                {
+                                    method: 'POST',
+                                    credentials: 'include',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify(createMatchDto),
+                                }
+                            )
+
+                            if (!response.ok) {
+                                throw new Error(
+                                    'Error saving match into the database'
+                                )
+                            }
+                        } catch (error) {
+                            console.error(error)
+                        }
+                    }
+                    saveMatch()
+                    matchSaved.current = true
+                }
                 setTimeout(() => {
                     navigate('/play')
                 }, 3000)
@@ -198,35 +274,63 @@ const BoardGame = ({
 
         document.addEventListener('keydown', handleKeyDown)
 
-        // Event registration to receive updated frames from the server
-        socket.on('sendFrames', onReceiveFrames)
-
         socket.on('waitingForSecondPlayer', () => {
             setWaitingForPlayer(true)
         })
+
+        socket.on('leftRoom', onSecondPlayerLeftTheRoom)
+
+        function onSecondPlayerLeftTheRoom() {
+            otherPlayerHasLeftTheRoom.current = true
+            setTimeout(() => {
+                navigate('/play')
+            }, 3000)
+        }
+
+        const handleDeleteRoom = async () => {
+            try {
+                await deleteRoomFromMatchingSystem(room)
+            } catch (error) {
+                console.error(error)
+            }
+        }
 
         return () => {
             // Remove the event listener when disassembling the component to avoid memory leaks
             document.removeEventListener('keydown', handleKeyDown)
 
-            // Unregister to events
+            if (imPlayerOne === true) {
+                handleDeleteRoom()
+            }
+
+            socket.emit('leaveRoom', {
+                roomId: room,
+                userId: userData.user.id,
+            })
+
             socket.off('connect_error')
             socket.off('connect')
             socket.off('secondPlayerJoined')
             socket.off('sendFrames', onReceiveFrames)
             socket.off('waitingForSecondPlayer')
+            socket.off('leftRoom', onSecondPlayerLeftTheRoom)
 
-            socket.emit('leaveRoom', {
-                userId: userData.user.id,
-            })
-            socket.close()
+            // TODO MOVE UP IN THE HIERARCHY THE SOCKET DECLARATION AND MANAGEMENT
+            //socket.close() was commented out because it ran too fast and did not allow to emit the other events that have to be emitted previously.
+            // However, in the future the socket will never be closed.
+            // socket.close()
         }
-    }, [])
+    }, [room])
 
     return (
         <div>
             <div className={styles.scoreContainer}>
-                {gameOver && (
+                {otherPlayerHasLeftTheRoom.current && (
+                    <div className={styles.gameOver}>
+                        Game Over! The other player has left the room.
+                    </div>
+                )}
+                {gameOver.current && (
                     <div className={styles.gameOver}>
                         Game Over! {winner} won!
                     </div>

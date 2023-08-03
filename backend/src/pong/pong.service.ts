@@ -5,13 +5,12 @@ const FRAME_WIDTH: number = 300
 const FRAME_HEIGHT: number = 150
 const PADDLE_WIDTH: number = 2
 const PADDLE_HEIGHT: number = 30
-const TOP_SCORE: number = 3
+const TOP_SCORE: number = 10
 
 @Injectable()
 export class PongService {
     BALL_SIZE: number = 2
     PADDLE_SPEED: number = 2
-    // TODO Adjust the speed of the ball according to the processing capacity of the school's computers
     BALL_SPEED_Y: number = 1
     BALL_SPEED_X: number = 1
 
@@ -117,32 +116,30 @@ export class PongService {
             this.BALL_SPEED_Y *= -1
         }
 
-        // COALITION LOGIQUE
-        // TODO improve the calculation of coalition with the paddle to make it more accurate
-        // probably eliminating this.BALL_SIZE from the equation or modifiyng it
+        // COLLISION LOGIC
+        // left paddle
         if (
             this.frame.ball.position.x <=
                 this.frame.paddleLeft.position.x + PADDLE_WIDTH &&
-            this.frame.ball.position.y + this.BALL_SIZE >=
-                this.frame.paddleLeft.position.y + this.BALL_SIZE &&
-            this.frame.ball.position.y <=
-                this.frame.paddleLeft.position.y +
-                    PADDLE_HEIGHT -
-                    this.BALL_SIZE
+            this.frame.ball.position.y + this.BALL_SIZE / 2 >=
+                this.frame.paddleLeft.position.y &&
+            this.frame.ball.position.y + this.BALL_SIZE / 2 <=
+                this.frame.paddleLeft.position.y + PADDLE_HEIGHT &&
+            this.frame.ball.position.x >= this.frame.paddleLeft.position.x
         ) {
             this.BALL_SPEED_X *= -1
             // Adjust the ball's position to be outside of the paddle
             this.frame.ball.position.x =
                 this.frame.paddleLeft.position.x + PADDLE_WIDTH
+            // right paddle
         } else if (
             this.frame.ball.position.x + this.BALL_SIZE >=
                 this.frame.paddleRight.position.x &&
-            this.frame.ball.position.y + this.BALL_SIZE >=
-                this.frame.paddleRight.position.y + this.BALL_SIZE &&
-            this.frame.ball.position.y <=
-                this.frame.paddleRight.position.y +
-                    PADDLE_HEIGHT -
-                    this.BALL_SIZE
+            this.frame.ball.position.y + this.BALL_SIZE / 2 >=
+                this.frame.paddleRight.position.y &&
+            this.frame.ball.position.y + this.BALL_SIZE / 2 <=
+                this.frame.paddleRight.position.y + PADDLE_HEIGHT &&
+            this.frame.ball.position.x <= this.frame.paddleRight.position.x
         ) {
             this.BALL_SPEED_X *= -1
             // Adjust the ball's position to be outside of the paddle
@@ -155,20 +152,10 @@ export class PongService {
             this.frame.ball.position.x = FRAME_WIDTH / 2
             this.frame.ball.position.y = FRAME_HEIGHT / 2
             this.frame.score.playerOne += 1
-            if (this.frame.score.playerOne >= 10) {
-                this.frame.gameOver = true
-                this.frame.score.playerOne = 0
-                this.frame.score.playerTwo = 0
-            }
         } else if (this.frame.ball.position.x <= 0) {
             this.frame.ball.position.x = FRAME_WIDTH / 2
             this.frame.ball.position.y = FRAME_HEIGHT / 2
             this.frame.score.playerTwo += 1
-            if (this.frame.score.playerTwo >= 10) {
-                this.frame.gameOver = true
-                this.frame.score.playerOne = 0
-                this.frame.score.playerTwo = 0
-            }
         }
 
         if (
@@ -179,7 +166,6 @@ export class PongService {
             this.frame.gameOver = true
             return
         }
-        // TODO add info to the match table to 'match history' feature
     }
 
     getFrame(): Frame {
