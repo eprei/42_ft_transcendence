@@ -10,11 +10,11 @@ const UserLambda = () => {
     const [loading, setLoading] = useState(true)
     const [userData, setUserData] = useState<UserData>({} as UserData)
     const { nickname } = useParams<{ nickname: string }>()
-    
+
     useEffect(() => {
         getCurrentUser()
     }, [])
-    
+
     async function getCurrentUser() {
         try {
             const response = await fetch(
