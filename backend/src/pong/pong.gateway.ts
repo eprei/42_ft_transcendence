@@ -10,6 +10,11 @@ import {
 } from '@nestjs/websockets'
 import { Logger } from '@nestjs/common'
 import { UserService } from 'src/user/user.service'
+import * as passport from 'passport'
+import sessionMiddleware from '../sessions'
+
+const wrap = (middleware: any) => (socket: Socket, next: (err?: any) => void) =>
+    middleware(socket.request, {}, next)
 
 const FPS: number = 80
 @WebSocketGateway({ namespace: 'game', cors: { origin: '*' } })
@@ -26,8 +31,28 @@ export class PongGateway
     @WebSocketServer()
     server: Server
 
-    afterInit(server: any) {
-        this.loger.log('Game server is initialized')
+    afterInit(server: Server) {
+        console.log('Lanzando afterInit')
+        server.use(wrap(sessionMiddleware))
+        console.log('sessionMiddleware ok...')
+        server.use(wrap(passport.initialize()))
+        console.log('passport.initialize ok...')
+        server.use(wrap(passport.session()))
+        console.log('passport.session ok...')
+        server.use((client: any, next) => {
+            if (!client.request.isAuthenticated() || !client.request.user) {
+                console.log(
+                    'client.request.isAuthenticated():',
+                    client.request.isAuthenticated()
+                )
+                console.log('client.request.user:', client.request.user)
+                console.log('unauthorized')
+                next(new Error('unauthorized'))
+            } else {
+                console.log('authorized')
+                next()
+            }
+        })
     }
 
     handleConnection(client: Socket, ...args: any[]) {
