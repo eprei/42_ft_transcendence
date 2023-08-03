@@ -1,13 +1,13 @@
 import { MatchList } from '../components/history/MatchList'
-import styles from './MatchHistory.module.css'
+import { useAppSelector } from '../store/types'
+import { UserData } from '../types/UserData'
 
 const MatchHistory = () => {
-    return (
-        <div>
-            <h1 className={styles.title}>Match History</h1>
-            <MatchList />
-        </div>
-    )
+    const userData: UserData = useAppSelector(
+        (state) => state.user.userData
+    ) as UserData
+
+    return <MatchList userData={userData} />
 }
 
 export default MatchHistory

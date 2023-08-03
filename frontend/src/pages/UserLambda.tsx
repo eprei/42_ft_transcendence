@@ -4,6 +4,7 @@ import styles from './MainProfile.module.css'
 import StatisticsLambda from '../components/profile/StatisticsLambda'
 import UserLambdaInformation from '../components/UserLambda/UserLambdaInformation'
 import { UserData } from '../types/UserData'
+import { MatchList } from '../components/history/MatchList'
 
 const UserLambda = () => {
     const [loading, setLoading] = useState(true)
@@ -43,6 +44,7 @@ const UserLambda = () => {
             <div className={styles.body}>
                 <div className={styles.bodyLeftSide}>
                     <UserLambdaInformation userData={userData} />
+                    <MatchList userData={userData}></MatchList>
                     <StatisticsLambda userData={userData} />
                 </div>
             </div>
