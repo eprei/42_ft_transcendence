@@ -13,7 +13,9 @@ export class ChannelUserMuted {
     @PrimaryGeneratedColumn()
     id: number
 
-    @ManyToOne(() => Channel, (channel) => channel.muted, { cascade: true })
+    @ManyToOne(() => Channel, (channel) => channel.muted, {
+        onDelete: 'CASCADE',
+    })
     @JoinColumn({ name: 'channelId' })
     channel: Channel
 
