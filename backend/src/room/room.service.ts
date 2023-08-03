@@ -81,11 +81,6 @@ export class RoomService {
     deleteRoom(room_id: string): Room | null {
         const index = this.rooms.findIndex((room) => room.room_id === room_id)
         if (index !== -1) {
-            console.log('room deleted', room_id)
-        } else {
-            console.log('room not found', room_id)
-        }
-        if (index !== -1) {
             return this.rooms.splice(index, 1)[0]
         }
         return null
@@ -114,8 +109,6 @@ export class RoomService {
             index = this.rooms.findIndex((room) => room.player_two === 0)
             if (index !== -1) {
                 this.rooms[index].player_two = myId
-                console.log('room found: ', this.rooms[index].room_id)
-                this.printRooms(this.rooms)
                 return this.rooms[index]
             }
             await this.sleep(1000)
