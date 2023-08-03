@@ -25,7 +25,7 @@ export interface NewMsg {
     content: string
     channelId: number
 }
-const socket = io('http://localhost:8080')
+const socket = io('http://localhost:8080/chat')
 
 const Chat = () => {
     const dispatch = useAppDispatch()
@@ -74,15 +74,6 @@ const Chat = () => {
         }
         setReloadUsers(false)
     }, [currentChatSelected, reloadUsers])
-
-    // useEffect(() => {
-    // 	if (reloadUsers) {
-    // 		getChUsers()
-    // 		getBlockedUsers()
-    //         getMutedUsers()
-    // 		setReloadUsers(false)
-    // 	}
-    //   }, [reloadUsers]);
 
     const getAllMsg = () => {
         socket.emit(

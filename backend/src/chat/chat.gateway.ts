@@ -2,12 +2,15 @@ import {
     WebSocketGateway,
     SubscribeMessage,
     MessageBody,
+    OnGatewayInit,
+    OnGatewayConnection,
+    OnGatewayDisconnect,
 } from '@nestjs/websockets'
 import { ChatService } from './chat.service'
-import { Server } from 'socket.io'
+import { Server, Socket } from 'socket.io'
 import { CreateMessageDto } from 'src/chat/dto/create-message.dto'
 import { CreateChannelDto } from 'src/channel/dto/create-channel.dto'
-import { UsePipes, ValidationPipe } from '@nestjs/common'
+import { Logger, UsePipes, ValidationPipe } from '@nestjs/common'
 import { WebSocketServer } from '@nestjs/websockets'
 
 type PasswordChangeData = [channelId: number, password: string]
@@ -20,16 +23,27 @@ type UserTargetChannelData = [
     channelId: number
 ]
 
-@WebSocketGateway({
-    cors: {
-        origin: '*',
-    },
-})
-export class ChatGateway {
+@WebSocketGateway({ namespace: 'chat', cors: { origin: '*' } })
+export class ChatGateway
+    implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
+{
     constructor(private readonly chatService: ChatService) {}
+    private loger: Logger = new Logger('PongGateway')
 
     @WebSocketServer()
     server: Server
+
+    afterInit(server: Socket) {
+        this.loger.log('Chat Socket initialized')
+    }
+
+    handleConnection(client: Socket, ...args: any[]) {
+        this.loger.log(`Client chat socket connected: ${client.id}`)
+    }
+
+    handleDisconnect(client: Socket) {
+        this.loger.log(`Client  chat socket disconnected: ${client.id}`)
+    }
 
     @SubscribeMessage('postMsg')
     @UsePipes(ValidationPipe)

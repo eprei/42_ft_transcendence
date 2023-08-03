@@ -57,13 +57,9 @@ const DmItem = (props: DmItemProps) => {
 
     let isActive = props.channel.id === currentChatSelected ? styles.active : ''
 
-
     return (
         <>
-            <li
-                className={`${styles.li} ${isActive}`}
-                onClick={handleClick}
-            >
+            <li className={`${styles.li} ${isActive}`} onClick={handleClick}>
                 <div className={styles.text}>{props.channel.name}</div>
                 <div className={styles.iconsContainer}>
                     {
