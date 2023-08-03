@@ -43,7 +43,7 @@ const DiscoverItem = (props: DiscoverItemProps) => {
     }
 
     const handleNoPassword = () => {
-        handleJoiningDemand("")
+        handleJoiningDemand('')
     }
 
     let title = `Do you want to join ${props.channel.name}??`

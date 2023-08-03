@@ -19,8 +19,6 @@ const Form = (props: Props) => {
     const [enteredDataIsValid, setEnteredDataIsValid] = useState<boolean>(true)
     const userData = useAppSelector((state) => state.user.userData) as UserData
 
-
-
     const onOk = () => {
         const isValid = checkInputValues()
         if (isValid) {
@@ -42,10 +40,9 @@ const Form = (props: Props) => {
             setEnteredDataIsValid(false)
             return false
         } else if (
-            channelType === 'private' &&
-            inputPasswordValue.trim() === '' ||
+            (channelType === 'private' && inputPasswordValue.trim() === '') ||
             inputChannelValue.trim() === ''
-            ) {
+        ) {
             console.log('inputPasswordValue is empty')
             setEnteredDataIsValid(false)
             return false
@@ -77,7 +74,9 @@ const Form = (props: Props) => {
                         placeholder="Enter Channel name"
                         autoComplete="off"
                     />
-                    {!enteredDataIsValid  && <p className={styles.error}>Channel name is required</p>}
+                    {!enteredDataIsValid && (
+                        <p className={styles.error}>Channel name is required</p>
+                    )}
                 </div>
                 <div className={styles.radioControl}>
                     <input
@@ -104,7 +103,9 @@ const Form = (props: Props) => {
                             placeholder="Enter Channel password"
                             autoComplete="off"
                         />
-                        {!enteredDataIsValid && <p className={styles.error}>Password is required</p>}
+                        {!enteredDataIsValid && (
+                            <p className={styles.error}>Password is required</p>
+                        )}
                     </div>
                 )}
                 <div className={styles.formActions}>
