@@ -13,11 +13,16 @@ export class ChannelUserMuted {
     @PrimaryGeneratedColumn()
     id: number
 
-    @ManyToOne(() => Channel, (channel) => channel.muted, { cascade: true })
+    @ManyToOne(() => Channel, (channel) => channel.muted, {
+        onDelete: 'CASCADE',
+    })
     @JoinColumn({ name: 'channelId' })
     channel: Channel
 
-    @ManyToOne(() => User, (user) => user.muted)
+    @ManyToOne(() => User, (user) => user.muted, {
+        onDelete: 'CASCADE',
+    })
+	
     @JoinColumn({ name: 'userId' })
     user: User
 
