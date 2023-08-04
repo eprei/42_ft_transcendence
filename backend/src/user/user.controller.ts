@@ -176,4 +176,33 @@ export class UserController {
     ) {
         res.sendFile(filename, { root: '/app/profile-images' })
     }
+
+    @Get('isBlockedByMe/:id')
+    async isBlockedByMe(@Param('id') target_id: string, @Request() req: any) {
+        try {
+            return await this.userService.isBlockedByMe(req, +target_id)
+        } catch (error) {
+            console.log('Failed to get blocked User')
+        }
+    }
+
+    @Post('block/:id')
+    async blockUser(@Param('id') target_id: string, @Request() req: any) {
+        try {
+            await this.userService.blockUser(req.user.id, +target_id)
+            return { message: 'User blocked successfully' }
+        } catch (error) {
+            console.log('Failed to block user')
+        }
+    }
+
+    @Delete('unblock/:id')
+    async unblockUser(@Param('id') target_id: string, @Request() req: any) {
+        try {
+            await this.userService.unblockUser(req.user.id, +target_id)
+            return { message: 'User unblocked successfully' }
+        } catch (error) {
+            console.log('Failed to unblock user')
+        }
+    }
 }

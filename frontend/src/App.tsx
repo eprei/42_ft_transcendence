@@ -70,7 +70,12 @@ const router = createBrowserRouter([
             },
             {
                 path: 'user/:nickname',
-                element: <UserLambda />,
+                loader: userLoader,
+                element: (
+                    <ProtectedRoute>
+                        <UserLambda />
+                    </ProtectedRoute>
+                ),
             },
             {
                 path: 'play',
