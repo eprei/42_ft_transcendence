@@ -47,7 +47,6 @@ const Chat = () => {
         const newSocket = SocketChatService.getInstance().connect()
         if (newSocket !== undefined) {
             setSocket(newSocket)
-            console.log('connected')
 
             newSocket.on('incomingMessage', (newMessage: any) => {
                 const msgCpy = [...messages]
@@ -122,9 +121,7 @@ const Chat = () => {
     }
 
     const getAllChannels = () => {
-        console.log('getAllChannels TRY called')
         if (socket !== undefined) {
-            console.log('getAllChannels called')
             socket.emit('getAllChannels', (response: any) => {
                 const allChannels = response
                 setAllChan(allChannels)
