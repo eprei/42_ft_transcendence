@@ -32,6 +32,7 @@ const MatchList = ({ userData, isInUserLambda }: UserProp) => {
     const matchHistoryWinner = matchHistory.map((match: MatchData) => (
         <div className={styles.left} key={match.id}>
             <div>{match.winnerNick}</div>
+	    <div>{match.winnerLevel}</div>
             <img src={match.winnerPfp} alt="winner avatar" />
             <div className={styles.score}>{match.scoreWinner}</div>
         </div>
@@ -42,6 +43,7 @@ const MatchList = ({ userData, isInUserLambda }: UserProp) => {
             <div className={styles.score}>{match.scoreLoser}</div>
             <img src={match.loserPfp} alt="loser avatar" />
             <div>{match.loserNick}</div>
+	    <div>{match.winnerLevel}</div>
         </div>
     ))
 
