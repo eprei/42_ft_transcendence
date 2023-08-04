@@ -56,7 +56,9 @@ const Input = (props: Props) => {
                     placeholder={props.content}
                     autoComplete="off"
                 />
-                {errorMessage !== '' && <p className={styles.error}>{errorMessage}</p>}
+                {errorMessage !== '' && (
+                    <p className={styles.error}>{errorMessage}</p>
+                )}
             </div>
             <div className={styles.formActions}>
                 <button className={styles.confirmBtn} onClick={onOk}>

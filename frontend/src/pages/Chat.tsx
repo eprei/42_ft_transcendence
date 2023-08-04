@@ -117,8 +117,7 @@ const Chat = () => {
 
     const createNewChannel = (channel: CreateChannel) => {
         if (socket !== undefined) {
-            socket.emit('createNewChannel', channel, () => {
-            })
+            socket.emit('createNewChannel', channel, () => {})
             setTimeout(() => {
                 getAllChannels()
             }, 300)
