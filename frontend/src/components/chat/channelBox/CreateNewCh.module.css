@@ -10,9 +10,9 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    padding: 0.3rem 1rem;
-    width: 60%;
-    font-size: 18px;
+    padding: 0.3rem 1.2rem;
+    width: 75%;
+    font-size: 17px;
     font-weight: 700;
     --hover-bg: var(--color-mid-green);
     --hover-text: var(--color-black);
