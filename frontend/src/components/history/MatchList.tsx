@@ -5,9 +5,10 @@ import { UserData } from '../../types/UserData'
 
 export interface UserProp {
     userData: UserData
+    isInUserLambda: boolean
 }
 
-const MatchList = ({ userData }: UserProp) => {
+const MatchList = ({ userData, isInUserLambda }: UserProp) => {
     const [matchHistory, setMatchHistory] = useState<MatchData[]>([])
 
     useEffect(() => {
@@ -45,7 +46,11 @@ const MatchList = ({ userData }: UserProp) => {
     ))
 
     return (
-        <div className={styles.container}>
+        <div
+            className={`${styles.container} ${
+                isInUserLambda ? styles.transparent : ''
+            }`}
+        >
             <h1>Match History</h1>
             <div className={styles.match_list}>
                 <div>

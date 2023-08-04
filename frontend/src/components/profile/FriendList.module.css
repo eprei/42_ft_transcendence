@@ -1,7 +1,9 @@
 .container {
+    min-width: 275px;
     display: flex;
-    align-items: flex-start;
+    align-items: left;
     flex-direction: column;
+    padding-left: 2rem;
 }
 .container h3 {
     font-size: 16px;
@@ -9,4 +11,11 @@
 
 .list {
     margin: 1rem 0 1rem 0;
+}
+
+@media screen and (max-width: 770px) {
+    .container {
+        align-items: center;
+        padding: 0;
+    }
 }
