@@ -1,4 +1,5 @@
 .container {
+    margin: 1rem auto;
     padding: 1rem;
     width: 90vw;
     min-height: 80vh;
@@ -9,14 +10,6 @@
     border-radius: 28px;
 }
 
-.container h1 {
-    margin: 1rem;
-    font-weight: 800;
-    font-size: 32px;
-    line-height: 32px;
-    text-align: center;
-    color: var(--color-white);
-}
 
 .body {
     display: flex;
@@ -33,13 +26,14 @@
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    width: 50%;
+    width: 60%;
     height: inherit;
-    margin: 2rem;
+    /* margin: 2rem; */
     min-height: 25rem;
 }
 .bodyLeftSide {
     flex-wrap: wrap;
+    width: 40%;
 }
 
 @media screen and (max-width: 770px) {
