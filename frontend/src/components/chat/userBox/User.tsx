@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { useAppSelector } from '../../../store/types'
 import { UserData } from '../../../types/UserData'
 import { useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export interface UserProps {
     id: number
@@ -62,22 +63,53 @@ const User = ({
 }: UserProps) => {
     const userData = useAppSelector((state) => state.user.userData) as UserData
     const myId = userData.user.id
+    const navigate = useNavigate()
 
-    const startGameHandler = () => {
-        console.log('start game')
-        // TODO
-        // launchGame(myId, id)
+    const createRoom = async (player_two: number) => {
+        try {
+            const response = await fetch('http://localhost:8080/api/room', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    theme: 'Theme 0',
+                    player_two: player_two,
+                }),
+            })
+
+            if (!response.ok) {
+                console.log('Error creating room')
+            } else {
+                const room = await response.json()
+
+                navigate('/game', {
+                    state: {
+                        player_one: room.player_one,
+                        player_two: room.player_two,
+                        theme: room.theme,
+                        roomId: room.room_id,
+                        imPlayerOne: true,
+                    },
+                })
+            }
+        } catch (error) {
+            console.error(error)
+        }
     }
 
-    let inviteToPlay: JSX.Element | null = null
-    if (status === 'online') {
-        inviteToPlay = (
-            <img
-                src={IconInviteToPlay}
-                alt="Invite to Play Icon"
-                onClick={startGameHandler}
-            />
-        )
+    const renderInviteToPlay = (playerId: number): JSX.Element | null => {
+        if (status === 'online') {
+            return (
+                <img
+                    src={IconInviteToPlay}
+                    alt="Invite to Play Icon"
+                    onClick={() => createRoom(playerId)}
+                />
+            )
+        }
+        return null
     }
 
     const [showContextMenu, setShowContextMenu] = useState(false)
@@ -262,9 +294,10 @@ const User = ({
                     </p>
                 </div>
             </div>
-            {id != myId && !isBlocked && (
+            {
+                // id != myId && UNDO THIS, its just to develop the functionality invite friends to play
                 <div className={styles.right}>
-                    <div>{inviteToPlay}</div>
+                    <div>{renderInviteToPlay(id)}</div>
                     <div>
                         {!isDM && (
                             <img
@@ -275,7 +308,7 @@ const User = ({
                         )}
                     </div>
                 </div>
-            )}
+            }
         </div>
     )
 }
