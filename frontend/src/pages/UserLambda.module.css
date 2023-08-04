@@ -10,7 +10,6 @@
     border-radius: 28px;
 }
 
-
 .body {
     display: flex;
     flex-direction: row;
@@ -47,4 +46,3 @@
         height: inherit;
     }
 }
-

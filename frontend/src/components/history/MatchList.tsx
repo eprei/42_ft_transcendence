@@ -46,7 +46,11 @@ const MatchList = ({ userData, isInUserLambda }: UserProp) => {
     ))
 
     return (
-        <div className={`${styles.container} ${isInUserLambda ? styles.transparent : ''}`}>
+        <div
+            className={`${styles.container} ${
+                isInUserLambda ? styles.transparent : ''
+            }`}
+        >
             <h1>Match History</h1>
             <div className={styles.match_list}>
                 <div>

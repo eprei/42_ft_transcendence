@@ -7,7 +7,7 @@ const MatchHistory = () => {
         (state) => state.user.userData
     ) as UserData
 
-    return <MatchList userData={userData}  isInUserLambda={false} />
+    return <MatchList userData={userData} isInUserLambda={false} />
 }
 
 export default MatchHistory
