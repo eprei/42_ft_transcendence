@@ -18,6 +18,10 @@
     color: var(--color-white);
 }
 
+.container h4 {
+    color: var(--color-white);
+}
+
 .body {
     display: flex;
     flex-direction: row;
