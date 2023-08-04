@@ -30,8 +30,6 @@ li {
 .privateIcon {
     width: var(--size-icon);
     height: var(--size-icon);
-    transform: scale(70%);
-    background-color: red;
     cursor: pointer;
 }
 
