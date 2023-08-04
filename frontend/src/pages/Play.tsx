@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 
 const Play = () => {
     const navigate = useNavigate()
-    const [selectedTheme, setSelectedTheme] = useState<string>('Theme 1')
+    const [selectedTheme, setSelectedTheme] = useState<string>('Theme 0')
     const [youAreAlreadyPlaying, setYouAreAlreadyPlaying] =
         useState<boolean>(false)
 
@@ -67,6 +67,13 @@ const Play = () => {
                 <div className={styles.bodyLeftSide}>
                     <h3>Create new room</h3>
                     <div className={styles.columns}>
+                        <Checkbox
+                            value="Theme 0"
+                            onChange={onChange}
+                            checked={selectedTheme === 'Theme 0'}
+                        >
+                            <h4>Original</h4>
+                        </Checkbox>
                         <Checkbox
                             value="Theme 1"
                             onChange={onChange}
