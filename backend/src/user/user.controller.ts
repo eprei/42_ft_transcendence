@@ -109,7 +109,6 @@ export class UserController {
         res.sendFile(filename, { root: './uploads' })
     }
 
-    @Public()
     @Get('me')
     async getMyInfo(@Request() req: any) {
         return await this.userService.getMyInfo(req)

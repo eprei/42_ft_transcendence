@@ -12,9 +12,18 @@ import { Logger } from '@nestjs/common'
 import { UserService } from 'src/user/user.service'
 import * as passport from 'passport'
 import sessionMiddleware from '../sessions'
+import { subscribe } from 'diagnostics_channel'
+import { User } from 'src/typeorm/user.entity'
+import { IncomingMessage } from 'http'
 
 const wrap = (middleware: any) => (socket: Socket, next: (err?: any) => void) =>
     middleware(socket.request, {}, next)
+
+interface CustomSocket extends Socket {
+	request: IncomingMessage & {
+		user?: User
+	}
+}
 
 const FPS: number = 80
 @WebSocketGateway({ namespace: 'game', cors: { origin: '*' } })
@@ -32,15 +41,14 @@ export class PongGateway
     server: Server
 
     afterInit(server: Server) {
-        console.log('Lanzando afterInit')
         server.use(wrap(sessionMiddleware))
-        console.log('sessionMiddleware ok...')
         server.use(wrap(passport.initialize()))
-        console.log('passport.initialize ok...')
         server.use(wrap(passport.session()))
-        console.log('passport.session ok...')
         server.use((client: any, next) => {
             if (!client.request.isAuthenticated() || !client.request.user) {
+				console.log("user :", client.request.user)
+				console.log('client.request.session.id', client.request.session.id)
+				console.log("client cookie -> ", client.request.cookies)
                 console.log(
                     'client.request.isAuthenticated():',
                     client.request.isAuthenticated()
@@ -55,7 +63,11 @@ export class PongGateway
         })
     }
 
-    handleConnection(client: Socket, ...args: any[]) {
+    handleConnection(client: CustomSocket, ...args: any[]) {
+		if (!client.request.user) {
+			throw new Error('No user')
+		}
+
         const requestOrigin = client.handshake.headers.origin
         if (requestOrigin !== 'http://localhost:4040') {
             client.disconnect()
@@ -71,7 +83,8 @@ export class PongGateway
     }
 
     @SubscribeMessage('createRoom')
-    handleCreateRoom(client: Socket, roomId: string) {
+    handleCreateRoom(client: CustomSocket, roomId: string) {
+		console.log(client.request.user)
         client.join(roomId)
         this.pongServices[roomId] = new PongService()
         this.waitingForSecondPlayer[roomId] = true

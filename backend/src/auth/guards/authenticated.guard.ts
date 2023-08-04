@@ -15,7 +15,9 @@ export class AuthenticatedGuard implements CanActivate {
             return true
         }
         const request = context.switchToHttp().getRequest()
-
+		console.log('request.isAuthenticated()', request.isAuthenticated())
+		console.log("request sesssion id", request.session.id)
+		console.log("request cookie -> ", request.cookies)
         return request.isAuthenticated() && request.session.needTFA === false
     }
 }
