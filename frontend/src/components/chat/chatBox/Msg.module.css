@@ -26,4 +26,5 @@
     height: var(--size-picture-profile);
     border-radius: 50%;
     transform: scale(60%);
+	object-fit: cover;
 }
