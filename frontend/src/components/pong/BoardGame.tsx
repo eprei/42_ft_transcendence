@@ -1,10 +1,11 @@
 import styles from './BoardGame.module.css'
 import { useState, useEffect, useRef } from 'react'
-import { io } from 'socket.io-client'
 import { useAppSelector } from '../../store/types'
 import { UserData } from '../../types/UserData'
 import { useNavigate } from 'react-router-dom'
 import Player from './Player'
+import SocketGameService from '../../sockets/SocketGame'
+
 interface Position {
     x: number
     y: number
@@ -143,27 +144,28 @@ const BoardGame = ({
 
     // Handle socket connections
     useEffect(() => {
-        const socket = io('http://localhost:8080/game')
-
-        socket.on('connect_error', (error) => {
-            console.log('Connection Error', error)
-        })
+        const socket = SocketGameService.getInstance().connect()
 
         if (playerNumber === 'player_one') {
-            socket.on('connect', () => {
-                console.log('Connected to game server')
+            if (socket.connected) {
                 socket.emit('createRoom', room)
-            })
+            } else {
+                socket.on('connect', () => {
+                    socket.emit('createRoom', room)
+                })
+            }
         } else {
-            socket.on('connect', () => {
-                console.log('Connected to game server')
+            if (socket.connected) {
                 socket.emit('joinRoom', room, userData.user.id)
-            })
+            } else {
+                socket.on('connect', () => {
+                    socket.emit('joinRoom', room, userData.user.id)
+                })
+            }
         }
 
         if (playerNumber === 'player_one') {
             socket.on('secondPlayerJoined', async (playerId) => {
-                console.log(`Second player connected: ${playerId}`)
                 const dataPlayerOne = await getUserData(player_one)
                 setPlayerOneData({ user: dataPlayerOne })
 
@@ -314,11 +316,6 @@ const BoardGame = ({
             socket.off('sendFrames', onReceiveFrames)
             socket.off('waitingForSecondPlayer')
             socket.off('leftRoom', onSecondPlayerLeftTheRoom)
-
-            // TODO MOVE UP IN THE HIERARCHY THE SOCKET DECLARATION AND MANAGEMENT
-            //socket.close() was commented out because it ran too fast and did not allow to emit the other events that have to be emitted previously.
-            // However, in the future the socket will never be closed.
-            // socket.close()
         }
     }, [room])
 
