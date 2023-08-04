@@ -116,8 +116,13 @@ const Chat = () => {
     }
 
     const createNewChannel = (channel: CreateChannel) => {
-        if (socket !== undefined)
-            socket.emit('createNewChannel', channel, () => {})
+        if (socket !== undefined) {
+            socket.emit('createNewChannel', channel, () => {
+            })
+            setTimeout(() => {
+                getAllChannels()
+            }, 300)
+        }
     }
 
     const getAllChannels = () => {
@@ -204,8 +209,9 @@ const Chat = () => {
                 (response: any) => {
                     if (response) {
                         setTimeout(() => {
+                            getAllChannels()
                             dispatch(chatActions.selectChat(response.id))
-                        }, 1000)
+                        }, 300)
                     }
                 }
             )

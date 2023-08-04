@@ -12,11 +12,30 @@ interface Props {
 }
 
 const Input = (props: Props) => {
+    const [errorMessage, setErrorMessage] = useState('')
     const [inputValue, setInputValue] = useState('')
 
+    const inputNotEmpty = () => {
+        if (inputValue.trim() === '') {
+            setErrorMessage('Value is required')
+            return false
+        }
+        return true
+    }
+
+    const checkInputValues = () => {
+        if (inputNotEmpty()) {
+            return true
+        }
+        return false
+    }
+
     const onOk = () => {
-        props.onConfirm(inputValue)
-        setInputValue('')
+        const isValid = checkInputValues()
+        if (isValid) {
+            props.onConfirm(inputValue)
+            setInputValue('')
+        }
     }
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,31 +45,27 @@ const Input = (props: Props) => {
 
     return (
         <Card className={styles.modal}>
-            <form onSubmit={(event) => event.preventDefault()}>
-                <header className={styles.header}>
-                    <h4>{props.title}</h4>
-                </header>
-                <div className={styles.formControl}>
-                    <input
-                        type="text"
-                        name="channelName"
-                        onChange={handleInputChange}
-                        placeholder={props.content}
-                        autoComplete="off"
-                    />
-                </div>
-                <div className={styles.formActions}>
-                    <button className={styles.confirmBtn} onClick={onOk}>
-                        Send
-                    </button>
-                    <button
-                        className={styles.cancelBtn}
-                        onClick={props.onCancel}
-                    >
-                        Cancel
-                    </button>
-                </div>
-            </form>
+            <header className={styles.header}>
+                <h4>{props.title}</h4>
+            </header>
+            <div className={styles.formControl}>
+                <input
+                    type="text"
+                    name="channelName"
+                    onChange={handleInputChange}
+                    placeholder={props.content}
+                    autoComplete="off"
+                />
+                {errorMessage !== '' && <p className={styles.error}>{errorMessage}</p>}
+            </div>
+            <div className={styles.formActions}>
+                <button className={styles.confirmBtn} onClick={onOk}>
+                    Send
+                </button>
+                <button className={styles.cancelBtn} onClick={props.onCancel}>
+                    Cancel
+                </button>
+            </div>
         </Card>
     )
 }

@@ -14,6 +14,7 @@ const CreateNewCh = ({ handleCreation }: CreateNewChProps) => {
     const onCreate = (values: CreateChannel) => {
         setOpen(false)
         handleCreation(values)
+        console.log('values', values)
     }
 
     return (

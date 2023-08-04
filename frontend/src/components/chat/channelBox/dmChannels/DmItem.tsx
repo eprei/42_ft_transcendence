@@ -35,7 +35,7 @@ const DmItem = (props: DmItemProps) => {
             } else {
                 props.leaveChannel(props.channel.id)
             }
-        }, 1000)
+        }, 300)
     }
 
     const handleCancel = () => {

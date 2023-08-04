@@ -16,8 +16,20 @@ const Form = (props: Props) => {
     const [inputChannelValue, setInputChannelValue] = useState('')
     const [inputPasswordValue, setInputPasswordValue] = useState('')
     const [channelType, setChannelType] = useState('public')
-    const [enteredDataIsValid, setEnteredDataIsValid] = useState<boolean>(true)
+    const [channelErrorMessage, setChannelErrorMessage] = useState('')
+    const [passwordErrorMessage, setPasswordErrorMessage] = useState('')
     const userData = useAppSelector((state) => state.user.userData) as UserData
+
+    const handleChannelInputChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        setInputChannelValue(event.target.value)
+    }
+    const handlePasswordInputChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        setInputPasswordValue(event.target.value)
+    }
 
     const onOk = () => {
         const isValid = checkInputValues()
@@ -34,92 +46,117 @@ const Form = (props: Props) => {
         }
     }
 
-    const checkInputValues = () => {
-        if (channelType === 'public' && inputChannelValue.trim() === '') {
-            console.log('inputChannelValue is empty')
-            setEnteredDataIsValid(false)
-            return false
-        } else if (
-            (channelType === 'private' && inputPasswordValue.trim() === '') ||
-            inputChannelValue.trim() === ''
-        ) {
-            console.log('inputPasswordValue is empty')
-            setEnteredDataIsValid(false)
-            return false
+    const noLongerThanEight = () => {
+        if (channelType === 'public') {
+            if (inputChannelValue.trim().length > 8) {
+                setChannelErrorMessage(
+                    'Channel name is too long (8 characters max)'
+                )
+                return false
+            }
+            return true
+        }
+        if (channelType === 'private') {
+            if (inputChannelValue.trim().length > 8) {
+                setChannelErrorMessage(
+                    'Channel name is too long (8 characters max)'
+                )
+                return false
+            }
+            setChannelErrorMessage('')
+            if (inputPasswordValue.trim().length > 8) {
+                setPasswordErrorMessage(
+                    'Password is too long (8 characters max)'
+                )
+                return false
+            }
         }
         return true
     }
 
-    const handleChannelInputChange = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        setInputChannelValue(event.target.value)
+    const inputNotEmpty = () => {
+        if (channelType === 'public') {
+            if (inputChannelValue.trim() === '') {
+                setChannelErrorMessage('Channel name is required')
+                return false
+            }
+            return true
+        }
+        if (channelType === 'private') {
+            if (inputChannelValue.trim() === '') {
+                setChannelErrorMessage('Channel name is required')
+                return false
+            }
+            setChannelErrorMessage('')
+            if (inputPasswordValue.trim() === '') {
+                setPasswordErrorMessage('Password is required')
+                return false
+            }
+        }
+        return true
     }
-    const handlePasswordInputChange = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        setInputPasswordValue(event.target.value)
+
+    const checkInputValues = () => {
+        if (inputNotEmpty() && noLongerThanEight()) {
+            return true
+        }
+        return false
     }
 
     return (
         <Card className={styles.modal}>
-            <form onSubmit={(event) => event.preventDefault()}>
-                <header className={styles.header}>
-                    <h4>Create new Channel</h4>
-                </header>
+            <header className={styles.header}>
+                <h4>Create new Channel</h4>
+            </header>
+            <div className={styles.formControl}>
+                <input
+                    type="text"
+                    onChange={handleChannelInputChange}
+                    placeholder="Enter Channel name"
+                    autoComplete="off"
+                />
+                {channelErrorMessage !== '' && (
+                    <p className={styles.error}>{channelErrorMessage}</p>
+                )}
+            </div>
+            <div className={styles.radioControl}>
+                <input
+                    type="radio"
+                    value="public"
+                    checked={channelType === 'public'}
+                    onChange={() => setChannelType('public')}
+                />
+                Public
+                <input
+                    type="radio"
+                    name="channelType"
+                    value="private"
+                    checked={channelType === 'private'}
+                    onChange={() => setChannelType('private')}
+                />
+                Private
+            </div>
+            {channelType === 'private' && (
                 <div className={styles.formControl}>
                     <input
                         type="text"
-                        onChange={handleChannelInputChange}
-                        placeholder="Enter Channel name"
+                        onChange={handlePasswordInputChange}
+                        placeholder="Enter Channel password"
                         autoComplete="off"
                     />
-                    {!enteredDataIsValid && (
-                        <p className={styles.error}>Channel name is required</p>
+                    {passwordErrorMessage !== '' && (
+                        <p className={styles.error}>{passwordErrorMessage}</p>
                     )}
                 </div>
-                <div className={styles.radioControl}>
-                    <input
-                        type="radio"
-                        value="public"
-                        checked={channelType === 'public'}
-                        onChange={() => setChannelType('public')}
-                    />{' '}
-                    Public
-                    <input
-                        type="radio"
-                        name="channelType"
-                        value="private"
-                        checked={channelType === 'private'}
-                        onChange={() => setChannelType('private')}
-                    />{' '}
-                    Private
-                </div>
-                {channelType === 'private' && (
-                    <div className={styles.formControl}>
-                        <input
-                            type="text"
-                            onChange={handlePasswordInputChange}
-                            placeholder="Enter Channel password"
-                            autoComplete="off"
-                        />
-                        {!enteredDataIsValid && (
-                            <p className={styles.error}>Password is required</p>
-                        )}
-                    </div>
-                )}
-                <div className={styles.formActions}>
-                    <button className={styles.confirmBtn} onClick={onOk}>
-                        Create
-                    </button>
-                    <button
-                        className={styles.cancelBtn}
-                        onClick={props.onCancel}
-                    >
-                        Cancel
-                    </button>
-                </div>
-            </form>
+            )}
+            <div className={styles.formActions}>
+                <button className={styles.confirmBtn} onClick={onOk}>
+                    Create
+                </button>
+                <button className={styles.cancelBtn} onClick={props.onCancel}>
+                    Cancel
+                </button>
+            </div>
         </Card>
     )
 }

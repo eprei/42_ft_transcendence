@@ -20,6 +20,7 @@ const ConfirmModal = (props: Props) => {
             </div>
             <footer className={styles.actions}>
                 <button className={styles.confirmBtn} onClick={props.onConfirm}>
+
                     Confirm
                 </button>
                 <button className={styles.cancelBtn} onClick={props.onCancel}>
