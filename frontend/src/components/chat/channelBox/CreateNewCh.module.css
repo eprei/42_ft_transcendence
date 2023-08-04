@@ -8,9 +8,11 @@
 .btn {
     margin-top: 32px;
     display: flex;
-    justify-content: space-between;
-    padding: 0.2rem 1rem;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0.3rem 1rem;
     width: 60%;
+    font-size: 18px;
     font-weight: 700;
     --hover-bg: var(--color-mid-green);
     --hover-text: var(--color-black);
