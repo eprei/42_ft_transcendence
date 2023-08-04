@@ -44,7 +44,6 @@ const UserLambda = () => {
             <div className={styles.body}>
                 <div className={styles.bodyLeftSide}>
                     <UserLambdaInformation userData={userData} />
-                    <MatchList userData={userData}></MatchList>
                     <StatisticsLambda userData={userData} />
                 </div>
                 <div className={styles.bodyRightSide}>
