@@ -22,7 +22,6 @@ export class ChannelUserMuted {
     @ManyToOne(() => User, (user) => user.muted, {
         onDelete: 'CASCADE',
     })
-	
     @JoinColumn({ name: 'userId' })
     user: User
 
