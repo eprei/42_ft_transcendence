@@ -96,9 +96,9 @@ export class ChatService {
         user.blockedUsers.push(userToBlock)
         await this.userRepository.save(user)
 
-        const direcChan = await this.findChanDM(userId, targetId)
-        if (direcChan) {
-            await this.channelRepository.remove(direcChan)
+        const directChan = await this.findChanDM(userId, targetId)
+        if (directChan) {
+            await this.channelRepository.remove(directChan)
         }
     }
 
@@ -139,6 +139,17 @@ export class ChatService {
             (blockedUser) => blockedUser.id
         )
         return blockedUserIds
+    }
+
+    async isBlockedBy(myId: number, targetId: number) {
+        const user = await this.userRepository.findOne({
+            where: { id: myId },
+            relations: {
+                blockedBy: true,
+            },
+        })
+        if (user.blockedBy.some((u) => u.id === targetId)) return true
+        else return false
     }
 
     async setAdmin(userId: number, targetId: number, channelId: number) {
@@ -412,38 +423,66 @@ export class ChatService {
         let channelName = user.nickname + ' & ' + target.nickname
         let channel = await this.channelRepository.findOne({
             where: { name: channelName },
-            relations: ['users'],
         })
+
         if (!channel) {
             channelName = target.nickname + ' & ' + user.nickname
             let channel = await this.channelRepository.findOne({
                 where: { name: channelName },
-                relations: ['users'],
             })
         }
-        if (channel) {
-            if (channel.users.some((u) => u.id === user.id)) {
-                return channel
-            } else {
-                const joinChannel = await this.joinChannel(
-                    channel.id,
-                    userId,
-                    ''
-                )
-                return joinChannel
+        return channel
+    }
+
+    async createChanDM(userId: number, TargetId: number) {
+        const user = await this.userRepository.findOneBy({
+            id: userId,
+        })
+        const target = await this.userRepository.findOneBy({
+            id: TargetId,
+        })
+
+        if (await this.isBlockedBy(userId, TargetId))
+            throw new BadRequestException('You are blocked by this user')
+        else if (await this.isBlockedBy(TargetId, userId))
+            throw new BadRequestException('Unblock this User to start chating')
+        else {
+            let channelName = user.nickname + ' & ' + target.nickname
+            let channel = await this.channelRepository.findOne({
+                where: { name: channelName },
+                relations: ['users'],
+            })
+            if (!channel) {
+                channelName = target.nickname + ' & ' + user.nickname
+                let channel = await this.channelRepository.findOne({
+                    where: { name: channelName },
+                    relations: ['users'],
+                })
             }
-        } else {
-            const createChannelDto = new CreateChannelDto()
-            createChannelDto.owner = user
-            createChannelDto.admin = [user]
-            createChannelDto.users = [user, target]
-            createChannelDto.type = 'direct'
-            createChannelDto.name = user.nickname + ' & ' + target.nickname
-            createChannelDto.password = ''
-            const channelCreated = await this.channelRepository.create(
-                createChannelDto
-            )
-            return this.channelRepository.save(channelCreated)
+            if (channel) {
+                if (channel.users.some((u) => u.id === user.id)) {
+                    return channel
+                } else {
+                    const joinChannel = await this.joinChannel(
+                        channel.id,
+                        userId,
+                        ''
+                    )
+                    return joinChannel
+                }
+            } else {
+                const createChannelDto = new CreateChannelDto()
+                createChannelDto.owner = user
+                createChannelDto.admin = [user]
+                createChannelDto.users = [user, target]
+                createChannelDto.type = 'direct'
+                createChannelDto.name = user.nickname + ' & ' + target.nickname
+                createChannelDto.password = ''
+                const channelCreated = await this.channelRepository.create(
+                    createChannelDto
+                )
+                return this.channelRepository.save(channelCreated)
+            }
         }
     }
 

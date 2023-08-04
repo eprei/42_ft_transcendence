@@ -2,7 +2,6 @@ import styles from './User.module.css'
 import IconMsg from '../../../assets/icon/message.svg'
 import IconInviteToPlay from '../../../assets/icon/invite_to_play.svg'
 import IconBlocked from '../../../assets/icon/block_user.svg'
-// import IconBanned from '../../../assets/icon/lock.svg'
 import { useState } from 'react'
 import { useAppSelector } from '../../../store/types'
 import { UserData } from '../../../types/UserData'
@@ -257,7 +256,7 @@ const User = ({
                     </p>
                 </div>
             </div>
-            {id != myId && (
+            {id != myId && !isBlocked && (
                 <div className={styles.right}>
                     <div>{inviteToPlay}</div>
                     <div>

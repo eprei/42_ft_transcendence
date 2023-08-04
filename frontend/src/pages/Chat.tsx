@@ -223,6 +223,8 @@ const Chat = () => {
                 targetUserId,
                 (response: { message: string }) => {
                     if (response) {
+                        dispatch(chatActions.selectChat(0))
+                        getAllChannels()
                         setReloadUsers(true)
                     }
                 }
