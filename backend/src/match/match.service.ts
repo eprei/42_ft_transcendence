@@ -40,8 +40,10 @@ export class MatchService {
         const matchesFront = matchesDB.map((match) => ({
             id: match.id,
             winnerNick: match.winner.nickname,
+            winnerNbVictory: match.winner.nbVictory,
             winnerPfp: match.winner.avatarUrl,
             loserNick: match.loser.nickname,
+            loserNbVictory: match.loser.nbVictory,
             loserPfp: match.loser.avatarUrl,
             scoreWinner: match.scoreWinner,
             scoreLoser: match.scoreLoser,
