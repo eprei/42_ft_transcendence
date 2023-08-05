@@ -4,11 +4,11 @@ import {
     OnGatewayConnection,
     OnGatewayDisconnect,
     OnGatewayInit,
+    WebSocketServer,
 } from '@nestjs/websockets'
 import { PongService } from './pong.service'
 import { Frame } from './entities/pong.entity'
 import { Socket, Server } from 'socket.io'
-import { WebSocketServer } from '@nestjs/websockets'
 import { Logger } from '@nestjs/common'
 import { UserService } from 'src/user/user.service'
 
@@ -145,7 +145,7 @@ export class PongGateway
     @SubscribeMessage('sendInvitation')
     handleSendInvitation(
         client: Socket,
-        data: { player_one: number; player_two: number; room: string }
+        data: { player_one: string; player_two: number; room: string }
     ) {
         const { player_one, player_two, room } = data
         this.server.emit('receiveInvitation', { player_one, player_two, room })
@@ -154,9 +154,9 @@ export class PongGateway
     @SubscribeMessage('cancelInvitation')
     handleCancelInvitation(
         client: Socket,
-        data: { player_one: number; player_two: number; room: string }
+        data: { player_two: number; room: string }
     ) {
-        const { player_one, player_two, room } = data
-        this.server.emit('cancelInvitation', { player_one, player_two, room })
+        const { player_two, room } = data
+        this.server.emit('cancelInvitation', { player_two, room })
     }
 }

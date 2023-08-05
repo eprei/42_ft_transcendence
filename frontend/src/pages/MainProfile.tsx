@@ -51,33 +51,46 @@ const MainProfile = () => {
         useState<boolean>(false)
     const userData = useAppSelector((state) => state.user.userData) as UserData
     const [roomInvited, setRoomInvited] = useState<string>('')
+    const [userInviting, setUserInviting] = useState<string>('')
 
     // Management of invitations to play
     useEffect(() => {
         const socket = SocketGame.getInstance().connect()
 
-        socket.on('receiveInvitation', function (data: any) {
-            if (data.player_two === userData.user.id) {
-                setyouHaveAnInvitation(true)
-                setRoomInvited(data.room)
+        socket.on(
+            'receiveInvitation',
+            function (data: {
+                player_one: string
+                player_two: number
+                room: string
+            }) {
+                if (data.player_two === userData.user.id) {
+                    setyouHaveAnInvitation(true)
+                    setRoomInvited(data.room)
+                    setUserInviting(data.player_one)
+                }
             }
-        })
+        )
 
-        socket.on('cancelInvitation', function (data: any) {
-            if (
-                data.player_two === userData.user.id &&
-                data.room === roomInvited
-            ) {
-                setyouHaveAnInvitation(false)
-                setRoomInvited('')
+        socket.on(
+            'cancelInvitation',
+            function (data: { player_two: number; room: string }) {
+                if (
+                    data.player_two === userData.user.id &&
+                    data.room === roomInvited
+                ) {
+                    setyouHaveAnInvitation(false)
+                    setRoomInvited('')
+                    setUserInviting('')
+                }
             }
-        })
+        )
 
         return () => {
             socket.off('receiveInvitation')
             socket.off('cancelInvitation')
         }
-    }, [roomInvited])
+    }, [roomInvited, userInviting])
 
     useEffect(() => {
         const fetchFriends = async () => {
@@ -169,7 +182,8 @@ const MainProfile = () => {
             </div>
             {youHaveAnInvitation && (
                 <div className={styles.overlay}>
-                    <h4>It looks like you have an invitation</h4>
+                    <h4>you have received an invitation to play from</h4>
+                    <h4>{userInviting}</h4>
                 </div>
             )}
         </div>

@@ -166,7 +166,7 @@ const BoardGame = ({
 
         if (player_two !== 0) {
             socket.emit('sendInvitation', {
-                player_one: player_one,
+                player_one: userData.user.nickname,
                 player_two: player_two,
                 room: room,
             })
@@ -320,7 +320,6 @@ const BoardGame = ({
 
             if (player_two !== 0) {
                 socket.emit('cancelInvitation', {
-                    player_one: player_one,
                     player_two: player_two,
                     room: room,
                 })
