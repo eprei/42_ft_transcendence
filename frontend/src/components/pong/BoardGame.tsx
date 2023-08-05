@@ -190,9 +190,9 @@ const BoardGame = ({
                 ) {
                     setPlayerTwoNameWhenDeclined(data.player_two)
                     setYouHaveBeenRejected(true)
-					setTimeout(() => {
-						navigate('/chat')
-					}, 3000)
+                    setTimeout(() => {
+                        navigate('/chat')
+                    }, 3000)
                 }
             }
         )
@@ -356,7 +356,7 @@ const BoardGame = ({
             socket.off('sendFrames', onReceiveFrames)
             socket.off('waitingForSecondPlayer')
             socket.off('leftRoom', onSecondPlayerLeftTheRoom)
-			socket.off('declineInvitation')
+            socket.off('declineInvitation')
         }
     }, [room])
 

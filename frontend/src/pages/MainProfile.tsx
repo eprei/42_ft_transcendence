@@ -10,6 +10,7 @@ import SocketGame from '../sockets/SocketGame'
 import { useAppSelector } from '../store/types'
 import { UserData } from '../types/UserData'
 import { Button } from 'antd'
+import { useNavigate } from 'react-router-dom'
 
 export interface friendList {
     myId: number
@@ -55,6 +56,7 @@ const MainProfile = () => {
     const [userInvitingNickname, setUserInvitingNickname] = useState<string>('')
     const [userInvitingId, setUserInvitingId] = useState<number>(0)
     const socket = SocketGame.getInstance().connect()
+    const navigate = useNavigate()
 
     // Management of invitations to play
     useEffect(() => {
@@ -171,7 +173,17 @@ const MainProfile = () => {
         return <div>Loading...</div>
     }
 
-    const acceptInvitation = () => {}
+    const acceptInvitation = () => {
+        navigate('/game', {
+            state: {
+                player_one: userInvitingId,
+                player_two: userData.user.id,
+                theme: 'original',
+                roomId: roomInvited,
+                imPlayerOne: false,
+            },
+        })
+    }
 
     const declineInvitation = () => {
         socket.emit('declineInvitation', {
