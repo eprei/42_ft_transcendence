@@ -9,6 +9,7 @@ import store from '../store'
 import SocketGame from '../sockets/SocketGame'
 import { useAppSelector } from '../store/types'
 import { UserData } from '../types/UserData'
+import { Button } from 'antd'
 
 export interface friendList {
     myId: number
@@ -167,6 +168,10 @@ const MainProfile = () => {
         return <div>Loading...</div>
     }
 
+    const acceptInvitation = () => {}
+
+    const declineInvitation = () => {}
+
     return (
         <div className={styles.container}>
             <h1>Profile</h1>
@@ -182,8 +187,24 @@ const MainProfile = () => {
             </div>
             {youHaveAnInvitation && (
                 <div className={styles.overlay}>
-                    <h4>you have received an invitation to play from</h4>
-                    <h4>{userInviting}</h4>
+                    <h4>you have received an invitation</h4>
+                    <h4>to play from {userInviting}</h4>
+                    <div className={styles.buttonContainer}>
+                        <Button
+                            className={styles.btn}
+                            type="primary"
+                            onClick={acceptInvitation}
+                        >
+                            Accept
+                        </Button>
+                        <Button
+                            className={styles.btn}
+                            type="primary"
+                            onClick={declineInvitation}
+                        >
+                            Decline
+                        </Button>
+                    </div>
                 </div>
             )}
         </div>
