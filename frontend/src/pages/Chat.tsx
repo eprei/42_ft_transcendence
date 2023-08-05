@@ -47,7 +47,6 @@ const Chat = () => {
         const newSocket = SocketChatService.getInstance().connect()
         if (newSocket !== undefined) {
             setSocket(newSocket)
-            console.log('connected')
 
             newSocket.on('incomingMessage', (newMessage: any) => {
                 const msgCpy = [...messages]
@@ -117,14 +116,16 @@ const Chat = () => {
     }
 
     const createNewChannel = (channel: CreateChannel) => {
-        if (socket !== undefined)
+        if (socket !== undefined) {
             socket.emit('createNewChannel', channel, () => {})
+            setTimeout(() => {
+                getAllChannels()
+            }, 300)
+        }
     }
 
     const getAllChannels = () => {
-        console.log('getAllChannels TRY called')
         if (socket !== undefined) {
-            console.log('getAllChannels called')
             socket.emit('getAllChannels', (response: any) => {
                 const allChannels = response
                 setAllChan(allChannels)
@@ -207,8 +208,9 @@ const Chat = () => {
                 (response: any) => {
                     if (response) {
                         setTimeout(() => {
+                            getAllChannels()
                             dispatch(chatActions.selectChat(response.id))
-                        }, 1000)
+                        }, 300)
                     }
                 }
             )
