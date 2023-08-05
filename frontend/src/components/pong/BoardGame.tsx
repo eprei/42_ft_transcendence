@@ -164,6 +164,14 @@ const BoardGame = ({
             }
         }
 
+        if (player_two !== 0) {
+            socket.emit('sendInvitation', {
+                player_one: player_one,
+                player_two: player_two,
+                room: room,
+            })
+        }
+
         if (playerNumber === 'player_one') {
             socket.on('secondPlayerJoined', async (playerId) => {
                 const dataPlayerOne = await getUserData(player_one)
@@ -309,6 +317,14 @@ const BoardGame = ({
                 roomId: room,
                 userId: userData.user.id,
             })
+
+            if (player_two !== 0) {
+                socket.emit('cancelInvitation', {
+                    player_one: player_one,
+                    player_two: player_two,
+                    room: room,
+                })
+            }
 
             socket.off('connect_error')
             socket.off('connect')

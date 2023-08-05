@@ -6,6 +6,9 @@ import { userActions } from '../store/user'
 import { useEffect, useState } from 'react'
 import AddFriendsBtn from '../components/profile/AddFriendsBtn'
 import store from '../store'
+import SocketGame from '../sockets/SocketGame'
+import { useAppSelector } from '../store/types'
+import { UserData } from '../types/UserData'
 
 export interface friendList {
     myId: number
@@ -44,6 +47,37 @@ const MainProfile = () => {
     const refreshTime: number = 3000
 
     const [isLoading, setIsLoading] = useState(true)
+    const [youHaveAnInvitation, setyouHaveAnInvitation] =
+        useState<boolean>(false)
+    const userData = useAppSelector((state) => state.user.userData) as UserData
+    const [roomInvited, setRoomInvited] = useState<string>('')
+
+    // Management of invitations to play
+    useEffect(() => {
+        const socket = SocketGame.getInstance().connect()
+
+        socket.on('receiveInvitation', function (data: any) {
+            if (data.player_two === userData.user.id) {
+                setyouHaveAnInvitation(true)
+                setRoomInvited(data.room)
+            }
+        })
+
+        socket.on('cancelInvitation', function (data: any) {
+            if (
+                data.player_two === userData.user.id &&
+                data.room === roomInvited
+            ) {
+                setyouHaveAnInvitation(false)
+                setRoomInvited('')
+            }
+        })
+
+        return () => {
+            socket.off('receiveInvitation')
+            socket.off('cancelInvitation')
+        }
+    }, [roomInvited])
 
     useEffect(() => {
         const fetchFriends = async () => {
@@ -133,6 +167,11 @@ const MainProfile = () => {
                     <FriendList friendList={friendList} />
                 </div>
             </div>
+            {youHaveAnInvitation && (
+                <div className={styles.overlay}>
+                    <h4>It looks like you have an invitation</h4>
+                </div>
+            )}
         </div>
     )
 }

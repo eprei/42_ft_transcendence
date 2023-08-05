@@ -1,13 +1,14 @@
-import { WebSocketGateway, SubscribeMessage } from '@nestjs/websockets'
-import { PongService } from './pong.service'
-import { Frame } from './entities/pong.entity'
-import { Socket, Server } from 'socket.io'
-import { WebSocketServer } from '@nestjs/websockets'
 import {
+    WebSocketGateway,
+    SubscribeMessage,
     OnGatewayConnection,
     OnGatewayDisconnect,
     OnGatewayInit,
 } from '@nestjs/websockets'
+import { PongService } from './pong.service'
+import { Frame } from './entities/pong.entity'
+import { Socket, Server } from 'socket.io'
+import { WebSocketServer } from '@nestjs/websockets'
 import { Logger } from '@nestjs/common'
 import { UserService } from 'src/user/user.service'
 
@@ -139,5 +140,23 @@ export class PongGateway
         delete this.secondPlayerIds[roomId]
         this.userService.changeStatusOnLine(userId)
         client.leave(roomId)
+    }
+
+    @SubscribeMessage('sendInvitation')
+    handleSendInvitation(
+        client: Socket,
+        data: { player_one: number; player_two: number; room: string }
+    ) {
+        const { player_one, player_two, room } = data
+        this.server.emit('receiveInvitation', { player_one, player_two, room })
+    }
+
+    @SubscribeMessage('cancelInvitation')
+    handleCancelInvitation(
+        client: Socket,
+        data: { player_one: number; player_two: number; room: string }
+    ) {
+        const { player_one, player_two, room } = data
+        this.server.emit('cancelInvitation', { player_one, player_two, room })
     }
 }
