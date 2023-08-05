@@ -145,10 +145,20 @@ export class PongGateway
     @SubscribeMessage('sendInvitation')
     handleSendInvitation(
         client: Socket,
-        data: { player_one: string; player_two: number; room: string }
+        data: {
+            player_one_nickname: string
+            player_one_id: number
+            player_two: number
+            room: string
+        }
     ) {
-        const { player_one, player_two, room } = data
-        this.server.emit('receiveInvitation', { player_one, player_two, room })
+        const { player_one_id, player_one_nickname, player_two, room } = data
+        this.server.emit('receiveInvitation', {
+            player_one_id,
+            player_one_nickname,
+            player_two,
+            room,
+        })
     }
 
     @SubscribeMessage('cancelInvitation')
@@ -158,5 +168,14 @@ export class PongGateway
     ) {
         const { player_two, room } = data
         this.server.emit('cancelInvitation', { player_two, room })
+    }
+
+    @SubscribeMessage('declineInvitation')
+    handleDeclineInvitation(
+        client: Socket,
+        data: { player_one: number; player_two: string; room: string }
+    ) {
+        const { player_one, player_two, room } = data
+        this.server.emit('declineInvitation', { player_one, player_two, room })
     }
 }

@@ -52,23 +52,25 @@ const MainProfile = () => {
         useState<boolean>(false)
     const userData = useAppSelector((state) => state.user.userData) as UserData
     const [roomInvited, setRoomInvited] = useState<string>('')
-    const [userInviting, setUserInviting] = useState<string>('')
+    const [userInvitingNickname, setUserInvitingNickname] = useState<string>('')
+    const [userInvitingId, setUserInvitingId] = useState<number>(0)
+    const socket = SocketGame.getInstance().connect()
 
     // Management of invitations to play
     useEffect(() => {
-        const socket = SocketGame.getInstance().connect()
-
         socket.on(
             'receiveInvitation',
             function (data: {
-                player_one: string
+                player_one_nickname: string
+                player_one_id: number
                 player_two: number
                 room: string
             }) {
                 if (data.player_two === userData.user.id) {
                     setyouHaveAnInvitation(true)
                     setRoomInvited(data.room)
-                    setUserInviting(data.player_one)
+                    setUserInvitingNickname(data.player_one_nickname)
+                    setUserInvitingId(data.player_one_id)
                 }
             }
         )
@@ -82,7 +84,8 @@ const MainProfile = () => {
                 ) {
                     setyouHaveAnInvitation(false)
                     setRoomInvited('')
-                    setUserInviting('')
+                    setUserInvitingNickname('')
+                    setUserInvitingId(0)
                 }
             }
         )
@@ -91,7 +94,7 @@ const MainProfile = () => {
             socket.off('receiveInvitation')
             socket.off('cancelInvitation')
         }
-    }, [roomInvited, userInviting])
+    }, [roomInvited, userInvitingNickname])
 
     useEffect(() => {
         const fetchFriends = async () => {
@@ -170,7 +173,14 @@ const MainProfile = () => {
 
     const acceptInvitation = () => {}
 
-    const declineInvitation = () => {}
+    const declineInvitation = () => {
+        socket.emit('declineInvitation', {
+            player_one: userInvitingId,
+            player_two: userData.user.nickname,
+            room: roomInvited,
+        })
+        setyouHaveAnInvitation(false)
+    }
 
     return (
         <div className={styles.container}>
@@ -188,7 +198,7 @@ const MainProfile = () => {
             {youHaveAnInvitation && (
                 <div className={styles.overlay}>
                     <h4>you have received an invitation</h4>
-                    <h4>to play from {userInviting}</h4>
+                    <h4>to play from {userInvitingNickname}</h4>
                     <div className={styles.buttonContainer}>
                         <Button
                             className={styles.btn}
