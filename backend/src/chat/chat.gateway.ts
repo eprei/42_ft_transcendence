@@ -209,7 +209,7 @@ export class ChatGateway
     @UsePipes(ValidationPipe)
     async createDirectChannel(@MessageBody() body: UserTargetData) {
         const [userId, targetId] = body
-        const channel = await this.chatService.findChanDM(userId, targetId)
+        const channel = await this.chatService.createChanDM(userId, targetId)
         this.server.emit('newChannel', channel)
         return channel
     }
