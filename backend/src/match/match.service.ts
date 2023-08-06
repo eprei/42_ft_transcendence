@@ -18,13 +18,11 @@ export class MatchService {
     create(createMatchDto: CreateMatchDto) {
         const newMatch = this.matchRepository.create(createMatchDto)
         this.userRepository.update(newMatch.winner, {
-            id : newMatch.winner.id,
             nbVictory : newMatch.winner.nbVictory + 1,
             totalPlay : newMatch.winner.totalPlay + 1,
             xp: newMatch.winner.xp + 10
         })
         this.userRepository.update(newMatch.loser, {
-            id : newMatch.loser.id,
             totalPlay : newMatch.loser.totalPlay + 1,
             xp: newMatch.loser.xp + 10
         })
