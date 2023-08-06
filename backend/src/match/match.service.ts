@@ -37,18 +37,20 @@ export class MatchService {
             relations: ['winner', 'loser'],
         })
 
-        const matchesFront = matchesDB.map((match) => ({
-            id: match.id,
-            winnerNick: match.winner.nickname,
-            winnerNbVictory: match.winner.nbVictory,
-            winnerPfp: match.winner.avatarUrl,
-            loserNick: match.loser.nickname,
-            loserNbVictory: match.loser.nbVictory,
-            loserPfp: match.loser.avatarUrl,
-            scoreWinner: match.scoreWinner,
-            scoreLoser: match.scoreLoser,
+        
+        console.log("matches from back:" , matchesDB)
+        const matchesFront = matchesDB.map((m) => (
+        {
+            id: m.id,
+            winnerNick: m.winner.nickname,
+            winnerLevel: m.winner.nbVictory + 0.5 * (m.winner.totalPlay - m.winner.nbVictory),
+            winnerPfp: m.winner.avatarUrl,
+            loserNick: m.loser.nickname,
+            loserLevel: m.loser.nbVictory + 0.5 * (m.loser.totalPlay - m.loser.nbVictory),
+            loserPfp: m.loser.avatarUrl,
+            scoreWinner: m.scoreWinner,
+            scoreLoser: m.scoreLoser,
         }))
-
         return matchesFront
     }
 

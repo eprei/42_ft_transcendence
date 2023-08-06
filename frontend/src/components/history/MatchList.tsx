@@ -33,7 +33,7 @@ const MatchList = ({ userData, isInUserLambda }: UserProp) => {
         <div className={styles.left} key={match.id}>
             <div>
                 <div>{match.winnerNick}</div>
-                <div>level {(Math.floor(match.winnerNbVictory / 5) + 1)}</div>
+                <div>level {match.winnerLevel}</div>
             </div>
             <img src={match.winnerPfp} alt="winner avatar" />
             <div className={styles.score}>{match.scoreWinner}</div>
@@ -46,7 +46,7 @@ const MatchList = ({ userData, isInUserLambda }: UserProp) => {
             <img src={match.loserPfp} alt="loser avatar" />
             <div>
                 <div>{match.loserNick}</div>
-                <div>level {(Math.floor(match.loserNbVictory / 5) + 1)}</div>
+                <div>level {match.loserLevel}</div>
             </div>
         </div>
     ))
