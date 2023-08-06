@@ -48,10 +48,8 @@ const Chat = () => {
         if (newSocket !== undefined) {
             setSocket(newSocket)
 
-            newSocket.on('incomingMessage', (newMessage: any) => {
-                const msgCpy = [...messages]
-                msgCpy.push(newMessage)
-                setMesssages(msgCpy)
+            newSocket.on('incomingMessages', (newMessages: any) => {
+                setMesssages(newMessages)
             })
             newSocket.on('newChannel', () => {
                 getAllChannels()
