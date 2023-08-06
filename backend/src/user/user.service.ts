@@ -21,6 +21,7 @@ import * as fs from 'fs'
 import { FriendService } from 'src/friend/friend.service'
 import { UserStatus } from 'src/typeorm/user.entity'
 import { Friend } from 'src/typeorm/friend.entity'
+import { Channel } from 'src/typeorm/channel.entity'
 
 @Injectable()
 export class UserService {
@@ -29,7 +30,9 @@ export class UserService {
         private readonly userRepository: Repository<User>,
         private readonly friendService: FriendService,
         @InjectRepository(Friend)
-        private readonly friendRepository: Repository<Friend>
+        private readonly friendRepository: Repository<Friend>,
+        @InjectRepository(Channel)
+        private readonly channelRepository: Repository<Channel>
     ) {}
     create(createUserDto: CreateUserDto) {
         const user = this.userRepository.create(createUserDto)
@@ -317,5 +320,79 @@ export class UserService {
 
         if (user && user.status != UserStatus.Playing)
             this.update(userId, { id: userId, status: UserStatus.Playing })
+    }
+
+    async isBlockedByMe(@Request() req: any, target_id: number) {
+        const user = await this.userRepository.findOne({
+            where: { id: req.user.id },
+            relations: {
+                blockedUsers: true,
+            },
+        })
+        if (user.blockedUsers.some((u) => u.id === target_id)) return true
+        else return false
+    }
+
+    async blockUser(monId: number, targetId: number) {
+        const user = await this.userRepository.findOne({
+            where: { id: monId },
+            relations: {
+                blockedUsers: true,
+            },
+        })
+        const userToBlock = await this.userRepository.findOne({
+            where: { id: targetId },
+            relations: {
+                blockedBy: true,
+            },
+        })
+
+        userToBlock.blockedBy.push(user)
+        await this.userRepository.save(userToBlock)
+
+        user.blockedUsers.push(userToBlock)
+        await this.userRepository.save(user)
+
+        //erase DM if exist
+        let channelName = user.nickname + ' & ' + userToBlock.nickname
+        let DM = await this.channelRepository.findOne({
+            where: { name: channelName },
+        })
+        if (!DM) {
+            channelName = userToBlock.nickname + ' & ' + user.nickname
+            let DM = await this.channelRepository.findOne({
+                where: { name: channelName },
+            })
+        }
+
+        if (DM) {
+            await this.channelRepository.remove(DM)
+        }
+    }
+
+    async unblockUser(myId: number, hisId: number) {
+        const user = await this.userRepository.findOne({
+            where: { id: myId },
+            relations: {
+                blockedUsers: true,
+            },
+        })
+
+        const userToUnblock = await this.userRepository.findOne({
+            where: { id: hisId },
+            relations: {
+                blockedBy: true,
+            },
+        })
+
+        userToUnblock.blockedBy = userToUnblock.blockedBy.filter(
+            (u) => u.id !== user.id
+        )
+        await this.userRepository.save(userToUnblock)
+
+        user.blockedUsers = user.blockedUsers.filter(
+            (u) => u.id !== userToUnblock.id
+        )
+        await this.userRepository.save(user)
     }
 }
