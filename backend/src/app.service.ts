@@ -294,8 +294,9 @@ export class AppService {
             this.userRepo.update(winner, {
                 totalPlay: winner.totalPlay + 1,
                 nbVictory: winner.nbVictory + 1,
+                xp: winner.xp + 10
             })
-            this.userRepo.update(loser, { totalPlay: loser.totalPlay + 1})
+            this.userRepo.update(loser, { totalPlay: loser.totalPlay + 1, xp: winner.xp + 10})
             const scoreWinner = Math.floor(Math.random() * 6)
             const scoreLoser = Math.floor(Math.random() * 6)
             const dateGame = new Date()
