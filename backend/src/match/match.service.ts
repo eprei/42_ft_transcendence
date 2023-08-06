@@ -48,8 +48,6 @@ export class MatchService {
             relations: ['winner', 'loser'],
         })
 
-        
-        console.log("matches from back:" , matchesDB)
         const matchesFront = matchesDB.map((m) => (
         {
             id: m.id,
