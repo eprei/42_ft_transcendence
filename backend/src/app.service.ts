@@ -294,9 +294,12 @@ export class AppService {
             this.userRepo.update(winner, {
                 totalPlay: winner.totalPlay + 1,
                 nbVictory: winner.nbVictory + 1,
-                xp: winner.xp + 10
+                xp: winner.xp + 10,
             })
-            this.userRepo.update(loser, { totalPlay: loser.totalPlay + 1, xp: loser.xp + 10})
+            this.userRepo.update(loser, {
+                totalPlay: loser.totalPlay + 1,
+                xp: loser.xp + 10,
+            })
             const scoreWinner = Math.floor(Math.random() * 6)
             const scoreLoser = Math.floor(Math.random() * 6)
             const dateGame = new Date()
@@ -325,9 +328,12 @@ export class AppService {
         this.userRepo.update(loggedUser, {
             totalPlay: loggedUser.totalPlay + 1,
             nbVictory: loggedUser.nbVictory + 1,
-            xp: loggedUser.xp + 10
+            xp: loggedUser.xp + 10,
         })
-        this.userRepo.update(user1, { totalPlay: user1.totalPlay + 1, xp: user1.xp + 10})
+        this.userRepo.update(user1, {
+            totalPlay: user1.totalPlay + 1,
+            xp: user1.xp + 10,
+        })
 
         await this.matchRepo.save(loggedMatch)
     }

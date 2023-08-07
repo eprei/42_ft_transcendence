@@ -48,8 +48,7 @@ export class MatchService {
             relations: ['winner', 'loser'],
         })
 
-        const matchesFront = matchesDB.map((m) => (
-        {
+        const matchesFront = matchesDB.map((m) => ({
             id: m.id,
             winnerNick: m.winner.nickname,
             winnerLevel: Math.floor(m.winner.xp / 100 + 1),
