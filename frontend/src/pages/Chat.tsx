@@ -10,6 +10,7 @@ import { UserData } from '../types/UserData'
 import { Channel } from '../types/Channel'
 import SocketChatService from '../sockets/SocketChat.ts'
 import { Socket } from 'socket.io-client'
+import InvitationHandler from '../sockets/InvitationHandler'
 
 export interface ReceivedMsg {
     id: number
@@ -368,42 +369,45 @@ const Chat = () => {
     }
 
     return (
-        <div className={styles.chatContainer}>
-            <ChannelBox
-                allChan={allChan}
-                handleCreation={handleCreation}
-                deleteChannel={deleteChannel}
-                leaveChannel={leaveChannel}
-                joinChannel={joinChannel}
-                changePassword={changePassword}
-            />
-            <ChatBox
-                currentChatSelected={currentChatSelected}
-                messages={messages}
-                sendMessage={sendMessage}
-                amImuted={mutedUsers.some(
-                    (user: any) => user.id === userData.user.id
-                )}
-                blockedUsers={blockedUsers}
-            />
-            <UserBox
-                users={users}
-                blockedUsers={blockedUsers}
-                admins={admins}
-                owner={owner}
-                bannedUsers={bannedUsers}
-                mutedUsers={mutedUsers}
-                createDM={createDM}
-                blockUser={blockUser}
-                unblockUser={unblockUser}
-                setAdmin={setAdmin}
-                unsetAdmin={unsetAdmin}
-                kickUser={kickUser}
-                banUser={banUser}
-                unbanUser={unbanUser}
-                muteUser={muteUser}
-                isDM={isDM}
-            />
+        <div>
+            <InvitationHandler />
+            <div className={styles.chatContainer}>
+                <ChannelBox
+                    allChan={allChan}
+                    handleCreation={handleCreation}
+                    deleteChannel={deleteChannel}
+                    leaveChannel={leaveChannel}
+                    joinChannel={joinChannel}
+                    changePassword={changePassword}
+                />
+                <ChatBox
+                    currentChatSelected={currentChatSelected}
+                    messages={messages}
+                    sendMessage={sendMessage}
+                    amImuted={mutedUsers.some(
+                        (user: any) => user.id === userData.user.id
+                    )}
+                    blockedUsers={blockedUsers}
+                />
+                <UserBox
+                    users={users}
+                    blockedUsers={blockedUsers}
+                    admins={admins}
+                    owner={owner}
+                    bannedUsers={bannedUsers}
+                    mutedUsers={mutedUsers}
+                    createDM={createDM}
+                    blockUser={blockUser}
+                    unblockUser={unblockUser}
+                    setAdmin={setAdmin}
+                    unsetAdmin={unsetAdmin}
+                    kickUser={kickUser}
+                    banUser={banUser}
+                    unbanUser={unbanUser}
+                    muteUser={muteUser}
+                    isDM={isDM}
+                />
+            </div>
         </div>
     )
 }

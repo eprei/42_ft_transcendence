@@ -5,6 +5,7 @@ import StatisticsLambda from '../components/profile/StatisticsLambda'
 import UserLambdaInformation from '../components/UserLambda/UserLambdaInformation'
 import { UserData } from '../types/UserData'
 import { MatchList } from '../components/history/MatchList'
+import InvitationHandler from '../sockets/InvitationHandler'
 
 const UserLambda = () => {
     const [loading, setLoading] = useState(true)
@@ -40,17 +41,20 @@ const UserLambda = () => {
         return <div>Loading...</div>
     }
     return (
-        <div className={styles.container}>
-            <div className={styles.body}>
-                <div className={styles.bodyLeftSide}>
-                    <UserLambdaInformation userData={userData} />
-                    <StatisticsLambda userData={userData} />
-                </div>
-                <div className={styles.bodyRightSide}>
-                    <MatchList
-                        userData={userData}
-                        isInUserLambda={true}
-                    ></MatchList>
+        <div>
+            <InvitationHandler />
+            <div className={styles.container}>
+                <div className={styles.body}>
+                    <div className={styles.bodyLeftSide}>
+                        <UserLambdaInformation userData={userData} />
+                        <StatisticsLambda userData={userData} />
+                    </div>
+                    <div className={styles.bodyRightSide}>
+                        <MatchList
+                            userData={userData}
+                            isInUserLambda={true}
+                        ></MatchList>
+                    </div>
                 </div>
             </div>
         </div>

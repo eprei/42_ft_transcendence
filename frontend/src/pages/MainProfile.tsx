@@ -6,11 +6,7 @@ import { userActions } from '../store/user'
 import { useEffect, useState } from 'react'
 import AddFriendsBtn from '../components/profile/AddFriendsBtn'
 import store from '../store'
-import SocketGame from '../sockets/SocketGame'
-import { useAppSelector } from '../store/types'
-import { UserData } from '../types/UserData'
-import { Button } from 'antd'
-import { useNavigate } from 'react-router-dom'
+import InvitationHandler from '../sockets/InvitationHandler'
 
 export interface friendList {
     myId: number
@@ -49,54 +45,6 @@ const MainProfile = () => {
     const refreshTime: number = 3000
 
     const [isLoading, setIsLoading] = useState(true)
-    const [youHaveAnInvitation, setyouHaveAnInvitation] =
-        useState<boolean>(false)
-    const userData = useAppSelector((state) => state.user.userData) as UserData
-    const [roomInvited, setRoomInvited] = useState<string>('')
-    const [userInvitingNickname, setUserInvitingNickname] = useState<string>('')
-    const [userInvitingId, setUserInvitingId] = useState<number>(0)
-    const socket = SocketGame.getInstance().connect()
-    const navigate = useNavigate()
-
-    // Management of invitations to play
-    useEffect(() => {
-        socket.on(
-            'receiveInvitation',
-            function (data: {
-                player_one_nickname: string
-                player_one_id: number
-                player_two: number
-                room: string
-            }) {
-                if (data.player_two === userData.user.id) {
-                    setyouHaveAnInvitation(true)
-                    setRoomInvited(data.room)
-                    setUserInvitingNickname(data.player_one_nickname)
-                    setUserInvitingId(data.player_one_id)
-                }
-            }
-        )
-
-        socket.on(
-            'cancelInvitation',
-            function (data: { player_two: number; room: string }) {
-                if (
-                    data.player_two === userData.user.id &&
-                    data.room === roomInvited
-                ) {
-                    setyouHaveAnInvitation(false)
-                    setRoomInvited('')
-                    setUserInvitingNickname('')
-                    setUserInvitingId(0)
-                }
-            }
-        )
-
-        return () => {
-            socket.off('receiveInvitation')
-            socket.off('cancelInvitation')
-        }
-    }, [roomInvited, userInvitingNickname])
 
     useEffect(() => {
         const fetchFriends = async () => {
@@ -173,62 +121,22 @@ const MainProfile = () => {
         return <div>Loading...</div>
     }
 
-    const acceptInvitation = () => {
-        navigate('/game', {
-            state: {
-                player_one: userInvitingId,
-                player_two: userData.user.id,
-                theme: 'original',
-                roomId: roomInvited,
-                imPlayerOne: false,
-            },
-        })
-    }
-
-    const declineInvitation = () => {
-        socket.emit('declineInvitation', {
-            player_one: userInvitingId,
-            player_two: userData.user.nickname,
-            room: roomInvited,
-        })
-        setyouHaveAnInvitation(false)
-    }
-
     return (
-        <div className={styles.container}>
-            <h1>Profile</h1>
-            <div className={styles.body}>
-                <div className={styles.bodyLeftSide}>
-                    <UserInformation />
-                    <Statistics />
-                    <AddFriendsBtn otherUsers={otherUsers} />
-                </div>
-                <div className={styles.bodyRightSide}>
-                    <FriendList friendList={friendList} />
-                </div>
-            </div>
-            {youHaveAnInvitation && (
-                <div className={styles.overlay}>
-                    <h4>you have received an invitation</h4>
-                    <h4>to play from {userInvitingNickname}</h4>
-                    <div className={styles.buttonContainer}>
-                        <Button
-                            className={styles.btn}
-                            type="primary"
-                            onClick={acceptInvitation}
-                        >
-                            Accept
-                        </Button>
-                        <Button
-                            className={styles.btn}
-                            type="primary"
-                            onClick={declineInvitation}
-                        >
-                            Decline
-                        </Button>
+        <div>
+            <InvitationHandler />
+            <div className={styles.container}>
+                <h1>Profile</h1>
+                <div className={styles.body}>
+                    <div className={styles.bodyLeftSide}>
+                        <UserInformation />
+                        <Statistics />
+                        <AddFriendsBtn otherUsers={otherUsers} />
+                    </div>
+                    <div className={styles.bodyRightSide}>
+                        <FriendList friendList={friendList} />
                     </div>
                 </div>
-            )}
+            </div>
         </div>
     )
 }
