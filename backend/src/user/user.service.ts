@@ -34,6 +34,7 @@ export class UserService {
         @InjectRepository(Channel)
         private readonly channelRepository: Repository<Channel>
     ) {}
+
     create(createUserDto: CreateUserDto) {
         try {
             const user = this.userRepository.create(createUserDto)
@@ -52,11 +53,11 @@ export class UserService {
     }
 
     findOne(id: number) {
-        try {
-            return this.userRepository.findOneBy({ id: id })
-        } catch (error) {
-            console.log(error)
+        const user = this.userRepository.findOneBy({ id: id })
+        if (!user) {
+            throw new NotFoundException('User not found')
         }
+        return user
     }
 
     async update(id: number, updateUserDto: UpdateUserDto) {
@@ -227,7 +228,10 @@ export class UserService {
         if (!file) {
             console.log('No image was provided')
         }
+<<<<<<< HEAD
 
+=======
+>>>>>>> controller throw error if needed
         const destinationPath = '/app/profile-images'
         const uniqueSuffix = uuidv4()
         const fileExt = extname(file.originalname)
@@ -241,9 +245,15 @@ export class UserService {
             const fileData = fs.readFileSync(file.path)
             fs.writeFileSync(`${destinationPath}/${uniqueFilename}`, fileData)
             fs.unlinkSync(file.path)
+<<<<<<< HEAD
             const serverBaseUrl = `${process.env.URL_BACKEND}/api/user` // Profile's pictures base URL
             const photoUrl: string = `${serverBaseUrl}/profile-images/${uniqueFilename}`
 
+=======
+
+            const serverBaseUrl = `${process.env.URL_BACKEND}/api/user`
+            const photoUrl: string = `${serverBaseUrl}/profile-images/${uniqueFilename}`
+>>>>>>> controller throw error if needed
             const user = await this.findOne(req.user.id)
             if (!user) {
                 throw new NotFoundException('User not found')
@@ -263,6 +273,7 @@ export class UserService {
     }
 
     async getMyInfo(@Request() req: any) {
+<<<<<<< HEAD
         try {
             const user = await this.findOne(req.user.id)
 
@@ -309,6 +320,37 @@ export class UserService {
                 .select('friend.friendId', 'friendId')
                 .where('friend.userId = :userId', { userId })
                 .getRawMany()
+=======
+        const user = await this.findOne(req.user.id)
+        if (!user) {
+            throw new NotFoundException('User not found')
+        }
+        const { TFASecret, FT_id, ...rest } = user
+        const userPosition = await this.getUserRankingPosition(req.user.id)
+        return { ...rest, userPosition }
+    }
+
+    async getFriendsAndRequests(@Request() req: any) {
+        const user = await this.findOne(req.user.id)
+        if (!user) {
+            throw new NotFoundException('User not found')
+        }
+        return this.friendService.getFiendsAndRequests(user.id)
+    }
+
+    async getAllUsersWithNoFriendship(@Request() req: any) {
+        const user = await this.findOne(req.user.id)
+        if (!user) {
+            throw new NotFoundException('User not found')
+        }
+
+        const userId: number = user.id
+        const friendsAddedByMe = await this.friendRepository
+            .createQueryBuilder('friend')
+            .select('friend.friendId', 'friendId')
+            .where('friend.userId = :userId', { userId })
+            .getRawMany()
+>>>>>>> controller throw error if needed
 
             const friendsWhoAddedMe = await this.friendRepository
                 .createQueryBuilder('follower')
@@ -333,10 +375,17 @@ export class UserService {
                 select: ['id', 'nickname', 'avatarUrl'],
             })
 
+<<<<<<< HEAD
             return { usersNotFriends }
         } catch (error) {
             console.log(error)
         }
+=======
+        if (!usersNotFriends) {
+            throw new NotFoundException('Users not found')
+        }
+        return { usersNotFriends }
+>>>>>>> controller throw error if needed
     }
 
     async logout(@Request() req: any, @Res() res: any) {
@@ -394,6 +443,7 @@ export class UserService {
     }
 
     async blockUser(monId: number, targetId: number) {
+<<<<<<< HEAD
         try {
             const user = await this.userRepository.findOne({
                 where: { id: monId },
@@ -416,6 +466,33 @@ export class UserService {
 
             //erase DM if exist
             let channelName = user.nickname + ' & ' + userToBlock.nickname
+=======
+        const user = await this.userRepository.findOne({
+            where: { id: monId },
+            relations: {
+                blockedUsers: true,
+            },
+        })
+        const userToBlock = await this.userRepository.findOne({
+            where: { id: targetId },
+            relations: {
+                blockedBy: true,
+            },
+        })
+
+        userToBlock.blockedBy.push(user)
+        await this.userRepository.save(userToBlock)
+
+        user.blockedUsers.push(userToBlock)
+        await this.userRepository.save(user)
+
+        let channelName = user.nickname + ' & ' + userToBlock.nickname
+        let DM = await this.channelRepository.findOne({
+            where: { name: channelName },
+        })
+        if (!DM) {
+            channelName = userToBlock.nickname + ' & ' + user.nickname
+>>>>>>> controller throw error if needed
             let DM = await this.channelRepository.findOne({
                 where: { name: channelName },
             })

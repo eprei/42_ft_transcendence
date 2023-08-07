@@ -3,7 +3,6 @@ import {
     Get,
     Post,
     Body,
-    Patch,
     Param,
     Delete,
     UsePipes,
@@ -11,13 +10,13 @@ import {
     UseInterceptors,
     UploadedFile,
     BadRequestException,
-    NotFoundException,
     Res,
     Request,
+    InternalServerErrorException,
+    NotFoundException,
 } from '@nestjs/common'
 import { UserService } from './user.service'
 import { CreateUserDto } from './dto/create-user.dto'
-import { UpdateChannelDto } from 'src/chat/dto/update-channel.dto'
 import { Express } from 'express'
 import { ApiTags } from '@nestjs/swagger'
 import { FileInterceptor } from '@nestjs/platform-express'
@@ -36,106 +35,79 @@ export class UserController {
     @Post()
     @UsePipes(ValidationPipe)
     async create(@Body() createUserDto: CreateUserDto) {
-        return await this.userService.create(createUserDto)
-    }
-
-    @Get()
-    async findAll() {
-        return await this.userService.findAll()
+        try {
+            return await this.userService.create(createUserDto)
+        } catch (error) {
+            throw new InternalServerErrorException()
+        }
     }
 
     @Get('id/:id')
     async findOne(@Param('id') id: string) {
-        return await this.userService.findOne(+id)
-    }
-
-    @Patch(':id')
-    async update(
-        @Param('id') id: string,
-        @Body() updateChannelDto: UpdateChannelDto
-    ) {
-        return await this.userService.update(+id, updateChannelDto)
-    }
-
-    @Delete(':id')
-    async remove(@Param('id') id: string) {
-        return await this.userService.remove(+id)
-    }
-
-    @Post('upload')
-    @UseInterceptors(
-        FileInterceptor('file', {
-            storage: diskStorage({
-                destination: './uploads',
-                filename: (req, file, cb) => {
-                    const name = file.originalname.split('.')[0]
-                    const fileExtension = file.originalname.split('.')[1]
-                    const newFileName =
-                        name.split(' ').join('_') +
-                        '_' +
-                        Date.now() +
-                        '.' +
-                        fileExtension
-
-                    cb(null, newFileName)
-                },
-            }),
-            fileFilter: (req, file, cb) => {
-                if (!file.originalname.match(/\.(jpg|jpeg|png|gif|webp)$/)) {
-                    return cb(null, false)
-                }
-                cb(null, true)
-            },
-        })
-    )
-    uploadPhoto(@UploadedFile() file: Express.Multer.File) {
-        if (!file) {
-            console.log('File is not an image')
+        try {
+            return await this.userService.findOne(+id)
+        } catch (error) {
+            throw new NotFoundException()
         }
-        const response = {
-            filePath: `${process.env.URL_BACKEND}/api/user/picture/${file.filename}`,
-        }
-
-        return response
-    }
-
-    @Get('picture/:filename')
-    async getPhoto(@Param('filename') filename, @Res() res) {
-        res.sendFile(filename, { root: './uploads' })
     }
 
     @Public()
     @Get('me')
     async getMyInfo(@Request() req: any) {
-        return await this.userService.getMyInfo(req)
+        try {
+            return await this.userService.getMyInfo(req)
+        } catch (error) {
+            throw new NotFoundException()
+        }
     }
 
     @Get('getFriendsAndRequests')
     async getFriendsAndRequests(@Request() req: any) {
-        return await this.userService.getFriendsAndRequests(req)
+        try {
+            return await this.userService.getFriendsAndRequests(req)
+        } catch (error) {
+            throw new NotFoundException()
+        }
     }
 
     @Get('getallnonfriendusers')
     async getOtherUsers(@Request() req: any) {
-        return await this.userService.getAllUsersWithNoFriendship(req)
+        try {
+            return await this.userService.getAllUsersWithNoFriendship(req)
+        } catch (error) {
+            throw new NotFoundException()
+        }
     }
 
     @Get('nickname/:nickname')
     async getLambda(@Param('nickname') nickname: string) {
-        return await this.userService.getLambdaInfo(nickname)
+        try {
+            return await this.userService.getLambdaInfo(nickname)
+        } catch (error) {
+            throw new NotFoundException()
+        }
     }
 
     @Post('updatenickname')
+    @UsePipes(ValidationPipe)
     async updateNickname(
         @Request() req: any,
         @Body() updateNicknameDto: UpdateNicknameDto
     ) {
-        return await this.userService.updateNickname(req, updateNicknameDto)
+        try {
+            return await this.userService.updateNickname(req, updateNicknameDto)
+        } catch (error) {
+            throw new NotFoundException()
+        }
     }
 
     @Post('logout')
     async logout(@Request() req: any, @Res() res: any) {
-        return await this.userService.logout(req, res)
+        try {
+            return await this.userService.logout(req, res)
+        } catch (error) {
+            throw new NotFoundException()
+        }
     }
 
     @Post('upload-profile-picture')
@@ -158,10 +130,17 @@ export class UserController {
         if (!file) {
             console.log('No image was provided')
         }
-
-        const photoUrl = await this.userService.uploadProfilePicture(req, file)
-
-        return { message: 'Profile image saved correctly', photoUrl }
+        try {
+            const photoUrl = await this.userService.uploadProfilePicture(
+                req,
+                file
+            )
+            return { message: 'Profile image saved correctly', photoUrl }
+        } catch (error) {
+            throw new InternalServerErrorException(
+                'An error occurred when saving the profile image'
+            )
+        }
     }
 
     @Get('profile-images/:filename')
