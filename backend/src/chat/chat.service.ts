@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { CreateMessageDto } from './dto/create-message.dto'
-import { CreateChannelDto } from '../channel/dto/create-channel.dto'
+import { CreateChannelDto } from './dto/create-channel.dto'
 import { CreateChannelUserMutedDto } from './dto/create-channel-user-muted.dto'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Message } from 'src/typeorm/message.entity'

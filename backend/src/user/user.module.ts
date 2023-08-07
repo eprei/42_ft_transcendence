@@ -6,14 +6,12 @@ import { User } from 'src/typeorm/user.entity'
 import { FriendService } from 'src/friend/friend.service'
 import { FriendModule } from 'src/friend/friend.module'
 import { Friend } from 'src/typeorm/friend.entity'
-import { ChannelModule } from 'src/channel/channel.module'
 import { Channel } from 'src/typeorm/channel.entity'
 
 @Module({
     imports: [
         TypeOrmModule.forFeature([User, Friend, Channel]),
         forwardRef(() => FriendModule),
-        forwardRef(() => ChannelModule),
     ],
     controllers: [UserController],
     providers: [UserService, FriendService],
