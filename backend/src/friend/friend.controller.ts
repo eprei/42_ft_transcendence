@@ -7,6 +7,7 @@ import {
     Param,
     Delete,
     Request,
+    BadRequestException,
 } from '@nestjs/common'
 import { FriendService } from './friend.service'
 import { UpdateFriendDto } from './dto/update-friend.dto'
@@ -19,19 +20,12 @@ export class FriendController {
 
     @Post('create/:id')
     async create(@Request() req: any, @Param('id') id: string) {
-        await this.friendService.create(req, +id)
-        return { 'Friendship request successfully submitted': 'true' }
-    }
-
-    @Get()
-    async findAll() {
-        const friends = await this.friendService.findAll()
-        return friends
-    }
-
-    @Get(':id')
-    async findOne(@Param('id') id: string) {
-        return await this.friendService.findOne(+id)
+        try {
+            await this.friendService.create(req, +id)
+            return { 'Friendship request successfully submitted': 'true' }
+        } catch (error) {
+            throw new BadRequestException()
+        }
     }
 
     @Patch('accept/:id')
@@ -39,13 +33,21 @@ export class FriendController {
         @Param('id') id: string,
         @Body() updateFriendDto: UpdateFriendDto
     ) {
-        await this.friendService.accept(+id, updateFriendDto)
-        return { 'Friendship successfully accepted': 'true' }
+        try {
+            await this.friendService.accept(+id, updateFriendDto)
+            return { 'Friendship successfully accepted': 'true' }
+        } catch (error) {
+            throw new BadRequestException()
+        }
     }
 
     @Delete('delete/:id')
     async remove(@Param('id') id: string) {
-        await this.friendService.remove(+id)
-        return { 'Friendship successfully removed': 'true' }
+        try {
+            await this.friendService.remove(+id)
+            return { 'Friendship successfully removed': 'true' }
+        } catch (error) {
+            throw new BadRequestException()
+        }
     }
 }
