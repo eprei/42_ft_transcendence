@@ -9,7 +9,7 @@ import {
 import { ChatService } from './chat.service'
 import { Server, Socket } from 'socket.io'
 import { CreateMessageDto } from 'src/chat/dto/create-message.dto'
-import { CreateChannelDto } from 'src/channel/dto/create-channel.dto'
+import { CreateChannelDto } from './dto/create-channel.dto'
 import { Logger, UsePipes, ValidationPipe } from '@nestjs/common'
 import { WebSocketServer } from '@nestjs/websockets'
 
