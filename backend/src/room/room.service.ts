@@ -45,7 +45,7 @@ export class RoomService {
 
         const room: Room = {
             player_one: userMe.id,
-            player_two: 0,
+            player_two: createRoomDto.player_two ?? 0,
             theme: createRoomDto.theme,
             room_id: uuidv4(),
         }

@@ -89,6 +89,10 @@ const BoardGame = ({
     const matchSaved = useRef<boolean>(false)
     const gameOver = useRef<boolean>(false)
     const otherPlayerHasLeftTheRoom = useRef<boolean>(false)
+    const [youHaveBeenRejected, setYouHaveBeenRejected] =
+        useState<boolean>(false)
+    const [playerTwoNameWhenDeclined, setPlayerTwoNameWhenDeclined] =
+        useState<string>('')
 
     const [frame, setFrame] = useState<Frame>({
         paddleLeft: {
@@ -163,6 +167,35 @@ const BoardGame = ({
                 })
             }
         }
+
+        if (player_two !== 0) {
+            socket.emit('sendInvitation', {
+                player_one_nickname: userData.user.nickname,
+                player_one_id: userData.user.id,
+                player_two: player_two,
+                room: room,
+            })
+        }
+
+        socket.on(
+            'declineInvitation',
+            function (data: {
+                player_one: number
+                player_two: string
+                room: string
+            }) {
+                if (
+                    data.player_one === userData.user.id &&
+                    data.room === room
+                ) {
+                    setPlayerTwoNameWhenDeclined(data.player_two)
+                    setYouHaveBeenRejected(true)
+                    setTimeout(() => {
+                        navigate('/chat')
+                    }, 3000)
+                }
+            }
+        )
 
         if (playerNumber === 'player_one') {
             socket.on('secondPlayerJoined', async (playerId) => {
@@ -310,12 +343,20 @@ const BoardGame = ({
                 userId: userData.user.id,
             })
 
+            if (player_two !== 0) {
+                socket.emit('cancelInvitation', {
+                    player_two: player_two,
+                    room: room,
+                })
+            }
+
             socket.off('connect_error')
             socket.off('connect')
             socket.off('secondPlayerJoined')
             socket.off('sendFrames', onReceiveFrames)
             socket.off('waitingForSecondPlayer')
             socket.off('leftRoom', onSecondPlayerLeftTheRoom)
+            socket.off('declineInvitation')
         }
     }, [room])
 
@@ -323,12 +364,12 @@ const BoardGame = ({
         <div>
             <div className={styles.scoreContainer}>
                 {otherPlayerHasLeftTheRoom.current && (
-                    <div className={styles.gameOver}>
+                    <div className={styles.overlay}>
                         Game Over! The other player has left the room.
                     </div>
                 )}
                 {gameOver.current && (
-                    <div className={styles.gameOver}>
+                    <div className={styles.overlay}>
                         Game Over! {winner} won!
                     </div>
                 )}
@@ -348,6 +389,13 @@ const BoardGame = ({
                     ) : null
                 ) : null}
             </div>
+            {youHaveBeenRejected && (
+                <div className={styles.overlay}>
+                    <h4>
+                        {playerTwoNameWhenDeclined} has declined your invitation
+                    </h4>
+                </div>
+            )}
             <canvas id="boardGame" className={styles.boardGame}></canvas>
         </div>
     )
