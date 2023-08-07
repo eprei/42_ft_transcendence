@@ -143,6 +143,11 @@ export class UserController {
         }
     }
 
+    @Get('picture/:filename')
+    async getPhoto(@Param('filename') filename, @Res() res) {
+        res.sendFile(filename, { root: './uploads' })
+    }
+
     @Get('profile-images/:filename')
     async serveProfileImage(
         @Param('filename') filename: string,
