@@ -358,7 +358,7 @@ export class ChatService {
         createChannelDto.messages = []
 
         if (createChannelDto?.password) {
-            const PlainTextPassword = createChannelDto.password.trim()
+            const PlainTextPassword = createChannelDto.password
             createChannelDto.password = await bcrypt.hash(PlainTextPassword, 10)
         }
         const newChannel = this.channelRepository.create(createChannelDto)

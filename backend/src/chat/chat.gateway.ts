@@ -199,12 +199,21 @@ export class ChatGateway
     @UsePipes(ValidationPipe)
     async createChannel(@MessageBody() createChannelDto: CreateChannelDto) {
         try {
+            if (
+                createChannelDto?.password !== '' &&
+                createChannelDto?.password.length > 8
+            ) {
+                throw new Error('Password is longer than 8 characters')
+            } else if (createChannelDto.name.length > 8) {
+                throw new Error('Channel name is longer than 8 characters')
+            }
+            
             const channelCreated = await this.chatService.createChannel(
                 createChannelDto
             )
             this.server.emit('newChannel', channelCreated)
         } catch (error) {
-            console.log('Failed to create channel')
+            console.log('Failed to create channel', error)
         }
     }
 
