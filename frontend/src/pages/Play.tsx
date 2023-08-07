@@ -4,6 +4,7 @@ import { Checkbox } from 'antd'
 import { useState, useEffect } from 'react'
 import type { CheckboxChangeEvent } from 'antd/es/checkbox'
 import { useNavigate } from 'react-router-dom'
+import InvitationHandler from '../sockets/InvitationHandler'
 
 const Play = () => {
     const navigate = useNavigate()
@@ -61,57 +62,60 @@ const Play = () => {
     }
 
     return (
-        <div className={styles.container}>
-            <h1>Game Launcher</h1>
-            <div className={styles.body}>
-                <div className={styles.bodyLeftSide}>
-                    <h3>Create new room</h3>
-                    <div className={styles.columns}>
-                        <Checkbox
-                            value="Theme 0"
-                            onChange={onChange}
-                            checked={selectedTheme === 'Theme 0'}
-                        >
-                            <h4>Original</h4>
-                        </Checkbox>
-                        <Checkbox
-                            value="Theme 1"
-                            onChange={onChange}
-                            checked={selectedTheme === 'Theme 1'}
-                        >
-                            <h4>Theme 1</h4>
-                        </Checkbox>
-                        <Checkbox
-                            value="Theme 2"
-                            onChange={onChange}
-                            checked={selectedTheme === 'Theme 2'}
-                        >
-                            <h4>Theme 2</h4>
-                        </Checkbox>
-                        <Checkbox
-                            value="Theme 3"
-                            onChange={onChange}
-                            checked={selectedTheme === 'Theme 3'}
-                        >
-                            <h4>Theme 3</h4>
-                        </Checkbox>
+        <div>
+            <InvitationHandler />
+            <div className={styles.container}>
+                <h1>Game Launcher</h1>
+                <div className={styles.body}>
+                    <div className={styles.bodyLeftSide}>
+                        <h3>Create new room</h3>
+                        <div className={styles.columns}>
+                            <Checkbox
+                                value="Theme 0"
+                                onChange={onChange}
+                                checked={selectedTheme === 'Theme 0'}
+                            >
+                                <h4>Original</h4>
+                            </Checkbox>
+                            <Checkbox
+                                value="Theme 1"
+                                onChange={onChange}
+                                checked={selectedTheme === 'Theme 1'}
+                            >
+                                <h4>Theme 1</h4>
+                            </Checkbox>
+                            <Checkbox
+                                value="Theme 2"
+                                onChange={onChange}
+                                checked={selectedTheme === 'Theme 2'}
+                            >
+                                <h4>Theme 2</h4>
+                            </Checkbox>
+                            <Checkbox
+                                value="Theme 3"
+                                onChange={onChange}
+                                checked={selectedTheme === 'Theme 3'}
+                            >
+                                <h4>Theme 3</h4>
+                            </Checkbox>
+                        </div>
+                        <button onClick={createRoom} className={styles.btn}>
+                            create room
+                        </button>
                     </div>
-                    <button onClick={createRoom} className={styles.btn}>
-                        create room
-                    </button>
+                    <div className={styles.bodyRightSide}>
+                        <h3>Join an existing room</h3>
+                        <MatchSystemBtn />
+                        <h1></h1>
+                    </div>
                 </div>
-                <div className={styles.bodyRightSide}>
-                    <h3>Join an existing room</h3>
-                    <MatchSystemBtn />
-                    <h1></h1>
-                </div>
+                {youAreAlreadyPlaying && (
+                    <div className={styles.overlay}>
+                        <h4>It looks like you are already playing</h4>
+                        <h4>in another window or tab</h4>
+                    </div>
+                )}
             </div>
-            {youAreAlreadyPlaying && (
-                <div className={styles.overlay}>
-                    <h4>It looks like you are already playing</h4>
-                    <h4>in another window or tab</h4>
-                </div>
-            )}
         </div>
     )
 }

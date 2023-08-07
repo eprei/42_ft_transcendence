@@ -6,6 +6,7 @@ import { userActions } from '../store/user'
 import { useEffect, useState } from 'react'
 import AddFriendsBtn from '../components/profile/AddFriendsBtn'
 import store from '../store'
+import InvitationHandler from '../sockets/InvitationHandler'
 
 export interface friendList {
     myId: number
@@ -121,16 +122,19 @@ const MainProfile = () => {
     }
 
     return (
-        <div className={styles.container}>
-            <h1>Profile</h1>
-            <div className={styles.body}>
-                <div className={styles.bodyLeftSide}>
-                    <UserInformation />
-                    <Statistics />
-                    <AddFriendsBtn otherUsers={otherUsers} />
-                </div>
-                <div className={styles.bodyRightSide}>
-                    <FriendList friendList={friendList} />
+        <div>
+            <InvitationHandler />
+            <div className={styles.container}>
+                <h1>Profile</h1>
+                <div className={styles.body}>
+                    <div className={styles.bodyLeftSide}>
+                        <UserInformation />
+                        <Statistics />
+                        <AddFriendsBtn otherUsers={otherUsers} />
+                    </div>
+                    <div className={styles.bodyRightSide}>
+                        <FriendList friendList={friendList} />
+                    </div>
                 </div>
             </div>
         </div>
