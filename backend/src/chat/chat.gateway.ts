@@ -274,6 +274,7 @@ export class ChatGateway
     @UsePipes(ValidationPipe)
     async changeChannelPassword(@MessageBody() data: PasswordChangeData) {
         const [channelId, password] = data
+        if (password !== '' && password.length > 8) return
         try {
             return await this.chatService.changePassword(channelId, password)
         } catch (error) {
