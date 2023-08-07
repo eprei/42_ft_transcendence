@@ -22,7 +22,11 @@ export class ChannelController {
     @Post()
     @UsePipes(ValidationPipe)
     async create(@Body() createChannelDto: CreateChannelDto) {
+        try {
         return await this.channelService.create(createChannelDto)
+        } catch (error) {
+            console.log('Failed to create channel')
+        }
     }
 
     @Get('user-channels/:id')

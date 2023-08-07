@@ -24,6 +24,7 @@ export class ChannelService {
         createChannelDto.users = [user]
         const newChannel = this.channelRepository.create(createChannelDto)
         return this.channelRepository.save(newChannel)
+        
     }
 
     findAll() {
