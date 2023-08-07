@@ -176,13 +176,13 @@ const User = ({
                 <img
                     src={isBlocked ? IconBlocked : avatarUrl}
                     alt="Avatar"
-					className={
-						isOwner
-						  ? `${styles.profilePicture} ${styles.owner}`
-						  : isAdmin
-						  ? `${styles.profilePicture} ${styles.admin}`
-						  : `${styles.profilePicture} ${styles.user}`
-					  }
+                    className={
+                        isOwner
+                            ? `${styles.profilePicture} ${styles.owner}`
+                            : isAdmin
+                            ? `${styles.profilePicture} ${styles.admin}`
+                            : `${styles.profilePicture} ${styles.user}`
+                    }
                     onClick={() =>
                         (window.location.href = `http://localhost:4040/user/${nickname}`)
                     }

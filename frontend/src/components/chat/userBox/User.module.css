@@ -25,7 +25,7 @@
     border-radius: 50%;
     transform: scale(80%);
     cursor: pointer;
-	object-fit: cover;
+    object-fit: cover;
 }
 
 .user {
@@ -33,11 +33,11 @@
 }
 
 .admin {
-	border: 0.2rem solid var(--color-mid-green);
+    border: 0.2rem solid var(--color-mid-green);
 }
 
 .owner {
-	border: 0.2rem solid var(--color-purple);
+    border: 0.2rem solid var(--color-purple);
 }
 
 .status {
