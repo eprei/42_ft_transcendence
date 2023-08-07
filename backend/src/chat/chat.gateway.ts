@@ -49,8 +49,11 @@ export class ChatGateway
     @UsePipes(ValidationPipe)
     async postMsg(@MessageBody() createMessageDto: CreateMessageDto) {
         try {
-            const msgSended = await this.chatService.newMsg(createMessageDto)
-            this.server.emit('incomingMessage', msgSended)
+            await this.chatService.newMsg(createMessageDto)
+            const allmessages = await this.chatService.findAllMsgByChannel(
+                createMessageDto.channelId
+            )
+            this.server.emit('incomingMessages', allmessages)
         } catch (error) {
             console.log('Error while posting message')
         }
