@@ -17,7 +17,7 @@ import {
 } from '@nestjs/common'
 import { UserService } from './user.service'
 import { CreateUserDto } from './dto/create-user.dto'
-import { UpdateChannelDto } from 'src/channel/dto/update-channel.dto'
+import { UpdateChannelDto } from 'src/chat/dto/update-channel.dto'
 import { Express } from 'express'
 import { ApiTags } from '@nestjs/swagger'
 import { FileInterceptor } from '@nestjs/platform-express'
