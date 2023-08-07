@@ -107,7 +107,7 @@ const UserInformation = () => {
         }
     }
 
-    const userLevel = userData.user.nbVictory + 0.5 * (userData.user.totalPlay - userData.user.nbVictory)
+    const userLevel = Math.floor(userData.user.xp / 100 + 1)
 
     return (
         <div className={styles.container}>

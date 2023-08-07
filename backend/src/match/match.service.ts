@@ -18,13 +18,13 @@ export class MatchService {
     create(createMatchDto: CreateMatchDto) {
         const newMatch = this.matchRepository.create(createMatchDto)
         this.userRepository.update(newMatch.winner, {
-            nbVictory : newMatch.winner.nbVictory + 1,
-            totalPlay : newMatch.winner.totalPlay + 1,
-            xp: newMatch.winner.xp + 10
+            nbVictory: newMatch.winner.nbVictory + 1,
+            totalPlay: newMatch.winner.totalPlay + 1,
+            xp: newMatch.winner.xp + 50,
         })
         this.userRepository.update(newMatch.loser, {
-            totalPlay : newMatch.loser.totalPlay + 1,
-            xp: newMatch.loser.xp + 10
+            totalPlay: newMatch.loser.totalPlay + 1,
+            xp: newMatch.loser.xp + 25,
         })
         this.userRepository.save(newMatch.winner)
         this.userRepository.save(newMatch.loser)
@@ -52,10 +52,10 @@ export class MatchService {
         {
             id: m.id,
             winnerNick: m.winner.nickname,
-            winnerLevel: m.winner.nbVictory + 0.5 * (m.winner.totalPlay - m.winner.nbVictory),
+            winnerLevel: Math.floor(m.winner.xp / 100 + 1),
             winnerPfp: m.winner.avatarUrl,
             loserNick: m.loser.nickname,
-            loserLevel: m.loser.nbVictory + 0.5 * (m.loser.totalPlay - m.loser.nbVictory),
+            loserLevel: Math.floor(m.loser.xp / 100 + 1),
             loserPfp: m.loser.avatarUrl,
             scoreWinner: m.scoreWinner,
             scoreLoser: m.scoreLoser,
