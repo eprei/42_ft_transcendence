@@ -207,7 +207,7 @@ export class ChatGateway
             } else if (createChannelDto.name.length > 8) {
                 throw new Error('Channel name is longer than 8 characters')
             }
-            
+
             const channelCreated = await this.chatService.createChannel(
                 createChannelDto
             )
@@ -239,6 +239,7 @@ export class ChatGateway
     @SubscribeMessage('joinChannel')
     async joinChannel(@MessageBody() data: ChannelUserPassword) {
         const [channelId, userId, password] = data
+        if (password !== '' && password.length > 8) return
         try {
             return await this.chatService.joinChannel(
                 channelId,
