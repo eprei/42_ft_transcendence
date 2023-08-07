@@ -32,7 +32,7 @@ import { ChatModule } from './chat/chat.module'
             synchronize: true,
             entities: [User, Friend, Match],
         }),
-        TypeOrmModule.forFeature([ User, Message, Friend, Match]),
+        TypeOrmModule.forFeature([User, Message, Friend, Match]),
         UserModule,
         FriendModule,
         MatchModule,
