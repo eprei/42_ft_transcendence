@@ -294,8 +294,7 @@ const User = ({
                     </p>
                 </div>
             </div>
-            {
-                // id != myId && UNDO THIS, its just to develop the functionality invite friends to play
+            {id != myId && !isBlocked && (
                 <div className={styles.right}>
                     <div>{renderInviteToPlay(id)}</div>
                     <div>
@@ -308,7 +307,7 @@ const User = ({
                         )}
                     </div>
                 </div>
-            }
+            )}
         </div>
     )
 }
