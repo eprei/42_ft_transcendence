@@ -1,6 +1,5 @@
 import {
     Controller,
-    Get,
     Post,
     Body,
     Patch,
@@ -8,6 +7,8 @@ import {
     Delete,
     Request,
     BadRequestException,
+    UsePipes,
+    ValidationPipe,
 } from '@nestjs/common'
 import { FriendService } from './friend.service'
 import { UpdateFriendDto } from './dto/update-friend.dto'
@@ -29,6 +30,7 @@ export class FriendController {
     }
 
     @Patch('accept/:id')
+    @UsePipes(ValidationPipe)
     async accept(
         @Param('id') id: string,
         @Body() updateFriendDto: UpdateFriendDto
