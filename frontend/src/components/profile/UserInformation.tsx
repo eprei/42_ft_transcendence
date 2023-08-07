@@ -107,6 +107,8 @@ const UserInformation = () => {
         }
     }
 
+    const userLevel = userData.user.nbVictory + 0.5 * (userData.user.totalPlay - userData.user.nbVictory)
+
     return (
         <div className={styles.container}>
             <label
@@ -145,7 +147,7 @@ const UserInformation = () => {
                             </>
                         )}
                     </li>
-                    <li>Level {Math.floor(userData.user.nbVictory / 5) + 1}</li>
+                    <li>Level {userLevel}</li>
                     <li>
                         2fa is
                         {TFAEnabled ? ' activated ' : ' deactivated'}
