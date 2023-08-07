@@ -199,12 +199,21 @@ export class ChatGateway
     @UsePipes(ValidationPipe)
     async createChannel(@MessageBody() createChannelDto: CreateChannelDto) {
         try {
+            if (
+                createChannelDto?.password !== '' &&
+                createChannelDto?.password.length > 8
+            ) {
+                throw new Error('Password is longer than 8 characters')
+            } else if (createChannelDto.name.length > 8) {
+                throw new Error('Channel name is longer than 8 characters')
+            }
+
             const channelCreated = await this.chatService.createChannel(
                 createChannelDto
             )
             this.server.emit('newChannel', channelCreated)
         } catch (error) {
-            console.log('Failed to create channel')
+            console.log('Failed to create channel', error)
         }
     }
 
@@ -230,6 +239,7 @@ export class ChatGateway
     @SubscribeMessage('joinChannel')
     async joinChannel(@MessageBody() data: ChannelUserPassword) {
         const [channelId, userId, password] = data
+        if (password !== '' && password.length > 8) return
         try {
             return await this.chatService.joinChannel(
                 channelId,
@@ -264,6 +274,7 @@ export class ChatGateway
     @UsePipes(ValidationPipe)
     async changeChannelPassword(@MessageBody() data: PasswordChangeData) {
         const [channelId, password] = data
+        if (password !== '' && password.length > 8) return
         try {
             return await this.chatService.changePassword(channelId, password)
         } catch (error) {

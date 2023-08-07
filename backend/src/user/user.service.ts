@@ -35,30 +35,54 @@ export class UserService {
         private readonly channelRepository: Repository<Channel>
     ) {}
     create(createUserDto: CreateUserDto) {
-        const user = this.userRepository.create(createUserDto)
-        return this.userRepository.save(user)
+        try {
+            const user = this.userRepository.create(createUserDto)
+            return this.userRepository.save(user)
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     findAll() {
-        return this.userRepository.find()
+        try {
+            return this.userRepository.find()
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     findOne(id: number) {
-        return this.userRepository.findOneBy({ id: id })
+        try {
+            return this.userRepository.findOneBy({ id: id })
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     async update(id: number, updateUserDto: UpdateUserDto) {
-        const user = await this.findOne(id)
-        return this.userRepository.save({ ...user, ...updateUserDto })
+        try {
+            const user = await this.findOne(id)
+            return this.userRepository.save({ ...user, ...updateUserDto })
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     async remove(id: number) {
-        const user = await this.findOne(id)
-        return this.userRepository.remove(user)
+        try {
+            const user = await this.findOne(id)
+            return this.userRepository.remove(user)
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     findByFT_id(FT_id: string) {
-        return this.userRepository.findOneBy({ FT_id: FT_id })
+        try {
+            return this.userRepository.findOneBy({ FT_id: FT_id })
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     async findByNickname(nickname: string) {
@@ -77,82 +101,102 @@ export class UserService {
     }
 
     async getUserRankingPosition(userId: number): Promise<number> {
-        const user = await this.findOne(userId)
-        if (!user) {
-            throw new NotFoundException('User not found')
-        }
+        try {
+            const user = await this.findOne(userId)
+            if (!user) {
+                console.log('User not found')
+            }
 
-        const userPosition = await this.userRepository
-            .createQueryBuilder('user')
-            .where('user.xp >= :userXp', { userXp: user.xp })
-            .getCount()
-        return userPosition
+            const userPosition = await this.userRepository
+                .createQueryBuilder('user')
+                .where('user.xp >= :userXp', { userXp: user.xp })
+                .getCount()
+            return userPosition
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     async setTwoFactorAuthenticationSecret(secret: string, userID: number) {
-        const user = await this.userRepository.findOne({
-            where: { id: userID },
-        })
+        try {
+            const user = await this.userRepository.findOne({
+                where: { id: userID },
+            })
 
-        if (user) {
-            user.TFASecret = secret
-            return this.userRepository.save(user)
+            if (user) {
+                user.TFASecret = secret
+                return this.userRepository.save(user)
+            }
+            console.log(`User with id ${userID} not found`)
+        } catch (error) {
+            console.log(error)
         }
-        throw new Error(`User with id ${userID} not found`)
     }
 
     async turnOnTwoFactorAuthentication(userID: number) {
-        const user = await this.userRepository.findOne({
-            where: { id: userID },
-        })
+        try {
+            const user = await this.userRepository.findOne({
+                where: { id: userID },
+            })
 
-        if (user) {
-            user.TFAEnabled = true
-            return this.userRepository.save(user)
+            if (user) {
+                user.TFAEnabled = true
+                return this.userRepository.save(user)
+            }
+            console.log(`User with id ${userID} not found`)
+        } catch (error) {
+            console.log(error)
         }
-        throw new Error(`User with id ${userID} not found`)
     }
 
     async turnOffTwoFactorAuthentication(userID: number) {
-        const user = await this.userRepository.findOne({
-            where: { id: userID },
-        })
+        try {
+            const user = await this.userRepository.findOne({
+                where: { id: userID },
+            })
 
-        if (user) {
-            user.TFAEnabled = false
-            return this.userRepository.save(user)
+            if (user) {
+                user.TFAEnabled = false
+                return this.userRepository.save(user)
+            }
+            console.log(`User with id ${userID} not found`)
+        } catch (error) {
+            console.log(error)
         }
-        throw new Error(`User with id ${userID} not found`)
     }
 
     async getLambdaInfo(@Param('nickname') nickname: string) {
-        const user = await this.findByNickname(nickname)
+        try {
+            const user = await this.findByNickname(nickname)
 
-        if (!user) {
-            throw new NotFoundException('User not found')
+            if (!user) {
+                throw new NotFoundException('User not found')
+            }
+
+            const { TFASecret, FT_id, ...rest } = user
+            const userPosition = await this.getUserRankingPosition(user.id)
+
+            return { ...rest, userPosition }
+        } catch (error) {
+            console.log(error)
         }
-
-        const { TFASecret, FT_id, ...rest } = user
-        const userPosition = await this.getUserRankingPosition(user.id)
-
-        return { ...rest, userPosition }
     }
 
     async updateNickname(
         @Request() req: any,
         updateNicknameDto: UpdateNicknameDto
     ) {
-        const user = await this.findOne(req.user.id)
-        if (!user) {
-            throw new NotFoundException('User not found')
-        }
-
-        const { nickname } = updateNicknameDto
-
-        if ((await this.findByNickname(nickname)) != undefined)
-            throw new UnauthorizedException('Nickname not available')
-
         try {
+            const user = await this.findOne(req.user.id)
+            if (!user) {
+                throw new NotFoundException('User not found')
+            }
+
+            const { nickname } = updateNicknameDto
+
+            if ((await this.findByNickname(nickname)) != undefined)
+                throw new UnauthorizedException('Nickname not available')
+
             const updateUserDto: UpdateUserDto = {
                 id: user.id,
                 nickname: nickname,
@@ -181,14 +225,10 @@ export class UserService {
         file: Express.Multer.File
     ): Promise<string> {
         if (!file) {
-            throw new BadRequestException('No image was provided')
+            console.log('No image was provided')
         }
 
-        // Destination path in the 'profile-images' volume
         const destinationPath = '/app/profile-images'
-
-        // Generate a unique name for the file in the volume 'profile-images'
-
         const uniqueSuffix = uuidv4()
         const fileExt = extname(file.originalname)
         const fileNameWithoutExtAndSpaces = basename(
@@ -198,20 +238,12 @@ export class UserService {
         const uniqueFilename = `${fileNameWithoutExtAndSpaces}${uniqueSuffix}${fileExt}`
 
         try {
-            // Read temporary file
             const fileData = fs.readFileSync(file.path)
-
-            // Write the file to the path of the volume 'profile-images'.
             fs.writeFileSync(`${destinationPath}/${uniqueFilename}`, fileData)
-
-            // Delete temporary file
             fs.unlinkSync(file.path)
-
-            // Construct the URL for the photo on our server
             const serverBaseUrl = `${process.env.URL_BACKEND}/api/user` // Profile's pictures base URL
             const photoUrl: string = `${serverBaseUrl}/profile-images/${uniqueFilename}`
 
-            // Get the current user from the database
             const user = await this.findOne(req.user.id)
             if (!user) {
                 throw new NotFoundException('User not found')
@@ -226,173 +258,209 @@ export class UserService {
 
             return photoUrl
         } catch (error) {
-            // Error handling if a problem occurs while reading, writing, or deleting the file
             console.error('Error when moving profile image:', error)
-            throw new InternalServerErrorException(
-                'An error occurred when saving the profile image'
-            )
         }
     }
 
     async getMyInfo(@Request() req: any) {
-        const user = await this.findOne(req.user.id)
+        try {
+            const user = await this.findOne(req.user.id)
 
-        if (!user) {
-            throw new NotFoundException('User not found')
+            if (!user) {
+                console.log('User not found')
+            }
+
+            const { TFASecret, FT_id, ...rest } = user
+
+            const userPosition = await this.getUserRankingPosition(req.user.id)
+
+            return { ...rest, userPosition }
+        } catch (error) {
+            console.log(error)
         }
-
-        const { TFASecret, FT_id, ...rest } = user
-
-        const userPosition = await this.getUserRankingPosition(req.user.id)
-
-        return { ...rest, userPosition }
     }
 
     async getFriendsAndRequests(@Request() req: any) {
-        const user = await this.findOne(req.user.id)
+        try {
+            const user = await this.findOne(req.user.id)
 
-        if (!user) {
-            throw new NotFoundException('User not found')
+            if (!user) {
+                console.log('User not found')
+            }
+
+            return this.friendService.getFiendsAndRequests(user.id)
+        } catch (error) {
+            console.log(error)
         }
-
-        return this.friendService.getFiendsAndRequests(user.id)
     }
 
     async getAllUsersWithNoFriendship(@Request() req: any) {
-        const user = await this.findOne(req.user.id)
+        try {
+            const user = await this.findOne(req.user.id)
 
-        if (!user) {
-            throw new NotFoundException('User not found')
+            if (!user) {
+                console.log('User not found')
+            }
+
+            const userId: number = user.id
+
+            const friendsAddedByMe = await this.friendRepository
+                .createQueryBuilder('friend')
+                .select('friend.friendId', 'friendId')
+                .where('friend.userId = :userId', { userId })
+                .getRawMany()
+
+            const friendsWhoAddedMe = await this.friendRepository
+                .createQueryBuilder('follower')
+                .select('follower.userId', 'userId')
+                .where('follower.friendId = :userId', { userId })
+                .getRawMany()
+
+            const friendsByMeIds = friendsAddedByMe.map(
+                (friend) => friend.friendId
+            )
+
+            const friendsByOthersIds = friendsWhoAddedMe.map(
+                (follower) => follower.userId
+            )
+
+            const usersNotFriends = await this.userRepository.find({
+                where: {
+                    id: Not(
+                        In([...friendsByMeIds, ...friendsByOthersIds, userId])
+                    ),
+                },
+                select: ['id', 'nickname', 'avatarUrl'],
+            })
+
+            return { usersNotFriends }
+        } catch (error) {
+            console.log(error)
         }
-
-        const userId: number = user.id
-
-        const friendsAddedByMe = await this.friendRepository
-            .createQueryBuilder('friend')
-            .select('friend.friendId', 'friendId')
-            .where('friend.userId = :userId', { userId })
-            .getRawMany()
-
-        const friendsWhoAddedMe = await this.friendRepository
-            .createQueryBuilder('follower')
-            .select('follower.userId', 'userId')
-            .where('follower.friendId = :userId', { userId })
-            .getRawMany()
-
-        const friendsByMeIds = friendsAddedByMe.map((friend) => friend.friendId)
-
-        const friendsByOthersIds = friendsWhoAddedMe.map(
-            (follower) => follower.userId
-        )
-
-        const usersNotFriends = await this.userRepository.find({
-            where: {
-                id: Not(In([...friendsByMeIds, ...friendsByOthersIds, userId])),
-            },
-            select: ['id', 'nickname', 'avatarUrl'],
-        })
-
-        return { usersNotFriends }
     }
 
     async logout(@Request() req: any, @Res() res: any) {
-        const user = await this.findOne(req.user.id)
+        try {
+            const user = await this.findOne(req.user.id)
 
-        if (!user) {
-            throw new NotFoundException('User not found')
+            if (!user) {
+                throw new NotFoundException('User not found')
+            }
+            this.update(user.id, { id: user.id, status: UserStatus.Offline })
+
+            await req.session.destroy()
+            res.clearCookie('sessionID')
+            res.status(200).json({ message: 'Logout successful' })
+        } catch (error) {
+            console.log(error)
         }
-        this.update(user.id, { id: user.id, status: UserStatus.Offline })
-
-        await req.session.destroy()
-        res.clearCookie('sessionID')
-        res.status(200).json({ message: 'Logout successful' })
     }
 
     async changeStatusOnLine(userId: number) {
-        const user = await this.findOne(userId)
+        try {
+            const user = await this.findOne(userId)
 
-        if (user && user.status != UserStatus.Online)
-            this.update(userId, { id: userId, status: UserStatus.Online })
+            if (user && user.status != UserStatus.Online)
+                this.update(userId, { id: userId, status: UserStatus.Online })
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     async changeStatusPlaying(userId: number) {
-        const user = await this.findOne(userId)
+        try {
+            const user = await this.findOne(userId)
 
-        if (user && user.status != UserStatus.Playing)
-            this.update(userId, { id: userId, status: UserStatus.Playing })
+            if (user && user.status != UserStatus.Playing)
+                this.update(userId, { id: userId, status: UserStatus.Playing })
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     async isBlockedByMe(@Request() req: any, target_id: number) {
-        const user = await this.userRepository.findOne({
-            where: { id: req.user.id },
-            relations: {
-                blockedUsers: true,
-            },
-        })
-        if (user.blockedUsers.some((u) => u.id === target_id)) return true
-        else return false
+        try {
+            const user = await this.userRepository.findOne({
+                where: { id: req.user.id },
+                relations: {
+                    blockedUsers: true,
+                },
+            })
+            if (user.blockedUsers.some((u) => u.id === target_id)) return true
+            else return false
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     async blockUser(monId: number, targetId: number) {
-        const user = await this.userRepository.findOne({
-            where: { id: monId },
-            relations: {
-                blockedUsers: true,
-            },
-        })
-        const userToBlock = await this.userRepository.findOne({
-            where: { id: targetId },
-            relations: {
-                blockedBy: true,
-            },
-        })
+        try {
+            const user = await this.userRepository.findOne({
+                where: { id: monId },
+                relations: {
+                    blockedUsers: true,
+                },
+            })
+            const userToBlock = await this.userRepository.findOne({
+                where: { id: targetId },
+                relations: {
+                    blockedBy: true,
+                },
+            })
 
-        userToBlock.blockedBy.push(user)
-        await this.userRepository.save(userToBlock)
+            userToBlock.blockedBy.push(user)
+            await this.userRepository.save(userToBlock)
 
-        user.blockedUsers.push(userToBlock)
-        await this.userRepository.save(user)
+            user.blockedUsers.push(userToBlock)
+            await this.userRepository.save(user)
 
-        //erase DM if exist
-        let channelName = user.nickname + ' & ' + userToBlock.nickname
-        let DM = await this.channelRepository.findOne({
-            where: { name: channelName },
-        })
-        if (!DM) {
-            channelName = userToBlock.nickname + ' & ' + user.nickname
+            //erase DM if exist
+            let channelName = user.nickname + ' & ' + userToBlock.nickname
             let DM = await this.channelRepository.findOne({
                 where: { name: channelName },
             })
-        }
+            if (!DM) {
+                channelName = userToBlock.nickname + ' & ' + user.nickname
+                let DM = await this.channelRepository.findOne({
+                    where: { name: channelName },
+                })
+            }
 
-        if (DM) {
-            await this.channelRepository.remove(DM)
+            if (DM) {
+                await this.channelRepository.remove(DM)
+            }
+        } catch (error) {
+            console.log(error)
         }
     }
 
     async unblockUser(myId: number, hisId: number) {
-        const user = await this.userRepository.findOne({
-            where: { id: myId },
-            relations: {
-                blockedUsers: true,
-            },
-        })
+        try {
+            const user = await this.userRepository.findOne({
+                where: { id: myId },
+                relations: {
+                    blockedUsers: true,
+                },
+            })
 
-        const userToUnblock = await this.userRepository.findOne({
-            where: { id: hisId },
-            relations: {
-                blockedBy: true,
-            },
-        })
+            const userToUnblock = await this.userRepository.findOne({
+                where: { id: hisId },
+                relations: {
+                    blockedBy: true,
+                },
+            })
 
-        userToUnblock.blockedBy = userToUnblock.blockedBy.filter(
-            (u) => u.id !== user.id
-        )
-        await this.userRepository.save(userToUnblock)
+            userToUnblock.blockedBy = userToUnblock.blockedBy.filter(
+                (u) => u.id !== user.id
+            )
+            await this.userRepository.save(userToUnblock)
 
-        user.blockedUsers = user.blockedUsers.filter(
-            (u) => u.id !== userToUnblock.id
-        )
-        await this.userRepository.save(user)
+            user.blockedUsers = user.blockedUsers.filter(
+                (u) => u.id !== userToUnblock.id
+            )
+            await this.userRepository.save(user)
+        } catch (error) {
+            console.log(error)
+        }
     }
 }

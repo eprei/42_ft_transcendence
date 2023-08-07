@@ -22,9 +22,16 @@ const Input = (props: Props) => {
         }
         return true
     }
+    const noLongerThanEight = () => {
+        if (inputValue.trim().length > 8) {
+            setErrorMessage('Channel password is too long (8 characters max)')
+            return false
+        }
+        return true
+    }
 
     const checkInputValues = () => {
-        if (inputNotEmpty()) {
+        if (inputNotEmpty() && noLongerThanEight()) {
             return true
         }
         return false

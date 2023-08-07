@@ -36,20 +36,17 @@ export class UserController {
     @Post()
     @UsePipes(ValidationPipe)
     async create(@Body() createUserDto: CreateUserDto) {
-        const user = await this.userService.create(createUserDto)
-        return user
+        return await this.userService.create(createUserDto)
     }
 
     @Get()
     async findAll() {
-        const users = await this.userService.findAll()
-        return users
+        return await this.userService.findAll()
     }
 
     @Get('id/:id')
     async findOne(@Param('id') id: string) {
-        const user = await this.userService.findOne(+id)
-        return user
+        return await this.userService.findOne(+id)
     }
 
     @Patch(':id')
@@ -57,14 +54,12 @@ export class UserController {
         @Param('id') id: string,
         @Body() updateChannelDto: UpdateChannelDto
     ) {
-        const user = await this.userService.update(+id, updateChannelDto)
-        return user
+        return await this.userService.update(+id, updateChannelDto)
     }
 
     @Delete(':id')
     async remove(@Param('id') id: string) {
-        const user = await this.userService.remove(+id)
-        return user
+        return await this.userService.remove(+id)
     }
 
     @Post('upload')
@@ -95,7 +90,7 @@ export class UserController {
     )
     uploadPhoto(@UploadedFile() file: Express.Multer.File) {
         if (!file) {
-            throw new BadRequestException('File is not an image')
+            console.log('File is not an image')
         }
         const response = {
             filePath: `${process.env.URL_BACKEND}/api/user/picture/${file.filename}`,
@@ -161,7 +156,7 @@ export class UserController {
         @UploadedFile() file: Express.Multer.File
     ) {
         if (!file) {
-            throw new BadRequestException('No image was provided')
+            console.log('No image was provided')
         }
 
         const photoUrl = await this.userService.uploadProfilePicture(req, file)

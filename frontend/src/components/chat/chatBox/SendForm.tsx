@@ -45,6 +45,7 @@ const SendForm = ({ sendMessage }: ChatFeedProps) => {
                 onChange={handleChange}
                 onKeyDown={handleKeyDown}
                 id="message-input"
+                autoComplete="off"
             />
         </div>
     )
