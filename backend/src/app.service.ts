@@ -328,11 +328,11 @@ export class AppService {
         this.userRepo.update(loggedUser, {
             totalPlay: loggedUser.totalPlay + 1,
             nbVictory: loggedUser.nbVictory + 1,
-            xp: loggedUser.xp + 10,
+            xp: loggedUser.xp + 50,
         })
         this.userRepo.update(user1, {
             totalPlay: user1.totalPlay + 1,
-            xp: user1.xp + 10,
+            xp: user1.xp + 25,
         })
 
         await this.matchRepo.save(loggedMatch)
