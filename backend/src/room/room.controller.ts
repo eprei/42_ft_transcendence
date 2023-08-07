@@ -16,7 +16,6 @@ import { RoomService } from './room.service'
 import { Room } from 'src/types/Room'
 import { ApiTags } from '@nestjs/swagger'
 import { CreateRoomDto } from './dto/create-room.dto'
-import { Request as RequestType } from 'express'
 
 @ApiTags('room')
 @Controller('room')
@@ -26,7 +25,7 @@ export class RoomController {
     @Post()
     @UsePipes(ValidationPipe)
     async createRoom(
-        @Request() req: RequestType,
+        @Request() req: any,
         @Body() createRoomDto: CreateRoomDto
     ): Promise<Room> {
         try {
