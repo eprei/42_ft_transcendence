@@ -16,7 +16,13 @@ export class FriendService {
 
     async create(@Request() req: any, @Param('id') id: number) {
         const userMe = await this.userRepository.findOneBy({ id: req.user.id })
+        if (!userMe) {
+            throw new NotFoundException('User not found')
+        }
         const userFriend = await this.userRepository.findOneBy({ id: id })
+        if (!userFriend) {
+            throw new NotFoundException('User not found')
+        }
 
         const friendship = new Friend()
         friendship.isPending = true
@@ -25,10 +31,6 @@ export class FriendService {
         friendship.createdBy = userMe
 
         return this.friendRepository.save(friendship)
-    }
-
-    findAll() {
-        return this.friendRepository.find()
     }
 
     findOne(friendId: number) {
