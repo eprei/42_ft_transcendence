@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common'
 import { CreateMatchDto } from './dto/create-match.dto'
-import { UpdateMatchDto } from './dto/update-match.dto'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { Match } from '../typeorm/match.entity'
@@ -20,10 +19,6 @@ export class MatchService {
         return this.matchRepository.save(newMatch)
     }
 
-    findAll() {
-        return this.matchRepository.find()
-    }
-
     findOne(id: number) {
         return this.matchRepository.findOne({ where: { id } })
     }
@@ -32,6 +27,9 @@ export class MatchService {
         const user = await this.userRepository.findOne({
             where: { id: userId },
         })
+        if (!user) {
+            throw new Error('User not found')
+        }
         const matchesDB = await this.matchRepository.find({
             where: [{ winner: user }, { loser: user }],
             relations: ['winner', 'loser'],
@@ -50,16 +48,5 @@ export class MatchService {
         }))
 
         return matchesFront
-    }
-
-    async update(id: number, updateMatchDto: UpdateMatchDto) {
-        const match = await this.findOne(id)
-        const updatedMatch = { ...match, ...updateMatchDto }
-        return this.matchRepository.save(updatedMatch)
-    }
-
-    async remove(id: number) {
-        const match = await this.matchRepository.findOne({ where: { id } })
-        return this.matchRepository.remove(match)
     }
 }

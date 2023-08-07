@@ -3,13 +3,14 @@ import {
     Get,
     Post,
     Body,
-    Patch,
     Param,
-    Delete,
+    ValidationPipe,
+    UsePipes,
+    InternalServerErrorException,
+    NotFoundException,
 } from '@nestjs/common'
 import { MatchService } from './match.service'
 import { CreateMatchDto } from './dto/create-match.dto'
-import { UpdateMatchDto } from './dto/update-match.dto'
 import { ApiTags } from '@nestjs/swagger'
 
 @ApiTags('match')
@@ -18,41 +19,21 @@ export class MatchController {
     constructor(private readonly matchService: MatchService) {}
 
     @Post()
+    @UsePipes(ValidationPipe)
     async create(@Body() createMatchDto: CreateMatchDto) {
-        const match = await this.matchService.create(createMatchDto)
-        return match
-    }
-
-    @Get()
-    async findAll() {
-        const matches = await this.matchService.findAll()
-        return matches
+        try {
+            return await this.matchService.create(createMatchDto)
+        } catch (error) {
+            throw new InternalServerErrorException()
+        }
     }
 
     @Get('user/:id')
     async findByUserId(@Param('id') id: string) {
-        const matches = await this.matchService.findByUserId(+id)
-        return matches
-    }
-
-    @Get(':id')
-    async findOne(@Param('id') id: string) {
-        const match = await this.matchService.findOne(+id)
-        return match
-    }
-
-    @Patch(':id')
-    async update(
-        @Param('id') id: string,
-        @Body() updateMatchDto: UpdateMatchDto
-    ) {
-        const match = await this.matchService.update(+id, updateMatchDto)
-        return match
-    }
-
-    @Delete(':id')
-    async remove(@Param('id') id: string) {
-        await this.matchService.remove(+id)
-        return `Match with ID ${id} has been removed`
+        try {
+            return await this.matchService.findByUserId(+id)
+        } catch (error) {
+            throw new NotFoundException()
+        }
     }
 }
