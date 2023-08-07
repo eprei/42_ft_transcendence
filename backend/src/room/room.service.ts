@@ -83,7 +83,7 @@ export class RoomService {
         if (index !== -1) {
             return this.rooms.splice(index, 1)[0]
         }
-        return null
+        throw new Error('Room not found')
     }
 
     sleep(ms: number): Promise<void> {

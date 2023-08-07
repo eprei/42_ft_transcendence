@@ -1,8 +1,6 @@
 import {
     Controller,
-    Get,
     Post,
-    Put,
     Req,
     Body,
     Param,
@@ -10,6 +8,9 @@ import {
     HttpException,
     HttpStatus,
     Delete,
+    UsePipes,
+    ValidationPipe,
+    NotFoundException,
 } from '@nestjs/common'
 import { RoomService } from './room.service'
 import { Room } from 'src/types/Room'
@@ -21,17 +22,8 @@ import { CreateRoomDto } from './dto/create-room.dto'
 export class RoomController {
     constructor(private readonly roomService: RoomService) {}
 
-    @Get()
-    getAllRooms(): Room[] {
-        return this.roomService.getAllRooms()
-    }
-
-    @Get(':id')
-    getRoomById(@Param('id') id: number): Room {
-        return this.roomService.getRoomById(id)
-    }
-
     @Post()
+    @UsePipes(ValidationPipe)
     async createRoom(
         @Request() req: any,
         @Body() createRoomDto: CreateRoomDto
@@ -42,11 +34,6 @@ export class RoomController {
         } catch (error) {
             throw new HttpException(error.message, HttpStatus.CONFLICT)
         }
-    }
-
-    @Put(':id')
-    updateRoom(@Param('id') id: number, @Body() updatedRoom: Room): Room {
-        return this.roomService.updateRoom(id, updatedRoom)
     }
 
     @Post('joinroom/random')
@@ -61,6 +48,10 @@ export class RoomController {
 
     @Delete('id/:roomId')
     deleteRoom(@Param('roomId') roomId: string) {
-        return this.roomService.deleteRoom(roomId)
+        try {
+            return this.roomService.deleteRoom(roomId)
+        } catch (error) {
+            throw new NotFoundException()
+        }
     }
 }
