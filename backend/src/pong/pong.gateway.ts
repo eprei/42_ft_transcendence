@@ -33,7 +33,7 @@ export class PongGateway
 
     handleConnection(client: Socket, ...args: any[]) {
         const requestOrigin = client.handshake.headers.origin
-        if (requestOrigin !== 'http://localhost:4040') {
+        if (requestOrigin !== `${process.env.URL_FRONTEND}`) {
             client.disconnect()
             return
         }
