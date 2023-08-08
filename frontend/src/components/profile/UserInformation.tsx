@@ -137,6 +137,7 @@ const UserInformation = () => {
                     onCancel={handleCancel}
                     title={'Enter your new nickname'}
                     content={''}
+                    name='newNickname'
                 />
             }
             <label

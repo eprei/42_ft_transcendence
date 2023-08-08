@@ -82,6 +82,7 @@ const DiscoverItem = (props: DiscoverItemProps) => {
                     onCancel={handleCancel}
                     title={title}
                     content={content}
+                    name="Password"
                 />
             )}
         </>
