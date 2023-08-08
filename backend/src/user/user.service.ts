@@ -5,8 +5,6 @@ import {
     Param,
     UnauthorizedException,
     Req,
-    BadRequestException,
-    InternalServerErrorException,
     Res,
 } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'

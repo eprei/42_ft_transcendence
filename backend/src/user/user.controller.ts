@@ -9,7 +9,6 @@ import {
     ValidationPipe,
     UseInterceptors,
     UploadedFile,
-    BadRequestException,
     Res,
     Request,
     InternalServerErrorException,
@@ -114,7 +113,7 @@ export class UserController {
     @UseInterceptors(
         FileInterceptor('profilePicture', {
             storage: diskStorage({
-                destination: './uploads/tmp-profil-pictures-storage', // Path where profile pictures will be temporary saved
+                destination: './uploads/tmp-profil-pictures-storage',
                 filename: (req, file, cb) => {
                     const uniqueSuffix = uuidv4()
                     const fileExt = extname(file.originalname)
