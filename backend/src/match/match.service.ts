@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { Match } from '../typeorm/match.entity'
 import { User } from '../typeorm/user.entity'
+import { UserService } from 'src/user/user.service'
 
 @Injectable()
 export class MatchService {
@@ -12,23 +13,17 @@ export class MatchService {
         @InjectRepository(Match)
         private readonly matchRepository: Repository<Match>,
         @InjectRepository(User)
-        private readonly userRepository: Repository<User>
+        private readonly userRepository: Repository<User>,
+        private userService: UserService
     ) {}
 
-    create(createMatchDto: CreateMatchDto) {
-        const newMatch = this.matchRepository.create(createMatchDto)
-        this.userRepository.update(newMatch.winner, {
-            nbVictory: newMatch.winner.nbVictory + 1,
-            totalPlay: newMatch.winner.totalPlay + 1,
-            xp: newMatch.winner.xp + 50,
-        })
-        this.userRepository.update(newMatch.loser, {
-            totalPlay: newMatch.loser.totalPlay + 1,
-            xp: newMatch.loser.xp + 25,
-        })
-        this.userRepository.save(newMatch.winner)
-        this.userRepository.save(newMatch.loser)
-        return this.matchRepository.save(newMatch)
+    async create(createMatchDto: CreateMatchDto) {
+        try {
+            const newMatch = this.matchRepository.create(createMatchDto)
+            return this.matchRepository.save(newMatch)
+        } catch (error) {
+            console.error('Error while creating match', error)
+        }
     }
 
     findAll() {

@@ -27,6 +27,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { extname } from 'path'
 import { Response } from 'express'
 import { Public } from 'src/decorators/public.decorator'
+import { UpdatePlayersStatsDto } from './dto/update-player-stats.dto'
 
 @ApiTags('user')
 @Controller('user')
@@ -203,6 +204,19 @@ export class UserController {
             return { message: 'User unblocked successfully' }
         } catch (error) {
             console.log('Failed to unblock user')
+        }
+    }
+
+    @Post('updatePlayersStats')
+    @UsePipes(ValidationPipe)
+    async updatePlayersStats(
+        @Body() updatePlayersStatsDto: UpdatePlayersStatsDto
+    ) {
+        try {
+            await this.userService.updatePlayersStats(updatePlayersStatsDto)
+            return { message: 'Players stats updated successfully' }
+        } catch (error) {
+            console.log('Failed to update players stats')
         }
     }
 }

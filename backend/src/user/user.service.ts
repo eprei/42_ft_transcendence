@@ -22,6 +22,7 @@ import { FriendService } from 'src/friend/friend.service'
 import { UserStatus } from 'src/typeorm/user.entity'
 import { Friend } from 'src/typeorm/friend.entity'
 import { Channel } from 'src/typeorm/channel.entity'
+import { UpdatePlayersStatsDto } from './dto/update-player-stats.dto'
 
 @Injectable()
 export class UserService {
@@ -394,5 +395,18 @@ export class UserService {
             (u) => u.id !== userToUnblock.id
         )
         await this.userRepository.save(user)
+    }
+
+    async updatePlayersStats(updatePlayersStatsDto: UpdatePlayersStatsDto) {
+        let winner = await this.findOne(updatePlayersStatsDto.winner)
+        winner.nbVictory += 1
+        winner.totalPlay += 1
+        winner.xp += 50
+        this.update(winner.id, winner)
+
+        let loser = await this.findOne(updatePlayersStatsDto.loser)
+        loser.totalPlay += 1
+        loser.xp += 25
+        this.update(loser.id, loser)
     }
 }
