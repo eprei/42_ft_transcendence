@@ -90,7 +90,7 @@ export class UserService {
             const user = await this.userRepository.findOneBy({
                 nickname: nickname,
             })
-            
+
             return user
         } catch (error) {
             console.error('Error when searching for the user: ', error)
