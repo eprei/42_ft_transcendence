@@ -2,7 +2,7 @@ import styles from './UserInformation.module.css'
 import ClickableIcon from './ClickableIcon'
 import IconEditProfile from '../../assets/icon/edit_profile.svg'
 import switchButtonStyles from './SwitchButton.module.css'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAppSelector } from '../../store/types'
 import { UserData } from '../../types/UserData'
 import SimpleInput from '../ui/modal/SimpleInput'
@@ -35,6 +35,10 @@ const UserInformation = () => {
             console.error('Error fetching user data:', error)
         }
     }
+
+   useEffect(() => {
+       reloadUser()
+   },[userData])
 
     const editProfileNickname = async (newNickname: string) => {
         try {
