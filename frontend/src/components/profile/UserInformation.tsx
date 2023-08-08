@@ -9,37 +9,34 @@ import SimpleInput from '../ui/modal/SimpleInput'
 import { userActions } from '../../store/user'
 import { useDispatch } from 'react-redux'
 
-
-
 const UserInformation = () => {
     const userData = useAppSelector((state) => state.user.userData) as UserData
     const [TFAEnabled, setTFAEnabled] = useState(userData.user.TFAEnabled)
     const [openModal, setOpenModal] = useState(false)
-    const dispatch = useDispatch();
+    const dispatch = useDispatch()
 
     const reloadUser = async () => {
         try {
             const response = await fetch(`http://localhost:8080/api/user/me`, {
                 method: 'GET',
                 credentials: 'include',
-            });
+            })
 
             if (response.status !== 200) {
                 throw new Response(
                     JSON.stringify({ message: 'Error fetching user data' }),
                     { status: 400 }
-                );
+                )
             }
 
-            const data = await response.json();
-            dispatch(userActions.update({ user: data }));
+            const data = await response.json()
+            dispatch(userActions.update({ user: data }))
         } catch (error) {
-            console.error('Error fetching user data:', error);
+            console.error('Error fetching user data:', error)
         }
-    };
+    }
 
-
-    const editProfile = async (newNickname: string) => {
+    const editProfileNickname = async (newNickname: string) => {
         try {
             const response = await fetch(
                 'http://localhost:8080/api/user/updatenickname',
@@ -84,18 +81,15 @@ const UserInformation = () => {
     }
 
     const handleEnteredName = (newName: string) => {
-        console.log(newName);
-        editProfile(newName)
+        editProfileNickname(newName)
         setOpenModal(false)
-
     }
 
     const handleCancel = () => {
         setOpenModal(false)
     }
 
-
-    const handleFileChange = async (
+    const editProfilePicture = async (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
         const file = event.target.files?.[0]
@@ -131,15 +125,15 @@ const UserInformation = () => {
 
     return (
         <div className={styles.container}>
-            {openModal &&
+            {openModal && (
                 <SimpleInput
                     onConfirm={handleEnteredName}
                     onCancel={handleCancel}
                     title={'Enter your new nickname'}
                     content={''}
-                    name='newNickname'
+                    name="New nickname"
                 />
-            }
+            )}
             <label
                 htmlFor="profile-picture"
                 className={styles.profilePicture}
@@ -152,7 +146,7 @@ const UserInformation = () => {
                     id="profile-picture"
                     type="file"
                     accept="image/*"
-                    onChange={handleFileChange}
+                    onChange={editProfilePicture}
                     style={{ display: 'none' }}
                 />
             </label>

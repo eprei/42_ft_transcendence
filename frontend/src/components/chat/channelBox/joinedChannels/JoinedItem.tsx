@@ -117,7 +117,7 @@ const JoinedItem = (props: JoinedItemProps) => {
                     onCancel={handleCancel}
                     title={title}
                     content={content}
-                    name='Password'
+                    name="Password"
                 />
             )}
         </>
