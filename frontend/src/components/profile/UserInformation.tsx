@@ -2,17 +2,45 @@ import styles from './UserInformation.module.css'
 import ClickableIcon from './ClickableIcon'
 import IconEditProfile from '../../assets/icon/edit_profile.svg'
 import switchButtonStyles from './SwitchButton.module.css'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAppSelector } from '../../store/types'
 import { UserData } from '../../types/UserData'
+import SimpleInput from '../ui/modal/SimpleInput'
+import { userActions } from '../../store/user'
+import { useDispatch } from 'react-redux'
 
 const UserInformation = () => {
     const userData = useAppSelector((state) => state.user.userData) as UserData
     const [TFAEnabled, setTFAEnabled] = useState(userData.user.TFAEnabled)
-    const [newNickname, setNewNickname] = useState('')
-    const [isEditingNickname, setIsEditingNickname] = useState(false)
+    const [openModal, setOpenModal] = useState(false)
+    const dispatch = useDispatch()
 
-    const editProfile = async () => {
+    const reloadUser = async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/api/user/me`, {
+                method: 'GET',
+                credentials: 'include',
+            })
+
+            if (response.status !== 200) {
+                throw new Response(
+                    JSON.stringify({ message: 'Error fetching user data' }),
+                    { status: 400 }
+                )
+            }
+
+            const data = await response.json()
+            dispatch(userActions.update({ user: data }))
+        } catch (error) {
+            console.error('Error fetching user data:', error)
+        }
+    }
+
+   useEffect(() => {
+       reloadUser()
+   },[userData])
+
+    const editProfileNickname = async (newNickname: string) => {
         try {
             const response = await fetch(
                 'http://localhost:8080/api/user/updatenickname',
@@ -25,14 +53,11 @@ const UserInformation = () => {
                     body: JSON.stringify({ nickname: newNickname }),
                 }
             )
-
             if (response.ok) {
-                window.location.reload()
+                reloadUser()
             } else {
                 console.error('Failed to update nickname')
             }
-            setIsEditingNickname(false)
-            setNewNickname('')
         } catch (error) {
             console.error('Error updating nickname:', error)
         }
@@ -59,23 +84,16 @@ const UserInformation = () => {
         }
     }
 
-    const handleNicknameClick = () => {
-        setIsEditingNickname(true)
+    const handleEnteredName = (newName: string) => {
+        editProfileNickname(newName)
+        setOpenModal(false)
     }
 
-    const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setNewNickname(e.target.value)
+    const handleCancel = () => {
+        setOpenModal(false)
     }
 
-    const handleNicknameKeyPress = (
-        e: React.KeyboardEvent<HTMLInputElement>
-    ) => {
-        if (e.key === 'Enter') {
-            editProfile()
-        }
-    }
-
-    const handleFileChange = async (
+    const editProfilePicture = async (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
         const file = event.target.files?.[0]
@@ -94,7 +112,7 @@ const UserInformation = () => {
                 )
 
                 if (response.status === 201) {
-                    window.location.reload()
+                    reloadUser()
                 } else {
                     console.error(
                         'Error loading profile image:',
@@ -111,46 +129,43 @@ const UserInformation = () => {
 
     return (
         <div className={styles.container}>
+            {openModal && (
+                <SimpleInput
+                    onConfirm={handleEnteredName}
+                    onCancel={handleCancel}
+                    title={'Enter your new nickname'}
+                    content={''}
+                    name="New nickname"
+                />
+            )}
             <label
                 htmlFor="profile-picture"
                 className={styles.profilePicture}
                 style={{
                     backgroundImage: `url(${userData.user.avatarUrl})`,
-                    backgroundSize: 'cover',
                 }}
             >
                 <input
                     id="profile-picture"
                     type="file"
                     accept="image/*"
-                    onChange={handleFileChange}
+                    onChange={editProfilePicture}
                     style={{ display: 'none' }}
                 />
             </label>
             <div>
                 <ul className={styles.verticalList}>
                     <li>
-                        {isEditingNickname ? (
-                            <input
-                                type="text"
-                                value={newNickname}
-                                onChange={handleNicknameChange}
-                                onKeyPress={handleNicknameKeyPress}
-                            />
-                        ) : (
-                            <>
-                                {userData.user.nickname}
-                                <ClickableIcon
-                                    icon={IconEditProfile}
-                                    onClick={handleNicknameClick}
-                                />
-                            </>
-                        )}
+                        {userData.user.nickname}
+                        <ClickableIcon
+                            icon={IconEditProfile}
+                            onClick={() => setOpenModal(true)}
+                        />
                     </li>
                     <li>Level {userLevel}</li>
                     <li>
                         2fa is
-                        {TFAEnabled ? ' activated ' : ' deactivated'}
+                        {TFAEnabled ? ' activated ' : ' deactivated '}
                         <label className={switchButtonStyles.switch}>
                             <input
                                 type="checkbox"

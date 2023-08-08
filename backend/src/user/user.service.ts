@@ -91,9 +91,6 @@ export class UserService {
                 nickname: nickname,
             })
 
-            if (!user) {
-                console.log('No user with the nickname provided was found.')
-            }
             return user
         } catch (error) {
             console.error('Error when searching for the user: ', error)

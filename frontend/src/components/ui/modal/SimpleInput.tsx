@@ -9,6 +9,7 @@ interface Props {
     onCancel: () => void
     title: string
     content: string
+    name: string
 }
 
 const Input = (props: Props) => {
@@ -24,7 +25,7 @@ const Input = (props: Props) => {
     }
     const noLongerThanEight = () => {
         if (inputValue.trim().length > 8) {
-            setErrorMessage('Channel password is too long (8 characters max)')
+            setErrorMessage(`${props.name} is too long (8 characters max)`)
             return false
         }
         return true
@@ -92,6 +93,7 @@ const SimpleInput = (props: Props) => {
                     onCancel={props.onCancel}
                     title={props.title}
                     content={props.content}
+                    name={props.name}
                 />,
                 document.getElementById('modal')!
             )}
