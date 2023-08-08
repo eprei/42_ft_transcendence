@@ -161,7 +161,7 @@ const UserInformation = () => {
                     <li>Level {userLevel}</li>
                     <li>
                         2fa is
-                        {TFAEnabled ? ' activated ' : ' deactivated'}
+                        {TFAEnabled ? ' activated ' : ' deactivated '}
                         <label className={switchButtonStyles.switch}>
                             <input
                                 type="checkbox"
