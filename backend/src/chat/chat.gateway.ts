@@ -28,7 +28,7 @@ export class ChatGateway
     implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
     constructor(private readonly chatService: ChatService) {}
-    private loger: Logger = new Logger('PongGateway')
+    private loger: Logger = new Logger('ChatGateway')
 
     @WebSocketServer()
     server: Server
@@ -212,6 +212,7 @@ export class ChatGateway
                 createChannelDto
             )
             this.server.emit('newChannel', channelCreated)
+            return channelCreated.id
         } catch (error) {
             console.log('Failed to create channel', error)
         }
