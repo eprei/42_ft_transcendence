@@ -36,8 +36,8 @@ services:
         environment:
             - DATABASE_URL=${DATABASE_URL}
             - PORT=${PORT}
-            - FT_UUID=${FT_UUID}
-            - FT_SECRET=${FT_SECRET}
+            - FT_UUID=${PROD_FT_UUID}
+            - FT_SECRET=${PROD_FT_SECRET}
             - URL_BACKEND=http://localhost
             - URL_FRONTEND=http://localhost
         depends_on:

@@ -26,6 +26,9 @@ generate_all_variables () {
 ask_42_api_credentials () {
 	printf "42 UID   : "; read -r FT_UUID
 	printf "42 SECRET: "; read -r FT_SECRET
+
+	printf "production 42 UID   : "; read -r PROD_FT_UUID
+	printf "production 42 SECRET: "; read -r PROD_FT_SECRET
 }
 
 create_the_environment_file () {
@@ -38,6 +41,10 @@ create_the_environment_file () {
 	# 42 credentials
 	FT_UUID=${FT_UUID}
 	FT_SECRET=${FT_SECRET}
+
+	# 42 credentials PROD
+	PROD_FT_UUID=${PROD_FT_UUID}
+	PROD_FT_SECRET=${PROD_FT_SECRET}
 
 	# PostgreSQL
 	POSTGRES_USER=${POSTGRES_USER}
