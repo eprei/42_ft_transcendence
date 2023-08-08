@@ -138,8 +138,7 @@ const UserInformation = () => {
                 htmlFor="profile-picture"
                 className={styles.profilePicture}
                 style={{
-                    backgroundImage: `url(${userData.user.avatarUrl})`,
-                    backgroundSize: 'cover',
+                    backgroundImage: `url(${userData.user.avatarUrl})`
                 }}
             >
                 <input
