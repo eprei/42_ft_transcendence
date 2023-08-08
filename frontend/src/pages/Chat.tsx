@@ -116,7 +116,9 @@ const Chat = () => {
 
     const createNewChannel = (channel: CreateChannel) => {
         if (socket !== undefined) {
-            socket.emit('createNewChannel', channel, () => {})
+            socket.emit('createNewChannel', channel, (channelId: number) => {
+                dispatch(chatActions.selectChat(channelId))
+            })
             setTimeout(() => {
                 getAllChannels()
             }, 300)
@@ -224,7 +226,6 @@ const Chat = () => {
                 targetUserId,
                 (response: { message: string }) => {
                     if (response) {
-                        dispatch(chatActions.selectChat(0))
                         getAllChannels()
                         setReloadUsers(true)
                     }
