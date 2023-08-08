@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { Match } from '../typeorm/match.entity'
 import { User } from '../typeorm/user.entity'
+import { UserService } from 'src/user/user.service'
 
 @Injectable()
 export class MatchService {
@@ -11,12 +12,17 @@ export class MatchService {
         @InjectRepository(Match)
         private readonly matchRepository: Repository<Match>,
         @InjectRepository(User)
-        private readonly userRepository: Repository<User>
+        private readonly userRepository: Repository<User>,
+        private userService: UserService
     ) {}
 
-    create(createMatchDto: CreateMatchDto) {
-        const newMatch = this.matchRepository.create(createMatchDto)
-        return this.matchRepository.save(newMatch)
+    async create(createMatchDto: CreateMatchDto) {
+        try {
+            const newMatch = this.matchRepository.create(createMatchDto)
+            return this.matchRepository.save(newMatch)
+        } catch (error) {
+            console.error('Error while creating match', error)
+        }
     }
 
     findOne(id: number) {
@@ -35,18 +41,17 @@ export class MatchService {
             relations: ['winner', 'loser'],
         })
 
-        const matchesFront = matchesDB.map((match) => ({
-            id: match.id,
-            winnerNick: match.winner.nickname,
-            winnerNbVictory: match.winner.nbVictory,
-            winnerPfp: match.winner.avatarUrl,
-            loserNick: match.loser.nickname,
-            loserNbVictory: match.loser.nbVictory,
-            loserPfp: match.loser.avatarUrl,
-            scoreWinner: match.scoreWinner,
-            scoreLoser: match.scoreLoser,
+        const matchesFront = matchesDB.map((m) => ({
+            id: m.id,
+            winnerNick: m.winner.nickname,
+            winnerLevel: Math.floor(m.winner.xp / 100 + 1),
+            winnerPfp: m.winner.avatarUrl,
+            loserNick: m.loser.nickname,
+            loserLevel: Math.floor(m.loser.xp / 100 + 1),
+            loserPfp: m.loser.avatarUrl,
+            scoreWinner: m.scoreWinner,
+            scoreLoser: m.scoreLoser,
         }))
-
         return matchesFront
     }
 }

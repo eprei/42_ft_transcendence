@@ -1,10 +1,10 @@
 export interface MatchData {
     id: number
     winnerNick: string
-    winnerNbVictory: number
+    winnerLevel: number
     winnerPfp: string
     loserNick: string
-    loserNbVictory: number
+    loserLevel: number
     loserPfp: string
     scoreWinner: number
     scoreLoser: number

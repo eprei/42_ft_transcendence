@@ -107,6 +107,8 @@ const UserInformation = () => {
         }
     }
 
+    const userLevel = Math.floor(userData.user.xp / 100 + 1)
+
     return (
         <div className={styles.container}>
             <label
@@ -145,7 +147,7 @@ const UserInformation = () => {
                             </>
                         )}
                     </li>
-                    <li>Level {Math.floor(userData.user.nbVictory / 5) + 1}</li>
+                    <li>Level {userLevel}</li>
                     <li>
                         2fa is
                         {TFAEnabled ? ' activated ' : ' deactivated'}

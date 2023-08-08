@@ -301,6 +301,48 @@ const BoardGame = ({
                     saveMatch()
                     matchSaved.current = true
                 }
+
+                if (imPlayerOne === false) {
+                    console.log('updating players stats...')
+                    async function updatePlayersStats() {
+                        try {
+                            const updatePlayersStatsDto = {
+                                winner:
+                                    updatedFrame.score.playerOne >
+                                    updatedFrame.score.playerTwo
+                                        ? player_one
+                                        : player_two,
+                                loser:
+                                    updatedFrame.score.playerOne >
+                                    updatedFrame.score.playerTwo
+                                        ? player_two
+                                        : player_one,
+                            }
+                            const response = await fetch(
+                                `http://localhost:8080/api/user/updatePlayersStats`,
+                                {
+                                    method: 'POST',
+                                    credentials: 'include',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify(updatePlayersStatsDto),
+                                }
+                            )
+
+                            if (!response.ok) {
+                                throw new Error(
+                                    'Error updating players stats into the database'
+                                )
+                            }
+                        } catch (error) {
+                            console.error(error)
+                        }
+                    }
+                    updatePlayersStats()
+                    matchSaved.current = true
+                }
+
                 setTimeout(() => {
                     navigate('/play')
                 }, 3000)

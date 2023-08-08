@@ -129,6 +129,8 @@ const UserLambdaInformation = ({ userData }: UserLambdaInformationProps) => {
         backgroundSize: 'cover',
     }
 
+    const userLevel = Math.floor(userData.user.xp / 100 + 1)
+
     return (
         <div className={styles.container}>
             <div
@@ -152,7 +154,7 @@ const UserLambdaInformation = ({ userData }: UserLambdaInformationProps) => {
             <div>
                 <ul className={styles.verticalList}>
                     <li>{userData.user.nickname}</li>
-                    <li>Level {Math.floor(userData.user.nbVictory / 5) + 1}</li>
+                    <li>Level {userLevel}</li>
                 </ul>
             </div>
         </div>
