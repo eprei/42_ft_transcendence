@@ -1,7 +1,7 @@
 import BoardGame from './../components/pong/BoardGame'
 import styles from './Game.module.css'
 import { useLocation } from 'react-router-dom'
-import theme1 from '../assets/bg/theme1.jpg'
+import theme1 from '../assets/bg/theme1.webp'
 import theme2 from '../assets/bg/theme2.avif'
 import theme3 from '../assets/bg/theme3.avif'
 
