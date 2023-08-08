@@ -197,27 +197,13 @@ const BoardGame = ({
             }
         )
 
-        if (playerNumber === 'player_one') {
-            socket.on('secondPlayerJoined', async (playerId) => {
-                const dataPlayerOne = await getUserData(player_one)
-                setPlayerOneData({ user: dataPlayerOne })
+        socket.on('secondPlayerJoined', async (playerId) => {
+            const dataPlayerOne = await getUserData(player_one)
+            setPlayerOneData({ user: dataPlayerOne })
 
-                const dataPlayerTwo = await getUserData(playerId)
-                setPlayerTwoData({ user: dataPlayerTwo })
-            })
-        }
-
-        if (playerNumber === 'player_two') {
-            socket.on('connect', async () => {
-                socket.emit('joinRoom', room, userData.user.id)
-
-                const dataPlayerOne = await getUserData(player_one)
-                setPlayerOneData({ user: dataPlayerOne })
-
-                const dataPlayerTwo = await getUserData(player_two)
-                setPlayerTwoData({ user: dataPlayerTwo })
-            })
-        }
+            const dataPlayerTwo = await getUserData(playerId)
+            setPlayerTwoData({ user: dataPlayerTwo })
+        })
 
         const handleKeyDown = (event: KeyboardEvent) => {
             if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
