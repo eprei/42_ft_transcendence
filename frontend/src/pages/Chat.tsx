@@ -271,7 +271,7 @@ const Chat = () => {
                 userData.user.id,
                 password,
                 () => {
-                    getAllChannels()
+                    setReloadChannels(true)
                     dispatch(
                         chatActions.updateChat({
                             currentChatSelected: channelId,
@@ -309,9 +309,20 @@ const Chat = () => {
                         setUsers(response.users)
                         setAdmins(response.admin)
                         setOwner(response.owner)
-                        response.banned
-                            ? setBannedUsers(response.banned)
-                            : setBannedUsers([])
+                        if (response.banned)
+                        {
+                            setBannedUsers(response.banned)
+                            // if (bannedUsers.some((user: any) => user.id === userData.user.id))
+                            // {
+                            //     dispatch(
+                            //         chatActions.updateChat({
+                            //             currentChatSelected: 0,
+                            //             type: '',
+                            //         })
+                            //     )
+                            // }
+                        }
+                        else setBannedUsers([])
                     }, 600)
                 }
             )
@@ -324,10 +335,8 @@ const Chat = () => {
                 'getBlockedUsers',
                 userData.user.id,
                 (response: any) => {
-                    // setTimeout(() => {
-                        console.log('blocked users= ', response)
-                        setBlockedUsers(response)
-                    // }, 600)
+                    console.log('blocked users= ', response)
+                    setBlockedUsers(response)
                 }
             )
         }
