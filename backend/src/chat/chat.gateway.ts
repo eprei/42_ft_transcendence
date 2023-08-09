@@ -22,7 +22,7 @@ type UserTargetChannelData = [
     targetId: number,
     channelId: number
 ]
-@WebSocketGateway({ path: "/chatws/", namespace: 'chat'})
+@WebSocketGateway({ path: '/chatws/', namespace: 'chat' })
 export class ChatGateway
     implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {

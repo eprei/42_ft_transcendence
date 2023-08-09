@@ -15,11 +15,11 @@ class SocketChatService {
     }
 
     connect(): Socket {
-		if (!this.socket) {
-			this.socket = io('/chat', {
-				path: "/chatws/"
-			})
-		}
+        if (!this.socket) {
+            this.socket = io('/chat', {
+                path: '/chatws/',
+            })
+        }
 
         return this.socket
     }

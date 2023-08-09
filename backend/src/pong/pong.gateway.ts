@@ -13,7 +13,7 @@ import { Logger } from '@nestjs/common'
 import { UserService } from 'src/user/user.service'
 
 const FPS: number = 80
-@WebSocketGateway({ path: "/pongws/", namespace: 'game'})
+@WebSocketGateway({ path: '/pongws/', namespace: 'game' })
 export class PongGateway
     implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {

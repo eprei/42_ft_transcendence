@@ -17,8 +17,8 @@ class SocketGameService {
     connect(): Socket {
         if (!this.socket) {
             this.socket = io('/game', {
-				path: "/pongws/"
-			})
+                path: '/pongws/',
+            })
         }
 
         return this.socket
