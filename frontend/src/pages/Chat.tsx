@@ -236,16 +236,11 @@ const Chat = () => {
 
     const unblockUser = (targetUserId: number) => {
         if (socket !== undefined) {
-            socket.emit(
-                'unblockUser',
-                userData.user.id,
-                targetUserId,
-                (response: { message: string }) => {
-                    if (response) {
-                        setReloadUsers(true)
-                    }
-                }
-            )
+            socket.emit('unblockUser', userData.user.id, targetUserId, () => {
+                setTimeout(() => {
+                    setReloadUsers(true)
+                }, 300)
+            })
         }
     }
 
@@ -268,10 +263,10 @@ const Chat = () => {
                 userData.user.id,
                 targetUserId,
                 currentChatSelected,
-                (response: { message: string }) => {
-                    if (response) {
+                () => {
+                    setTimeout(() => {
                         setReloadUsers(true)
-                    }
+                    }, 300)
                 }
             )
         }
@@ -284,10 +279,10 @@ const Chat = () => {
                 userData.user.id,
                 targetUserId,
                 currentChatSelected,
-                (response: { message: string }) => {
-                    if (response) {
+                () => {
+                    setTimeout(() => {
                         setReloadUsers(true)
-                    }
+                    }, 300)
                 }
             )
         }
@@ -300,10 +295,10 @@ const Chat = () => {
                 userData.user.id,
                 targetUserId,
                 currentChatSelected,
-                (response: { message: string }) => {
-                    if (response) {
+                () => {
+                    setTimeout(() => {
                         setReloadUsers(true)
-                    }
+                    }, 300)
                 }
             )
         }
@@ -316,10 +311,10 @@ const Chat = () => {
                 userData.user.id,
                 targetUserId,
                 currentChatSelected,
-                (response: { message: string }) => {
-                    if (response) {
+                () => {
+                    setTimeout(() => {
                         setReloadUsers(true)
-                    }
+                    }, 300)
                 }
             )
         }
@@ -332,10 +327,10 @@ const Chat = () => {
                 userData.user.id,
                 targetUserId,
                 currentChatSelected,
-                (response: { message: string }) => {
-                    if (response) {
+                () => {
+                    setTimeout(() => {
                         setReloadUsers(true)
-                    }
+                    }, 300)
                 }
             )
         }
@@ -348,10 +343,10 @@ const Chat = () => {
                 userData.user.id,
                 targetUserId,
                 currentChatSelected,
-                (response: { message: string }) => {
-                    if (response) {
+                () => {
+                    setTimeout(() => {
                         setReloadUsers(true)
-                    }
+                    }, 300)
                 }
             )
         }
