@@ -56,7 +56,7 @@ const Chat = () => {
                 setMesssages(newMessages)
             })
             newSocket.on('newChannel', () => {
-                getAllChannels()
+                setReloadUsers(true)
             })
 
             return () => {
@@ -75,6 +75,7 @@ const Chat = () => {
     }, [socket])
 
     useEffect(() => {
+        getAllChannels()
         if (currentChatSelected) {
             if (!reloadUsers) {
                 getAllMsg()
@@ -128,7 +129,7 @@ const Chat = () => {
                 )
             })
             setTimeout(() => {
-                getAllChannels()
+                setReloadUsers(true)
             }, 300)
         }
     }
@@ -152,7 +153,7 @@ const Chat = () => {
                 dispatch(
                     chatActions.updateChat({ currentChatSelected: 0, type: '' })
                 )
-                getAllChannels()
+                setReloadUsers(true)
             })
         }
     }
@@ -162,7 +163,7 @@ const Chat = () => {
                 dispatch(
                     chatActions.updateChat({ currentChatSelected: 0, type: '' })
                 )
-                getAllChannels()
+                setReloadUsers(true)
             })
         }
     }
