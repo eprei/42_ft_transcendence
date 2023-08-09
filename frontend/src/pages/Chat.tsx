@@ -32,6 +32,9 @@ const Chat = () => {
     const currentChatSelected = useAppSelector(
         (state) => state.chat.currentChatSelected
     ) as number
+    const currentChatSelectedType = useAppSelector(
+        (state) => state.chat.type
+    ) as string
     const [allChan, setAllChan] = useState<Channel[]>([])
     const [messages, setMesssages] = useState<ReceivedMsg[]>([])
     const [users, setUsers] = useState<any[]>([])
@@ -111,7 +114,7 @@ const Chat = () => {
     }
 
     const sendMessage = (newMsg: NewMsg) => {
-        if (socket !== undefined) socket.emit('postMsg', newMsg, () => {})
+        if (socket !== undefined) socket.emit('postMsg', newMsg, () => { })
     }
 
     const createNewChannel = (channel: CreateChannel) => {
@@ -247,6 +250,14 @@ const Chat = () => {
                     if (response) {
                         getAllChannels()
                         setReloadUsers(true)
+                        if (currentChatSelectedType === 'direct') {
+                            dispatch(
+                                chatActions.updateChat({
+                                    currentChatSelected: 0,
+                                    type: '',
+                                })
+                            )
+                        }
                     }
                 }
             )
