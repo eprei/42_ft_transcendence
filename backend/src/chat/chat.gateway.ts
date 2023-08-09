@@ -97,7 +97,7 @@ export class ChatGateway
     async unblockUser(@MessageBody() data: UserTargetData) {
         const [userId, targetId] = data
         try {
-            this.chatService.unblockUser(userId, targetId)
+            await this.chatService.unblockUser(userId, targetId)
             this.server.emit('reload', {})
             // this.server.emit('reloadUsers', {})
             // this.server.emit('reloadFeed', {})
