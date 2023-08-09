@@ -45,6 +45,9 @@ const Chat = () => {
     const [mutedUsers, setMutedUsers] = useState<number[]>([])
     const [isDM, setIsDM] = useState<boolean>(false)
     const [reloadUsers, setReloadUsers] = useState(false)
+    const [reloadFeed, setReloadFeed] = useState(false)
+    const [reloadChannels, setReloadChannels] = useState(false)
+    const [reload, setReload] = useState(false)
     const [socket, setSocket] = useState<Socket>()
 
     useEffect(() => {
@@ -55,12 +58,23 @@ const Chat = () => {
             newSocket.on('incomingMessages', (newMessages: any) => {
                 setMesssages(newMessages)
             })
-            newSocket.on('newChannel', () => {
+
+            newSocket.on('reloadChannels', () => {
+                setReloadChannels(true)
+            })
+
+            newSocket.on('reloadUsers', () => {
                 setReloadUsers(true)
             })
 
+            newSocket.on('reloadFeed', () => {
+                setReloadFeed(true)
+            })
+
             return () => {
-                newSocket.off('newChannel')
+                newSocket.off('reloadChannels')
+                newSocket.off('reloadUsers')
+                newSocket.off('reloadFeed')
                 newSocket.off('incomingMessage')
             }
         } else {
@@ -77,20 +91,11 @@ const Chat = () => {
     useEffect(() => {
         getAllChannels()
         if (currentChatSelected) {
-            if (!reloadUsers) {
-                getAllMsg()
-            }
+            getAllMsg()
             getChUsers()
             getBlockedUsers()
             getMutedUsers()
-            if (
-                allChan.find(
-                    (ch) =>
-                        ch.id === currentChatSelected && ch.type === 'direct'
-                )
-            )
-                setIsDM(true)
-            else setIsDM(false)
+            allChan.find((ch) => ch.id === currentChatSelected && ch.type === 'direct') ? setIsDM(true) : setIsDM(false)
         } else {
             setMesssages([])
             setUsers([])
@@ -99,8 +104,43 @@ const Chat = () => {
             setBannedUsers([])
             setMutedUsers([])
         }
+    }, [currentChatSelected])
+
+    useEffect(() => {
+        if (reload) {
+            getAllChannels()
+            getAllMsg()
+            getChUsers()
+            getBlockedUsers()
+            getMutedUsers()
+            allChan.find((ch) => ch.id === currentChatSelected && ch.type === 'direct') ? setIsDM(true) : setIsDM(false)
+        }
+        setReload(false)
+    }, [reload])
+
+    useEffect(() => {
+        if (reloadChannels) {
+            getAllChannels()
+        }
+        setReloadChannels(false)
+    }, [reloadChannels])
+
+    useEffect(() => {
+        if (currentChatSelected && reloadFeed) {
+            getAllMsg()
+        }
+        setReloadFeed(false)
+    }, [reloadFeed])
+
+    useEffect(() => {
+        if (currentChatSelected && reloadUsers) {
+            getChUsers()
+            getBlockedUsers()
+            getMutedUsers()
+            allChan.find((ch) => ch.id === currentChatSelected && ch.type === 'direct') ? setIsDM(true) : setIsDM(false)
+        }
         setReloadUsers(false)
-    }, [currentChatSelected, reloadUsers])
+    }, [reloadUsers])
 
     const getAllMsg = () => {
         if (socket !== undefined) {
