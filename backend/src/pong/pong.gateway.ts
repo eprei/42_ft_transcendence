@@ -9,11 +9,12 @@ import {
 import { PongService } from './pong.service'
 import { Frame } from './entities/pong.entity'
 import { Socket, Server } from 'socket.io'
-import { Logger } from '@nestjs/common'
+import { Logger, Injectable } from '@nestjs/common'
 import { UserService } from 'src/user/user.service'
 
 const FPS: number = 80
-@WebSocketGateway({ namespace: 'game', cors: { origin: '*' } })
+@Injectable()
+@WebSocketGateway({ path: "/pongws/", namespace: 'game'})
 export class PongGateway
     implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
@@ -32,11 +33,11 @@ export class PongGateway
     }
 
     handleConnection(client: Socket, ...args: any[]) {
-        const requestOrigin = client.handshake.headers.origin
-        if (requestOrigin !== `${process.env.URL_FRONTEND}`) {
-            client.disconnect()
-            return
-        }
+        // const requestOrigin = client.handshake.headers.origin
+        // if (requestOrigin !== `${process.env.URL_FRONTEND}`) {
+        //     client.disconnect()
+        //     return
+        // }
         this.loger.log(`Client socket connected: ${client.id}`)
     }
 
