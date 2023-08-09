@@ -57,7 +57,9 @@ const Chat = () => {
             setSocket(newSocket)
 
             newSocket.on('reload', () => {
-                setReload(true)
+                setTimeout(() => {
+                    setReload(true)
+                }, 300)
             })
 
             newSocket.on('reloadChannels', () => {
@@ -322,9 +324,10 @@ const Chat = () => {
                 'getBlockedUsers',
                 userData.user.id,
                 (response: any) => {
-                    setTimeout(() => {
+                    // setTimeout(() => {
+                        console.log('blocked users= ', response)
                         setBlockedUsers(response)
-                    }, 600)
+                    // }, 600)
                 }
             )
         }
@@ -347,7 +350,6 @@ const Chat = () => {
     const blockUser = (targetUserId: number) => {
         if (socket !== undefined) {
             socket.emit('blockUser', userData.user.id, targetUserId, () => {
-                setReload(true)
                 if (currentChatSelectedType === 'direct') {
                     dispatch(
                         chatActions.updateChat({
