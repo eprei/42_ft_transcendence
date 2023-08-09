@@ -10,7 +10,7 @@ import { ChatService } from './chat.service'
 import { Server, Socket } from 'socket.io'
 import { CreateMessageDto } from 'src/chat/dto/create-message.dto'
 import { CreateChannelDto } from './dto/create-channel.dto'
-import { Logger, UsePipes, ValidationPipe } from '@nestjs/common'
+import { Logger, UsePipes, ValidationPipe, Injectable } from '@nestjs/common'
 import { WebSocketServer } from '@nestjs/websockets'
 
 type PasswordChangeData = [channelId: number, password: string]
@@ -22,8 +22,8 @@ type UserTargetChannelData = [
     targetId: number,
     channelId: number
 ]
-
-@WebSocketGateway({ namespace: 'chat', cors: { origin: '*' } })
+@Injectable()
+@WebSocketGateway({ path: "/chatws/", namespace: 'chat'})
 export class ChatGateway
     implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
