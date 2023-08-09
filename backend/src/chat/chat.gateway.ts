@@ -110,7 +110,7 @@ export class ChatGateway
     async getBlockedUsers(@MessageBody() myId: number) {
         try {
             const blockedUsers = await this.chatService.getBlockedUsers(myId)
-            console.log('blocked Users = ',blockedUsers)
+            console.log('blocked Users = ', blockedUsers)
             return blockedUsers
         } catch (error) {
             console.log('Failed to get blocked users')

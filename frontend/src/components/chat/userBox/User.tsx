@@ -244,14 +244,15 @@ const User = ({
                                             Set admin
                                         </li>
                                     )}
-                                    {!isBanned && (
+                                    {!isBanned && !isDM && (
                                         <li onClick={kickUserHandler}>Kick</li>
                                     )}
-                                    {isBanned ? (
+                                    {isBanned && !isDM && (
                                         <li onClick={unbanUserHandler}>
                                             Unban
                                         </li>
-                                    ) : (
+                                    )}
+                                    {!isBanned && !isDM && (
                                         <li onClick={banUserHandler}>Ban</li>
                                     )}
                                     {!isMuted && (

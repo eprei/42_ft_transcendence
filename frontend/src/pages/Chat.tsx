@@ -44,7 +44,7 @@ const Chat = () => {
     const [bannedUsers, setBannedUsers] = useState<any[]>([])
     const [mutedUsers, setMutedUsers] = useState<number[]>([])
     const [isDM, setIsDM] = useState<boolean>(false)
-    
+
     const [reload, setReload] = useState(false)
     const [reloadChannels, setReloadChannels] = useState(false)
     const [reloadUsers, setReloadUsers] = useState(false)
@@ -309,8 +309,7 @@ const Chat = () => {
                         setUsers(response.users)
                         setAdmins(response.admin)
                         setOwner(response.owner)
-                        if (response.banned)
-                        {
+                        if (response.banned) {
                             setBannedUsers(response.banned)
                             // if (bannedUsers.some((user: any) => user.id === userData.user.id))
                             // {
@@ -321,8 +320,7 @@ const Chat = () => {
                             //         })
                             //     )
                             // }
-                        }
-                        else setBannedUsers([])
+                        } else setBannedUsers([])
                     }, 600)
                 }
             )
