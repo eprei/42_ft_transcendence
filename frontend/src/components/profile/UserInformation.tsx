@@ -13,6 +13,7 @@ const UserInformation = () => {
     const userData = useAppSelector((state) => state.user.userData) as UserData
     const [TFAEnabled, setTFAEnabled] = useState(userData.user.TFAEnabled)
     const [openModal, setOpenModal] = useState(false)
+    const [shouldReloadUserData, setShouldReloadUserData] = useState(false)
     const dispatch = useDispatch()
 
     const reloadUser = async () => {
@@ -36,9 +37,12 @@ const UserInformation = () => {
         }
     }
 
-   useEffect(() => {
-       reloadUser()
-   },[userData])
+    useEffect(() => {
+        if (shouldReloadUserData) {
+            reloadUser()
+            setShouldReloadUserData(false)
+        }
+    }, [shouldReloadUserData])
 
     const editProfileNickname = async (newNickname: string) => {
         try {
@@ -87,6 +91,7 @@ const UserInformation = () => {
     const handleEnteredName = (newName: string) => {
         editProfileNickname(newName)
         setOpenModal(false)
+        setShouldReloadUserData(true)
     }
 
     const handleCancel = () => {
@@ -112,7 +117,7 @@ const UserInformation = () => {
                 )
 
                 if (response.status === 201) {
-                    reloadUser()
+                    setShouldReloadUserData(true)
                 } else {
                     console.error(
                         'Error loading profile image:',
