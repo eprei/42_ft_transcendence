@@ -9,11 +9,10 @@ import {
 import { PongService } from './pong.service'
 import { Frame } from './entities/pong.entity'
 import { Socket, Server } from 'socket.io'
-import { Logger, Injectable } from '@nestjs/common'
+import { Logger } from '@nestjs/common'
 import { UserService } from 'src/user/user.service'
 
 const FPS: number = 80
-@Injectable()
 @WebSocketGateway({ path: "/pongws/", namespace: 'game'})
 export class PongGateway
     implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
