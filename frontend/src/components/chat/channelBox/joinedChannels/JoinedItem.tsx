@@ -28,7 +28,12 @@ const JoinedItem = (props: JoinedItemProps) => {
     const [canChangePassword, setCanChangePassword] = useState(false)
 
     const handleClick = () => {
-        dispatch(chatActions.selectChat(props.channel.id))
+        dispatch(
+            chatActions.updateChat({
+                currentChatSelected: props.channel.id,
+                type: props.channel.type,
+            })
+        )
     }
 
     const handleOk = () => {

@@ -23,7 +23,12 @@ const DmItem = (props: DmItemProps) => {
     const [isOwner, setIsOwner] = useState(false)
 
     const handleClick = () => {
-        dispatch(chatActions.selectChat(props.channel.id))
+        dispatch(
+            chatActions.updateChat({
+                currentChatSelected: props.channel.id,
+                type: props.channel.type,
+            })
+        )
     }
 
     const handleOk = () => {

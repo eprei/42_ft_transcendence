@@ -32,6 +32,9 @@ const Chat = () => {
     const currentChatSelected = useAppSelector(
         (state) => state.chat.currentChatSelected
     ) as number
+    const currentChatSelectedType = useAppSelector(
+        (state) => state.chat.type
+    ) as string
     const [allChan, setAllChan] = useState<Channel[]>([])
     const [messages, setMesssages] = useState<ReceivedMsg[]>([])
     const [users, setUsers] = useState<any[]>([])
@@ -111,13 +114,18 @@ const Chat = () => {
     }
 
     const sendMessage = (newMsg: NewMsg) => {
-        if (socket !== undefined) socket.emit('postMsg', newMsg, () => {})
+        if (socket !== undefined) socket.emit('postMsg', newMsg, () => { })
     }
 
     const createNewChannel = (channel: CreateChannel) => {
         if (socket !== undefined) {
             socket.emit('createNewChannel', channel, (channelId: number) => {
-                dispatch(chatActions.selectChat(channelId))
+                dispatch(
+                    chatActions.updateChat({
+                        currentChatSelected: channelId,
+                        type: channel.type,
+                    })
+                )
             })
             setTimeout(() => {
                 getAllChannels()
@@ -141,7 +149,9 @@ const Chat = () => {
     const leaveChannel = (channelId: number) => {
         if (socket !== undefined) {
             socket.emit('leaveChannel', channelId, userData.user.id, () => {
-                dispatch(chatActions.selectChat(0))
+                dispatch(
+                    chatActions.updateChat({ currentChatSelected: 0, type: '' })
+                )
                 getAllChannels()
             })
         }
@@ -149,7 +159,9 @@ const Chat = () => {
     const deleteChannel = (channelId: number) => {
         if (socket !== undefined) {
             socket.emit('deleteChannel', channelId, userData.user.id, () => {
-                dispatch(chatActions.selectChat(0))
+                dispatch(
+                    chatActions.updateChat({ currentChatSelected: 0, type: '' })
+                )
                 getAllChannels()
             })
         }
@@ -164,7 +176,12 @@ const Chat = () => {
                 password,
                 () => {
                     getAllChannels()
-                    dispatch(chatActions.selectChat(channelId))
+                    dispatch(
+                        chatActions.updateChat({
+                            currentChatSelected: channelId,
+                            type: '',
+                        })
+                    )
                 }
             )
         }
@@ -210,7 +227,12 @@ const Chat = () => {
                     if (response) {
                         setTimeout(() => {
                             getAllChannels()
-                            dispatch(chatActions.selectChat(response.id))
+                            dispatch(
+                                chatActions.updateChat({
+                                    currentChatSelected: response.id,
+                                    type: 'direct',
+                                })
+                            )
                         }, 300)
                     }
                 }
@@ -228,6 +250,14 @@ const Chat = () => {
                     if (response) {
                         getAllChannels()
                         setReloadUsers(true)
+                        if (currentChatSelectedType === 'direct') {
+                            dispatch(
+                                chatActions.updateChat({
+                                    currentChatSelected: 0,
+                                    type: '',
+                                })
+                            )
+                        }
                     }
                 }
             )
@@ -236,16 +266,12 @@ const Chat = () => {
 
     const unblockUser = (targetUserId: number) => {
         if (socket !== undefined) {
-            socket.emit(
-                'unblockUser',
-                userData.user.id,
-                targetUserId,
-                (response: { message: string }) => {
-                    if (response) {
-                        setReloadUsers(true)
-                    }
-                }
-            )
+            socket.emit('unblockUser', userData.user.id, targetUserId, () => {
+                setTimeout(() => {
+                    getAllChannels()
+                    setReloadUsers(true)
+                }, 300)
+            })
         }
     }
 
@@ -268,10 +294,10 @@ const Chat = () => {
                 userData.user.id,
                 targetUserId,
                 currentChatSelected,
-                (response: { message: string }) => {
-                    if (response) {
+                () => {
+                    setTimeout(() => {
                         setReloadUsers(true)
-                    }
+                    }, 300)
                 }
             )
         }
@@ -284,10 +310,10 @@ const Chat = () => {
                 userData.user.id,
                 targetUserId,
                 currentChatSelected,
-                (response: { message: string }) => {
-                    if (response) {
+                () => {
+                    setTimeout(() => {
                         setReloadUsers(true)
-                    }
+                    }, 300)
                 }
             )
         }
@@ -300,10 +326,10 @@ const Chat = () => {
                 userData.user.id,
                 targetUserId,
                 currentChatSelected,
-                (response: { message: string }) => {
-                    if (response) {
+                () => {
+                    setTimeout(() => {
                         setReloadUsers(true)
-                    }
+                    }, 300)
                 }
             )
         }
@@ -316,10 +342,10 @@ const Chat = () => {
                 userData.user.id,
                 targetUserId,
                 currentChatSelected,
-                (response: { message: string }) => {
-                    if (response) {
+                () => {
+                    setTimeout(() => {
                         setReloadUsers(true)
-                    }
+                    }, 300)
                 }
             )
         }
@@ -332,10 +358,10 @@ const Chat = () => {
                 userData.user.id,
                 targetUserId,
                 currentChatSelected,
-                (response: { message: string }) => {
-                    if (response) {
+                () => {
+                    setTimeout(() => {
                         setReloadUsers(true)
-                    }
+                    }, 300)
                 }
             )
         }
@@ -348,10 +374,10 @@ const Chat = () => {
                 userData.user.id,
                 targetUserId,
                 currentChatSelected,
-                (response: { message: string }) => {
-                    if (response) {
+                () => {
+                    setTimeout(() => {
                         setReloadUsers(true)
-                    }
+                    }, 300)
                 }
             )
         }
