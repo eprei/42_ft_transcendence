@@ -55,8 +55,8 @@ const Chat = () => {
         if (newSocket !== undefined) {
             setSocket(newSocket)
 
-            newSocket.on('incomingMessages', (newMessages: any) => {
-                setMesssages(newMessages)
+            newSocket.on('reload', () => {
+                setReload(true)
             })
 
             newSocket.on('reloadChannels', () => {
@@ -72,10 +72,10 @@ const Chat = () => {
             })
 
             return () => {
+                newSocket.off('reload')
                 newSocket.off('reloadChannels')
                 newSocket.off('reloadUsers')
                 newSocket.off('reloadFeed')
-                newSocket.off('incomingMessage')
             }
         } else {
             console.log('Socket not connected')
@@ -85,17 +85,23 @@ const Chat = () => {
     useEffect(() => {
         if (socket !== undefined) {
             getAllChannels()
+            console.log('Socket effect')
         }
     }, [socket])
 
     useEffect(() => {
         getAllChannels()
         if (currentChatSelected) {
+            console.log('Chat selected effect')
             getAllMsg()
             getChUsers()
             getBlockedUsers()
             getMutedUsers()
-            allChan.find((ch) => ch.id === currentChatSelected && ch.type === 'direct') ? setIsDM(true) : setIsDM(false)
+            allChan.find(
+                (ch) => ch.id === currentChatSelected && ch.type === 'direct'
+            )
+                ? setIsDM(true)
+                : setIsDM(false)
         } else {
             setMesssages([])
             setUsers([])
@@ -108,18 +114,24 @@ const Chat = () => {
 
     useEffect(() => {
         if (reload) {
+            console.log('Reload effect')
             getAllChannels()
             getAllMsg()
             getChUsers()
             getBlockedUsers()
             getMutedUsers()
-            allChan.find((ch) => ch.id === currentChatSelected && ch.type === 'direct') ? setIsDM(true) : setIsDM(false)
+            allChan.find(
+                (ch) => ch.id === currentChatSelected && ch.type === 'direct'
+            )
+                ? setIsDM(true)
+                : setIsDM(false)
         }
         setReload(false)
     }, [reload])
 
     useEffect(() => {
         if (reloadChannels) {
+            console.log('Reload channels effect')
             getAllChannels()
         }
         setReloadChannels(false)
@@ -127,6 +139,7 @@ const Chat = () => {
 
     useEffect(() => {
         if (currentChatSelected && reloadFeed) {
+            console.log('Reload feed effect')
             getAllMsg()
         }
         setReloadFeed(false)
@@ -134,10 +147,15 @@ const Chat = () => {
 
     useEffect(() => {
         if (currentChatSelected && reloadUsers) {
+            console.log('Reload users effect')
             getChUsers()
             getBlockedUsers()
             getMutedUsers()
-            allChan.find((ch) => ch.id === currentChatSelected && ch.type === 'direct') ? setIsDM(true) : setIsDM(false)
+            allChan.find(
+                (ch) => ch.id === currentChatSelected && ch.type === 'direct'
+            )
+                ? setIsDM(true)
+                : setIsDM(false)
         }
         setReloadUsers(false)
     }, [reloadUsers])
@@ -155,7 +173,7 @@ const Chat = () => {
     }
 
     const sendMessage = (newMsg: NewMsg) => {
-        if (socket !== undefined) socket.emit('postMsg', newMsg, () => { })
+        if (socket !== undefined) socket.emit('postMsg', newMsg, () => {})
     }
 
     const createNewChannel = (channel: CreateChannel) => {
@@ -168,9 +186,6 @@ const Chat = () => {
                     })
                 )
             })
-            setTimeout(() => {
-                setReloadUsers(true)
-            }, 300)
         }
     }
 
@@ -187,13 +202,36 @@ const Chat = () => {
         if (socket !== undefined) createNewChannel(channel)
     }
 
+    const createDM = (targetUserId: number) => {
+        if (socket !== undefined) {
+            socket.emit(
+                'createDM',
+                userData.user.id,
+                targetUserId,
+                (response: any) => {
+                    if (response) {
+                        setTimeout(() => {
+                            getAllChannels()
+                            dispatch(
+                                chatActions.updateChat({
+                                    currentChatSelected: response.id,
+                                    type: 'direct',
+                                })
+                            )
+                        }, 300)
+                    }
+                }
+            )
+        }
+    }
+
     const leaveChannel = (channelId: number) => {
         if (socket !== undefined) {
             socket.emit('leaveChannel', channelId, userData.user.id, () => {
                 dispatch(
                     chatActions.updateChat({ currentChatSelected: 0, type: '' })
                 )
-                setReloadUsers(true)
+                // setReload(true)
             })
         }
     }
@@ -203,7 +241,7 @@ const Chat = () => {
                 dispatch(
                     chatActions.updateChat({ currentChatSelected: 0, type: '' })
                 )
-                setReloadUsers(true)
+                // setReload(true)
             })
         }
     }
@@ -247,72 +285,17 @@ const Chat = () => {
                 'findUsersByChannel',
                 currentChatSelected,
                 (response: any) => {
-                    setUsers(response.users)
-                    setAdmins(response.admin)
-                    setOwner(response.owner)
-                    response.banned
-                        ? setBannedUsers(response.banned)
-                        : setBannedUsers([])
+                    setTimeout(() => {
+                        // alert(JSON.stringify(response, null, 2))
+                        setUsers(response.users)
+                        setAdmins(response.admin)
+                        setOwner(response.owner)
+                        response.banned
+                            ? setBannedUsers(response.banned)
+                            : setBannedUsers([])
+                    }, 300)
                 }
             )
-        }
-    }
-
-    const createDM = (targetUserId: number) => {
-        if (socket !== undefined) {
-            socket.emit(
-                'createDM',
-                userData.user.id,
-                targetUserId,
-                (response: any) => {
-                    if (response) {
-                        setTimeout(() => {
-                            getAllChannels()
-                            dispatch(
-                                chatActions.updateChat({
-                                    currentChatSelected: response.id,
-                                    type: 'direct',
-                                })
-                            )
-                        }, 300)
-                    }
-                }
-            )
-        }
-    }
-
-    const blockUser = (targetUserId: number) => {
-        if (socket !== undefined) {
-            socket.emit(
-                'blockUser',
-                userData.user.id,
-                targetUserId,
-                (response: { message: string }) => {
-                    if (response) {
-                        getAllChannels()
-                        setReloadUsers(true)
-                        if (currentChatSelectedType === 'direct') {
-                            dispatch(
-                                chatActions.updateChat({
-                                    currentChatSelected: 0,
-                                    type: '',
-                                })
-                            )
-                        }
-                    }
-                }
-            )
-        }
-    }
-
-    const unblockUser = (targetUserId: number) => {
-        if (socket !== undefined) {
-            socket.emit('unblockUser', userData.user.id, targetUserId, () => {
-                setTimeout(() => {
-                    getAllChannels()
-                    setReloadUsers(true)
-                }, 300)
-            })
         }
     }
 
@@ -322,102 +305,8 @@ const Chat = () => {
                 'getBlockedUsers',
                 userData.user.id,
                 (response: any) => {
-                    setBlockedUsers(response)
-                }
-            )
-        }
-    }
-
-    const setAdmin = (targetUserId: number) => {
-        if (socket !== undefined) {
-            socket.emit(
-                'setAdmin',
-                userData.user.id,
-                targetUserId,
-                currentChatSelected,
-                () => {
                     setTimeout(() => {
-                        setReloadUsers(true)
-                    }, 300)
-                }
-            )
-        }
-    }
-
-    const unsetAdmin = (targetUserId: number) => {
-        if (socket !== undefined) {
-            socket.emit(
-                'unsetAdmin',
-                userData.user.id,
-                targetUserId,
-                currentChatSelected,
-                () => {
-                    setTimeout(() => {
-                        setReloadUsers(true)
-                    }, 300)
-                }
-            )
-        }
-    }
-
-    const kickUser = (targetUserId: number) => {
-        if (socket !== undefined) {
-            socket.emit(
-                'kickUser',
-                userData.user.id,
-                targetUserId,
-                currentChatSelected,
-                () => {
-                    setTimeout(() => {
-                        setReloadUsers(true)
-                    }, 300)
-                }
-            )
-        }
-    }
-
-    const banUser = (targetUserId: number) => {
-        if (socket !== undefined) {
-            socket.emit(
-                'banUser',
-                userData.user.id,
-                targetUserId,
-                currentChatSelected,
-                () => {
-                    setTimeout(() => {
-                        setReloadUsers(true)
-                    }, 300)
-                }
-            )
-        }
-    }
-
-    const unbanUser = (targetUserId: number) => {
-        if (socket !== undefined) {
-            socket.emit(
-                'unbanUser',
-                userData.user.id,
-                targetUserId,
-                currentChatSelected,
-                () => {
-                    setTimeout(() => {
-                        setReloadUsers(true)
-                    }, 300)
-                }
-            )
-        }
-    }
-
-    const muteUser = (targetUserId: number) => {
-        if (socket !== undefined) {
-            socket.emit(
-                'muteUser',
-                userData.user.id,
-                targetUserId,
-                currentChatSelected,
-                () => {
-                    setTimeout(() => {
-                        setReloadUsers(true)
+                        setBlockedUsers(response)
                     }, 300)
                 }
             )
@@ -430,8 +319,97 @@ const Chat = () => {
                 'getMutedUsers',
                 currentChatSelected,
                 (response: number[]) => {
-                    setMutedUsers(response)
+                    setTimeout(() => {
+                        setMutedUsers(response)
+                    }, 300)
                 }
+            )
+        }
+    }
+
+
+    const blockUser = (targetUserId: number) => {
+        if (socket !== undefined) {
+            socket.emit('blockUser', userData.user.id, targetUserId, () => {
+                setReload(true)
+                if (currentChatSelectedType === 'direct') {
+                    dispatch(
+                        chatActions.updateChat({
+                            currentChatSelected: 0,
+                            type: '',
+                        })
+                    )
+                }
+            })
+        }
+    }
+
+    const unblockUser = (targetUserId: number) => {
+        if (socket !== undefined) {
+            socket.emit('unblockUser', userData.user.id, targetUserId, () => {
+            })
+        }
+    }
+
+    const setAdmin = (targetUserId: number) => {
+        if (socket !== undefined) {
+            socket.emit('setAdmin', userData.user.id, targetUserId, currentChatSelected,
+                () => {})
+            }
+    }
+
+    const unsetAdmin = (targetUserId: number) => {
+        if (socket !== undefined) {
+            socket.emit('unsetAdmin', userData.user.id, targetUserId, currentChatSelected,
+                () => {}
+            )
+        }
+    }
+
+    const kickUser = (targetUserId: number) => {
+        if (socket !== undefined) {
+            socket.emit(
+                'kickUser',
+                userData.user.id,
+                targetUserId,
+                currentChatSelected,
+                () => {}
+            )
+        }
+    }
+
+    const banUser = (targetUserId: number) => {
+        if (socket !== undefined) {
+            socket.emit(
+                'banUser',
+                userData.user.id,
+                targetUserId,
+                currentChatSelected,
+                () => {}
+            )
+        }
+    }
+
+    const unbanUser = (targetUserId: number) => {
+        if (socket !== undefined) {
+            socket.emit(
+                'unbanUser',
+                userData.user.id,
+                targetUserId,
+                currentChatSelected,
+                () => {}
+            )
+        }
+    }
+
+    const muteUser = (targetUserId: number) => {
+        if (socket !== undefined) {
+            socket.emit(
+                'muteUser',
+                userData.user.id,
+                targetUserId,
+                currentChatSelected,
+                () => {}
             )
         }
     }

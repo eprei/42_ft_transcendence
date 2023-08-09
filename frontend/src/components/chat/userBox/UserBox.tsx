@@ -33,15 +33,24 @@ const UserBox = (props: UserBoxProps) => {
 
     const handleOpenMenu = () => {
         setOpenMenus(1)
+        console.log('open menu = ', openMenus)
     }
 
     const handleCloseMenu = () => {
+        console.log('close menu -> open = ', openMenus)
         setOpenMenus(0)
+        console.log('close menu -> open = ', openMenus)
+    }
+
+    const adminAlert = () => {
+        console.log('admins = ', props.admins)
+        // alert(JSON.stringify(props.admins, null, 2))
     }
 
     return (
         <div className={`${styles.usersBox}`}>
-            <h2> online </h2>
+            {/* <h2> online </h2> */}
+            <h2 onClick={adminAlert}> online </h2>
             {props.users.map((user) =>
                 user.status !== 'offline' ? (
                     <User

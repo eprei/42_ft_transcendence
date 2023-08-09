@@ -197,7 +197,7 @@ export class ChatGateway
         }
     }
 
-    @SubscribeMessage('createreload')
+    @SubscribeMessage('createNewChannel')
     @UsePipes(ValidationPipe)
     async createChannel(@MessageBody() createChannelDto: CreateChannelDto) {
         try {
@@ -260,7 +260,10 @@ export class ChatGateway
     async leaveChannel(@MessageBody() data: ChannelUserData) {
         const [channelId, userId] = data
         try {
-            const channel = await this.chatService.leaveChannel(channelId, userId)
+            const channel = await this.chatService.leaveChannel(
+                channelId,
+                userId
+            )
             this.server.emit('reloadUsers', {})
             return channel
         } catch (error) {
@@ -271,7 +274,10 @@ export class ChatGateway
     async deleteChannel(@MessageBody() data: ChannelUserData) {
         const [channelId, userId] = data
         try {
-            const channel = await this.chatService.deleteChannel(channelId, userId)
+            const channel = await this.chatService.deleteChannel(
+                channelId,
+                userId
+            )
             this.server.emit('reload', {})
             return channel
         } catch (error) {
