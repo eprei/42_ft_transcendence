@@ -117,7 +117,12 @@ const Chat = () => {
     const createNewChannel = (channel: CreateChannel) => {
         if (socket !== undefined) {
             socket.emit('createNewChannel', channel, (channelId: number) => {
-                dispatch(chatActions.selectChat(channelId))
+                dispatch(
+                    chatActions.updateChat({
+                        currentChatSelected: channelId,
+                        type: channel.type,
+                    })
+                )
             })
             setTimeout(() => {
                 getAllChannels()
@@ -141,7 +146,9 @@ const Chat = () => {
     const leaveChannel = (channelId: number) => {
         if (socket !== undefined) {
             socket.emit('leaveChannel', channelId, userData.user.id, () => {
-                dispatch(chatActions.selectChat(0))
+                dispatch(
+                    chatActions.updateChat({ currentChatSelected: 0, type: '' })
+                )
                 getAllChannels()
             })
         }
@@ -149,7 +156,9 @@ const Chat = () => {
     const deleteChannel = (channelId: number) => {
         if (socket !== undefined) {
             socket.emit('deleteChannel', channelId, userData.user.id, () => {
-                dispatch(chatActions.selectChat(0))
+                dispatch(
+                    chatActions.updateChat({ currentChatSelected: 0, type: '' })
+                )
                 getAllChannels()
             })
         }
@@ -164,7 +173,12 @@ const Chat = () => {
                 password,
                 () => {
                     getAllChannels()
-                    dispatch(chatActions.selectChat(channelId))
+                    dispatch(
+                        chatActions.updateChat({
+                            currentChatSelected: channelId,
+                            type: '',
+                        })
+                    )
                 }
             )
         }
@@ -210,7 +224,12 @@ const Chat = () => {
                     if (response) {
                         setTimeout(() => {
                             getAllChannels()
-                            dispatch(chatActions.selectChat(response.id))
+                            dispatch(
+                                chatActions.updateChat({
+                                    currentChatSelected: response.id,
+                                    type: 'direct',
+                                })
+                            )
                         }, 300)
                     }
                 }
@@ -238,6 +257,7 @@ const Chat = () => {
         if (socket !== undefined) {
             socket.emit('unblockUser', userData.user.id, targetUserId, () => {
                 setTimeout(() => {
+                    getAllChannels()
                     setReloadUsers(true)
                 }, 300)
             })
