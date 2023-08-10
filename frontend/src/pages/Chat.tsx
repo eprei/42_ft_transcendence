@@ -5,7 +5,7 @@ import UserBox from '../components/chat/userBox/UserBox.tsx'
 import { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../store/types'
 import { chatActions } from '../store/chat'
-import { UserData } from '../types/UserData'
+import { User, UserData } from '../types/UserData'
 import { Channel } from '../types/Channel'
 import SocketChatService from '../sockets/SocketChat.ts'
 import { Socket } from 'socket.io-client'
@@ -33,7 +33,7 @@ const Chat = () => {
     ) as number
     const [allChan, setAllChan] = useState<Channel[]>([])
     const [messages, setMesssages] = useState<ReceivedMsg[]>([])
-    const [users, setUsers] = useState<any[]>([])
+    const [users, setUsers] = useState<User[]>([])
     const [blockedUsers, setBlockedUsers] = useState<number[]>([])
     const [admins, setAdmins] = useState<any[]>([])
     const [owner, setOwner] = useState()
@@ -211,6 +211,7 @@ const Chat = () => {
                     setTimeout(() => {
                         // alert(JSON.stringify(response, null, 2))
                         setUsers(response.users)
+                        console.log(response.users);
                         setAdmins(response.admin)
                         setOwner(response.owner)
                         if (response.banned) {

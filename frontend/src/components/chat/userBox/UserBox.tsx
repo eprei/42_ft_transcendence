@@ -1,14 +1,14 @@
 import styles from './UserBox.module.css'
-import User from './User'
+import UserComponent from './UserComponent'
 import { useAppSelector } from '../../../store/types'
-import { UserData } from '../../../types/UserData'
 import { RootState } from '../../../store'
 import { useState } from 'react'
 import { Socket } from 'socket.io-client'
+import { UserData, User as UserType } from '../../../types/UserData'
 
 interface UserBoxProps {
     socket: Socket | undefined
-    users: any[]
+    users: UserType[]
     blockedUsers: number[]
     admins: any[]
     owner: any
@@ -40,13 +40,10 @@ const UserBox = (props: UserBoxProps) => {
             <h2> online </h2>
             {props.users.map((user) =>
                 user.status !== 'offline' ? (
-                    <User
+                    <UserComponent
                         socket={props.socket}
                         key={user.id}
-                        id={user.id}
-                        nickname={user.nickname}
-                        avatarUrl={user.avatarUrl}
-                        status={user.status}
+                        user={user}
                         amIowner={props.owner.id === userData.user.id}
                         amIadmin={props.admins.some(
                             (admin) => admin.id === userData.user.id
@@ -72,13 +69,10 @@ const UserBox = (props: UserBoxProps) => {
             <h2> offline </h2>
             {props.users.map((user) =>
                 user.status === 'offline' ? (
-                    <User
+                    <UserComponent
                         socket={props.socket}
                         key={user.id}
-                        id={user.id}
-                        nickname={user.nickname}
-                        avatarUrl={user.avatarUrl}
-                        status={user.status}
+                        user={user}
                         amIowner={props.owner.id === userData.user.id}
                         amIadmin={props.admins.some(
                             (admin) => admin.id === userData.user.id
@@ -103,13 +97,10 @@ const UserBox = (props: UserBoxProps) => {
             )}
             <h2> banned </h2>
             {props.bannedUsers.map((banUser) => (
-                <User
+                <UserComponent
                     socket={props.socket}
                     key={banUser.id}
-                    id={banUser.id}
-                    nickname={banUser.nickname}
-                    avatarUrl={banUser.avatarUrl}
-                    status={banUser.status}
+                    user={banUser}
                     amIowner={props.owner.id === userData.user.id}
                     amIadmin={props.admins.some(
                         (admin) => admin.id === userData.user.id

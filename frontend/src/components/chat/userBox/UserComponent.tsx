@@ -4,19 +4,16 @@ import IconInviteToPlay from '../../../assets/icon/invite_to_play.svg'
 import IconBlocked from '../../../assets/icon/block_user.svg'
 import { useState } from 'react'
 import { useAppSelector } from '../../../store/types'
-import { UserData } from '../../../types/UserData'
+import { User, UserData } from '../../../types/UserData'
 import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Socket } from 'socket.io-client'
 import { useAppDispatch } from '../../../store/types'
 import { chatActions } from '../../../store/chat'
 
-export interface UserProps {
+export interface UserComponentProps {
     socket: Socket | undefined
-    id: number
-    nickname: string
-    avatarUrl: string
-    status: string
+    user: User
     amIowner: boolean
     amIadmin: boolean
     isOwner: boolean
@@ -30,12 +27,9 @@ export interface UserProps {
     openMenus: number
 }
 
-const User = ({
+const UserComponent = ({
     socket,
-    id,
-    nickname,
-    avatarUrl,
-    status,
+    user,
     amIowner,
     amIadmin,
     isOwner,
@@ -47,7 +41,7 @@ const User = ({
     handleOpenMenu,
     handleCloseMenu,
     openMenus,
-}: UserProps) => {
+}: UserComponentProps) => {
     const userData = useAppSelector((state) => state.user.userData) as UserData
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
@@ -93,7 +87,7 @@ const User = ({
     }
 
     const renderInviteToPlay = (playerId: number): JSX.Element | null => {
-        if (status === 'online') {
+        if (user.status === 'online') {
             return (
                 <img
                     src={IconInviteToPlay}
@@ -125,7 +119,7 @@ const User = ({
 
     const blockUser = () => {
         if (socket !== undefined) {
-            socket.emit('blockUser', userData.user.id, id, () => {
+            socket.emit('blockUser', userData.user.id, user.id, () => {
                 if (currentChatSelectedType === 'direct') {
                     dispatch(
                         chatActions.updateChat({
@@ -140,7 +134,7 @@ const User = ({
 
     const unblockUser = () => {
         if (socket !== undefined) {
-            socket.emit('unblockUser', userData.user.id, id, () => {})
+            socket.emit('unblockUser', userData.user.id, user.id, () => {})
         }
     }
 
@@ -149,7 +143,7 @@ const User = ({
             socket.emit(
                 'setAdmin',
                 userData.user.id,
-                id,
+                user.id,
                 currentChatSelected,
                 () => {}
             )
@@ -161,7 +155,7 @@ const User = ({
             socket.emit(
                 'unsetAdmin',
                 userData.user.id,
-                id,
+                user.id,
                 currentChatSelected,
                 () => {}
             )
@@ -173,7 +167,7 @@ const User = ({
             socket.emit(
                 'kickUser',
                 userData.user.id,
-                id,
+                user.id,
                 currentChatSelected,
                 () => {}
             )
@@ -185,7 +179,7 @@ const User = ({
             socket.emit(
                 'banUser',
                 userData.user.id,
-                id,
+                user.id,
                 currentChatSelected,
                 () => {}
             )
@@ -197,7 +191,7 @@ const User = ({
             socket.emit(
                 'unbanUser',
                 userData.user.id,
-                id,
+                user.id,
                 currentChatSelected,
                 () => {}
             )
@@ -209,7 +203,7 @@ const User = ({
             socket.emit(
                 'muteUser',
                 userData.user.id,
-                id,
+                user.id,
                 currentChatSelected,
                 () => {}
             )
@@ -218,7 +212,7 @@ const User = ({
 
     const createDM = () => {
         if (socket !== undefined) {
-            socket.emit('createDM', userData.user.id, id, (response: any) => {
+            socket.emit('createDM', userData.user.id, user.id, (response: any) => {
                 if (response) {
                     setTimeout(() => {
                         dispatch(
@@ -239,7 +233,7 @@ const User = ({
     }
 
     let toggleBlockUser: JSX.Element | null = null
-    if (id !== userData.user.id) {
+    if (user.id !== userData.user.id) {
         toggleBlockUser = isBlocked ? (
             <li onClick={unblockUser}>Unblock</li>
         ) : (
@@ -273,7 +267,7 @@ const User = ({
         <div className={styles.container}>
             <div className={styles.left}>
                 <img
-                    src={isBlocked ? IconBlocked : avatarUrl}
+                    src={isBlocked ? IconBlocked : user.avatarUrl}
                     alt="Avatar"
                     className={
                         isOwner
@@ -283,10 +277,10 @@ const User = ({
                             : `${styles.profilePicture} ${styles.user}`
                     }
                     onClick={() =>
-                        (window.location.href = `http://localhost:4040/user/${nickname}`)
+                        (window.location.href = `http://localhost:4040/user/${user.nickname}`)
                     }
                     onContextMenu={
-                        id !== userData.user.id ? handleContextMenu : undefined
+                        user.id !== userData.user.id ? handleContextMenu : undefined
                     }
                 />
 
@@ -346,15 +340,15 @@ const User = ({
                     </div>
                 )}
                 <div>
-                    <h5>{nickname}</h5>
+                    <h5>{user.nickname}</h5>
                     <p className={styles.status}>
-                        {status === 'playing' ? 'playing' : ''}
+                        {user.status === 'playing' ? 'playing' : ''}
                     </p>
                 </div>
             </div>
-            {id != userData.user.id && !isBlocked && (
+            {user.id != userData.user.id && !isBlocked && (
                 <div className={styles.right}>
-                    <div>{renderInviteToPlay(id)}</div>
+                    <div>{renderInviteToPlay(user.id)}</div>
                     <div>
                         {!isDM && (
                             <img
@@ -370,4 +364,4 @@ const User = ({
     )
 }
 
-export default User
+export default UserComponent
