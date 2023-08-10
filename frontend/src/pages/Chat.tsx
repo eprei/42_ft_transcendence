@@ -3,7 +3,6 @@ import ChannelBox from '../components/chat/channelBox/ChannelBox.tsx'
 import ChatBox from '../components/chat/chatBox/ChatBox'
 import UserBox from '../components/chat/userBox/UserBox.tsx'
 import { useEffect, useState } from 'react'
-import { CreateChannel } from '../types/CreateChannel'
 import { useAppDispatch, useAppSelector } from '../store/types'
 import { chatActions } from '../store/chat'
 import { UserData } from '../types/UserData'
@@ -183,18 +182,7 @@ const Chat = () => {
 
     // CHANNEL HANDLING
 
-    const createNewChannel = (channel: CreateChannel) => {
-        if (socket !== undefined) {
-            socket.emit('createNewChannel', channel, (channelId: number) => {
-                dispatch(
-                    chatActions.updateChat({
-                        currentChatSelected: channelId,
-                        type: channel.type,
-                    })
-                )
-            })
-        }
-    }
+    
 
     const getAllChannels = () => {
         if (socket !== undefined) {
@@ -217,9 +205,7 @@ const Chat = () => {
         }
     }
 
-    const handleCreation = (channel: CreateChannel) => {
-        if (socket !== undefined) createNewChannel(channel)
-    }
+  
 
     const createDM = (targetUserId: number) => {
         if (socket !== undefined) {
@@ -453,7 +439,7 @@ const Chat = () => {
             <div className={styles.chatContainer}>
                 <ChannelBox
                     allChan={allChan}
-                    handleCreation={handleCreation}
+                    socket={socket}
                     deleteChannel={deleteChannel}
                     leaveChannel={leaveChannel}
                     joinChannel={joinChannel}
