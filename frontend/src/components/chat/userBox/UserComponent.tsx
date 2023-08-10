@@ -357,10 +357,10 @@ const UserComponent = ({
                         {user.status === 'playing' ? 'playing' : ''}
                     </p>
                 </div>
-            </div>
-            {!isBlocked && (
+                </div>
+            { !isBlocked && (
                 <div className={styles.right}>
-                    <div>{renderInviteToPlay(user.id)}</div>
+                    <div>{user.id != userData.user.id && (renderInviteToPlay(user.id))}</div>
                     <div>
                         {user.id != userData.user.id && !isDM && (
                             <img
