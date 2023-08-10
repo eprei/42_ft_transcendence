@@ -54,6 +54,9 @@ create_the_environment_file () {
 	# NestJS
 	DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_NAME}
 	PORT=3000
+
+	# my hostname
+	HOSTNAME=$(hostname)
 	environment_file
 
 }
