@@ -11,9 +11,23 @@ import { Frame } from './entities/pong.entity'
 import { Socket, Server } from 'socket.io'
 import { Logger } from '@nestjs/common'
 import { UserService } from 'src/user/user.service'
+import * as passport from 'passport'
+import sessionMiddleware from '../sessions'
+import { subscribe } from 'diagnostics_channel'
+import { User } from 'src/typeorm/user.entity'
+import { IncomingMessage } from 'http'
+
+const wrap = (middleware: any) => (socket: Socket, next: (err?: any) => void) =>
+    middleware(socket.request, {}, next)
+
+interface CustomSocket extends Socket {
+    request: IncomingMessage & {
+        user?: User
+    }
+}
 
 const FPS: number = 80
-@WebSocketGateway({ namespace: 'game', cors: { origin: '*' } })
+@WebSocketGateway({ path: '/pongws/', namespace: 'game' })
 export class PongGateway
     implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
@@ -27,27 +41,34 @@ export class PongGateway
     @WebSocketServer()
     server: Server
 
-    afterInit(server: any) {
-        this.loger.log('Game server is initialized')
+    afterInit(server: Server) {
+        server.use(wrap(sessionMiddleware))
+        server.use(wrap(passport.initialize()))
+        server.use(wrap(passport.session()))
+        server.use((client: any, next) => {
+            if (!client.request.isAuthenticated() || !client.request.user) {
+                next(new Error('unauthorized'))
+            } else {
+                console.log('authorized')
+                next()
+            }
+        })
     }
 
-    handleConnection(client: Socket, ...args: any[]) {
-        const requestOrigin = client.handshake.headers.origin
-        if (requestOrigin !== `${process.env.URL_FRONTEND}`) {
-            client.disconnect()
-            return
+    handleConnection(client: CustomSocket, ...args: any[]) {
+        if (!client.request.user) {
+            throw new Error('No user')
         }
         this.loger.log(`Client socket connected: ${client.id}`)
     }
 
     handleDisconnect(client: Socket) {
         this.loger.log(`Client socket disconnected: ${client.id}`)
-        // TODO: Handle cleanup when a client disconnects. Leave the room, etc.
-        // disconnect == leave room ???
     }
 
     @SubscribeMessage('createRoom')
-    handleCreateRoom(client: Socket, roomId: string) {
+    handleCreateRoom(client: CustomSocket, roomId: string) {
+        console.log(client.request.user)
         client.join(roomId)
         this.pongServices[roomId] = new PongService()
         this.waitingForSecondPlayer[roomId] = true
