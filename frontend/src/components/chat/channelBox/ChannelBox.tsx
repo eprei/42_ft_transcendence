@@ -7,10 +7,6 @@ import { Socket } from 'socket.io-client'
 interface ChannelBoxProps {
     allChan: Channel[]
     socket: Socket | undefined
-    deleteChannel: (channelId: number) => void
-    leaveChannel: (channelId: number) => void
-    joinChannel: (channelId: number, password: string) => void
-    changePassword: (channelId: number, password: string) => void
 }
 
 const ChannelBox = (props: ChannelBoxProps) => {
@@ -19,10 +15,7 @@ const ChannelBox = (props: ChannelBoxProps) => {
             <CreateNewCh socket={props.socket} />
             <ChannelList
                 allChan={props.allChan}
-                deleteChannel={props.deleteChannel}
-                leaveChannel={props.leaveChannel}
-                joinChannel={props.joinChannel}
-                changePassword={props.changePassword}
+                socket={props.socket}
             ></ChannelList>
         </div>
     )

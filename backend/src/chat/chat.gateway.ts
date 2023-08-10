@@ -253,7 +253,7 @@ export class ChatGateway
                 userId,
                 password
             )
-            this.server.emit('reloadUsers', {})
+            this.server.emit('reload', {})
             return channel
         } catch (error) {
             console.log('Failed to join Channel')

@@ -182,8 +182,6 @@ const Chat = () => {
 
     // CHANNEL HANDLING
 
-    
-
     const getAllChannels = () => {
         if (socket !== undefined) {
             socket.emit('getAllChannels', (response: any) => {
@@ -205,8 +203,6 @@ const Chat = () => {
         }
     }
 
-  
-
     const createDM = (targetUserId: number) => {
         if (socket !== undefined) {
             socket.emit(
@@ -225,58 +221,6 @@ const Chat = () => {
                             )
                         }, 600)
                     }
-                }
-            )
-        }
-    }
-
-    const leaveChannel = (channelId: number) => {
-        if (socket !== undefined) {
-            socket.emit('leaveChannel', channelId, userData.user.id, () => {
-                dispatch(
-                    chatActions.updateChat({ currentChatSelected: 0, type: '' })
-                )
-            })
-        }
-    }
-    const deleteChannel = (channelId: number) => {
-        if (socket !== undefined) {
-            socket.emit('deleteChannel', channelId, userData.user.id, () => {
-                dispatch(
-                    chatActions.updateChat({ currentChatSelected: 0, type: '' })
-                )
-            })
-        }
-    }
-
-    const joinChannel = (channelId: number, password: string) => {
-        if (socket !== undefined) {
-            socket.emit(
-                'joinChannel',
-                channelId,
-                userData.user.id,
-                password,
-                () => {
-                    setReloadChannels(true)
-                    dispatch(
-                        chatActions.updateChat({
-                            currentChatSelected: channelId,
-                            type: '',
-                        })
-                    )
-                }
-            )
-        }
-    }
-    const changePassword = (channelId: number, password: string) => {
-        if (socket !== undefined) {
-            socket.emit(
-                'changePassword',
-                channelId,
-                password,
-                (response: boolean) => {
-                    if (!response)
-                        alert('Could not change password, please try again')
                 }
             )
         }
@@ -437,14 +381,7 @@ const Chat = () => {
         <div>
             <InvitationHandler />
             <div className={styles.chatContainer}>
-                <ChannelBox
-                    allChan={allChan}
-                    socket={socket}
-                    deleteChannel={deleteChannel}
-                    leaveChannel={leaveChannel}
-                    joinChannel={joinChannel}
-                    changePassword={changePassword}
-                />
+                <ChannelBox allChan={allChan} socket={socket} />
                 <ChatBox
                     currentChatSelected={currentChatSelected}
                     messages={messages}

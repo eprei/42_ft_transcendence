@@ -43,7 +43,6 @@ const UserInformation = () => {
             setTimeout(() => {
                 setShouldReloadUserData(false)
             }, 300)
-            
         }
     }, [shouldReloadUserData, userData])
 

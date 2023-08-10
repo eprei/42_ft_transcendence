@@ -7,7 +7,6 @@ import { Socket } from 'socket.io-client'
 import { useAppDispatch } from '../../../store/types'
 import { chatActions } from '../../../store/chat'
 
-
 interface CreateNewChProps {
     socket: Socket | undefined
 }

@@ -6,16 +6,17 @@ import JoinedDisplay from './joinedChannels/JoinedDisplay'
 import styles from './ChannelList.module.css'
 import { useAppSelector } from '../../../store/types'
 import { User, UserData } from '../../../types/UserData'
+import { Socket } from 'socket.io-client'
+import { useAppDispatch } from '../../../store/types'
+import { chatActions } from '../../../store/chat'
 
 interface ChannelListProps {
     allChan: Channel[] | []
-    deleteChannel: (channelId: number) => void
-    leaveChannel: (channelId: number) => void
-    joinChannel: (channelId: number, password: string) => void
-    changePassword: (channelId: number, password: string) => void
+    socket: Socket | undefined
 }
 
 const ChannelList = (props: ChannelListProps) => {
+    const dispatch = useAppDispatch()
     const userData = useAppSelector((state) => state.user.userData) as UserData
     let allUserChan: Channel[] | [] = []
     let myDms: Channel[] | [] = []
@@ -58,7 +59,73 @@ const ChannelList = (props: ChannelListProps) => {
         )
     }
 
-  
+    const leaveChannel = (channelId: number) => {
+        if (props.socket !== undefined) {
+            props.socket.emit(
+                'leaveChannel',
+                channelId,
+                userData.user.id,
+                () => {
+                    dispatch(
+                        chatActions.updateChat({
+                            currentChatSelected: 0,
+                            type: '',
+                        })
+                    )
+                }
+            )
+        }
+    }
+    const deleteChannel = (channelId: number) => {
+        if (props.socket !== undefined) {
+            props.socket.emit(
+                'deleteChannel',
+                channelId,
+                userData.user.id,
+                () => {
+                    dispatch(
+                        chatActions.updateChat({
+                            currentChatSelected: 0,
+                            type: '',
+                        })
+                    )
+                }
+            )
+        }
+    }
+
+    const joinChannel = (channelId: number, password: string) => {
+        if (props.socket !== undefined) {
+            props.socket.emit(
+                'joinChannel',
+                channelId,
+                userData.user.id,
+                password,
+                () => {
+                    dispatch(
+                        chatActions.updateChat({
+                            currentChatSelected: channelId,
+                            type: '',
+                        })
+                    )
+                }
+            )
+        }
+    }
+
+    const changePassword = (channelId: number, password: string) => {
+        if (props.socket !== undefined) {
+            props.socket.emit(
+                'changePassword',
+                channelId,
+                password,
+                (response: boolean) => {
+                    if (!response)
+                        alert('Could not change password, please try again')
+                }
+            )
+        }
+    }
 
     return (
         <div className={styles.listsContainer}>
@@ -66,24 +133,24 @@ const ChannelList = (props: ChannelListProps) => {
                 <h2> Joined Channels </h2>
                 <JoinedDisplay
                     channels={joinedButNotDms}
-                    deleteChannel={props.deleteChannel}
-                    leaveChannel={props.leaveChannel}
-                    changePassword={props.changePassword}
+                    deleteChannel={deleteChannel}
+                    leaveChannel={leaveChannel}
+                    changePassword={changePassword}
                 ></JoinedDisplay>
             </div>
             <div className={styles.list}>
                 <h2> Discover </h2>
                 <DiscoverDisplay
                     channels={notJoinedAndNotDms}
-                    joinChannel={props.joinChannel}
+                    joinChannel={joinChannel}
                 ></DiscoverDisplay>
             </div>
             <div className={styles.list}>
                 <h2> DM </h2>
                 <DmDisplay
                     channels={myDms}
-                    deleteChannel={props.deleteChannel}
-                    leaveChannel={props.leaveChannel}
+                    deleteChannel={deleteChannel}
+                    leaveChannel={leaveChannel}
                 ></DmDisplay>
             </div>
         </div>
