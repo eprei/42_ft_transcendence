@@ -20,12 +20,24 @@ export class Auth42Strategy extends PassportStrategy(Strategy, 'oauth') {
     }
 
     async validate(accessToken: string): Promise<any> {
-        const user = await this.getUserProfile(accessToken)
-        if (!user) {
-            throw new UnauthorizedException()
+        try {
+            const user = await this.getUserProfile(accessToken)
+            if (!user) {
+                throw new UnauthorizedException()
+            }
+            const new_user = await this.authService.validateUser(user)
+            return new_user
+        } catch (error) {
+            if (
+                error.response &&
+                error.response.status === 'already_connected'
+            ) {
+                return {
+                    redirect: `${process.env.URL_FRONTEND}?error=already_connected`,
+                }
+            }
+            throw error
         }
-        const new_user = await this.authService.validateUser(user)
-        return new_user
     }
 
     private async getUserProfile(accessToken: string) {
