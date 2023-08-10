@@ -351,11 +351,11 @@ const UserComponent = ({
                     </p>
                 </div>
             </div>
-            {user.id != userData.user.id && !isBlocked && (
+            {!isBlocked && (
                 <div className={styles.right}>
                     <div>{renderInviteToPlay(user.id)}</div>
                     <div>
-                        {!isDM && (
+                        {user.id != userData.user.id && !isDM && (
                             <img
                                 src={IconMsg}
                                 onClick={createDM}

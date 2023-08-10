@@ -6,9 +6,10 @@ import { NewMsg } from '../../../pages/Chat'
 
 interface ChatFeedProps {
     sendMessage: (NewMsg: NewMsg) => void
+    amImuted: boolean
 }
 
-const SendForm = ({ sendMessage }: ChatFeedProps) => {
+const SendForm = ({ sendMessage, amImuted }: ChatFeedProps) => {
     const userData = useAppSelector((state) => state.user.userData) as UserData
     const currentChatSelected = useAppSelector(
         (state) => state.chat.currentChatSelected
@@ -16,12 +17,14 @@ const SendForm = ({ sendMessage }: ChatFeedProps) => {
     const [inputText, setInputText] = useState('')
 
     const handleCreation = (text: string) => {
-        const newMsg = {
-            creator: userData.user.id,
-            content: text,
-            channelId: currentChatSelected,
+        if (amImuted) {
+            const newMsg = {
+                creator: userData.user.id,
+                content: text,
+                channelId: currentChatSelected,
+            }
+            sendMessage(newMsg)
         }
-        sendMessage(newMsg)
         setInputText('')
     }
 

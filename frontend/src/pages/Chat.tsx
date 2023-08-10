@@ -267,9 +267,7 @@ const Chat = () => {
                     currentChatSelected={currentChatSelected}
                     messages={messages}
                     sendMessage={sendMessage}
-                    amImuted={mutedUsers.some(
-                        (user: any) => user.id === userData.user.id
-                    )}
+                    amImuted={mutedUsers.includes(userData.user.id)}
                     blockedUsers={blockedUsers}
                 />
                 <UserBox
