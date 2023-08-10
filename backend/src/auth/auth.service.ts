@@ -24,7 +24,11 @@ export class AuthService {
                 avatarUrl: user42.avatarUrl,
                 status: UserStatus.Online,
             })
-        } else {
+        }
+        else if ( user.status !== UserStatus.Offline)  {
+            return false
+        } 
+        else {
             await this.userService.changeStatusOnLine(user.id)
         }
         return user
