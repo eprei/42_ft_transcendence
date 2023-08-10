@@ -174,7 +174,7 @@ const Chat = () => {
     }
 
     const sendMessage = (newMsg: NewMsg) => {
-        if (socket !== undefined) socket.emit('postMsg', newMsg, () => {})
+        if (socket !== undefined) socket.emit('postMsg', newMsg, () => { })
     }
 
     // CHANNEL HANDLING
@@ -251,9 +251,8 @@ const Chat = () => {
                 'getMutedUsers',
                 currentChatSelected,
                 (response: number[]) => {
-                    setTimeout(() => {
-                        setMutedUsers(response)
-                    }, 300)
+                    console.log(`Muted users: ${response}`);
+                    setMutedUsers(response)
                 }
             )
         }

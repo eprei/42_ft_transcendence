@@ -53,6 +53,10 @@ const UserComponent = ({
         (state) => state.chat.currentChatSelected
     ) as number
 
+    if (isBanned && user.id === userData.user.id) {
+        dispatch(chatActions.updateChat({ currentChatSelected: 0, type: '' }))
+    }
+
     const createRoom = async (player_two: number) => {
         try {
             const response = await fetch('http://localhost:8080/api/room', {
