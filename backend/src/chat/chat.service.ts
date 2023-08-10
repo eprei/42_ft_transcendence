@@ -325,7 +325,7 @@ export class ChatService {
             chUserMuted.user = userToMute
             chUserMuted.channel = channel
             this.channelUserMutedRepository.create(chUserMuted)
-            this.channelUserMutedRepository.save(chUserMuted)
+            await this.channelUserMutedRepository.save(chUserMuted)
         } else throw new UnauthorizedException()
     }
 
@@ -476,10 +476,10 @@ export class ChatService {
                 createChannelDto.type = 'direct'
                 createChannelDto.name = user.nickname + ' & ' + target.nickname
                 createChannelDto.password = ''
-                const channelCreated = await this.channelRepository.create(
+                const channelCreated = this.channelRepository.create(
                     createChannelDto
                 )
-                return this.channelRepository.save(channelCreated)
+                return await this.channelRepository.save(channelCreated)
             }
         }
     }
