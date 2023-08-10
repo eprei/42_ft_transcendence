@@ -38,8 +38,8 @@ services:
             - PORT=${PORT}
             - FT_UUID=${PROD_FT_UUID}
             - FT_SECRET=${PROD_FT_SECRET}
-            - URL_BACKEND=http://localhost
-            - URL_FRONTEND=http://localhost
+            - URL_BACKEND=http://${HOSTNAME}
+            - URL_FRONTEND=http://${HOSTNAME}
         depends_on:
             - postgres
         networks:
