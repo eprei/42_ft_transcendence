@@ -33,6 +33,7 @@ services:
         working_dir: /app
         volumes:
             - ./backend:/app
+            - prod-images:/app/profile-images
         environment:
             - DATABASE_URL=${DATABASE_URL}
             - PORT=${PORT}
@@ -49,6 +50,8 @@ services:
 volumes:
     prod-data:
       name: our-prod-volume
+    prod-images:
+      name: our-prod-images
 
 networks:
     prod-appnet:
