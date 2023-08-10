@@ -9,7 +9,7 @@ interface ChatFeedProps {
     amImuted: boolean
 }
 
-const SendForm = ({ sendMessage, amImuted }: ChatFeedProps) => {
+const SendForm = ({ sendMessage }: ChatFeedProps) => {
     const userData = useAppSelector((state) => state.user.userData) as UserData
     const currentChatSelected = useAppSelector(
         (state) => state.chat.currentChatSelected
@@ -17,14 +17,12 @@ const SendForm = ({ sendMessage, amImuted }: ChatFeedProps) => {
     const [inputText, setInputText] = useState('')
 
     const handleCreation = (text: string) => {
-        if (amImuted) {
-            const newMsg = {
-                creator: userData.user.id,
-                content: text,
-                channelId: currentChatSelected,
-            }
-            sendMessage(newMsg)
+        const newMsg = {
+            creator: userData.user.id,
+            content: text,
+            channelId: currentChatSelected,
         }
+        sendMessage(newMsg)
         setInputText('')
     }
 

@@ -139,7 +139,7 @@ const UserComponent = ({
 
     const unblockUser = () => {
         if (socket !== undefined) {
-            socket.emit('unblockUser', userData.user.id, user.id, () => { })
+            socket.emit('unblockUser', userData.user.id, user.id, () => {})
         }
     }
 
@@ -150,7 +150,7 @@ const UserComponent = ({
                 userData.user.id,
                 user.id,
                 currentChatSelected,
-                () => { }
+                () => {}
             )
         }
     }
@@ -162,7 +162,7 @@ const UserComponent = ({
                 userData.user.id,
                 user.id,
                 currentChatSelected,
-                () => { }
+                () => {}
             )
         }
     }
@@ -174,7 +174,7 @@ const UserComponent = ({
                 userData.user.id,
                 user.id,
                 currentChatSelected,
-                () => { }
+                () => {}
             )
         }
     }
@@ -186,7 +186,7 @@ const UserComponent = ({
                 userData.user.id,
                 user.id,
                 currentChatSelected,
-                () => { }
+                () => {}
             )
         }
     }
@@ -198,7 +198,7 @@ const UserComponent = ({
                 userData.user.id,
                 user.id,
                 currentChatSelected,
-                () => { }
+                () => {}
             )
         }
     }
@@ -210,25 +210,30 @@ const UserComponent = ({
                 userData.user.id,
                 user.id,
                 currentChatSelected,
-                () => { }
+                () => {}
             )
         }
     }
 
     const createDM = () => {
         if (socket !== undefined) {
-            socket.emit('createDM', userData.user.id, user.id, (response: any) => {
-                if (response) {
-                    setTimeout(() => {
-                        dispatch(
-                            chatActions.updateChat({
-                                currentChatSelected: response.id,
-                                type: 'direct',
-                            })
-                        )
-                    }, 600)
+            socket.emit(
+                'createDM',
+                userData.user.id,
+                user.id,
+                (response: any) => {
+                    if (response) {
+                        setTimeout(() => {
+                            dispatch(
+                                chatActions.updateChat({
+                                    currentChatSelected: response.id,
+                                    type: 'direct',
+                                })
+                            )
+                        }, 600)
+                    }
                 }
-            })
+            )
         }
     }
 
@@ -278,14 +283,16 @@ const UserComponent = ({
                         isOwner
                             ? `${styles.profilePicture} ${styles.owner}`
                             : isAdmin
-                                ? `${styles.profilePicture} ${styles.admin}`
-                                : `${styles.profilePicture} ${styles.user}`
+                            ? `${styles.profilePicture} ${styles.admin}`
+                            : `${styles.profilePicture} ${styles.user}`
                     }
                     onClick={() =>
                         (window.location.href = `http://localhost:4040/user/${user.nickname}`)
                     }
                     onContextMenu={
-                        user.id !== userData.user.id ? handleContextMenu : undefined
+                        user.id !== userData.user.id
+                            ? handleContextMenu
+                            : undefined
                     }
                 />
 
@@ -364,12 +371,7 @@ const UserComponent = ({
                         )}
                     </div>
                     <div>
-                        {isMuted && (
-                            <img
-                                src={MuteIcone}
-                                alt="Mute Icon"
-                            />
-                        )}
+                        {isMuted && <img src={MuteIcone} alt="Mute Icon" />}
                     </div>
                 </div>
             )}
