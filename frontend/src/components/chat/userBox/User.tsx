@@ -7,8 +7,12 @@ import { useAppSelector } from '../../../store/types'
 import { UserData } from '../../../types/UserData'
 import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Socket } from 'socket.io-client'
+import { useAppDispatch } from '../../../store/types'
+import { chatActions } from '../../../store/chat'
 
 export interface UserProps {
+    socket: Socket | undefined
     id: number
     nickname: string
     avatarUrl: string
@@ -20,15 +24,6 @@ export interface UserProps {
     isBlocked: boolean
     isBanned: boolean
     isMuted: boolean
-    createDM: (otherUserId: number) => void
-    blockUser: (otherUserId: number) => void
-    unblockUser: (otherUserId: number) => void
-    setAdmin: (targetUserId: number) => void
-    unsetAdmin: (targetUserId: number) => void
-    kickUser: (targetUserId: number) => void
-    banUser: (targetUserId: number) => void
-    unbanUser: (targetUserId: number) => void
-    muteUser: (targetUserId: number) => void
     isDM: boolean
     handleOpenMenu: () => void
     handleCloseMenu: () => void
@@ -36,6 +31,7 @@ export interface UserProps {
 }
 
 const User = ({
+    socket,
     id,
     nickname,
     avatarUrl,
@@ -47,23 +43,20 @@ const User = ({
     isBlocked,
     isBanned,
     isMuted,
-    createDM,
-    blockUser,
-    unblockUser,
-    setAdmin,
-    unsetAdmin,
-    kickUser,
-    banUser,
-    unbanUser,
-    muteUser,
     isDM,
     handleOpenMenu,
     handleCloseMenu,
     openMenus,
 }: UserProps) => {
     const userData = useAppSelector((state) => state.user.userData) as UserData
-    const myId = userData.user.id
     const navigate = useNavigate()
+    const dispatch = useAppDispatch()
+    const currentChatSelectedType = useAppSelector(
+        (state) => state.chat.type
+    ) as string
+    const currentChatSelected = useAppSelector(
+        (state) => state.chat.currentChatSelected
+    ) as number
 
     const createRoom = async (player_two: number) => {
         try {
@@ -130,54 +123,128 @@ const User = ({
         }
     }
 
+    const blockUser = () => {
+        if (socket !== undefined) {
+            socket.emit('blockUser', userData.user.id, id, () => {
+                if (currentChatSelectedType === 'direct') {
+                    dispatch(
+                        chatActions.updateChat({
+                            currentChatSelected: 0,
+                            type: '',
+                        })
+                    )
+                }
+            })
+        }
+    }
+
+    const unblockUser = () => {
+        if (socket !== undefined) {
+            socket.emit('unblockUser', userData.user.id, id, () => {})
+        }
+    }
+
+    const setAdmin = () => {
+        if (socket !== undefined) {
+            socket.emit(
+                'setAdmin',
+                userData.user.id,
+                id,
+                currentChatSelected,
+                () => {}
+            )
+        }
+    }
+
+    const unsetAdmin = () => {
+        if (socket !== undefined) {
+            socket.emit(
+                'unsetAdmin',
+                userData.user.id,
+                id,
+                currentChatSelected,
+                () => {}
+            )
+        }
+    }
+
+    const kickUser = () => {
+        if (socket !== undefined) {
+            socket.emit(
+                'kickUser',
+                userData.user.id,
+                id,
+                currentChatSelected,
+                () => {}
+            )
+        }
+    }
+
+    const banUser = () => {
+        if (socket !== undefined) {
+            socket.emit(
+                'banUser',
+                userData.user.id,
+                id,
+                currentChatSelected,
+                () => {}
+            )
+        }
+    }
+
+    const unbanUser = () => {
+        if (socket !== undefined) {
+            socket.emit(
+                'unbanUser',
+                userData.user.id,
+                id,
+                currentChatSelected,
+                () => {}
+            )
+        }
+    }
+
+    const muteUser = () => {
+        if (socket !== undefined) {
+            socket.emit(
+                'muteUser',
+                userData.user.id,
+                id,
+                currentChatSelected,
+                () => {}
+            )
+        }
+    }
+
+    const createDM = () => {
+        if (socket !== undefined) {
+            socket.emit('createDM', userData.user.id, id, (response: any) => {
+                if (response) {
+                    setTimeout(() => {
+                        dispatch(
+                            chatActions.updateChat({
+                                currentChatSelected: response.id,
+                                type: 'direct',
+                            })
+                        )
+                    }, 600)
+                }
+            })
+        }
+    }
+
     const handleContextMenuClose = () => {
         handleCloseMenu()
         setShowContextMenu(false)
     }
 
-    const blockUserHandler = () => {
-        blockUser(id)
-    }
-
-    const unblockUserHandler = () => {
-        unblockUser(id)
-    }
-
     let toggleBlockUser: JSX.Element | null = null
-    if (id !== myId) {
+    if (id !== userData.user.id) {
         toggleBlockUser = isBlocked ? (
-            <li onClick={unblockUserHandler}>Unblock</li>
+            <li onClick={unblockUser}>Unblock</li>
         ) : (
-            <li onClick={blockUserHandler}>Block</li>
+            <li onClick={blockUser}>Block</li>
         )
-    }
-
-    const createDmHandler = () => {
-        createDM(id)
-    }
-
-    const setAdminHandler = () => {
-        setAdmin(id)
-    }
-
-    const unsetAdminHandler = () => {
-        unsetAdmin(id)
-    }
-
-    const kickUserHandler = () => {
-        kickUser(id)
-    }
-
-    const banUserHandler = () => {
-        banUser(id)
-    }
-
-    const unbanUserHandler = () => {
-        unbanUser(id)
-    }
-
-    const muteUserHandler = () => {
-        muteUser(id)
     }
 
     const contextMenuRef = useRef<HTMLDivElement>(null)
@@ -218,7 +285,9 @@ const User = ({
                     onClick={() =>
                         (window.location.href = `http://localhost:4040/user/${nickname}`)
                     }
-                    onContextMenu={id !== myId ? handleContextMenu : undefined}
+                    onContextMenu={
+                        id !== userData.user.id ? handleContextMenu : undefined
+                    }
                 />
 
                 {showContextMenu && (
@@ -236,27 +305,23 @@ const User = ({
                             {amIowner ? (
                                 <ul>
                                     {isAdmin ? (
-                                        <li onClick={unsetAdminHandler}>
+                                        <li onClick={unsetAdmin}>
                                             Remove admin
                                         </li>
                                     ) : (
-                                        <li onClick={setAdminHandler}>
-                                            Set admin
-                                        </li>
+                                        <li onClick={setAdmin}>Set admin</li>
                                     )}
                                     {!isBanned && !isDM && (
-                                        <li onClick={kickUserHandler}>Kick</li>
+                                        <li onClick={kickUser}>Kick</li>
                                     )}
                                     {isBanned && !isDM && (
-                                        <li onClick={unbanUserHandler}>
-                                            Unban
-                                        </li>
+                                        <li onClick={unbanUser}>Unban</li>
                                     )}
                                     {!isBanned && !isDM && (
-                                        <li onClick={banUserHandler}>Ban</li>
+                                        <li onClick={banUser}>Ban</li>
                                     )}
                                     {!isMuted && (
-                                        <li onClick={muteUserHandler}>Mute</li>
+                                        <li onClick={muteUser}>Mute</li>
                                     )}
                                 </ul>
                             ) : (
@@ -264,23 +329,15 @@ const User = ({
                                 !isOwner && (
                                     <ul>
                                         {!isBanned && (
-                                            <li onClick={kickUserHandler}>
-                                                Kick
-                                            </li>
+                                            <li onClick={kickUser}>Kick</li>
                                         )}
                                         {isBanned ? (
-                                            <li onClick={unbanUserHandler}>
-                                                Unban
-                                            </li>
+                                            <li onClick={unbanUser}>Unban</li>
                                         ) : (
-                                            <li onClick={banUserHandler}>
-                                                Ban
-                                            </li>
+                                            <li onClick={banUser}>Ban</li>
                                         )}
                                         {!isMuted && (
-                                            <li onClick={muteUserHandler}>
-                                                Mute
-                                            </li>
+                                            <li onClick={muteUser}>Mute</li>
                                         )}
                                     </ul>
                                 )
@@ -295,14 +352,14 @@ const User = ({
                     </p>
                 </div>
             </div>
-            {id != myId && !isBlocked && (
+            {id != userData.user.id && !isBlocked && (
                 <div className={styles.right}>
                     <div>{renderInviteToPlay(id)}</div>
                     <div>
                         {!isDM && (
                             <img
                                 src={IconMsg}
-                                onClick={createDmHandler}
+                                onClick={createDM}
                                 alt="Message Icon"
                             />
                         )}

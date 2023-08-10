@@ -4,23 +4,16 @@ import { useAppSelector } from '../../../store/types'
 import { UserData } from '../../../types/UserData'
 import { RootState } from '../../../store'
 import { useState } from 'react'
+import { Socket } from 'socket.io-client'
 
 interface UserBoxProps {
+    socket: Socket | undefined
     users: any[]
     blockedUsers: number[]
     admins: any[]
     owner: any
     bannedUsers: any[]
     mutedUsers: number[]
-    createDM: (targetUserId: number) => void
-    blockUser: (targetUserId: number) => void
-    unblockUser: (targetUserId: number) => void
-    setAdmin: (targetUserId: number) => void
-    unsetAdmin: (targetUserId: number) => void
-    kickUser: (targetUserId: number) => void
-    banUser: (targetUserId: number) => void
-    unbanUser: (targetUserId: number) => void
-    muteUser: (targetUserId: number) => void
     isDM: boolean
 }
 
@@ -48,6 +41,7 @@ const UserBox = (props: UserBoxProps) => {
             {props.users.map((user) =>
                 user.status !== 'offline' ? (
                     <User
+                        socket={props.socket}
                         key={user.id}
                         id={user.id}
                         nickname={user.nickname}
@@ -68,15 +62,6 @@ const UserBox = (props: UserBoxProps) => {
                         isMuted={props.mutedUsers.some(
                             (mutedUser) => mutedUser === user.id
                         )}
-                        createDM={props.createDM}
-                        blockUser={props.blockUser}
-                        unblockUser={props.unblockUser}
-                        setAdmin={props.setAdmin}
-                        unsetAdmin={props.unsetAdmin}
-                        kickUser={props.kickUser}
-                        banUser={props.banUser}
-                        unbanUser={props.unbanUser}
-                        muteUser={props.muteUser}
                         isDM={props.isDM}
                         handleOpenMenu={handleOpenMenu}
                         handleCloseMenu={handleCloseMenu}
@@ -88,6 +73,7 @@ const UserBox = (props: UserBoxProps) => {
             {props.users.map((user) =>
                 user.status === 'offline' ? (
                     <User
+                        socket={props.socket}
                         key={user.id}
                         id={user.id}
                         nickname={user.nickname}
@@ -108,15 +94,6 @@ const UserBox = (props: UserBoxProps) => {
                         isMuted={props.mutedUsers.some(
                             (mutedUser) => mutedUser === user.id
                         )}
-                        createDM={props.createDM}
-                        blockUser={props.blockUser}
-                        unblockUser={props.unblockUser}
-                        setAdmin={props.setAdmin}
-                        unsetAdmin={props.unsetAdmin}
-                        kickUser={props.kickUser}
-                        banUser={props.banUser}
-                        unbanUser={props.unbanUser}
-                        muteUser={props.muteUser}
                         isDM={props.isDM}
                         handleOpenMenu={handleOpenMenu}
                         handleCloseMenu={handleCloseMenu}
@@ -127,6 +104,7 @@ const UserBox = (props: UserBoxProps) => {
             <h2> banned </h2>
             {props.bannedUsers.map((banUser) => (
                 <User
+                    socket={props.socket}
                     key={banUser.id}
                     id={banUser.id}
                     nickname={banUser.nickname}
@@ -145,15 +123,6 @@ const UserBox = (props: UserBoxProps) => {
                     )}
                     isBanned={true}
                     isMuted={false}
-                    createDM={props.createDM}
-                    blockUser={props.blockUser}
-                    unblockUser={props.unblockUser}
-                    setAdmin={props.setAdmin}
-                    unsetAdmin={props.unsetAdmin}
-                    kickUser={props.kickUser}
-                    banUser={props.banUser}
-                    unbanUser={props.unbanUser}
-                    muteUser={props.muteUser}
                     isDM={props.isDM}
                     handleOpenMenu={handleOpenMenu}
                     handleCloseMenu={handleCloseMenu}
