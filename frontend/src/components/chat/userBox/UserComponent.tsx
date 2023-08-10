@@ -2,6 +2,7 @@ import styles from './User.module.css'
 import IconMsg from '../../../assets/icon/message.svg'
 import IconInviteToPlay from '../../../assets/icon/invite_to_play.svg'
 import IconBlocked from '../../../assets/icon/block_user.svg'
+import MuteIcone from '../../../assets/icon/mute.svg'
 import { useState } from 'react'
 import { useAppSelector } from '../../../store/types'
 import { User, UserData } from '../../../types/UserData'
@@ -134,7 +135,7 @@ const UserComponent = ({
 
     const unblockUser = () => {
         if (socket !== undefined) {
-            socket.emit('unblockUser', userData.user.id, user.id, () => {})
+            socket.emit('unblockUser', userData.user.id, user.id, () => { })
         }
     }
 
@@ -145,7 +146,7 @@ const UserComponent = ({
                 userData.user.id,
                 user.id,
                 currentChatSelected,
-                () => {}
+                () => { }
             )
         }
     }
@@ -157,7 +158,7 @@ const UserComponent = ({
                 userData.user.id,
                 user.id,
                 currentChatSelected,
-                () => {}
+                () => { }
             )
         }
     }
@@ -169,7 +170,7 @@ const UserComponent = ({
                 userData.user.id,
                 user.id,
                 currentChatSelected,
-                () => {}
+                () => { }
             )
         }
     }
@@ -181,7 +182,7 @@ const UserComponent = ({
                 userData.user.id,
                 user.id,
                 currentChatSelected,
-                () => {}
+                () => { }
             )
         }
     }
@@ -193,7 +194,7 @@ const UserComponent = ({
                 userData.user.id,
                 user.id,
                 currentChatSelected,
-                () => {}
+                () => { }
             )
         }
     }
@@ -205,7 +206,7 @@ const UserComponent = ({
                 userData.user.id,
                 user.id,
                 currentChatSelected,
-                () => {}
+                () => { }
             )
         }
     }
@@ -273,8 +274,8 @@ const UserComponent = ({
                         isOwner
                             ? `${styles.profilePicture} ${styles.owner}`
                             : isAdmin
-                            ? `${styles.profilePicture} ${styles.admin}`
-                            : `${styles.profilePicture} ${styles.user}`
+                                ? `${styles.profilePicture} ${styles.admin}`
+                                : `${styles.profilePicture} ${styles.user}`
                     }
                     onClick={() =>
                         (window.location.href = `http://localhost:4040/user/${user.nickname}`)
@@ -355,6 +356,14 @@ const UserComponent = ({
                                 src={IconMsg}
                                 onClick={createDM}
                                 alt="Message Icon"
+                            />
+                        )}
+                    </div>
+                    <div>
+                        {isMuted && (
+                            <img
+                                src={MuteIcone}
+                                alt="Mute Icon"
                             />
                         )}
                     </div>
