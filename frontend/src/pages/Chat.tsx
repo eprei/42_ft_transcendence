@@ -84,14 +84,12 @@ const Chat = () => {
     useEffect(() => {
         if (socket !== undefined) {
             getAllChannels()
-            console.log('Socket effect')
         }
     }, [socket])
 
     useEffect(() => {
         getAllChannels()
         if (currentChatSelected) {
-            console.log('Chat selected effect')
             getAllMsg()
             getChUsers()
             getBlockedUsers()
@@ -113,7 +111,6 @@ const Chat = () => {
 
     useEffect(() => {
         if (reload) {
-            console.log('Reload effect')
             getAllChannels()
             getAllMsg()
             getChUsers()
@@ -130,7 +127,6 @@ const Chat = () => {
 
     useEffect(() => {
         if (reloadChannels) {
-            console.log('Reload channels effect')
             getAllChannels()
         }
         setReloadChannels(false)
@@ -138,7 +134,6 @@ const Chat = () => {
 
     useEffect(() => {
         if (currentChatSelected && reloadFeed) {
-            console.log('Reload feed effect')
             getAllMsg()
         }
         setReloadFeed(false)
@@ -146,7 +141,6 @@ const Chat = () => {
 
     useEffect(() => {
         if (currentChatSelected && reloadUsers) {
-            console.log('Reload users effect')
             getChUsers()
             getBlockedUsers()
             getMutedUsers()
@@ -209,22 +203,11 @@ const Chat = () => {
                 currentChatSelected,
                 (response: any) => {
                     setTimeout(() => {
-                        // alert(JSON.stringify(response, null, 2))
                         setUsers(response.users)
-                        console.log(response.users)
                         setAdmins(response.admin)
                         setOwner(response.owner)
                         if (response.banned) {
                             setBannedUsers(response.banned)
-                            // if (bannedUsers.some((user: any) => user.id === userData.user.id))
-                            // {
-                            //     dispatch(
-                            //         chatActions.updateChat({
-                            //             currentChatSelected: 0,
-                            //             type: '',
-                            //         })
-                            //     )
-                            // }
                         } else setBannedUsers([])
                     }, 300)
                 }
@@ -238,7 +221,6 @@ const Chat = () => {
                 'getBlockedUsers',
                 userData.user.id,
                 (response: any) => {
-                    console.log('blocked users= ', response)
                     setBlockedUsers(response)
                 }
             )
@@ -251,7 +233,6 @@ const Chat = () => {
                 'getMutedUsers',
                 currentChatSelected,
                 (response: number[]) => {
-                    console.log(`Muted users: ${response}`)
                     setMutedUsers(response)
                 }
             )

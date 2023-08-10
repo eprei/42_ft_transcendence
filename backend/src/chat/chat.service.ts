@@ -339,7 +339,7 @@ export class ChatService {
         const currentDate = new Date()
         mutedUsers.forEach(async (mutedUser) => {
             if (mutedUser.mutedAt.getTime() + 3600000 < currentDate.getTime()) {
-                 await this.channelUserMutedRepository.delete(mutedUser.id)
+                await this.channelUserMutedRepository.delete(mutedUser.id)
             }
         })
 
@@ -392,7 +392,6 @@ export class ChatService {
             if (channel.users.length === 1) {
                 channel.users.push(user)
             } else {
-                console.log('channel is full')
                 throw new UnauthorizedException()
             }
         } else channel.users.push(user)

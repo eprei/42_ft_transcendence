@@ -50,7 +50,7 @@ export class ChatGateway
     async postMsg(@MessageBody() createMessageDto: CreateMessageDto) {
         try {
             await this.chatService.newMsg(createMessageDto)
-            const allmessages = await this.chatService.findAllMsgByChannel(
+            await this.chatService.findAllMsgByChannel(
                 createMessageDto.channelId
             )
             this.server.emit('reload', {})
@@ -86,8 +86,6 @@ export class ChatGateway
         try {
             await this.chatService.blockUser(userId, targetId)
             this.server.emit('reload', {})
-            // this.server.emit('reloadUsers', {})
-            // this.server.emit('reloadFeed', {})
         } catch (error) {
             console.log('Failed to block user')
         }
@@ -99,8 +97,6 @@ export class ChatGateway
         try {
             await this.chatService.unblockUser(userId, targetId)
             this.server.emit('reload', {})
-            // this.server.emit('reloadUsers', {})
-            // this.server.emit('reloadFeed', {})
         } catch (error) {
             console.log('Failed to unblock user')
         }
@@ -110,7 +106,6 @@ export class ChatGateway
     async getBlockedUsers(@MessageBody() myId: number) {
         try {
             const blockedUsers = await this.chatService.getBlockedUsers(myId)
-            console.log('blocked Users = ', blockedUsers)
             return blockedUsers
         } catch (error) {
             console.log('Failed to get blocked users')
