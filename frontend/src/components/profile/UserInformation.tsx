@@ -40,9 +40,11 @@ const UserInformation = () => {
     useEffect(() => {
         if (shouldReloadUserData) {
             reloadUser()
-            setShouldReloadUserData(false)
+            setTimeout(() => {
+                setShouldReloadUserData(false)
+            }, 300)
         }
-    }, [shouldReloadUserData])
+    }, [shouldReloadUserData, userData])
 
     const editProfileNickname = async (newNickname: string) => {
         try {

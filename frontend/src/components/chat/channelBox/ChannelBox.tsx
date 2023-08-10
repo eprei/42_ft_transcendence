@@ -1,28 +1,21 @@
 import styles from './ChannelBox.module.css'
 import CreateNewCh from './CreateNewCh'
 import ChannelList from './ChannelList'
-import { CreateChannel } from '../../../types/CreateChannel'
 import { Channel } from '../../../types/Channel'
+import { Socket } from 'socket.io-client'
 
 interface ChannelBoxProps {
     allChan: Channel[]
-    handleCreation: (channel: CreateChannel) => void
-    deleteChannel: (channelId: number) => void
-    leaveChannel: (channelId: number) => void
-    joinChannel: (channelId: number, password: string) => void
-    changePassword: (channelId: number, password: string) => void
+    socket: Socket | undefined
 }
 
 const ChannelBox = (props: ChannelBoxProps) => {
     return (
         <div className={styles.channelbox}>
-            <CreateNewCh handleCreation={props.handleCreation} />
+            <CreateNewCh socket={props.socket} />
             <ChannelList
                 allChan={props.allChan}
-                deleteChannel={props.deleteChannel}
-                leaveChannel={props.leaveChannel}
-                joinChannel={props.joinChannel}
-                changePassword={props.changePassword}
+                socket={props.socket}
             ></ChannelList>
         </div>
     )

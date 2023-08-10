@@ -50,10 +50,10 @@ export class ChatGateway
     async postMsg(@MessageBody() createMessageDto: CreateMessageDto) {
         try {
             await this.chatService.newMsg(createMessageDto)
-            const allmessages = await this.chatService.findAllMsgByChannel(
+            await this.chatService.findAllMsgByChannel(
                 createMessageDto.channelId
             )
-            this.server.emit('newChannel', {})
+            this.server.emit('reload', {})
         } catch (error) {
             console.log('Error while posting message')
         }
@@ -85,7 +85,7 @@ export class ChatGateway
         const [userId, targetId] = data
         try {
             await this.chatService.blockUser(userId, targetId)
-            this.server.emit('newChannel', {})
+            this.server.emit('reload', {})
         } catch (error) {
             console.log('Failed to block user')
         }
@@ -95,8 +95,8 @@ export class ChatGateway
     async unblockUser(@MessageBody() data: UserTargetData) {
         const [userId, targetId] = data
         try {
-            this.chatService.unblockUser(userId, targetId)
-            this.server.emit('newChannel', {})
+            await this.chatService.unblockUser(userId, targetId)
+            this.server.emit('reload', {})
         } catch (error) {
             console.log('Failed to unblock user')
         }
@@ -105,7 +105,8 @@ export class ChatGateway
     @SubscribeMessage('getBlockedUsers')
     async getBlockedUsers(@MessageBody() myId: number) {
         try {
-            return await this.chatService.getBlockedUsers(myId)
+            const blockedUsers = await this.chatService.getBlockedUsers(myId)
+            return blockedUsers
         } catch (error) {
             console.log('Failed to get blocked users')
         }
@@ -116,7 +117,7 @@ export class ChatGateway
         const [userId, targetId, channelId] = data
         try {
             await this.chatService.setAdmin(userId, targetId, channelId)
-            this.server.emit('newChannel', {})
+            this.server.emit('reloadUsers', {})
         } catch (error) {
             console.log('Failed to set admin')
         }
@@ -126,8 +127,8 @@ export class ChatGateway
     async unsetAdmin(@MessageBody() data: UserTargetChannelData) {
         const [userId, targetId, channelId] = data
         try {
-            this.chatService.unsetAdmin(userId, targetId, channelId)
-            this.server.emit('newChannel', {})
+            await this.chatService.unsetAdmin(userId, targetId, channelId)
+            this.server.emit('reloadUsers', {})
         } catch (error) {
             console.log('Failed to unset admin')
         }
@@ -137,8 +138,8 @@ export class ChatGateway
     async kickUser(@MessageBody() data: UserTargetChannelData) {
         const [userId, targetId, channelId] = data
         try {
-            this.chatService.kickUser(userId, targetId, channelId)
-            this.server.emit('newChannel', {})
+            await this.chatService.kickUser(userId, targetId, channelId)
+            this.server.emit('reload', {})
         } catch (error) {
             console.log('Failed to kick user')
         }
@@ -148,8 +149,8 @@ export class ChatGateway
     async banUser(@MessageBody() data: UserTargetChannelData) {
         const [userId, targetId, channelId] = data
         try {
-            this.chatService.banUser(userId, targetId, channelId)
-            this.server.emit('newChannel', {})
+            await this.chatService.banUser(userId, targetId, channelId)
+            this.server.emit('reload', {})
         } catch (error) {
             console.log('Failed to ban user')
         }
@@ -159,8 +160,8 @@ export class ChatGateway
     async unbanUser(@MessageBody() data: UserTargetChannelData) {
         const [userId, targetId, channelId] = data
         try {
-            this.chatService.unbanUser(userId, targetId, channelId)
-            this.server.emit('newChannel', {})
+            await this.chatService.unbanUser(userId, targetId, channelId)
+            this.server.emit('reload', {})
         } catch (error) {
             console.log('Failed to unban user')
         }
@@ -179,8 +180,8 @@ export class ChatGateway
     async muteUser(@MessageBody() data: UserTargetChannelData) {
         const [userId, targetId, channelId] = data
         try {
-            this.chatService.muteUser(userId, targetId, channelId)
-            this.server.emit('newChannel', {})
+            await this.chatService.muteUser(userId, targetId, channelId)
+            this.server.emit('reloadUsers', {})
         } catch (error) {
             console.log('Failed to mute user')
         }
@@ -211,7 +212,7 @@ export class ChatGateway
             const channelCreated = await this.chatService.createChannel(
                 createChannelDto
             )
-            this.server.emit('newChannel', {})
+            this.server.emit('reloadChannels', {})
             return channelCreated.id
         } catch (error) {
             console.log('Failed to create channel', error)
@@ -223,7 +224,7 @@ export class ChatGateway
     async createDirectChannel(@MessageBody() body: UserTargetData) {
         const [userId, targetId] = body
         const channel = await this.chatService.createChanDM(userId, targetId)
-        this.server.emit('newChannel', channel)
+        this.server.emit('reloadChannels', channel)
         return channel
     }
 
@@ -247,7 +248,7 @@ export class ChatGateway
                 userId,
                 password
             )
-            this.server.emit('newChannel', {})
+            this.server.emit('reload', {})
             return channel
         } catch (error) {
             console.log('Failed to join Channel')
@@ -258,8 +259,11 @@ export class ChatGateway
     async leaveChannel(@MessageBody() data: ChannelUserData) {
         const [channelId, userId] = data
         try {
-            const channel = await this.chatService.leaveChannel(channelId, userId)
-            this.server.emit('newChannel', {})
+            const channel = await this.chatService.leaveChannel(
+                channelId,
+                userId
+            )
+            this.server.emit('reloadUsers', {})
             return channel
         } catch (error) {
             console.log('Failed to remove user from channel')
@@ -269,9 +273,11 @@ export class ChatGateway
     async deleteChannel(@MessageBody() data: ChannelUserData) {
         const [channelId, userId] = data
         try {
-            this.server.emit('newChannel', {})
-            const channel = await this.chatService.deleteChannel(channelId, userId)
-            this.server.emit('newChannel', {})
+            const channel = await this.chatService.deleteChannel(
+                channelId,
+                userId
+            )
+            this.server.emit('reload', {})
             return channel
         } catch (error) {
             console.log('Failed to remove user from channel')
