@@ -1,26 +1,19 @@
 import styles from './UserBox.module.css'
-import User from './User'
+import UserComponent from './UserComponent'
 import { useAppSelector } from '../../../store/types'
-import { UserData } from '../../../types/UserData'
 import { RootState } from '../../../store'
 import { useState } from 'react'
+import { Socket } from 'socket.io-client'
+import { UserData, User as UserType } from '../../../types/UserData'
 
 interface UserBoxProps {
-    users: any[]
+    socket: Socket | undefined
+    users: UserType[]
     blockedUsers: number[]
     admins: any[]
     owner: any
     bannedUsers: any[]
     mutedUsers: number[]
-    createDM: (targetUserId: number) => void
-    blockUser: (targetUserId: number) => void
-    unblockUser: (targetUserId: number) => void
-    setAdmin: (targetUserId: number) => void
-    unsetAdmin: (targetUserId: number) => void
-    kickUser: (targetUserId: number) => void
-    banUser: (targetUserId: number) => void
-    unbanUser: (targetUserId: number) => void
-    muteUser: (targetUserId: number) => void
     isDM: boolean
 }
 
@@ -33,10 +26,13 @@ const UserBox = (props: UserBoxProps) => {
 
     const handleOpenMenu = () => {
         setOpenMenus(1)
+        console.log('open menu = ', openMenus)
     }
 
     const handleCloseMenu = () => {
+        console.log('close menu -> open = ', openMenus)
         setOpenMenus(0)
+        console.log('close menu -> open = ', openMenus)
     }
 
     return (
@@ -44,12 +40,10 @@ const UserBox = (props: UserBoxProps) => {
             <h2> online </h2>
             {props.users.map((user) =>
                 user.status !== 'offline' ? (
-                    <User
+                    <UserComponent
+                        socket={props.socket}
                         key={user.id}
-                        id={user.id}
-                        nickname={user.nickname}
-                        avatarUrl={user.avatarUrl}
-                        status={user.status}
+                        user={user}
                         amIowner={props.owner.id === userData.user.id}
                         amIadmin={props.admins.some(
                             (admin) => admin.id === userData.user.id
@@ -65,15 +59,6 @@ const UserBox = (props: UserBoxProps) => {
                         isMuted={props.mutedUsers.some(
                             (mutedUser) => mutedUser === user.id
                         )}
-                        createDM={props.createDM}
-                        blockUser={props.blockUser}
-                        unblockUser={props.unblockUser}
-                        setAdmin={props.setAdmin}
-                        unsetAdmin={props.unsetAdmin}
-                        kickUser={props.kickUser}
-                        banUser={props.banUser}
-                        unbanUser={props.unbanUser}
-                        muteUser={props.muteUser}
                         isDM={props.isDM}
                         handleOpenMenu={handleOpenMenu}
                         handleCloseMenu={handleCloseMenu}
@@ -84,12 +69,10 @@ const UserBox = (props: UserBoxProps) => {
             <h2> offline </h2>
             {props.users.map((user) =>
                 user.status === 'offline' ? (
-                    <User
+                    <UserComponent
+                        socket={props.socket}
                         key={user.id}
-                        id={user.id}
-                        nickname={user.nickname}
-                        avatarUrl={user.avatarUrl}
-                        status={user.status}
+                        user={user}
                         amIowner={props.owner.id === userData.user.id}
                         amIadmin={props.admins.some(
                             (admin) => admin.id === userData.user.id
@@ -105,15 +88,6 @@ const UserBox = (props: UserBoxProps) => {
                         isMuted={props.mutedUsers.some(
                             (mutedUser) => mutedUser === user.id
                         )}
-                        createDM={props.createDM}
-                        blockUser={props.blockUser}
-                        unblockUser={props.unblockUser}
-                        setAdmin={props.setAdmin}
-                        unsetAdmin={props.unsetAdmin}
-                        kickUser={props.kickUser}
-                        banUser={props.banUser}
-                        unbanUser={props.unbanUser}
-                        muteUser={props.muteUser}
                         isDM={props.isDM}
                         handleOpenMenu={handleOpenMenu}
                         handleCloseMenu={handleCloseMenu}
@@ -123,12 +97,10 @@ const UserBox = (props: UserBoxProps) => {
             )}
             <h2> banned </h2>
             {props.bannedUsers.map((banUser) => (
-                <User
+                <UserComponent
+                    socket={props.socket}
                     key={banUser.id}
-                    id={banUser.id}
-                    nickname={banUser.nickname}
-                    avatarUrl={banUser.avatarUrl}
-                    status={banUser.status}
+                    user={banUser}
                     amIowner={props.owner.id === userData.user.id}
                     amIadmin={props.admins.some(
                         (admin) => admin.id === userData.user.id
@@ -142,15 +114,6 @@ const UserBox = (props: UserBoxProps) => {
                     )}
                     isBanned={true}
                     isMuted={false}
-                    createDM={props.createDM}
-                    blockUser={props.blockUser}
-                    unblockUser={props.unblockUser}
-                    setAdmin={props.setAdmin}
-                    unsetAdmin={props.unsetAdmin}
-                    kickUser={props.kickUser}
-                    banUser={props.banUser}
-                    unbanUser={props.unbanUser}
-                    muteUser={props.muteUser}
                     isDM={props.isDM}
                     handleOpenMenu={handleOpenMenu}
                     handleCloseMenu={handleCloseMenu}

@@ -1,12 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const chatInitialState = { currentChatSelected: 0 }
+const chatInitialState = {
+    currentChatSelected: 0,
+    type: '',
+}
+
 const chatSlice = createSlice({
     name: 'chat',
     initialState: chatInitialState,
     reducers: {
-        selectChat(state, action) {
-            state.currentChatSelected = action.payload
+        updateChat(state, action) {
+            const { currentChatSelected, type } = action.payload
+            state.currentChatSelected = currentChatSelected
+            state.type = type
         },
     },
 })

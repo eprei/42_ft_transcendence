@@ -50,7 +50,7 @@ const MainProfile = () => {
         const fetchFriends = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:8080/api/user/getFriendsAndRequests`,
+                    `http://localhost/api/user/getFriendsAndRequests`,
                     {
                         method: 'GET',
                         credentials: 'include',
@@ -87,7 +87,7 @@ const MainProfile = () => {
         const fetchOtherUsers = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:8080/api/user/getallnonfriendusers`,
+                    `http://localhost/api/user/getallnonfriendusers`,
                     {
                         method: 'GET',
                         credentials: 'include',
@@ -144,7 +144,7 @@ const MainProfile = () => {
 export default MainProfile
 
 export async function loader() {
-    const response = await fetch(`http://localhost:8080/api/user/me`, {
+    const response = await fetch(`http://localhost/api/user/me`, {
         method: 'GET',
         credentials: 'include',
     })

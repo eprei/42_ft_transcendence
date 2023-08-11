@@ -19,5 +19,7 @@ export interface User {
     totalPlay: number
     xp: number
     TFAEnabled: boolean
-    userPosition: number
+    status: string
+    TFASecret: string
+    FT_id: string
 }

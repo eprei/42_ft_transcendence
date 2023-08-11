@@ -3,17 +3,34 @@ import IconAddChannel from '../../../assets/icon/add_friend.svg'
 import styles from './CreateNewCh.module.css'
 import { CreateChannel } from '../../../types/CreateChannel'
 import NewChannelForm from '../../ui/modal/NewChannelForm'
+import { Socket } from 'socket.io-client'
+import { useAppDispatch } from '../../../store/types'
+import { chatActions } from '../../../store/chat'
 
 interface CreateNewChProps {
-    handleCreation: (channel: CreateChannel) => void
+    socket: Socket | undefined
 }
 
-const CreateNewCh = ({ handleCreation }: CreateNewChProps) => {
+const CreateNewCh = ({ socket }: CreateNewChProps) => {
     const [open, setOpen] = useState(false)
+    const dispatch = useAppDispatch()
 
     const onCreate = (values: CreateChannel) => {
         setOpen(false)
-        handleCreation(values)
+        createNewChannel(values)
+    }
+
+    const createNewChannel = (channel: CreateChannel) => {
+        if (socket !== undefined) {
+            socket.emit('createNewChannel', channel, (channelId: number) => {
+                dispatch(
+                    chatActions.updateChat({
+                        currentChatSelected: channelId,
+                        type: channel.type,
+                    })
+                )
+            })
+        }
     }
 
     return (

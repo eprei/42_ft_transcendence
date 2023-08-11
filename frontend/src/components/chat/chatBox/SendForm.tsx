@@ -6,6 +6,7 @@ import { NewMsg } from '../../../pages/Chat'
 
 interface ChatFeedProps {
     sendMessage: (NewMsg: NewMsg) => void
+    amImuted: boolean
 }
 
 const SendForm = ({ sendMessage }: ChatFeedProps) => {

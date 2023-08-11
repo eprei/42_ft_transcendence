@@ -33,7 +33,9 @@ export class AuthController {
     @Get('42/redirect')
     @UseGuards(OauthGuard)
     loginRedirect(@Req() req, @Res() res) {
-        res.redirect(`${process.env.URL_FRONTEND}/profile`)
+        if (req.session.needTFA === true)
+            res.redirect(`${process.env.URL_FRONTEND}/TFAVerify`)
+        else res.redirect(`${process.env.URL_FRONTEND}/profile`)
         return req.user
     }
 

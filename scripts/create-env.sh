@@ -26,6 +26,9 @@ generate_all_variables () {
 ask_42_api_credentials () {
 	printf "42 UID   : "; read -r FT_UUID
 	printf "42 SECRET: "; read -r FT_SECRET
+
+	printf "production 42 UID   : "; read -r PROD_FT_UUID
+	printf "production 42 SECRET: "; read -r PROD_FT_SECRET
 }
 
 create_the_environment_file () {
@@ -39,6 +42,10 @@ create_the_environment_file () {
 	FT_UUID=${FT_UUID}
 	FT_SECRET=${FT_SECRET}
 
+	# 42 credentials PROD
+	PROD_FT_UUID=${PROD_FT_UUID}
+	PROD_FT_SECRET=${PROD_FT_SECRET}
+
 	# PostgreSQL
 	POSTGRES_USER=${POSTGRES_USER}
 	POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -47,8 +54,19 @@ create_the_environment_file () {
 	# NestJS
 	DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_NAME}
 	PORT=3000
+
+	# my hostname
+	HOSTNAME=$(uname -n)
 	environment_file
 
+}
+
+frontend_hostname () {
+	sed -i \
+	'' "s/localhost/$(uname -n)/g" \
+	$(find frontend/src -type f -name "*.ts*")
+	git add .
+	git commit -m 'add my hostname'
 }
 
 main () {
@@ -57,6 +75,7 @@ main () {
 	ask_42_api_credentials
 	generate_all_variables
 	create_the_environment_file
+	frontend_hostname
 }
 
 main

@@ -19,11 +19,17 @@ function ChatBox(props: ChatBoxProps) {
                 messages={props.messages}
                 blockedUsers={props.blockedUsers}
             />
-            {props.currentChatSelected > 0 && !props.amImuted ? (
-                <SendForm sendMessage={props.sendMessage} />
-            ) : props.amImuted ? (
-                <p>You're muted, select another chat</p>
-            ) : null}
+            {props.currentChatSelected > 0 && !props.amImuted && (
+                <SendForm
+                    sendMessage={props.sendMessage}
+                    amImuted={props.amImuted}
+                />
+            )}
+            {props.amImuted && (
+                <p className={styles.mutedText}>
+                    You're muted, select another chat
+                </p>
+            )}
         </div>
     )
 }

@@ -325,7 +325,7 @@ export class ChatService {
             chUserMuted.user = userToMute
             chUserMuted.channel = channel
             this.channelUserMutedRepository.create(chUserMuted)
-            this.channelUserMutedRepository.save(chUserMuted)
+            await this.channelUserMutedRepository.save(chUserMuted)
         } else throw new UnauthorizedException()
     }
 
@@ -334,13 +334,12 @@ export class ChatService {
             where: { channel: { id: channelId } },
             relations: ['user'],
         })
-
         // delete all muted users that were muted more than 1 hour ago
         if (mutedUsers.length === 0) return []
         const currentDate = new Date()
-        mutedUsers.forEach((mutedUser) => {
-            if (mutedUser.mutedAt.getTime() + 3600000 > currentDate.getTime()) {
-                this.channelUserMutedRepository.delete(mutedUser)
+        mutedUsers.forEach(async (mutedUser) => {
+            if (mutedUser.mutedAt.getTime() + 3600000 < currentDate.getTime()) {
+                await this.channelUserMutedRepository.delete(mutedUser.id)
             }
         })
 
@@ -393,7 +392,6 @@ export class ChatService {
             if (channel.users.length === 1) {
                 channel.users.push(user)
             } else {
-                console.log('channel is full')
                 throw new UnauthorizedException()
             }
         } else channel.users.push(user)
@@ -478,10 +476,9 @@ export class ChatService {
                 createChannelDto.type = 'direct'
                 createChannelDto.name = user.nickname + ' & ' + target.nickname
                 createChannelDto.password = ''
-                const channelCreated = await this.channelRepository.create(
-                    createChannelDto
-                )
-                return this.channelRepository.save(channelCreated)
+                const channelCreated =
+                    this.channelRepository.create(createChannelDto)
+                return await this.channelRepository.save(channelCreated)
             }
         }
     }
