@@ -204,7 +204,11 @@ const Chat = () => {
                 (response: any) => {
                     setTimeout(() => {
                         setUsers(response.users)
-                        if (!(response.users.some((u: User) => u.id === userData.user.id))) {
+                        if (
+                            !response.users.some(
+                                (u: User) => u.id === userData.user.id
+                            )
+                        ) {
                             dispatch(
                                 chatActions.updateChat({
                                     currentChatSelected: 0,
