@@ -32,16 +32,32 @@ build-front:
 	docker run \
 	--rm \
 	--name front_build \
+	--workdir /app \
 	--volume $(shell pwd)/frontend:/app \
-	our-frontend-image \
+	node:18-alpine \
+	npm install
+	docker run \
+	--rm \
+	--name front_build \
+	--workdir /app \
+	--volume $(shell pwd)/frontend:/app \
+	node:18-alpine \
 	npm run build
 
 build-back:
 	docker run \
 	--rm \
 	--name back_build \
+	--workdir /app \
 	--volume $(shell pwd)/backend:/app \
-	our-backend-image \
+	node:18-alpine \
+	npm install
+	docker run \
+	--rm \
+	--name back_build \
+	--workdir /app \
+	--volume $(shell pwd)/backend:/app \
+	node:18-alpine \
 	npm run build
 
 env:
