@@ -56,7 +56,7 @@ create_the_environment_file () {
 	PORT=3000
 
 	# my hostname
-	HOSTNAME=$(hostname)
+	HOSTNAME=$(uname -n)
 	environment_file
 
 }
