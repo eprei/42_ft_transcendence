@@ -11,7 +11,8 @@ services:
         volumes:
             - ./frontend/dist/:/var/www/cosmic-pong
         depends_on:
-            - backend
+          frontend-build:
+             condition: service_completed_successfully
         networks:
             - prod-appnet
 
@@ -47,6 +48,16 @@ services:
             - postgres
         networks:
             - prod-appnet
+
+    frontend-build:
+        container_name: our-frontend-build
+        image: our-frontend-build-image
+        build:
+            context: ./frontend/
+            dockerfile: ./build.Dockerfile
+        working_dir: /app
+        volumes:
+            - ./frontend:/app
 
 volumes:
     prod-data:
