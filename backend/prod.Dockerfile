@@ -7,8 +7,10 @@ WORKDIR /app
 COPY package.json /app
 RUN npm install
 
-# we copy the source files
-COPY dist /app/dist
+COPY tsconfig.json /app
 
+# we copy the source files
+COPY src /app/src
+RUN npm run build
 
 CMD ["node", "/app/dist/main"]
