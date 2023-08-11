@@ -18,7 +18,7 @@ const UserInformation = () => {
 
     const reloadUser = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api/user/me`, {
+            const response = await fetch(`http://localhost/api/user/me`, {
                 method: 'GET',
                 credentials: 'include',
             })
@@ -49,7 +49,7 @@ const UserInformation = () => {
     const editProfileNickname = async (newNickname: string) => {
         try {
             const response = await fetch(
-                'http://localhost:8080/api/user/updatenickname',
+                'http://localhost/api/user/updatenickname',
                 {
                     method: 'POST',
                     headers: {
@@ -75,7 +75,7 @@ const UserInformation = () => {
         if (TFAEnabled) {
             try {
                 const response = await fetch(
-                    'http://localhost:8080/api/auth/2fa/turn-off',
+                    'http://localhost/api/auth/2fa/turn-off',
                     {
                         method: 'POST',
                         credentials: 'include',
@@ -88,7 +88,7 @@ const UserInformation = () => {
                 console.error('Error turning off 2FA:', error)
             }
         } else {
-            window.location.href = 'http://localhost:4040/TFATurnOn'
+            window.location.href = 'http://localhost/TFATurnOn'
         }
     }
 
@@ -112,7 +112,7 @@ const UserInformation = () => {
                 formData.append('profilePicture', file)
 
                 const response = await fetch(
-                    'http://localhost:8080/api/user/upload-profile-picture',
+                    'http://localhost/api/user/upload-profile-picture',
                     {
                         method: 'POST',
                         body: formData,
