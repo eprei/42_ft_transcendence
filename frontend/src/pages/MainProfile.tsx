@@ -137,7 +137,7 @@ const MainProfile = () => {
 export default MainProfile
 
 export async function loader() {
-    const response = await fetch(`http://localhost:8080/api/user/me`, {
+    const response = await fetch(`http://localhost/api/user/me`, {
         method: 'GET',
         credentials: 'include',
     })

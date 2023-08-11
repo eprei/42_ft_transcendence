@@ -62,7 +62,7 @@ const TwoFactorVerificationBox = ({
                 )
             } else {
                 setErrorMessage('')
-                window.location.href = 'http://localhost:4040/profile'
+                window.location.href = 'http://localhost/profile'
             }
         } catch (error) {
             console.error(error)

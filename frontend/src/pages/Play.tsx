@@ -28,7 +28,7 @@ const Play = () => {
 
     const createRoom = async () => {
         try {
-            const response = await fetch('http://localhost:8080/api/room', {
+            const response = await fetch('http://localhost/api/room', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
