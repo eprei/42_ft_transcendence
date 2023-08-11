@@ -29,7 +29,10 @@ services:
 
     backend:
         container_name: our-prod-backend
-        image: node:18-alpine
+        image: our-prod-backend-image
+        build:
+            context: ./backend/
+            dockerfile: ./prod.Dockerfile
         working_dir: /app
         volumes:
             - ./backend:/app
