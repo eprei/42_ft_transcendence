@@ -31,10 +31,10 @@ export class AuthService {
         let user = await this.userService.findByFT_id(user42.FT_id)
         if (!user) {
             let newNickname = user42.nickname
-            const usersameNickname = await this.userService.findByNickname(
+            const userSameNickname = await this.userService.findByNickname(
                 user42.nickname
             )
-            if (usersameNickname) newNickname = generateRandomString()
+            if (userSameNickname) newNickname = generateRandomString()
             user = await this.userService.create({
                 FT_id: user42.FT_id,
                 nickname: newNickname,
