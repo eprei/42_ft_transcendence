@@ -15,13 +15,13 @@ stop:
 	docker compose down
 
 prod-start: env
-	docker compose -f docker-compose-prod.yml up --build
+	docker compose up --build
 
 prod-stop:
-	docker compose -f docker-compose-prod.yml down
+	docker compose down
 
 prod-build:
-	docker compose -f docker-compose-prod.yml build
+	docker compose build
 
 prod-clean-database:
 	@docker volume rm our-prod-volume || true
