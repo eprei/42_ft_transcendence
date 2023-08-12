@@ -10,6 +10,9 @@ services:
             - '80:80'
         volumes:
             - prod-frontend:/var/www/cosmic-pong
+        environment:
+            - URL_BACKEND=http://${HOSTNAME}
+            - URL_FRONTEND=http://${HOSTNAME}
         depends_on:
           frontend-build:
              condition: service_completed_successfully
