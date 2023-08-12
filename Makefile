@@ -8,11 +8,11 @@ CONTAINER_FRONT	=	our-frontend
 VOLUME_DATA		=	our-volume
 VOLUME_IMAGES	= 	our-images
 
-start: env
-	docker compose up
+dev-start: env
+	docker compose -f docker-compose-dev.yml up
 
-stop:
-	docker compose down
+dev-stop:
+	docker compose -f docker-compose-dev.yml down
 
 prod-start: env
 	docker compose up --build
