@@ -11,8 +11,8 @@ services:
         volumes:
             - prod-frontend:/var/www/cosmic-pong
         environment:
-            - URL_BACKEND=http://${HOSTNAME}
-            - URL_FRONTEND=http://${HOSTNAME}
+            - REACT_APP_URL_BACKEND=http://${HOSTNAME}
+            - REACT_APP_URL_FRONTEND=http://${HOSTNAME}
         depends_on:
           frontend-build:
              condition: service_completed_successfully
