@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-    webserv:
+    nginx:
         container_name: our-prod-nginx
         image: our-nginx-image
         build:
