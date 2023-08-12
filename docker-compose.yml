@@ -9,7 +9,7 @@ services:
         ports:
             - '80:80'
         volumes:
-            - ./frontend/dist/:/var/www/cosmic-pong
+            - prod-frontend:/var/www/cosmic-pong
         depends_on:
           frontend-build:
              condition: service_completed_successfully
@@ -57,9 +57,11 @@ services:
             dockerfile: ./build.Dockerfile
         working_dir: /app
         volumes:
-            - ./frontend:/app
+            - prod-frontend:/app/dist
 
 volumes:
+    prod-frontend:
+      name: our-prod-frontend
     prod-data:
       name: our-prod-volume
     prod-images:
