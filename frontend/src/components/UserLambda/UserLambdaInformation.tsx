@@ -59,7 +59,7 @@ const UserLambdaInformation = ({ userData }: UserLambdaInformationProps) => {
 
     const isBlockedByMe = async () => {
         const response = await fetch(
-            `http://localhost/api/user/isBlockedByMe/${id}`,
+            `${process.env.REACT_APP_URL_BACKEND}/user/isBlockedByMe/${id}`,
             {
                 method: 'GET',
                 credentials: 'include',
@@ -79,7 +79,7 @@ const UserLambdaInformation = ({ userData }: UserLambdaInformationProps) => {
 
     const blockUser = async () => {
         const response = await fetch(
-            `http://localhost/api/user/block/${id}`,
+            `${process.env.REACT_APP_URL_BACKEND}/user/block/${id}`,
             {
                 method: 'POST',
                 credentials: 'include',
@@ -93,7 +93,7 @@ const UserLambdaInformation = ({ userData }: UserLambdaInformationProps) => {
 
     const unblockUser = async () => {
         const response = await fetch(
-            `http://localhost/api/user/unblock/${id}`,
+            `${process.env.REACT_APP_URL_BACKEND}/user/unblock/${id}`,
             {
                 method: 'DELETE',
                 credentials: 'include',

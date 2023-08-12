@@ -9,7 +9,7 @@ const LogoutButton = () => {
 
         try {
             const response = await fetch(
-                'http://localhost/api/user/logout',
+                `${process.env.REACT_APP_URL_BACKEND}/user/logout`,
                 {
                     method: 'POST',
                     credentials: 'include',
@@ -18,8 +18,7 @@ const LogoutButton = () => {
 
             if (response.ok) {
                 console.log('Logout successful')
-                window.location.href = 'http://localhost/'
-            } else {
+                window.location.href = `${process.env.REACT_APP_URL_FRONTEND}/`            } else {
                 console.error('Failed to logout')
             }
         } catch (error) {

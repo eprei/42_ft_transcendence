@@ -64,7 +64,7 @@ const Friend = ({
     const removeFriendship = async (id: number) => {
         try {
             const response = await fetch(
-                `http://localhost/api/friend/delete/${id}`,
+                `${process.env.REACT_APP_URL_BACKEND}/friend/delete/${id}`,
                 {
                     method: 'DELETE',
                     credentials: 'include',
@@ -87,7 +87,7 @@ const Friend = ({
             }
 
             const response = await fetch(
-                `http://localhost/api/friend/accept/${id}`,
+                `${process.env.REACT_APP_URL_BACKEND}/friend/accept/${id}`,
                 {
                     method: 'PATCH',
                     credentials: 'include',

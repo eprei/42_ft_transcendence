@@ -62,7 +62,7 @@ const TwoFactorVerificationBox = ({
                 )
             } else {
                 setErrorMessage('')
-                window.location.href = 'http://localhost/profile'
+                window.location.href = `${process.env.REACT_APP_URL_FRONTEND}/profile`
             }
         } catch (error) {
             console.error(error)

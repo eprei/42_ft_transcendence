@@ -17,7 +17,7 @@ const RootLayout = () => {
 export default RootLayout
 
 export async function loader() {
-    const response = await fetch('http://localhost/api/auth/loginStatus', {
+    const response = await fetch(`${process.env.REACT_APP_URL_BACKEND}/auth/loginStatus`, {
         credentials: 'include',
     })
     if (response.status !== 200) {

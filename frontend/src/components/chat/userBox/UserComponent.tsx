@@ -59,7 +59,7 @@ const UserComponent = ({
 
     const createRoom = async (player_two: number) => {
         try {
-            const response = await fetch('http://localhost/api/room', {
+            const response = await fetch(`${process.env.REACT_APP_URL_BACKEND}/room`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -287,7 +287,7 @@ const UserComponent = ({
                             : `${styles.profilePicture} ${styles.user}`
                     }
                     onClick={() =>
-                        (window.location.href = `http://localhost/user/${user.nickname}`)
+                        (window.location.href = `${process.env.REACT_APP_URL_FRONTEND}/user/${user.nickname}`)
                     }
                     onContextMenu={
                         user.id !== userData.user.id

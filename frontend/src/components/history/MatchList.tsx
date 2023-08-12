@@ -15,7 +15,7 @@ const MatchList = ({ userData, isInUserLambda }: UserProp) => {
         const fetchMatches = async () => {
             try {
                 const res = await fetch(
-                    `http://localhost/api/match/user/${String(
+                    `${process.env.REACT_APP_URL_BACKEND}/match/user/${String(
                         userData.user.id
                     )}`,
                     { credentials: 'include' }

@@ -67,7 +67,7 @@ const MatchSystemBtn = () => {
             setPercent(0)
 
             const response = await fetch(
-                `http://localhost/api/room/joinroom/random`,
+                `${process.env.REACT_APP_URL_BACKEND}/room/joinroom/random`,
                 {
                     method: 'POST',
                     credentials: 'include',

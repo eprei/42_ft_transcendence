@@ -19,7 +19,7 @@ const UserLambda = () => {
     async function getCurrentUser() {
         try {
             const response = await fetch(
-                `http://localhost/api/user/nickname/${nickname}`,
+                `${process.env.REACT_APP_URL_BACKEND}/user/nickname/${nickname}`,
                 {
                     method: 'GET',
                     credentials: 'include',

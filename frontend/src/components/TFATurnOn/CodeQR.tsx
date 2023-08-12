@@ -8,7 +8,7 @@ const CodeQR = () => {
         const fetchQRCode = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost/api/auth/2fa/generate`,
+                    `${process.env.REACT_APP_URL_BACKEND}/auth/2fa/generate`,
                     {
                         method: 'GET',
                         credentials: 'include',

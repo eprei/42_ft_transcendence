@@ -21,7 +21,7 @@ const OtherUser = ({ id, nickname, avatarUrl }: OtherUserProps) => {
     const sendFriendRequest = async (id: number) => {
         try {
             const response = await fetch(
-                `http://localhost/api/friend/create/${id}`,
+                `${process.env.REACT_APP_URL_BACKEND}/friend/create/${id}`,
                 {
                     method: 'POST',
                     credentials: 'include',
