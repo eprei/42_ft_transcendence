@@ -1,61 +1,72 @@
 version: '3.8'
-services:
-    backend:
-        container_name: our-backend
-        image: our-backend-image
-        build:
-            context: ./backend/
-        ports:
-            - '8080:3000'
-        volumes:
-            - ./backend/:/app
-            - images:/app/profile-images
-        depends_on:
-            - postgres
-        environment:
-            - DATABASE_URL=${DATABASE_URL}
-            - PORT=${PORT}
-            - FT_UUID=${FT_UUID}
-            - FT_SECRET=${FT_SECRET}
-            - URL_BACKEND=http://localhost:8080
-            - URL_FRONTEND=http://localhost:4040
-        networks:
-            - appnet
 
-    frontend:
-        container_name: our-frontend
-        image: our-frontend-image
+services:
+    webserv:
+        container_name: our-prod-nginx
+        image: our-nginx-image
         build:
-            context: ./frontend/
+            context: ./nginx/
         ports:
-            - '4040:5173'
+            - '80:80'
         volumes:
-            - ./frontend/:/app
-        environment:
-            - VITE_URL_FRONTEND=http://localhost:4040
-            - VITE_URL_BACKEND=http://localhost:8080
-        stdin_open: true
-        tty: true
+            - ./frontend/dist/:/var/www/cosmic-pong
+        depends_on:
+          frontend-build:
+             condition: service_completed_successfully
+        networks:
+            - prod-appnet
 
     postgres:
-        container_name: our-postgresql
+        container_name: our-prod-postgresql
         image: postgres:latest
-        ports:
-            - '6060:5432'
         volumes:
-            - data:/var/lib/postgresql/data
+            - prod-data:/var/lib/postgresql/data
         environment:
             - POSTGRES_USER=${POSTGRES_USER}
             - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
             - POSTGRES_DB=${POSTGRES_DB}
         networks:
-            - appnet
+            - prod-appnet
+
+    backend:
+        container_name: our-prod-backend
+        image: our-prod-backend-image
+        build:
+            context: ./backend/
+            dockerfile: ./prod.Dockerfile
+        working_dir: /app
+        volumes:
+            - prod-images:/app/profile-images
+        environment:
+            - DATABASE_URL=${DATABASE_URL}
+            - PORT=${PORT}
+            - FT_UUID=${PROD_FT_UUID}
+            - FT_SECRET=${PROD_FT_SECRET}
+            - URL_BACKEND=http://${HOSTNAME}
+            - URL_FRONTEND=http://${HOSTNAME}
+        depends_on:
+            - postgres
+        networks:
+            - prod-appnet
+
+    frontend-build:
+        container_name: our-frontend-build
+        image: our-frontend-build-image
+        environment:
+            - VITE_URL_FRONTEND=http://${HOSTNAME}
+            - VITE_URL_BACKEND=http://${HOSTNAME}
+        build:
+            context: ./frontend/
+            dockerfile: ./build.Dockerfile
+        working_dir: /app
+        volumes:
+            - ./frontend:/app
 
 volumes:
-    data:
-      name: our-volume
-    images:
-      name: our-images
+    prod-data:
+      name: our-prod-volume
+    prod-images:
+      name: our-prod-images
 
 networks:
-    appnet:
+    prod-appnet:
