@@ -11,6 +11,18 @@ import { UserService } from 'src/user/user.service'
 import { toDataURL } from 'qrcode'
 import { UserStatus } from 'src/typeorm/user.entity'
 
+function generateRandomString(): string {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+    let result = ''
+
+    for (let i = 0; i < 5; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length)
+        result += characters.charAt(randomIndex)
+    }
+
+    return result
+}
+
 @Injectable()
 export class AuthService {
     constructor(private userService: UserService) {}
@@ -18,9 +30,14 @@ export class AuthService {
     async validateUser(user42) {
         let user = await this.userService.findByFT_id(user42.FT_id)
         if (!user) {
+            let newNickname = user42.nickname
+            const userSameNickname = await this.userService.findByNickname(
+                user42.nickname
+            )
+            if (userSameNickname) newNickname = generateRandomString()
             user = await this.userService.create({
                 FT_id: user42.FT_id,
-                nickname: user42.nickname,
+                nickname: newNickname,
                 avatarUrl: user42.avatarUrl,
                 status: UserStatus.Online,
             })
