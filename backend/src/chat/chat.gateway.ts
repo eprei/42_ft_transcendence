@@ -12,6 +12,9 @@ import { CreateMessageDto } from 'src/chat/dto/create-message.dto'
 import { CreateChannelDto } from './dto/create-channel.dto'
 import { Logger, UsePipes, ValidationPipe } from '@nestjs/common'
 import { WebSocketServer } from '@nestjs/websockets'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Channel } from 'src/typeorm/channel.entity'
+import { Repository } from 'typeorm'
 
 type PasswordChangeData = [channelId: number, password: string]
 type ChannelUserData = [channelId: number, userId: number]
@@ -27,7 +30,11 @@ type UserTargetChannelData = [
 export class ChatGateway
     implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
-    constructor(private readonly chatService: ChatService) {}
+    constructor(
+        private readonly chatService: ChatService,
+        @InjectRepository(Channel)
+        private readonly channelRepository: Repository<Channel>
+    ) {}
     private loger: Logger = new Logger('ChatGateway')
 
     @WebSocketServer()
@@ -208,12 +215,18 @@ export class ChatGateway
             } else if (createChannelDto.name.length > 8) {
                 throw new Error('Channel name is longer than 8 characters')
             }
+            const channel = await this.channelRepository.findOne({
+                where: { name: createChannelDto.name },
+            })
+            if (channel) {
+                return { channelId: 0, error: 'Channel already exists' }
+            }
 
             const channelCreated = await this.chatService.createChannel(
                 createChannelDto
             )
             this.server.emit('reloadChannels', {})
-            return channelCreated.id
+            return { channelId: channelCreated.id }
         } catch (error) {
             console.log('Failed to create channel', error)
         }

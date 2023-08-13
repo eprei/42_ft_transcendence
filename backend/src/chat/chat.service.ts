@@ -351,6 +351,11 @@ export class ChatService {
         const user = await this.userRepository.findOneBy({
             id: createChannelDto.ownerId,
         })
+        if (!user) throw new NotFoundException()
+        const channel = await this.channelRepository.findOne({
+            where: { name: createChannelDto.name },
+        })
+        if (channel) throw new BadRequestException()
         createChannelDto.owner = user
         createChannelDto.admin = [user]
         createChannelDto.users = [user]
