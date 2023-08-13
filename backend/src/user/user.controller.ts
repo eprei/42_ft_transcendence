@@ -13,6 +13,8 @@ import {
     Request,
     InternalServerErrorException,
     NotFoundException,
+    FileTypeValidator,
+    ParseFilePipe,
 } from '@nestjs/common'
 import { UserService } from './user.service'
 import { CreateUserDto } from './dto/create-user.dto'
@@ -125,7 +127,12 @@ export class UserController {
     )
     async uploadProfilePicture(
         @Request() req: any,
-        @UploadedFile() file: Express.Multer.File
+        @UploadedFile(
+            new ParseFilePipe({
+                validators: [new FileTypeValidator({ fileType: 'image/jpeg' })],
+            })
+        )
+        file: Express.Multer.File
     ) {
         if (!file) {
             console.log('No image was provided')
