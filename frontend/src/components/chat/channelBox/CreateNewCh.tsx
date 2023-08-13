@@ -22,13 +22,16 @@ const CreateNewCh = ({ socket }: CreateNewChProps) => {
 
     const createNewChannel = (channel: CreateChannel) => {
         if (socket !== undefined) {
-            socket.emit('createNewChannel', channel, (channelId: number) => {
+            socket.emit('createNewChannel', channel, (response: any) => {
                 dispatch(
                     chatActions.updateChat({
-                        currentChatSelected: channelId,
+                        currentChatSelected: response.id,
                         type: channel.type,
                     })
                 )
+                if (response?.error) {
+                    alert(response.error)
+                }
             })
         }
     }
