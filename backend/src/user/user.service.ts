@@ -191,8 +191,8 @@ export class UserService {
 
             const { nickname } = updateNicknameDto
 
-            if ((await this.findByNickname(nickname)) != undefined)
-                throw new UnauthorizedException('Nickname not available')
+            if ((await this.findByNickname(nickname)) != null)
+                return { message: 'Nickname already exists' }
 
             const updateUserDto: UpdateUserDto = {
                 id: user.id,
@@ -203,7 +203,7 @@ export class UserService {
 
             return { message: 'Nickname updated successfully' }
         } catch (error) {
-            return { error: 'Failed to update nickname' }
+            return console.log('Failed to update nickname')
         }
     }
 
