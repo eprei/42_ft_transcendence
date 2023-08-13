@@ -60,6 +60,9 @@ const UserInformation = () => {
                 }
             )
             if (response.ok) {
+                const data = await response.json()
+                if (data.message === 'Nickname already exists')
+                    alert(data.message)
                 reloadUser()
             } else {
                 console.error('Failed to update nickname')
