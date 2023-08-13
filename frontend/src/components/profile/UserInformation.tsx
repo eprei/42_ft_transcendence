@@ -49,7 +49,7 @@ const UserInformation = () => {
     const editProfileNickname = async (newNickname: string) => {
         try {
             const response = await fetch(
-                '${process.env.REACT_APP_URL_BACKEND}/user/updatenickname',
+                `${process.env.REACT_APP_URL_BACKEND}/user/updatenickname`,
                 {
                     method: 'POST',
                     headers: {
@@ -75,7 +75,7 @@ const UserInformation = () => {
         if (TFAEnabled) {
             try {
                 const response = await fetch(
-                    '${process.env.REACT_APP_URL_BACKEND}/auth/2fa/turn-off',
+                    `${process.env.REACT_APP_URL_BACKEND}/auth/2fa/turn-off`,
                     {
                         method: 'POST',
                         credentials: 'include',
@@ -112,7 +112,7 @@ const UserInformation = () => {
                 formData.append('profilePicture', file)
 
                 const response = await fetch(
-                    '${process.env.REACT_APP_URL_BACKEND}/user/upload-profile-picture',
+                    `${process.env.REACT_APP_URL_BACKEND}/user/upload-profile-picture`,
                     {
                         method: 'POST',
                         body: formData,

@@ -1,9 +1,11 @@
 import styles from './SignInBtn.module.css'
 
 const SignInBtn = () => {
+	const link = `${process.env.REACT_APP_URL_BACKEND}/auth/42`
+
     return (
         <a
-            href="${process.env.REACT_APP_URL_BACKEND}/auth/42"
+            href={link}
             className={styles['oauth-button']}
         >
             Sign-in with 42

@@ -28,7 +28,7 @@ const Play = () => {
 
     const createRoom = async () => {
         try {
-            const response = await fetch('${process.env.REACT_APP_URL_BACKEND}/room', {
+            const response = await fetch(`${process.env.REACT_APP_URL_BACKEND}/room`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
