@@ -60,6 +60,8 @@ const UserInformation = () => {
                 }
             )
             if (response.ok) {
+                const data = await response.json()
+                if (data?.error) alert(data.error)
                 reloadUser()
             } else {
                 console.error('Failed to update nickname')
