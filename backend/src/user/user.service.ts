@@ -192,7 +192,7 @@ export class UserService {
             const { nickname } = updateNicknameDto
 
             if ((await this.findByNickname(nickname)) != null)
-                return { message: 'Nickname already exists' }
+                return { error: 'Nickname already exists' }
 
             const updateUserDto: UpdateUserDto = {
                 id: user.id,
