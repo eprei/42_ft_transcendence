@@ -61,6 +61,8 @@ services:
         working_dir: /app
         volumes:
             - prod-frontend:/app/dist
+        environment:
+            - URL=http://${HOSTNAME}
 
 volumes:
     prod-frontend:
