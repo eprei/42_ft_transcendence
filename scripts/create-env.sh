@@ -61,21 +61,12 @@ create_the_environment_file () {
 
 }
 
-frontend_hostname () {
-	sed -i \
-	'' "s/localhost/$(uname -n)/g" \
-	$(find frontend/src -type f -name "*.ts*")
-	git add .
-	git commit -m 'add my hostname'
-}
-
 main () {
 	is_environement_file_already_exist
 
 	ask_42_api_credentials
 	generate_all_variables
 	create_the_environment_file
-	frontend_hostname
 }
 
 main
