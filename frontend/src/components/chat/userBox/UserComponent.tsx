@@ -310,13 +310,19 @@ const UserComponent = ({
                             {toggleBlockUser}
                             {amIowner ? (
                                 <ul>
-                                    {isAdmin ? (
-                                        <li onClick={unsetAdmin}>
-                                            Remove admin
-                                        </li>
-                                    ) : (
-                                        <li onClick={setAdmin}>Set admin</li>
-                                    )}
+                                    {isAdmin
+                                        ? !isBanned &&
+                                          !isDM && (
+                                              <li onClick={unsetAdmin}>
+                                                  Remove admin
+                                              </li>
+                                          )
+                                        : !isBanned &&
+                                          !isDM && (
+                                              <li onClick={setAdmin}>
+                                                  Set admin
+                                              </li>
+                                          )}
                                     {!isBanned && !isDM && (
                                         <li onClick={kickUser}>Kick</li>
                                     )}
@@ -326,7 +332,7 @@ const UserComponent = ({
                                     {!isBanned && !isDM && (
                                         <li onClick={banUser}>Ban</li>
                                     )}
-                                    {!isMuted && (
+                                    {!isBanned && !isDM && !isMuted && (
                                         <li onClick={muteUser}>Mute</li>
                                     )}
                                 </ul>
@@ -334,15 +340,16 @@ const UserComponent = ({
                                 amIadmin &&
                                 !isOwner && (
                                     <ul>
-                                        {!isBanned && (
+                                        {!isBanned && !isDM && (
                                             <li onClick={kickUser}>Kick</li>
                                         )}
-                                        {isBanned ? (
+                                        {isBanned && !isDM && (
                                             <li onClick={unbanUser}>Unban</li>
-                                        ) : (
+                                        )}
+                                        {!isBanned && !isDM && (
                                             <li onClick={banUser}>Ban</li>
                                         )}
-                                        {!isMuted && (
+                                        {!isBanned && !isDM && !isMuted && (
                                             <li onClick={muteUser}>Mute</li>
                                         )}
                                     </ul>

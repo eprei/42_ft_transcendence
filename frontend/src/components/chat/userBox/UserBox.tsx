@@ -95,7 +95,7 @@ const UserBox = (props: UserBoxProps) => {
                     />
                 ) : null
             )}
-            <h2> banned </h2>
+            {props.bannedUsers.length > 0 ? <h2>banned</h2> : null}
             {props.bannedUsers.map((banUser) => (
                 <UserComponent
                     socket={props.socket}
