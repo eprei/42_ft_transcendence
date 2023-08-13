@@ -11,7 +11,6 @@ import {
     UploadedFile,
     Res,
     Request,
-    InternalServerErrorException,
     NotFoundException,
 } from '@nestjs/common'
 import { UserService } from './user.service'
@@ -38,7 +37,7 @@ export class UserController {
         try {
             return await this.userService.create(createUserDto)
         } catch (error) {
-            throw new InternalServerErrorException()
+            console.log('Failed to create user')
         }
     }
 
@@ -137,9 +136,7 @@ export class UserController {
             )
             return { message: 'Profile image saved correctly', photoUrl }
         } catch (error) {
-            throw new InternalServerErrorException(
-                'An error occurred when saving the profile image'
-            )
+            console.log('An error occurred when saving the profile image')
         }
     }
 

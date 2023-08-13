@@ -6,7 +6,6 @@ import {
     Param,
     ValidationPipe,
     UsePipes,
-    InternalServerErrorException,
     NotFoundException,
 } from '@nestjs/common'
 import { MatchService } from './match.service'
@@ -24,7 +23,7 @@ export class MatchController {
         try {
             return await this.matchService.create(createMatchDto)
         } catch (error) {
-            throw new InternalServerErrorException()
+            console.log('Failed to create match')
         }
     }
 
