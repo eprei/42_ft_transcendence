@@ -7,14 +7,17 @@ import { FriendService } from 'src/friend/friend.service'
 import { FriendModule } from 'src/friend/friend.module'
 import { Friend } from 'src/typeorm/friend.entity'
 import { Channel } from 'src/typeorm/channel.entity'
+import { PongModule } from 'src/pong/pong.module'
+import { PongGateway } from 'src/pong/pong.gateway'
 
 @Module({
     imports: [
         TypeOrmModule.forFeature([User, Friend, Channel]),
         forwardRef(() => FriendModule),
+        forwardRef(() => PongModule),
     ],
     controllers: [UserController],
-    providers: [UserService, FriendService],
+    providers: [UserService, FriendService, PongGateway],
     exports: [UserService, TypeOrmModule],
 })
 export class UserModule {}

@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import AddFriendsBtn from '../components/profile/AddFriendsBtn'
 import store from '../store'
 import InvitationHandler from '../sockets/InvitationHandler'
+import SocketGame from '../sockets/SocketGame'
 
 export interface friendList {
     myId: number
@@ -32,6 +33,8 @@ export interface friendList {
     }
 }
 const MainProfile = () => {
+    const socket = SocketGame.getInstance().connect()
+    const [reload, setReload] = useState<boolean>(true)
     const [friendList, setFriendList] = useState({
         myId: 0,
         listOfFriends: [],
@@ -42,83 +45,73 @@ const MainProfile = () => {
         usersNotFriends: [],
     })
 
-    const refreshTime: number = 3000
-
-    const [isLoading, setIsLoading] = useState(true)
-
     useEffect(() => {
-        const fetchFriends = async () => {
-            try {
-                const response = await fetch(
-                    `http://localhost:8080/api/user/getFriendsAndRequests`,
-                    {
-                        method: 'GET',
-                        credentials: 'include',
-                    }
-                )
-
-                if (!response.ok) {
-                    throw new Error('Error fetching friends')
-                }
-
-                const data = await response.json()
-                const { myId, listOfFriends, listOfPendings } = data
-
-                setFriendList({
-                    myId,
-                    listOfFriends,
-                    listOfPendings,
-                })
-                setIsLoading(false)
-            } catch (error) {
-                console.error(error)
-                setIsLoading(false)
-            }
+        socket.on('reload', function () {
+            setReload(true)
+        })
+        return () => {
+            socket.off('reload')
         }
-
-        fetchFriends() // Initial call
-        const intervalId = setInterval(fetchFriends, refreshTime) //Periodic call every 3 seconds
-
-        // Cleaning the interval when the component is disassembled
-        return () => clearInterval(intervalId)
     }, [])
 
     useEffect(() => {
-        const fetchOtherUsers = async () => {
-            try {
-                const response = await fetch(
-                    `http://localhost:8080/api/user/getallnonfriendusers`,
-                    {
-                        method: 'GET',
-                        credentials: 'include',
-                    }
-                )
-
-                if (!response.ok) {
-                    throw new Error('Error fetching other users')
-                }
-
-                const data = await response.json()
-                const { usersNotFriends } = data
-
-                setOtherUsers({
-                    usersNotFriends,
-                })
-                setIsLoading(false)
-            } catch (error) {
-                console.error(error)
-                setIsLoading(false)
-            }
+        if (reload) {
+            fetchFriends()
+            fetchOtherUsers()
+            setReload(false)
         }
+    }, [reload])
 
-        fetchOtherUsers()
-        const intervalId = setInterval(fetchOtherUsers, refreshTime)
+    const fetchFriends = async () => {
+        try {
+            const response = await fetch(
+                `http://localhost:8080/api/user/getFriendsAndRequests`,
+                {
+                    method: 'GET',
+                    credentials: 'include',
+                }
+            )
 
-        return () => clearInterval(intervalId)
-    }, [])
+            if (!response.ok) {
+                throw new Error('Error fetching friends')
+            }
 
-    if (isLoading) {
-        return <div>Loading...</div>
+            const data = await response.json()
+            const { myId, listOfFriends, listOfPendings } = data
+
+            setFriendList({
+                myId,
+                listOfFriends,
+                listOfPendings,
+            })
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    const fetchOtherUsers = async () => {
+        try {
+            const response = await fetch(
+                `http://localhost:8080/api/user/getallnonfriendusers`,
+                {
+                    method: 'GET',
+                    credentials: 'include',
+                }
+            )
+
+            if (!response.ok) {
+                throw new Error('Error fetching other users')
+            }
+
+            const data = await response.json()
+            const { usersNotFriends } = data
+
+            setOtherUsers({
+                usersNotFriends,
+            })
+        } catch (error) {
+            console.error(error)
+        }
     }
 
     return (

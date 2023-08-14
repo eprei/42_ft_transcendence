@@ -178,4 +178,8 @@ export class PongGateway
         const { player_one, player_two, room } = data
         this.server.emit('declineInvitation', { player_one, player_two, room })
     }
+
+    sendReloadMsg() {
+        this.server.emit('reload')
+    }
 }
