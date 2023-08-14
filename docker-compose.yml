@@ -34,6 +34,7 @@ services:
         environment:
             - VITE_URL='https://asdf.lan'
             - VITE_URL_FRONTEND=http://localhost:4040
+            - VITE_URL_BACKEND=http://localhost:8080
         stdin_open: true
         tty: true
 
