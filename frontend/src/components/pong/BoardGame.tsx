@@ -168,6 +168,10 @@ const BoardGame = ({
             }
         }
 
+        socket.io.on('reconnect', () => {
+            socket.emit('joinRoom', room, userData.user.id)
+        })
+
         if (player_two !== 0) {
             socket.emit('sendInvitation', {
                 player_one_nickname: userData.user.nickname,
@@ -398,6 +402,7 @@ const BoardGame = ({
             socket.off('leftRoom', onSecondPlayerLeftTheRoom)
             socket.off('declineInvitation')
             socket.off('clientDisconnected')
+            socket.off('reconnect')
         }
     }, [room])
 

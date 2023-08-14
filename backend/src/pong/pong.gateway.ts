@@ -13,7 +13,6 @@ import { Logger } from '@nestjs/common'
 import { UserService } from 'src/user/user.service'
 import * as passport from 'passport'
 import sessionMiddleware from '../sessions'
-import { subscribe } from 'diagnostics_channel'
 import { User } from 'src/typeorm/user.entity'
 import { IncomingMessage } from 'http'
 
@@ -211,4 +210,11 @@ export class PongGateway
     sendReloadMsg() {
         this.server.emit('reload')
     }
+
+    // @SubscribeMessage('requestCurrentGameState')
+    // handleRequestCurrentGameState(client: Socket, room: string) {
+    //     console.log('requestCurrentGameState')
+    //     const updatedFrame = this.pongServices[room].getFrame()
+    //     this.sendFrameToRoom(room, updatedFrame)
+    // }
 }
