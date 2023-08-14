@@ -50,16 +50,13 @@ export interface BoardGameProps {
 
 async function deleteRoomFromMatchingSystem(room: string) {
     try {
-        const response = await fetch(
-            `http://localhost/api/room/id/${room}`,
-            {
-                method: 'DELETE',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            }
-        )
+        const response = await fetch(`http://localhost/api/room/id/${room}`, {
+            method: 'DELETE',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
 
         if (!response.ok) {
             throw new Error('Error deleting room from matching system')
@@ -112,13 +109,10 @@ const BoardGame = ({
     })
 
     async function getUserData(userId: number) {
-        const response = await fetch(
-            `http://localhost/api/user/id/${userId}`,
-            {
-                method: 'GET',
-                credentials: 'include',
-            }
-        )
+        const response = await fetch(`http://localhost/api/user/id/${userId}`, {
+            method: 'GET',
+            credentials: 'include',
+        })
         if (!response.ok) {
             throw new Error('Failed to fetch user')
         }
@@ -214,6 +208,16 @@ const BoardGame = ({
                 })
             }
         }
+
+        socket.on('clientDisconnected', (clientId: number) => {
+            console.log('client disconnected: ', clientId)
+            if (clientId === player_two || clientId === player_one) {
+                otherPlayerHasLeftTheRoom.current = true
+                setTimeout(() => {
+                    navigate('/play')
+                }, 3000)
+            }
+        })
 
         socket.on('sendFrames', onReceiveFrames)
 
@@ -385,6 +389,7 @@ const BoardGame = ({
             socket.off('waitingForSecondPlayer')
             socket.off('leftRoom', onSecondPlayerLeftTheRoom)
             socket.off('declineInvitation')
+            socket.off('clientDisconnected')
         }
     }, [room])
 

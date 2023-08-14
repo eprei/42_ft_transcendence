@@ -358,6 +358,20 @@ export class UserService {
         }
     }
 
+    async changeStatusOffline(userId: number) {
+        try {
+            const user = await this.findOne(userId)
+            if (user && user.status != UserStatus.Offline) {
+                await this.update(userId, {
+                    id: userId,
+                    status: UserStatus.Offline,
+                })
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     async isBlockedByMe(@Request() req: any, target_id: number) {
         try {
             const user = await this.userRepository.findOne({

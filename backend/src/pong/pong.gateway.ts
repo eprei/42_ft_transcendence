@@ -59,14 +59,15 @@ export class PongGateway
         if (!client.request.user) {
             throw new Error('No user')
         }
+        this.userService.changeStatusOnLine(client.request.user.id)
         this.sendReloadMsg()
-        this.loger.log(`Client socket connected: ${client.id}`)
+        this.loger.log(`Client socket connected: ${client.request.user.id}`)
     }
 
-    handleDisconnect(client: Socket) {
-        this.loger.log(`Client socket disconnected: ${client.id}`)
-        // TODO: Handle cleanup when a client disconnects. Leave the room, etc.
-        // disconnect == leave room ???
+    async handleDisconnect(client: CustomSocket) {
+        this.loger.log(`Client socket disconnected: ${client.request.user.id}`)
+        await this.userService.changeStatusOffline(client.request.user.id)
+        this.server.emit('clientDisconnected', client.request.user.id)
         this.sendReloadMsg()
     }
 

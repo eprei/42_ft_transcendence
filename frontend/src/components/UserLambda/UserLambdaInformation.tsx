@@ -78,13 +78,10 @@ const UserLambdaInformation = ({ userData }: UserLambdaInformationProps) => {
     }, [])
 
     const blockUser = async () => {
-        const response = await fetch(
-            `http://localhost/api/user/block/${id}`,
-            {
-                method: 'POST',
-                credentials: 'include',
-            }
-        )
+        const response = await fetch(`http://localhost/api/user/block/${id}`, {
+            method: 'POST',
+            credentials: 'include',
+        })
         const data = await response.json()
         if (data) {
             isBlockedByMe()
