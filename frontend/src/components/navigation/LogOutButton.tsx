@@ -18,7 +18,7 @@ const LogoutButton = () => {
 
             if (response.ok) {
                 console.log('Logout successful')
-                window.location.href = 'http://localhost:4040/'
+                window.location.href = `${import.meta.env.VITE_URL_FRONTEND}/`
             } else {
                 console.error('Failed to logout')
             }

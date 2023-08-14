@@ -287,7 +287,7 @@ const UserComponent = ({
                             : `${styles.profilePicture} ${styles.user}`
                     }
                     onClick={() =>
-                        (window.location.href = `http://localhost:4040/user/${user.nickname}`)
+                        (window.location.href = `${import.meta.env.VITE_URL_FRONTEND}/user/${user.nickname}`)
                     }
                     onContextMenu={
                         user.id !== userData.user.id

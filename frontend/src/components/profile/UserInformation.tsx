@@ -88,7 +88,7 @@ const UserInformation = () => {
                 console.error('Error turning off 2FA:', error)
             }
         } else {
-            window.location.href = 'http://localhost:4040/TFATurnOn'
+            window.location.href = `${import.meta.env.VITE_URL_FRONTEND}/TFATurnOn`
         }
     }
 
