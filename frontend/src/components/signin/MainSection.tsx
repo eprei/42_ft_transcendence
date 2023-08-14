@@ -6,7 +6,7 @@ const MainSection = () => {
         <div className={styles.container}>
             <h1 className={styles.title}>Cosmic Pong</h1>
             <p className={styles.p}>
-                The coolest way to play pong and test our skills as developers
+                The coolest {import.meta.env.VITE_URL} way to play pong and test our skills as developers
                 at the same time
             </p>
             <SignInBtn></SignInBtn>

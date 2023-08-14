@@ -31,6 +31,8 @@ services:
             - '4040:5173'
         volumes:
             - ./frontend/:/app
+        environment:
+            - VITE_URL='https://asdf.lan'
         stdin_open: true
         tty: true
 
