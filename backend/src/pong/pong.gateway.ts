@@ -67,6 +67,13 @@ export class PongGateway
     async handleDisconnect(client: CustomSocket) {
         this.loger.log(`Client socket disconnected: ${client.request.user.id}`)
         await this.userService.changeStatusOffline(client.request.user.id)
+        this.sendReloadMsg()
+    }
+
+    @SubscribeMessage('customized_event_disconnection')
+    async handleCustomizedEventDisconnection(client: CustomSocket, data: any) {
+        this.loger.log(`Client socket disconnected: ${client.request.user.id}`)
+        await this.userService.changeStatusOffline(client.request.user.id)
         this.server.emit('clientDisconnected', client.request.user.id)
         this.sendReloadMsg()
     }

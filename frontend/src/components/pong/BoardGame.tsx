@@ -209,6 +209,13 @@ const BoardGame = ({
             }
         }
 
+        // Add event listeners for close window
+        const handleBeforeUnload = () => {
+            socket.emit('customized_event_disconnection')
+        }
+
+        window.addEventListener('beforeunload', handleBeforeUnload)
+
         socket.on('clientDisconnected', (clientId: number) => {
             console.log('client disconnected: ', clientId)
             if (clientId === player_two || clientId === player_one) {
@@ -365,6 +372,7 @@ const BoardGame = ({
         return () => {
             // Remove the event listener when disassembling the component to avoid memory leaks
             document.removeEventListener('keydown', handleKeyDown)
+            window.removeEventListener('beforeunload', handleBeforeUnload)
 
             if (imPlayerOne === true) {
                 handleDeleteRoom()
