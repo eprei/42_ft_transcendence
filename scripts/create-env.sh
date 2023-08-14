@@ -8,11 +8,11 @@ alias pwgen="docker run \
 	--capitalize \
 	--secure 20 1"
 
-is_environement_file_already_exist () {
+is_environment_file_already_exist () {
 	if [ -e ".env" ]
 	then
-		echo the ".env" file already exist
-		echo you need to delete it to recreate a new one
+		echo "The '.env' file already exists."
+		echo "You need to delete it to recreate a new one."
 		exit 0
 	fi
 }
@@ -31,12 +31,23 @@ ask_42_api_credentials () {
 	printf "production 42 SECRET: "; read -r PROD_FT_SECRET
 }
 
+ask_hostname_option () {
+	printf "Do you want to use the machine's hostname (localhost otherwise)? (Y/n): "
+	read -r USE_HOSTNAME
+	if [ -z "$USE_HOSTNAME" ] || [ "$USE_HOSTNAME" = "Y" ] || [ "$USE_HOSTNAME" = "y" ]
+	then
+		HOSTNAME=$(uname -n)
+	else
+		HOSTNAME="localhost"
+	fi
+}
+
 create_the_environment_file () {
 	cat > .env <<- environment_file
 	# Cosmic Pong
 	# > all secret and environment data
 
-	# File created the $(date +"%Y.%m.%d") by $(whoami)
+	# File created on $(date +"%Y.%m.%d") by $(whoami)
 
 	# 42 credentials
 	FT_UUID=${FT_UUID}
@@ -55,17 +66,17 @@ create_the_environment_file () {
 	DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_NAME}
 	PORT=3000
 
-	# my hostname
-	HOSTNAME=$(uname -n)
+	# Hostname
+	HOSTNAME=${HOSTNAME}
 	environment_file
-
 }
 
 main () {
-	is_environement_file_already_exist
+	is_environment_file_already_exist
 
 	ask_42_api_credentials
 	generate_all_variables
+	ask_hostname_option
 	create_the_environment_file
 }
 
