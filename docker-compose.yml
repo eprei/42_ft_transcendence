@@ -33,6 +33,7 @@ services:
             - ./frontend/:/app
         environment:
             - VITE_URL='https://asdf.lan'
+            - VITE_URL_FRONTEND=http://localhost:4040
         stdin_open: true
         tty: true
 
