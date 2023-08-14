@@ -8,13 +8,10 @@ const LogoutButton = () => {
         setIsLoading(true)
 
         try {
-            const response = await fetch(
-                'http://localhost/api/user/logout',
-                {
-                    method: 'POST',
-                    credentials: 'include',
-                }
-            )
+            const response = await fetch('http://localhost/api/user/logout', {
+                method: 'POST',
+                credentials: 'include',
+            })
 
             if (response.ok) {
                 console.log('Logout successful')
