@@ -37,6 +37,7 @@ export class PongGateway
             client.disconnect()
             return
         }
+        this.sendReloadMsg()
         this.loger.log(`Client socket connected: ${client.id}`)
     }
 
@@ -44,6 +45,7 @@ export class PongGateway
         this.loger.log(`Client socket disconnected: ${client.id}`)
         // TODO: Handle cleanup when a client disconnects. Leave the room, etc.
         // disconnect == leave room ???
+        this.sendReloadMsg()
     }
 
     @SubscribeMessage('createRoom')
@@ -53,6 +55,7 @@ export class PongGateway
         this.waitingForSecondPlayer[roomId] = true
         this.loger.log(`Room created: ${roomId}`)
         client.emit('waitingForSecondPlayer', roomId)
+        this.sendReloadMsg()
     }
 
     @SubscribeMessage('joinRoom')
@@ -68,6 +71,7 @@ export class PongGateway
                     this.emitSecondPlayerJoined(roomId)
                 }, 3000)
             }
+            this.sendReloadMsg()
         } else {
             client.emit('error', 'Room does not exist')
         }
@@ -85,6 +89,7 @@ export class PongGateway
         this.server.to(roomId).emit('leftRoom')
         this.loger.log(`Client socket ${client.id} left room: ${roomId}`)
         this.userService.changeStatusOnLine(userId)
+        this.sendReloadMsg()
     }
 
     private startGame(roomId: string) {

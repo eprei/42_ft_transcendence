@@ -32,9 +32,8 @@ export class UserService {
         @InjectRepository(Friend)
         private readonly friendRepository: Repository<Friend>,
         @InjectRepository(Channel)
-        private readonly channelRepository: Repository<Channel>
-    ) // @Inject(PongGateway) private readonly pongGateway: PongGateway
-    {}
+        private readonly channelRepository: Repository<Channel> // @Inject(PongGateway) private readonly pongGateway: PongGateway
+    ) {}
 
     create(createUserDto: CreateUserDto) {
         try {
