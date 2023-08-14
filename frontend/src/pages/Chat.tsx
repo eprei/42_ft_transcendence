@@ -69,6 +69,12 @@ const Chat = () => {
             newSocket.on('reloadFeed', () => {
                 setReloadFeed(true)
             })
+            
+            dispatch(
+                chatActions.updateChat({
+                    currentChatSelected: 0,
+                    type: '',
+                }))
 
             return () => {
                 newSocket.off('reload')
