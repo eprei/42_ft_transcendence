@@ -75,7 +75,7 @@ const UserInformation = () => {
         if (TFAEnabled) {
             try {
                 const response = await fetch(
-                    'http://localhost:8080/api/auth/2fa/turn-off',
+                    `${import.meta.env.VITE_URL_BACKEND}/api/auth/2fa/turn-off`,
                     {
                         method: 'POST',
                         credentials: 'include',
@@ -112,7 +112,7 @@ const UserInformation = () => {
                 formData.append('profilePicture', file)
 
                 const response = await fetch(
-                    'http://localhost:8080/api/user/upload-profile-picture',
+                    `${import.meta.env.VITE_URL_BACKEND}/api/user/upload-profile-picture`,
                     {
                         method: 'POST',
                         body: formData,
