@@ -1,7 +1,7 @@
 import Navbar from '../navigation/Navbar'
 import styles from './Error.module.css'
 import ErrorDisplay from './ErrorDisplay'
-import { useRouteError } from 'react-router-dom'
+import { Navigate, useRouteError } from 'react-router-dom'
 
 interface Error {
     status: number
@@ -18,6 +18,7 @@ const ErrorPage = () => {
     if (error.status === 400) {
         text = JSON.parse(error.data).message
         title = '400'
+        return <Navigate to="/" replace={true} />
     }
     return (
         <>
