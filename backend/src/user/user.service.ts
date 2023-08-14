@@ -1,5 +1,4 @@
 import {
-    Inject,
     Injectable,
     NotFoundException,
     Request,
@@ -21,7 +20,6 @@ import { UserStatus } from 'src/typeorm/user.entity'
 import { Friend } from 'src/typeorm/friend.entity'
 import { Channel } from 'src/typeorm/channel.entity'
 import { UpdatePlayersStatsDto } from './dto/update-player-stats.dto'
-// import { PongGateway } from 'src/pong/pong.gateway'
 
 @Injectable()
 export class UserService {
@@ -32,13 +30,12 @@ export class UserService {
         @InjectRepository(Friend)
         private readonly friendRepository: Repository<Friend>,
         @InjectRepository(Channel)
-        private readonly channelRepository: Repository<Channel> // @Inject(PongGateway) private readonly pongGateway: PongGateway
+        private readonly channelRepository: Repository<Channel>
     ) {}
 
     create(createUserDto: CreateUserDto) {
         try {
             const user = this.userRepository.create(createUserDto)
-            // this.pongGateway.sendReloadMsg()
             return this.userRepository.save(user)
         } catch (error) {
             console.log(error)
@@ -64,7 +61,6 @@ export class UserService {
     async update(id: number, updateUserDto: UpdateUserDto) {
         try {
             const user = await this.findOne(id)
-            // this.pongGateway.sendReloadMsg()
             return this.userRepository.save({ ...user, ...updateUserDto })
         } catch (error) {
             console.log(error)
@@ -74,7 +70,6 @@ export class UserService {
     async remove(id: number) {
         try {
             const user = await this.findOne(id)
-            // this.pongGateway.sendReloadMsg()
             return this.userRepository.remove(user)
         } catch (error) {
             console.log(error)
@@ -204,7 +199,6 @@ export class UserService {
             }
 
             await this.update(user.id, updateUserDto)
-            // this.pongGateway.sendReloadMsg()
             return { message: 'Nickname updated successfully' }
         } catch (error) {
             return console.log('Failed to update nickname')
@@ -329,7 +323,6 @@ export class UserService {
                 id: user.id,
                 status: UserStatus.Offline,
             })
-            // this.pongGateway.sendReloadMsg()
             await req.session.destroy()
             res.clearCookie('sessionID')
             res.status(200).json({ message: 'Logout successful' })
@@ -347,7 +340,6 @@ export class UserService {
                     id: userId,
                     status: UserStatus.Online,
                 })
-                // this.pongGateway.sendReloadMsg()
             }
         } catch (error) {
             console.log(error)
@@ -360,7 +352,6 @@ export class UserService {
 
             if (user && user.status != UserStatus.Playing) {
                 this.update(userId, { id: userId, status: UserStatus.Playing })
-                // this.pongGateway.sendReloadMsg()
             }
         } catch (error) {
             console.log(error)
