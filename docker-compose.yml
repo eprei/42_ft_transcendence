@@ -31,6 +31,9 @@ services:
             - '4040:5173'
         volumes:
             - ./frontend/:/app
+        environment:
+            - VITE_URL_FRONTEND=http://localhost:4040
+            - VITE_URL_BACKEND=http://localhost:8080
         stdin_open: true
         tty: true
 

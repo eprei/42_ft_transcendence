@@ -9,7 +9,7 @@ const LogoutButton = () => {
 
         try {
             const response = await fetch(
-                'http://localhost:8080/api/user/logout',
+                `${import.meta.env.VITE_URL_BACKEND}/api/user/logout`,
                 {
                     method: 'POST',
                     credentials: 'include',
@@ -18,7 +18,7 @@ const LogoutButton = () => {
 
             if (response.ok) {
                 console.log('Logout successful')
-                window.location.href = 'http://localhost:4040/'
+                window.location.href = `${import.meta.env.VITE_URL_FRONTEND}/`
             } else {
                 console.error('Failed to logout')
             }

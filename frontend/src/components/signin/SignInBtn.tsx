@@ -3,7 +3,7 @@ import styles from './SignInBtn.module.css'
 const SignInBtn = () => {
     return (
         <a
-            href="http://localhost:8080/api/auth/42"
+            href={`${import.meta.env.VITE_URL_BACKEND}/api/auth/42`}
             className={styles['oauth-button']}
         >
             Sign-in with 42

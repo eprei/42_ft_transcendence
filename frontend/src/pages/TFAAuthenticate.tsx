@@ -2,7 +2,7 @@ import TwoFactorVerificationBox from '../components/TFAVerify/TwoFactorVerificat
 import styles from './TFA.module.css'
 
 const TFAAuthenticate = () => {
-    const url = 'http://localhost:8080/api/auth/2fa/authenticate'
+    const url = `${import.meta.env.VITE_URL_BACKEND}/api/auth/2fa/authenticate`
 
     return (
         <div className={styles.container}>

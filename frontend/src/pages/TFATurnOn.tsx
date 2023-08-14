@@ -3,7 +3,7 @@ import styles from './TFA.module.css'
 import CodeQR from '../components/TFATurnOn/CodeQR'
 
 const TFATurnOn = () => {
-    const url = 'http://localhost:8080/api/auth/2fa/turn-on'
+    const url = `${import.meta.env.VITE_URL_BACKEND}/api/auth/2fa/turn-on`
 
     return (
         <div className={styles.container}>
