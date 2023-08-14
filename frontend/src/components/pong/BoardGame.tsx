@@ -215,6 +215,16 @@ const BoardGame = ({
             }
         }
 
+        socket.on('clientDisconnected', (clientId: number) => {
+            console.log('client disconnected: ', clientId)
+            if (clientId === player_two || clientId === player_one) {
+                otherPlayerHasLeftTheRoom.current = true
+                setTimeout(() => {
+                    navigate('/play')
+                }, 3000)
+            }
+        })
+
         socket.on('sendFrames', onReceiveFrames)
 
         function onReceiveFrames(updatedFrame: Frame) {
@@ -387,6 +397,7 @@ const BoardGame = ({
             socket.off('waitingForSecondPlayer')
             socket.off('leftRoom', onSecondPlayerLeftTheRoom)
             socket.off('declineInvitation')
+            socket.off('clientDisconnected')
         }
     }, [room])
 
