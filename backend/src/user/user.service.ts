@@ -3,7 +3,6 @@ import {
     NotFoundException,
     Request,
     Param,
-    UnauthorizedException,
     Req,
     Res,
 } from '@nestjs/common'
@@ -199,8 +198,7 @@ export class UserService {
                 nickname: nickname,
             }
 
-            this.update(user.id, updateUserDto)
-
+            await this.update(user.id, updateUserDto)
             return { message: 'Nickname updated successfully' }
         } catch (error) {
             return console.log('Failed to update nickname')
@@ -321,8 +319,10 @@ export class UserService {
             if (!user) {
                 throw new NotFoundException('User not found')
             }
-            this.update(user.id, { id: user.id, status: UserStatus.Offline })
-
+            await this.update(user.id, {
+                id: user.id,
+                status: UserStatus.Offline,
+            })
             await req.session.destroy()
             res.clearCookie('sessionID')
             res.status(200).json({ message: 'Logout successful' })
@@ -335,8 +335,12 @@ export class UserService {
         try {
             const user = await this.findOne(userId)
 
-            if (user && user.status != UserStatus.Online)
-                this.update(userId, { id: userId, status: UserStatus.Online })
+            if (user && user.status != UserStatus.Online) {
+                await this.update(userId, {
+                    id: userId,
+                    status: UserStatus.Online,
+                })
+            }
         } catch (error) {
             console.log(error)
         }
@@ -346,8 +350,9 @@ export class UserService {
         try {
             const user = await this.findOne(userId)
 
-            if (user && user.status != UserStatus.Playing)
+            if (user && user.status != UserStatus.Playing) {
                 this.update(userId, { id: userId, status: UserStatus.Playing })
+            }
         } catch (error) {
             console.log(error)
         }

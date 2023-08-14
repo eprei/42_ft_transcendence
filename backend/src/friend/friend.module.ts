@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { Friend } from 'src/typeorm/friend.entity'
 import { UserModule } from 'src/user/user.module'
 import { User } from 'src/typeorm/user.entity'
+import { PongGateway } from 'src/pong/pong.gateway'
 
 @Module({
     imports: [
@@ -12,7 +13,7 @@ import { User } from 'src/typeorm/user.entity'
         forwardRef(() => UserModule),
     ],
     controllers: [FriendController],
-    providers: [FriendService],
+    providers: [FriendService, PongGateway],
     exports: [FriendService],
 })
 export class FriendModule {}
