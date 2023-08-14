@@ -9,7 +9,7 @@ const LogoutButton = () => {
 
         try {
             const response = await fetch(
-                'http://localhost:8080/api/user/logout',
+                `${import.meta.env.VITE_URL_BACKEND}/api/user/logout`,
                 {
                     method: 'POST',
                     credentials: 'include',

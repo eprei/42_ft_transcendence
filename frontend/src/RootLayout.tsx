@@ -17,7 +17,7 @@ const RootLayout = () => {
 export default RootLayout
 
 export async function loader() {
-    const response = await fetch('http://localhost:8080/api/auth/loginStatus', {
+    const response = await fetch(`${import.meta.env.VITE_URL_BACKEND}/api/auth/loginStatus`, {
         credentials: 'include',
     })
     if (response.status !== 200) {

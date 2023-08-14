@@ -16,7 +16,7 @@ class SocketChatService {
 
     connect(): Socket {
         if (!this.socket) {
-            this.socket = io('http://localhost:8080/chat')
+            this.socket = io(`${import.meta.env.VITE_URL_BACKEND}/chat`)
         }
 
         return this.socket

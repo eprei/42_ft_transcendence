@@ -16,7 +16,7 @@ class SocketGameService {
 
     connect(): Socket {
         if (!this.socket) {
-            this.socket = io('http://localhost:8080/game')
+            this.socket = io(`${import.meta.env.VITE_URL_BACKEND}/game`)
         }
 
         return this.socket

@@ -18,7 +18,7 @@ const UserInformation = () => {
 
     const reloadUser = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api/user/me`, {
+            const response = await fetch(`${import.meta.env.VITE_URL_BACKEND}/api/user/me`, {
                 method: 'GET',
                 credentials: 'include',
             })
@@ -49,7 +49,7 @@ const UserInformation = () => {
     const editProfileNickname = async (newNickname: string) => {
         try {
             const response = await fetch(
-                'http://localhost:8080/api/user/updatenickname',
+                `${import.meta.env.VITE_URL_BACKEND}/api/user/updatenickname`,
                 {
                     method: 'POST',
                     headers: {

@@ -59,7 +59,7 @@ const UserComponent = ({
 
     const createRoom = async (player_two: number) => {
         try {
-            const response = await fetch('http://localhost:8080/api/room', {
+            const response = await fetch(`${import.meta.env.VITE_URL_BACKEND}/api/room`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
