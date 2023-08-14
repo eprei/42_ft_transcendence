@@ -305,7 +305,9 @@ const BoardGame = ({
                                         : player_one,
                             }
                             const response = await fetch(
-                                `${import.meta.env.VITE_URL_BACKEND}/api/user/updatePlayersStats`,
+                                `${
+                                    import.meta.env.VITE_URL_BACKEND
+                                }/api/user/updatePlayersStats`,
                                 {
                                     method: 'POST',
                                     credentials: 'include',

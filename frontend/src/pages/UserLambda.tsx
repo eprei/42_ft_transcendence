@@ -19,7 +19,9 @@ const UserLambda = () => {
     async function getCurrentUser() {
         try {
             const response = await fetch(
-                `${import.meta.env.VITE_URL_BACKEND}/api/user/nickname/${nickname}`,
+                `${
+                    import.meta.env.VITE_URL_BACKEND
+                }/api/user/nickname/${nickname}`,
                 {
                     method: 'GET',
                     credentials: 'include',

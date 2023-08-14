@@ -59,17 +59,20 @@ const UserComponent = ({
 
     const createRoom = async (player_two: number) => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_URL_BACKEND}/api/room`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include',
-                body: JSON.stringify({
-                    theme: 'Theme 0',
-                    player_two: player_two,
-                }),
-            })
+            const response = await fetch(
+                `${import.meta.env.VITE_URL_BACKEND}/api/room`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        theme: 'Theme 0',
+                        player_two: player_two,
+                    }),
+                }
+            )
 
             if (!response.ok) {
                 console.log('Error creating room')
@@ -287,7 +290,9 @@ const UserComponent = ({
                             : `${styles.profilePicture} ${styles.user}`
                     }
                     onClick={() =>
-                        (window.location.href = `${import.meta.env.VITE_URL_FRONTEND}/user/${user.nickname}`)
+                        (window.location.href = `${
+                            import.meta.env.VITE_URL_FRONTEND
+                        }/user/${user.nickname}`)
                     }
                     onContextMenu={
                         user.id !== userData.user.id

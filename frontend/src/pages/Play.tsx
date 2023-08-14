@@ -28,14 +28,17 @@ const Play = () => {
 
     const createRoom = async () => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_URL_BACKEND}/api/room`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include',
-                body: JSON.stringify({ theme: selectedTheme }),
-            })
+            const response = await fetch(
+                `${import.meta.env.VITE_URL_BACKEND}/api/room`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({ theme: selectedTheme }),
+                }
+            )
 
             if (!response.ok) {
                 if (response.status === 409) {

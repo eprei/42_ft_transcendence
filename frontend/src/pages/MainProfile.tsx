@@ -65,7 +65,9 @@ const MainProfile = () => {
     const fetchFriends = async () => {
         try {
             const response = await fetch(
-                `${import.meta.env.VITE_URL_BACKEND}/api/user/getFriendsAndRequests`,
+                `${
+                    import.meta.env.VITE_URL_BACKEND
+                }/api/user/getFriendsAndRequests`,
                 {
                     method: 'GET',
                     credentials: 'include',
@@ -92,7 +94,9 @@ const MainProfile = () => {
     const fetchOtherUsers = async () => {
         try {
             const response = await fetch(
-                `${import.meta.env.VITE_URL_BACKEND}/api/user/getallnonfriendusers`,
+                `${
+                    import.meta.env.VITE_URL_BACKEND
+                }/api/user/getallnonfriendusers`,
                 {
                     method: 'GET',
                     credentials: 'include',
@@ -137,10 +141,13 @@ const MainProfile = () => {
 export default MainProfile
 
 export async function loader() {
-    const response = await fetch(`${import.meta.env.VITE_URL_BACKEND}/api/user/me`, {
-        method: 'GET',
-        credentials: 'include',
-    })
+    const response = await fetch(
+        `${import.meta.env.VITE_URL_BACKEND}/api/user/me`,
+        {
+            method: 'GET',
+            credentials: 'include',
+        }
+    )
 
     if (response.status !== 200) {
         throw new Response(

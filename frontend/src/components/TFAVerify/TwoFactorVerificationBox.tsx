@@ -62,7 +62,9 @@ const TwoFactorVerificationBox = ({
                 )
             } else {
                 setErrorMessage('')
-                window.location.href = `${import.meta.env.VITE_URL_FRONTEND}/profile`
+                window.location.href = `${
+                    import.meta.env.VITE_URL_FRONTEND
+                }/profile`
             }
         } catch (error) {
             console.error(error)

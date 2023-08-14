@@ -18,10 +18,13 @@ const UserInformation = () => {
 
     const reloadUser = async () => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_URL_BACKEND}/api/user/me`, {
-                method: 'GET',
-                credentials: 'include',
-            })
+            const response = await fetch(
+                `${import.meta.env.VITE_URL_BACKEND}/api/user/me`,
+                {
+                    method: 'GET',
+                    credentials: 'include',
+                }
+            )
 
             if (response.status !== 200) {
                 throw new Response(
@@ -88,7 +91,9 @@ const UserInformation = () => {
                 console.error('Error turning off 2FA:', error)
             }
         } else {
-            window.location.href = `${import.meta.env.VITE_URL_FRONTEND}/TFATurnOn`
+            window.location.href = `${
+                import.meta.env.VITE_URL_FRONTEND
+            }/TFATurnOn`
         }
     }
 
@@ -112,7 +117,9 @@ const UserInformation = () => {
                 formData.append('profilePicture', file)
 
                 const response = await fetch(
-                    `${import.meta.env.VITE_URL_BACKEND}/api/user/upload-profile-picture`,
+                    `${
+                        import.meta.env.VITE_URL_BACKEND
+                    }/api/user/upload-profile-picture`,
                     {
                         method: 'POST',
                         body: formData,
