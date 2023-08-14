@@ -31,6 +31,17 @@ ask_42_api_credentials () {
 	printf "production 42 SECRET: "; read -r PROD_FT_SECRET
 }
 
+ask_hostname_option () {
+	printf "Do you want to use the machine's hostname (localhost otherwise)? (Y/n): "
+	read -r USE_HOSTNAME
+	if [ -z "$USE_HOSTNAME" ] || [ "$USE_HOSTNAME" = "Y" ] || [ "$USE_HOSTNAME" = "y" ]
+	then
+		HOSTNAME=$(uname -n)
+	else
+		HOSTNAME="localhost"
+	fi
+}
+
 create_the_environment_file () {
 	cat > .env <<- environment_file
 	# Cosmic Pong
@@ -55,10 +66,9 @@ create_the_environment_file () {
 	DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_NAME}
 	PORT=3000
 
-	# my hostname
-	HOSTNAME=$(uname -n)
+	# Hostname
+	HOSTNAME=${HOSTNAME}
 	environment_file
-
 }
 
 main () {
@@ -66,6 +76,7 @@ main () {
 
 	ask_42_api_credentials
 	generate_all_variables
+	ask_hostname_option
 	create_the_environment_file
 }
 
