@@ -22,7 +22,12 @@ format_code () {
 # $3            : name
 # $4 (optional) : path
 nestcli () {
-	docker exec our-backend nest g ${2} ${3} ${4}
+	if ! docker exec our-backend nest g "${2}" "${3}" "${4}"
+	then
+		printf "error: docker exec\n"
+		exit 1
+	fi
+
 	format_code
 	git add .
 	git commit -F - <<- body
@@ -55,10 +60,10 @@ npm_install () {
 		exit
 	fi
 
-	if [ "${2}" == "normal" ]
+	if [ "${2}" = "normal" ]
 	then
 		flag_save="--save"
-	elif [ "${2}" == "dev" ]
+	elif [ "${2}" = "dev" ]
 	then
 		flag_save="--save-dev"
 	else
@@ -66,7 +71,12 @@ npm_install () {
 		exit
 	fi
 
-	docker exec our-backend npm install "${flag_save}" ${3}
+	if ! docker exec our-backend npm install "${flag_save}" "${3}"
+	then
+		printf "error: docker exec\n"
+		exit 1
+	fi
+
 	format_code
 	git add .
 	git commit -F - <<- body
@@ -82,10 +92,10 @@ npm_install () {
 
 # $1 : option
 main () {
-	if [ "${1}" == "nestcli" ]
+	if [ "${1}" = "nestcli" ]
 	then
 		nestcli "${@}"
-	elif [ "${1}" == "npm" ]
+	elif [ "${1}" = "npm" ]
 	then
 		npm_install "${@}"
 	else
