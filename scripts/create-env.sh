@@ -8,11 +8,11 @@ alias pwgen="docker run \
 	--capitalize \
 	--secure 20 1"
 
-is_environement_file_already_exist () {
+is_environment_file_already_exist () {
 	if [ -e ".env" ]
 	then
-		echo the ".env" file already exist
-		echo you need to delete it to recreate a new one
+		echo "The '.env' file already exists."
+		echo "You need to delete it to recreate a new one."
 		exit 0
 	fi
 }
@@ -36,7 +36,7 @@ create_the_environment_file () {
 	# Cosmic Pong
 	# > all secret and environment data
 
-	# File created the $(date +"%Y.%m.%d") by $(whoami)
+	# File created on $(date +"%Y.%m.%d") by $(whoami)
 
 	# 42 credentials
 	FT_UUID=${FT_UUID}
@@ -62,7 +62,7 @@ create_the_environment_file () {
 }
 
 main () {
-	is_environement_file_already_exist
+	is_environment_file_already_exist
 
 	ask_42_api_credentials
 	generate_all_variables
