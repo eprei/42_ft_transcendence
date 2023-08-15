@@ -210,11 +210,4 @@ export class PongGateway
     sendReloadMsg() {
         this.server.emit('reload')
     }
-
-    // @SubscribeMessage('requestCurrentGameState')
-    // handleRequestCurrentGameState(client: Socket, room: string) {
-    //     console.log('requestCurrentGameState')
-    //     const updatedFrame = this.pongServices[room].getFrame()
-    //     this.sendFrameToRoom(room, updatedFrame)
-    // }
 }
