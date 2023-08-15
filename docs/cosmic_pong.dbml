@@ -19,8 +19,6 @@ Table User {
 
 Table Friends {
     id int [pk]
-    user int
-    friend int
     isPending boolean
 }
 
