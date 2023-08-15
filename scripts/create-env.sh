@@ -71,7 +71,17 @@ create_the_environment_file () {
 	environment_file
 }
 
+is_docker_running () {
+	if ! docker ps 2> /dev/null 1> /dev/null
+	then
+		echo docker is not running
+		echo please launch docker to run this script
+		exit 1
+	fi
+}
+
 main () {
+	is_docker_running
 	is_environment_file_already_exist
 
 	ask_42_api_credentials
