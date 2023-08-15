@@ -24,12 +24,9 @@ Table Friends {
 
 Table Match {
     id int [pk]
-    userHome int
-    userForeign int
-    Winner int
-    HomeScore int
-    ForeignScore int
-    creationDate date
+    scoreWinner int
+    scoreLoser int
+    dateGame Date
 }
 
 Table user_channels_channel {
