@@ -106,6 +106,8 @@ kill-your-work:
 	rm -rf ./backend/node_modules
 	rm -rf ./backend/dist
 
+prod-re: prod-stop prod-clean-database prod-start
+
 .PHONY: env
 
 # Colors
