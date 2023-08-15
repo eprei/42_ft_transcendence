@@ -93,6 +93,8 @@ const BoardGame = ({
         useState<boolean>(false)
     const [playerTwoNameWhenDeclined, setPlayerTwoNameWhenDeclined] =
         useState<string>('')
+    let scorePlayerOne = 0
+    let scorePlayerTwo = 0
 
     const [frame, setFrame] = useState<Frame>({
         paddleLeft: {
@@ -132,12 +134,10 @@ const BoardGame = ({
         ) as HTMLCanvasElement
         if (canvas === null) {
             console.log('fail get canvas element')
-            // TODO manage error
         }
         let ctx: CanvasRenderingContext2D | null = canvas.getContext('2d')
         if (ctx === null) {
             throw 'fail get context'
-            // TODO manage error
         }
 
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
@@ -167,6 +167,10 @@ const BoardGame = ({
                 })
             }
         }
+
+        socket.io.on('reconnect', () => {
+            socket.emit('joinRoom', room, userData.user.id)
+        })
 
         if (player_two !== 0) {
             socket.emit('sendInvitation', {
@@ -203,6 +207,7 @@ const BoardGame = ({
 
             const dataPlayerTwo = await getUserData(playerId)
             setPlayerTwoData({ user: dataPlayerTwo })
+            player_two = playerId
         })
 
         const handleKeyDown = (event: KeyboardEvent) => {
@@ -216,7 +221,6 @@ const BoardGame = ({
         }
 
         socket.on('clientDisconnected', (clientId: number) => {
-            console.log('client disconnected: ', clientId)
             if (clientId === player_two || clientId === player_one) {
                 otherPlayerHasLeftTheRoom.current = true
                 setTimeout(() => {
@@ -225,15 +229,31 @@ const BoardGame = ({
             }
         })
 
+        const handleBeforeUnload = () => {
+            const data = {
+                roomId: room,
+            }
+            socket.emit('customizedEventDisconnection', data)
+        }
+
+        window.addEventListener('beforeunload', handleBeforeUnload)
+
         socket.on('sendFrames', onReceiveFrames)
 
         function onReceiveFrames(updatedFrame: Frame) {
             setWaitingForPlayer(false)
             setFrame(updatedFrame)
-            document.getElementById('scorePlayerOne')!.innerText =
-                updatedFrame.score.playerOne.toString()
-            document.getElementById('scorePlayerTwo')!.innerText =
-                updatedFrame.score.playerTwo.toString()
+
+            if (scorePlayerOne !== updatedFrame.score.playerOne) {
+                document.getElementById('scorePlayerOne')!.innerText =
+                    updatedFrame.score.playerOne.toString()
+                scorePlayerOne = updatedFrame.score.playerOne
+            }
+            if (scorePlayerTwo !== updatedFrame.score.playerTwo) {
+                document.getElementById('scorePlayerTwo')!.innerText =
+                    updatedFrame.score.playerTwo.toString()
+                scorePlayerTwo = updatedFrame.score.playerTwo
+            }
 
             // Handle game over
             if (updatedFrame.gameOver && gameOver.current === false) {
@@ -373,6 +393,7 @@ const BoardGame = ({
         return () => {
             // Remove the event listener when disassembling the component to avoid memory leaks
             document.removeEventListener('keydown', handleKeyDown)
+            window.removeEventListener('beforeunload', handleBeforeUnload)
 
             if (imPlayerOne === true) {
                 handleDeleteRoom()
@@ -398,6 +419,7 @@ const BoardGame = ({
             socket.off('leftRoom', onSecondPlayerLeftTheRoom)
             socket.off('declineInvitation')
             socket.off('clientDisconnected')
+            socket.off('reconnect')
         }
     }, [room])
 
