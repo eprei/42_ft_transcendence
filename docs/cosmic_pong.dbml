@@ -1,6 +1,12 @@
+enum UserStatus {
+    online
+    offline
+    playing
+}
+
 Table User {
     id int [pk]
-    login text
+    nickname text
     avatarUrl text
     nbVictory int
     totalPlay int
@@ -8,6 +14,7 @@ Table User {
     TFASecret varchar
     TFAEnabled boolean
     FT_id varchar
+    status UserStatus
 }
 
 Table Friends {
