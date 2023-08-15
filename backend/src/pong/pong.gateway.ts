@@ -64,9 +64,10 @@ export class PongGateway
     }
 
     async handleDisconnect(client: CustomSocket) {
-        this.loger.log(`Client socket disconnected: ${client.request.user.id}`)
+        this.loger.log(
+            `Client socket disconnected unintentionally: ${client.request.user.id}`
+        )
         await this.userService.changeStatusOffline(client.request.user.id)
-        this.server.emit('clientDisconnected', client.request.user.id)
         this.sendReloadMsg()
     }
 
@@ -78,6 +79,19 @@ export class PongGateway
         this.waitingForSecondPlayer[roomId] = true
         this.loger.log(`Room created: ${roomId}`)
         client.emit('waitingForSecondPlayer', roomId)
+        this.sendReloadMsg()
+    }
+
+    @SubscribeMessage('customizedEventDisconnection')
+    async handleCustomizedEventDisconnection(
+        client: CustomSocket,
+        roomId: string
+    ) {
+        this.loger.log(
+            `Client socket disconnected voluntarily: ${client.request.user.id}`
+        )
+        await this.userService.changeStatusOffline(client.request.user.id)
+        this.server.emit('clientDisconnected', client.request.user.id)
         this.sendReloadMsg()
     }
 

@@ -209,6 +209,7 @@ const BoardGame = ({
 
             const dataPlayerTwo = await getUserData(playerId)
             setPlayerTwoData({ user: dataPlayerTwo })
+            player_two = playerId
         })
 
         const handleKeyDown = (event: KeyboardEvent) => {
@@ -222,7 +223,6 @@ const BoardGame = ({
         }
 
         socket.on('clientDisconnected', (clientId: number) => {
-            console.log('client disconnected: ', clientId)
             if (clientId === player_two || clientId === player_one) {
                 otherPlayerHasLeftTheRoom.current = true
                 setTimeout(() => {
@@ -230,6 +230,15 @@ const BoardGame = ({
                 }, 3000)
             }
         })
+
+        const handleBeforeUnload = () => {
+            const data = {
+                roomId: room,
+            }
+            socket.emit('customizedEventDisconnection', data)
+        }
+
+        window.addEventListener('beforeunload', handleBeforeUnload)
 
         socket.on('sendFrames', onReceiveFrames)
 
@@ -386,6 +395,7 @@ const BoardGame = ({
         return () => {
             // Remove the event listener when disassembling the component to avoid memory leaks
             document.removeEventListener('keydown', handleKeyDown)
+            window.removeEventListener('beforeunload', handleBeforeUnload)
 
             if (imPlayerOne === true) {
                 handleDeleteRoom()
