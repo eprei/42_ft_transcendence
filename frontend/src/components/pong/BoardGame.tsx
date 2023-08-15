@@ -134,12 +134,10 @@ const BoardGame = ({
         ) as HTMLCanvasElement
         if (canvas === null) {
             console.log('fail get canvas element')
-            // TODO manage error
         }
         let ctx: CanvasRenderingContext2D | null = canvas.getContext('2d')
         if (ctx === null) {
             throw 'fail get context'
-            // TODO manage error
         }
 
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
