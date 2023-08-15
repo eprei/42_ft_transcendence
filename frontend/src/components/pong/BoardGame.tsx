@@ -93,6 +93,8 @@ const BoardGame = ({
         useState<boolean>(false)
     const [playerTwoNameWhenDeclined, setPlayerTwoNameWhenDeclined] =
         useState<string>('')
+    let scorePlayerOne = 0
+    let scorePlayerTwo = 0
 
     const [frame, setFrame] = useState<Frame>({
         paddleLeft: {
@@ -234,10 +236,17 @@ const BoardGame = ({
         function onReceiveFrames(updatedFrame: Frame) {
             setWaitingForPlayer(false)
             setFrame(updatedFrame)
-            document.getElementById('scorePlayerOne')!.innerText =
-                updatedFrame.score.playerOne.toString()
-            document.getElementById('scorePlayerTwo')!.innerText =
-                updatedFrame.score.playerTwo.toString()
+
+            if (scorePlayerOne !== updatedFrame.score.playerOne) {
+                document.getElementById('scorePlayerOne')!.innerText =
+                    updatedFrame.score.playerOne.toString()
+                scorePlayerOne = updatedFrame.score.playerOne
+            }
+            if (scorePlayerTwo !== updatedFrame.score.playerTwo) {
+                document.getElementById('scorePlayerTwo')!.innerText =
+                    updatedFrame.score.playerTwo.toString()
+                scorePlayerTwo = updatedFrame.score.playerTwo
+            }
 
             // Handle game over
             if (updatedFrame.gameOver && gameOver.current === false) {
