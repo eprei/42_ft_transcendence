@@ -1,4 +1,4 @@
-Table Player {
+Table User {
     id int [pk]
     login text
     avatarUrl text
@@ -12,22 +12,22 @@ Table Player {
 
 Table Friends {
     id int [pk]
-    player int
+    user int
     friend int
     isPending boolean
 }
 
 Table Match {
     id int [pk]
-    playerHome int
-    playerForeign int
+    userHome int
+    userForeign int
     Winner int
     HomeScore int
     ForeignScore int
     creationDate date
 }
 
-Table player_channels_channel {
+Table user_channels_channel {
     user int
     channel int
 }
@@ -49,24 +49,24 @@ Table Message {
     creationDate date
 }
 
-Table player_blocked_players_player {
+Table user_blocked_users_user {
     id int [pk]
-    player int
-    BlockedPlayer int
+    user int
+    BlockedUser int
 }
 
-Ref: Player.id < Friends.player
-Ref: Player.id < Friends.friend
+Ref: User.id < Friends.user
+Ref: User.id < Friends.friend
 
-Ref: Player.id < Match.playerHome
-Ref: Player.id < Match.playerForeign
-Ref: Player.id < Match.Winner
+Ref: User.id < Match.userHome
+Ref: User.id < Match.userForeign
+Ref: User.id < Match.Winner
 
-Ref: Player.id < player_channels_channel.user
+Ref: User.id < user_channels_channel.user
 
-Ref: Channel.id < player_channels_channel.channel
+Ref: Channel.id < user_channels_channel.channel
 
 Ref: Channel.id < Message.channelid
 
-Ref: Player.id < player_blocked_players_player.player
-Ref: Player.id < player_blocked_players_player.BlockedPlayer
+Ref: User.id < user_blocked_users_user.user
+Ref: User.id < user_blocked_users_user.BlockedUser
