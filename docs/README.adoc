@@ -32,6 +32,55 @@ end
 backend -> client : redirection
 ....
 
+== Docker environment for production
+
+[plantuml, target=assets/docker_prod, format=svg, width=100%]
+....
+rectangle localhost {
+	database "our-prod-data" as prod_data
+	database "our-prod-frontend" as prod_frontend
+	database "our-prod-images" as prod_images
+	circle "port 80" as portout_nginx
+
+	rectangle docker {
+		cloud prod-appnet {
+			rectangle Nginx [
+				container name: <b>our-prod-nginx
+				purpose: <b>reverse proxy
+				framework: <b>Nginx
+			]
+			rectangle FrontendBuild [
+				container name: <b>our-frontend-build
+				purpose: <b>compile the frontend and exit
+				framework: <b>Vite + React + tsc
+			]
+			rectangle NestJS [
+				container name: <b>our-prod-backend
+				purpose: <b>compile the backend and serve
+				framework: <b>NestJS
+			]
+			rectangle PostgreSQL [
+				container name: <b>our-prod-postgresql
+				purpose: <b>serve database
+				framework: <b>PostgreSQL
+			]
+		}
+	}
+}
+
+FrontendBuild <=down=> prod_frontend
+
+Nginx <=up=> portout_nginx
+Nginx <=down=> prod_frontend
+
+NestJS <-le-> PostgreSQL
+NestJS <-ri-> Nginx
+
+NestJS <=down=> prod_images
+
+PostgreSQL <=down=> prod_data
+....
+
 == Docker environment for development
 
 image::assets/docker_env_dev.png[]
