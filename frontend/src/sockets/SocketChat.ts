@@ -16,7 +16,9 @@ class SocketChatService {
 
     connect(): Socket {
         if (!this.socket) {
-            this.socket = io(`${import.meta.env.VITE_URL_BACKEND}/chat`)
+            this.socket = io(`${import.meta.env.VITE_URL_BACKEND}/chat`, {
+                path: '/chatws/',
+            })
         }
 
         return this.socket

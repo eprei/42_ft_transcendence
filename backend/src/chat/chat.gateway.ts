@@ -15,6 +15,19 @@ import { WebSocketServer } from '@nestjs/websockets'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Channel } from 'src/typeorm/channel.entity'
 import { Repository } from 'typeorm'
+import { User } from 'src/typeorm/user.entity'
+import { IncomingMessage } from 'http'
+import sessionMiddleware from '../sessions'
+import * as passport from 'passport'
+
+const wrap = (middleware: any) => (socket: Socket, next: (err?: any) => void) =>
+    middleware(socket.request, {}, next)
+
+interface CustomSocket extends Socket {
+    request: IncomingMessage & {
+        user?: User
+    }
+}
 
 type PasswordChangeData = [channelId: number, password: string]
 type ChannelUserData = [channelId: number, userId: number]
@@ -25,8 +38,7 @@ type UserTargetChannelData = [
     targetId: number,
     channelId: number
 ]
-
-@WebSocketGateway({ namespace: 'chat', cors: { origin: '*' } })
+@WebSocketGateway({ path: '/chatws/', namespace: 'chat' })
 export class ChatGateway
     implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
@@ -40,12 +52,25 @@ export class ChatGateway
     @WebSocketServer()
     server: Server
 
-    afterInit(server: Socket) {
-        this.loger.log('Chat Socket initialized')
+    afterInit(server: Server) {
+        server.use(wrap(sessionMiddleware))
+        server.use(wrap(passport.initialize()))
+        server.use(wrap(passport.session()))
+        server.use((client: any, next) => {
+            if (!client.request.isAuthenticated() || !client.request.user) {
+                next(new Error('unauthorized'))
+            } else {
+                console.log('authorized')
+                next()
+            }
+        })
     }
 
-    handleConnection(client: Socket, ...args: any[]) {
-        this.loger.log(`Client chat socket connected: ${client.id}`)
+    handleConnection(client: CustomSocket, ...args: any[]) {
+        if (!client.request.user) {
+            throw new Error('No user')
+        }
+        this.loger.log(`Client socket connected: ${client.id}`)
     }
 
     handleDisconnect(client: Socket) {

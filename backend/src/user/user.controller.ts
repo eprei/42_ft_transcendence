@@ -51,7 +51,6 @@ export class UserController {
         }
     }
 
-    @Public()
     @Get('me')
     async getMyInfo(@Request() req: any) {
         try {

@@ -16,7 +16,9 @@ class SocketGameService {
 
     connect(): Socket {
         if (!this.socket) {
-            this.socket = io(`${import.meta.env.VITE_URL_BACKEND}/game`)
+            this.socket = io(`${import.meta.env.VITE_URL_BACKEND}/game`, {
+                path: '/pongws/',
+            })
         }
 
         return this.socket

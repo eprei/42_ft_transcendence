@@ -8,11 +8,23 @@ CONTAINER_FRONT	=	our-frontend
 VOLUME_DATA		=	our-volume
 VOLUME_IMAGES	= 	our-images
 
-start: env
-	docker compose up
+dev-start: env
+	docker compose -f docker-compose-dev.yml up
 
-stop:
+dev-stop:
+	docker compose -f docker-compose-dev.yml down
+
+prod-start: env
+	docker compose up --build
+
+prod-stop:
 	docker compose down
+
+prod-build:
+	docker compose build
+
+prod-clean-database:
+	@docker volume rm our-prod-volume || true
 
 build: build-front build-back
 
@@ -93,6 +105,8 @@ kill-your-work:
 	rm -rf ./frontend/node_modules
 	rm -rf ./backend/node_modules
 	rm -rf ./backend/dist
+
+prod-re: prod-stop prod-clean-database prod-start
 
 .PHONY: env
 

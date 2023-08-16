@@ -2,14 +2,8 @@ import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
 import { ValidationPipe } from '@nestjs/common'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
-import * as session from 'express-session'
 import * as passport from 'passport'
-import * as crypto from 'crypto'
-
-const generateSessionSecret = () => {
-    const secretLength = 32 // Secret length in bytes
-    return crypto.randomBytes(secretLength).toString('hex')
-}
+import sessionsMiddleware from './sessions'
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule)
@@ -29,20 +23,7 @@ async function bootstrap() {
         })
     )
 
-    app.use(
-        session({
-            secret: generateSessionSecret(),
-            resave: false,
-            saveUninitialized: false,
-            cookie: {
-                maxAge: 3600000,
-                sameSite: 'lax',
-                httpOnly: true,
-                secure: false,
-                path: '/',
-            },
-        })
-    )
+    app.use(sessionsMiddleware)
     app.use(passport.initialize())
     app.use(passport.session())
     app.use((req, res, next) => {

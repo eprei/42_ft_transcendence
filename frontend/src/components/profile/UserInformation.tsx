@@ -129,6 +129,8 @@ const UserInformation = () => {
 
                 if (response.status === 201) {
                     setShouldReloadUserData(true)
+                } else if (response.status === 413) {
+                    alert('your file is too big')
                 } else {
                     console.error(
                         'Error loading profile image:',
