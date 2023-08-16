@@ -41,8 +41,8 @@ export class AuthService {
                 avatarUrl: user42.avatarUrl,
                 status: UserStatus.Online,
             })
-        } else if (user.status !== UserStatus.Offline) {
-            throw new UnauthorizedException('already_connected')
+        // } else if (user.status !== UserStatus.Offline) {
+        //     throw new UnauthorizedException('already_connected')
         } else {
             await this.userService.changeStatusOnLine(user.id)
         }
