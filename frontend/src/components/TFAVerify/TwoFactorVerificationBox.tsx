@@ -76,6 +76,20 @@ const TwoFactorVerificationBox = ({
         setErrorMessage('')
     }
 
+    for (let i = 1; i < 6; ++i) {
+        const currentDigit = document.getElementById(`digit${i}`)
+        currentDigit?.addEventListener('input', function () {
+            let a = i + 1
+            const nextDigit = document.getElementById(`digit${a}`)
+            nextDigit?.focus()
+        })
+    }
+    const lastDigit = document.getElementById('digit6')
+    lastDigit?.addEventListener('input', function () {
+        const submitButton = document.getElementById('verify')
+        submitButton?.focus()
+    })
+
     return (
         <form className={styles.form} onSubmit={handleSubmit}>
             <div className={styles.info}>
@@ -88,6 +102,7 @@ const TwoFactorVerificationBox = ({
 
             <div className={styles['input-fields']}>
                 <input
+                    id="digit1"
                     maxLength={1}
                     type="tel"
                     placeholder=""
@@ -96,6 +111,7 @@ const TwoFactorVerificationBox = ({
                     className={styles.input}
                 />
                 <input
+                    id="digit2"
                     maxLength={1}
                     type="tel"
                     placeholder=""
@@ -104,6 +120,7 @@ const TwoFactorVerificationBox = ({
                     className={styles.input}
                 />
                 <input
+                    id="digit3"
                     maxLength={1}
                     type="tel"
                     placeholder=""
@@ -112,6 +129,7 @@ const TwoFactorVerificationBox = ({
                     className={styles.input}
                 />
                 <input
+                    id="digit4"
                     maxLength={1}
                     type="tel"
                     placeholder=""
@@ -120,6 +138,7 @@ const TwoFactorVerificationBox = ({
                     className={styles.input}
                 />
                 <input
+                    id="digit5"
                     maxLength={1}
                     type="tel"
                     placeholder=""
@@ -128,6 +147,7 @@ const TwoFactorVerificationBox = ({
                     className={styles.input}
                 />
                 <input
+                    id="digit6"
                     maxLength={1}
                     type="tel"
                     placeholder=""
@@ -138,7 +158,7 @@ const TwoFactorVerificationBox = ({
             </div>
             {errorMessage && <p className={styles.error}>{errorMessage}</p>}
             <div className={styles['action-btns']}>
-                <button type="submit" className={styles.verify}>
+                <button type="submit" className={styles.verify} id="verify">
                     Verify
                 </button>
                 <a href="#" className={styles.clear} onClick={handleClear}>
