@@ -1,0 +1,74 @@
+enum UserStatus {
+    online
+    offline
+    playing
+}
+
+Table User {
+    id int [pk]
+    nickname text
+    avatarUrl text
+    nbVictory int
+    totalPlay int
+    xp int
+    TFASecret varchar
+    TFAEnabled boolean
+    FT_id varchar
+    status UserStatus
+}
+
+Table Friends {
+    id int [pk]
+    isPending boolean
+}
+
+Table Match {
+    id int [pk]
+    scoreWinner int
+    scoreLoser int
+    dateGame Date
+}
+
+Table user_channels_channel {
+    user int
+    channel int
+}
+
+Table Channel {
+    id int [pk]
+    owner int
+    name varchar(500)
+    type varchar
+    password varchar
+    creationDate date
+}
+
+Table Message {
+    id int [pk]
+    creator int
+    content text
+    channelid int
+    creationDate date
+}
+
+Table user_blocked_users_user {
+    id int [pk]
+    user int
+    BlockedUser int
+}
+
+Ref: User.id < Friends.user
+Ref: User.id < Friends.friend
+
+Ref: User.id < Match.userHome
+Ref: User.id < Match.userForeign
+Ref: User.id < Match.Winner
+
+Ref: User.id < user_channels_channel.user
+
+Ref: Channel.id < user_channels_channel.channel
+
+Ref: Channel.id < Message.channelid
+
+Ref: User.id < user_blocked_users_user.user
+Ref: User.id < user_blocked_users_user.BlockedUser

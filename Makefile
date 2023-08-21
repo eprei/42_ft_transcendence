@@ -57,6 +57,15 @@ doc:
 	@printf "$(YELLOW)Generating documentations..$(DEFAULT)\n"
 	@$(ADOC) $(DOCU) -o $(INDEX)
 
+doc-db:
+	docker run \
+	--rm \
+	--volume $(shell pwd)/docs:/app \
+	tgrivel/dbml-renderer \
+	dbml-renderer \
+	-i cosmic_pong.dbml \
+	-o assets/cosmic_pong_db.svg
+
 docdocker:
 	@printf "$(YELLOW)launch the asciidoctor/docker-asciidoctor docker image..$(DEFAULT)\n"
 	@docker run \
